@@ -1,0 +1,10 @@
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\bin\Debug\Event Beheer Systeem.exe.config
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\bin\Debug\Event Beheer Systeem.exe
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\bin\Debug\Event Beheer Systeem.pdb
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event Beheer Systeem.csprojResolveAssemblyReference.cache
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event_Beheer_Systeem.Properties.Resources.resources
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event Beheer Systeem.csproj.GenerateResource.Cache
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event Beheer Systeem.exe
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event Beheer Systeem.pdb
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event_Beheer_Systeem.EbsAddEventForm.resources
+C:\Users\Jeroen\OneDrive\Documenten\SchoolMap\S2\P3\PTS2\EBS GUI\Event Beheer Systeem\obj\Debug\Event_Beheer_Systeem.EbsHomeForm.resources
