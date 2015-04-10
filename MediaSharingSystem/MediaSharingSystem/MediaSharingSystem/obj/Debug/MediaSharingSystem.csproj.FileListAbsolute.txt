@@ -1,0 +1,18 @@
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe.config
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.pdb
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csprojResolveAssemblyReference.cache
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.Properties.Resources.resources
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.GenerateResource.Cache
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.exe
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.pdb
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.WindowManager.resources
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe.config
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.exe
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.pdb
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.pdb
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csprojResolveAssemblyReference.cache
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.WindowManager.resources
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.Properties.Resources.resources
+C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.GenerateResource.Cache
