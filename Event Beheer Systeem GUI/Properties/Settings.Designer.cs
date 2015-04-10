@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Event_Beheer_Systeem.Properties
+namespace EventBeheerSysteem.Properties
 {
 
 

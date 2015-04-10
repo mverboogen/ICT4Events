@@ -20,3 +20,5 @@ E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\bin\Debug\Oracle.DataAcc
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.csprojResolveAssemblyReference.cache
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.Properties.Resources.resources
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.csproj.GenerateResource.Cache
+E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.EbsAddEventForm.resources
+E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.EbsHomeForm.resources

@@ -16,7 +16,7 @@ namespace EventBeheerSysteem
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new EBSForm());
+            Application.Run(new EbsHomeForm());
         }
     }
 }
