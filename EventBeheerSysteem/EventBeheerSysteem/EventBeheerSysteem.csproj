@@ -88,12 +88,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Add Event Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Add Event Form.designer.cs">
-      <DependentUpon>Add Event Form.cs</DependentUpon>
-    </Compile>
     <Compile Include="Booker.cs" />
     <Compile Include="CampSite.cs" />
     <Compile Include="CampSiteManager.cs" />
@@ -106,12 +100,6 @@
     </Compile>
     <Compile Include="Event.cs" />
     <Compile Include="EventManager.cs" />
-    <Compile Include="EbsHomeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EbsHomeForm.designer.cs">
-      <DependentUpon>EbsHomeForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Item.cs" />
     <Compile Include="ItemManager.cs" />
     <Compile Include="NoCampsiteException.cs" />
@@ -127,12 +115,6 @@
     <Compile Include="UsedIDException.cs" />
     <Compile Include="Visitor.cs" />
     <Compile Include="VisitorManager.cs" />
-    <EmbeddedResource Include="Add Event Form.resx">
-      <DependentUpon>Add Event Form.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EbsHomeForm.resx">
-      <DependentUpon>EbsHomeForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
