@@ -15,31 +15,8 @@ namespace EventBeheerSysteem
         public EventManager()
         {
 
-            /*
-            //TEST DATA
-            //TODO: REMOVE TEST DATA
-            eventList.Add(new Event(1, "Eindhoven", new DateTime(2015, 04, 01), new DateTime(2015, 04, 06)));
-            eventList.Add(new Event(2, "Amsterdam", new DateTime(2015, 05, 06), new DateTime(2015, 04, 10)));
-            eventList.Add(new Event(3, "Rotterdam", new DateTime(2015, 03, 08), new DateTime(2015, 04, 11)));
-            eventList.Add(new Event(4, "Someren", new DateTime(2015, 08, 05), new DateTime(2015, 04, 15)));
-            eventList.Add(new Event(5, "Miami", new DateTime(2015, 06, 21), new DateTime(2015, 04, 22)));
-            
-
-            Event eventHolder = GetEvent(1);
-
-            try
-            {
-                AddEvent(new Event(6, "London", new DateTime(2015, 04, 20), new DateTime(2015, 04, 21)));
-                Event e = GetEvent(10);
-            }
-            catch (UsedIDException UIE)
-            {
-                string message = UIE.Message;
-            }
-            */
-
+            databaseHandler.AddEvent("TestEvent", new DateTime(2015, 08, 01), new DateTime(2015, 08, 08), "Someren");
             eventList = databaseHandler.GetEvents();
-            eventList[0].LoadData();
 
         }
 

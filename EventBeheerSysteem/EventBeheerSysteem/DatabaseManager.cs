@@ -86,7 +86,6 @@ namespace EventBeheerSysteem
             }
 
             return null;
-
         }
 
         public List<CampSite> GetAllCampSites(int eventID)
@@ -378,6 +377,59 @@ namespace EventBeheerSysteem
             }
 
             return null;
+        }
+
+        public void AddEvent(string name, DateTime beginDate, DateTime endDate, string location)
+        {
+
+            int eventID = -1;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT MAX(EventID) + 1 FROM Event";
+                cmd.CommandType = CommandType.Text;
+                dr = cmd.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+            try
+            {
+                while (dr.Read())
+                {
+                    eventID = dr.GetInt32(0);
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Event (EventID, Naam, BeginDatum, EindDatum, Lokatie) VALUES (:EventID, :Name, :BeginDate, :EndDate, :Location)";
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("Name", OracleDbType.Varchar2).Value = name;
+                cmd.Parameters.Add("BeginDate", OracleDbType.Date).Value = beginDate;
+                cmd.Parameters.Add("EndDate", OracleDbType.Date).Value = endDate;
+                cmd.Parameters.Add("Location", OracleDbType.Varchar2).Value = location;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
         }
     }
 }
