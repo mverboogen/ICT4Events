@@ -31,12 +31,12 @@ namespace Event_Beheer_Systeem
         private void button1_Click(object sender, EventArgs e)
         {
             pnlEbsEvent.Visible = false;
-            pnlMainForm.Visible = true;
+            pnlEbsMain.Visible = true;
         }
 
         private void dgvEbsEvents_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            pnlMainForm.Visible = false;
+            pnlEbsMain.Visible = false;
             pnlEbsEvent.Visible = true;
         }
 
