@@ -13,6 +13,7 @@ namespace ReserveringSysteem
     public partial class ReserveringSysteem : Form
     {
         private Manager manager = new Manager();
+        private EnlargedPlattegrond Enlargedplattegrond = new EnlargedPlattegrond();
        
         public ReserveringSysteem()
         {
@@ -67,6 +68,7 @@ namespace ReserveringSysteem
             ((Control)this.tabPageMateriaal).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabPageMateriaal;
         }
+
         private void btMatToOver_Click(object sender, EventArgs e)
         {
             ((Control)this.tabPageOverzicht).Enabled = true;
@@ -107,6 +109,11 @@ namespace ReserveringSysteem
             string bookerEmail = tbBookEmail.Text;
 
             Booker booker = new Booker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
+        }
+
+        private void pbCamping_Click(object sender, EventArgs e)
+        {
+            Enlargedplattegrond.Show();
         }
     }
 }
