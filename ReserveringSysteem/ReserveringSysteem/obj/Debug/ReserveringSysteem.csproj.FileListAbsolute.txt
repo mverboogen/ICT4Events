@@ -1,0 +1,9 @@
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\bin\Debug\ReserveringSysteem.exe.config
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\bin\Debug\ReserveringSysteem.exe
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\bin\Debug\ReserveringSysteem.pdb
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.csprojResolveAssemblyReference.cache
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.Properties.Resources.resources
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.csproj.GenerateResource.Cache
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.exe
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.pdb
+C:\Users\wesley\Documents\Visual Studio 2013\Projects\P3\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.ReserveringSysteem.resources
