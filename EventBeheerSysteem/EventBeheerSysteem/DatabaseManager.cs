@@ -34,6 +34,22 @@ namespace EventBeheerSysteem
 
         }
 
+        public void ReadData(string sql)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = sql;
+                cmd.CommandType = CommandType.Text;
+                dr = cmd.ExecuteReader();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
         public void Disconnect()
         {
             con.Close();
@@ -43,19 +59,9 @@ namespace EventBeheerSysteem
         public List<Event> GetEvents()
         {
             List<Event> eventList = new List<Event>();
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM EVENT";
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+
+            ReadData("SELECT * FROM EVENT");
+
             try
             {
                 while (dr.Read())
@@ -92,19 +98,7 @@ namespace EventBeheerSysteem
         {
             List<CampSite> campSiteList = new List<CampSite>();
 
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT K.KampeerplaatsID, K.EventID, K.Prijs, K.MaxPersonen, K.Oppervlakte, K.KampeerType, V.ReserveringID FROM KAMPEERPLAATS K LEFT JOIN VERHUURDEPLAATS V ON K.KampeerplaatsID = V.KampeerplaatsID WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+            ReadData("SELECT K.KampeerplaatsID, K.EventID, K.Prijs, K.MaxPersonen, K.Oppervlakte, K.KampeerType, V.ReserveringID FROM KAMPEERPLAATS K LEFT JOIN VERHUURDEPLAATS V ON K.KampeerplaatsID = V.KampeerplaatsID WHERE EventID = " + eventID.ToString());
 
             try
             {
@@ -150,19 +144,7 @@ namespace EventBeheerSysteem
         {
             List<Item> itemList = new List<Item>();
 
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM MATERIAAL WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+            ReadData("SELECT * FROM MATERIAAL WHERE EventID = " + eventID.ToString());
 
             try
             {
@@ -198,19 +180,8 @@ namespace EventBeheerSysteem
         public List<Visitor> GetAllVisitors(int eventID)
         {
             List<Visitor> visitorList = new List<Visitor>();
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+
+            ReadData("SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString());
 
             try
             {
@@ -246,19 +217,7 @@ namespace EventBeheerSysteem
         {
             List<Reservation> reservationList = new List<Reservation>();
 
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM RESERVERING WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+            ReadData("SELECT * FROM RESERVERING WHERE EventID = " + eventID.ToString());
 
             try
             {
@@ -295,19 +254,8 @@ namespace EventBeheerSysteem
 
         public Booker GetBooker(int eventID, int reserveringsID)
         {
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString() + "AND ReserveringID = " + reserveringsID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+
+            ReadData("SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString() + "AND ReserveringID = " + reserveringsID.ToString());
 
             try
             {
@@ -346,18 +294,8 @@ namespace EventBeheerSysteem
         public List<int> GetReserverdItems(int eventID, int reservationID)
         {
             List<int> intList = new List<int>();
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT M.MateriaalID FROM Materiaal M, Materiaal_Germateriaal MGM, GereserveerdeMateriaal GM, Reservering G WHERE M.MateriaalID = MGM.MateriaalID AND MGM.GereserveerdeMateriaalID = GM.GereserveerdeMateriaalID AND GM.GereserveerdeMateriaalID = " + reservationID.ToString() + "AND M.EventID = " + eventID.ToString() + "GROUP BY M.MateriaalID";
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
+
+            ReadData("SELECT M.MateriaalID FROM Materiaal M, Materiaal_Germateriaal MGM, GereserveerdeMateriaal GM, Reservering G WHERE M.MateriaalID = MGM.MateriaalID AND MGM.GereserveerdeMateriaalID = GM.GereserveerdeMateriaalID AND GM.GereserveerdeMateriaalID = " + reservationID.ToString() + "AND M.EventID = " + eventID.ToString() + "GROUP BY M.MateriaalID");
 
             try
             {
@@ -382,26 +320,18 @@ namespace EventBeheerSysteem
         public void AddEvent(string name, DateTime beginDate, DateTime endDate, string location)
         {
 
-            int eventID = -1;
+            int eventID = 0;
 
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT MAX(EventID) + 1 FROM Event";
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
+            ReadData("SELECT MAX(EventID) + 1 FROM Event");
 
             try
             {
                 while (dr.Read())
                 {
-                    eventID = dr.GetInt32(0);
+                    if(dr.IsDBNull(0))
+                    {
+                        eventID = dr.GetInt32(0);
+                    }
                 }
             }
             catch (InvalidCastException ICE)
@@ -419,6 +349,95 @@ namespace EventBeheerSysteem
                 cmd.Parameters.Add("BeginDate", OracleDbType.Date).Value = beginDate;
                 cmd.Parameters.Add("EndDate", OracleDbType.Date).Value = endDate;
                 cmd.Parameters.Add("Location", OracleDbType.Varchar2).Value = location;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void AddCampSite(int eventID, decimal price, int maxPersons, int surfaceArea, int campType)
+        {
+            int campSiteID = 0;
+
+            ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats");
+
+            try
+            {
+                while (dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        campSiteID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Kampeerplaats (KampeerplaatsID, EventID, Prijs, MaxPersonen, Oppervlakte, KampeerType) VALUES (:CampSiteID, :EventID, :Price, :MaxPersons, :SurfaceArea, :CampType)";
+                cmd.Parameters.Add("CampSiteID", OracleDbType.Int32).Value = campSiteID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("Price", OracleDbType.Decimal).Value = price;
+                cmd.Parameters.Add("MaxPersons", OracleDbType.Int32).Value = maxPersons;
+                cmd.Parameters.Add("SurfaceArea", OracleDbType.Int32).Value = surfaceArea;
+                cmd.Parameters.Add("CampType", OracleDbType.Int32).Value = campType;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void AddItem(int eventID, string name, decimal price, decimal newPrice)
+        {
+            int materialID = 0;
+
+            ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal");
+
+            try
+            {
+                while (dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        materialID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Materiaal (MateriaalID, EventID, Naam, Prijs, NieuwPrijs) VALUES (:MaterialID, :EventID, :Name, :Price, :NewPrice)";
+                cmd.Parameters.Add("MaterialID", OracleDbType.Int32).Value = materialID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("Name", OracleDbType.Varchar2).Value = name;
+                cmd.Parameters.Add("Price", OracleDbType.Decimal).Value = price;
+                cmd.Parameters.Add("NewPrice", OracleDbType.Decimal).Value = newPrice;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
             }
