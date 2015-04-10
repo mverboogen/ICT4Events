@@ -76,7 +76,7 @@
             this.lblEventVisitorsDetailsMaterials = new System.Windows.Forms.Label();
             this.lboxEventVisitorsDetailsMembers = new System.Windows.Forms.ListBox();
             this.lblEventVisitorsDetailsMembers = new System.Windows.Forms.Label();
-            this.lvlEventVisitorsDetailsBookingDate = new System.Windows.Forms.Label();
+            this.lblEventVisitorsDetailsBookingDate = new System.Windows.Forms.Label();
             this.lblEventVisitorsDetailsBednr = new System.Windows.Forms.Label();
             this.lblEventVisitorsDetailsZipcode = new System.Windows.Forms.Label();
             this.lblEventVisitorsDetailsAddress = new System.Windows.Forms.Label();
@@ -87,7 +87,7 @@
             this.tbEventVisitorsSearch = new System.Windows.Forms.TextBox();
             this.lblEventVisitors = new System.Windows.Forms.Label();
             this.tabEventMaterialen = new System.Windows.Forms.TabPage();
-            this.tabEventPlaatsen = new System.Windows.Forms.TabPage();
+            this.tabEventBeds = new System.Windows.Forms.TabPage();
             this.pnlEbsMain = new System.Windows.Forms.Panel();
             this.lblEventMaterial = new System.Windows.Forms.Label();
             this.lboxEventMaterialList = new System.Windows.Forms.ListBox();
@@ -109,6 +109,23 @@
             this.tbEventMaterialDetailsPrice = new System.Windows.Forms.TextBox();
             this.tbEventMaterialDetailsDailyrent = new System.Windows.Forms.TextBox();
             this.tbEventMaterialDetailsAvailable = new System.Windows.Forms.TextBox();
+            this.lblEventBeds = new System.Windows.Forms.Label();
+            this.lboxEventBedsList = new System.Windows.Forms.ListBox();
+            this.btnEventBedsAdd = new System.Windows.Forms.Button();
+            this.btnEventBedsDelete = new System.Windows.Forms.Button();
+            this.gboxEventBedsDetails = new System.Windows.Forms.GroupBox();
+            this.pboxEventBedsMap = new System.Windows.Forms.PictureBox();
+            this.lblEventBedsMap = new System.Windows.Forms.Label();
+            this.lblEventBedsDetailsName = new System.Windows.Forms.Label();
+            this.lblEventBedsDetailsOccupied = new System.Windows.Forms.Label();
+            this.lblEventBedsDetailsPrice = new System.Windows.Forms.Label();
+            this.lblEventBedsDetailsRenter = new System.Windows.Forms.Label();
+            this.lblEventBedsDetailsMaxRenters = new System.Windows.Forms.Label();
+            this.tbEventBedsDetailsName = new System.Windows.Forms.TextBox();
+            this.tbEventBedsDetailsPrice = new System.Windows.Forms.TextBox();
+            this.tbEventBedsDetailsRenter = new System.Windows.Forms.TextBox();
+            this.tbEventBedsDetailsMaxRenters = new System.Windows.Forms.TextBox();
+            this.cboxEventBedsDetailsOcuppied = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEbsEvents)).BeginInit();
             this.pnlEbsEvent.SuspendLayout();
             this.tabEvent.SuspendLayout();
@@ -116,8 +133,11 @@
             this.tabEventDeelnemers.SuspendLayout();
             this.gboxEventVisitorsDetails.SuspendLayout();
             this.tabEventMaterialen.SuspendLayout();
+            this.tabEventBeds.SuspendLayout();
             this.pnlEbsMain.SuspendLayout();
             this.gboxEventMaterialDetails.SuspendLayout();
+            this.gboxEventBedsDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pboxEventBedsMap)).BeginInit();
             this.SuspendLayout();
             // 
             // btnEbsAdd
@@ -240,7 +260,7 @@
             this.tabEvent.Controls.Add(this.tabEventDetails);
             this.tabEvent.Controls.Add(this.tabEventDeelnemers);
             this.tabEvent.Controls.Add(this.tabEventMaterialen);
-            this.tabEvent.Controls.Add(this.tabEventPlaatsen);
+            this.tabEvent.Controls.Add(this.tabEventBeds);
             this.tabEvent.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabEvent.ItemSize = new System.Drawing.Size(44, 20);
             this.tabEvent.Location = new System.Drawing.Point(7, 35);
@@ -422,7 +442,7 @@
             this.gboxEventVisitorsDetails.Controls.Add(this.lblEventVisitorsDetailsMaterials);
             this.gboxEventVisitorsDetails.Controls.Add(this.lboxEventVisitorsDetailsMembers);
             this.gboxEventVisitorsDetails.Controls.Add(this.lblEventVisitorsDetailsMembers);
-            this.gboxEventVisitorsDetails.Controls.Add(this.lvlEventVisitorsDetailsBookingDate);
+            this.gboxEventVisitorsDetails.Controls.Add(this.lblEventVisitorsDetailsBookingDate);
             this.gboxEventVisitorsDetails.Controls.Add(this.lblEventVisitorsDetailsBednr);
             this.gboxEventVisitorsDetails.Controls.Add(this.lblEventVisitorsDetailsZipcode);
             this.gboxEventVisitorsDetails.Controls.Add(this.lblEventVisitorsDetailsAddress);
@@ -439,7 +459,7 @@
             // cboxEventVisitorsDetailsPaid
             // 
             this.cboxEventVisitorsDetailsPaid.AutoSize = true;
-            this.cboxEventVisitorsDetailsPaid.Location = new System.Drawing.Point(305, 200);
+            this.cboxEventVisitorsDetailsPaid.Location = new System.Drawing.Point(234, 200);
             this.cboxEventVisitorsDetailsPaid.Name = "cboxEventVisitorsDetailsPaid";
             this.cboxEventVisitorsDetailsPaid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cboxEventVisitorsDetailsPaid.Size = new System.Drawing.Size(98, 20);
@@ -604,14 +624,14 @@
             this.lblEventVisitorsDetailsMembers.TabIndex = 12;
             this.lblEventVisitorsDetailsMembers.Text = "Leden:";
             // 
-            // lvlEventVisitorsDetailsBookingDate
+            // lblEventVisitorsDetailsBookingDate
             // 
-            this.lvlEventVisitorsDetailsBookingDate.AutoSize = true;
-            this.lvlEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(22, 177);
-            this.lvlEventVisitorsDetailsBookingDate.Name = "lvlEventVisitorsDetailsBookingDate";
-            this.lvlEventVisitorsDetailsBookingDate.Size = new System.Drawing.Size(129, 16);
-            this.lvlEventVisitorsDetailsBookingDate.TabIndex = 10;
-            this.lvlEventVisitorsDetailsBookingDate.Text = "Reserveringsdatum:";
+            this.lblEventVisitorsDetailsBookingDate.AutoSize = true;
+            this.lblEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(22, 177);
+            this.lblEventVisitorsDetailsBookingDate.Name = "lblEventVisitorsDetailsBookingDate";
+            this.lblEventVisitorsDetailsBookingDate.Size = new System.Drawing.Size(129, 16);
+            this.lblEventVisitorsDetailsBookingDate.TabIndex = 10;
+            this.lblEventVisitorsDetailsBookingDate.Text = "Reserveringsdatum:";
             // 
             // lblEventVisitorsDetailsBednr
             // 
@@ -708,16 +728,23 @@
             this.tabEventMaterialen.Text = "Materialen";
             this.tabEventMaterialen.UseVisualStyleBackColor = true;
             // 
-            // tabEventPlaatsen
+            // tabEventBeds
             // 
-            this.tabEventPlaatsen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabEventPlaatsen.Location = new System.Drawing.Point(4, 24);
-            this.tabEventPlaatsen.Name = "tabEventPlaatsen";
-            this.tabEventPlaatsen.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEventPlaatsen.Size = new System.Drawing.Size(762, 495);
-            this.tabEventPlaatsen.TabIndex = 3;
-            this.tabEventPlaatsen.Text = "Kampeerplaatsen";
-            this.tabEventPlaatsen.UseVisualStyleBackColor = true;
+            this.tabEventBeds.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabEventBeds.Controls.Add(this.lblEventBedsMap);
+            this.tabEventBeds.Controls.Add(this.pboxEventBedsMap);
+            this.tabEventBeds.Controls.Add(this.gboxEventBedsDetails);
+            this.tabEventBeds.Controls.Add(this.btnEventBedsDelete);
+            this.tabEventBeds.Controls.Add(this.btnEventBedsAdd);
+            this.tabEventBeds.Controls.Add(this.lboxEventBedsList);
+            this.tabEventBeds.Controls.Add(this.lblEventBeds);
+            this.tabEventBeds.Location = new System.Drawing.Point(4, 24);
+            this.tabEventBeds.Name = "tabEventBeds";
+            this.tabEventBeds.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEventBeds.Size = new System.Drawing.Size(762, 495);
+            this.tabEventBeds.TabIndex = 3;
+            this.tabEventBeds.Text = "Kampeerplaatsen";
+            this.tabEventBeds.UseVisualStyleBackColor = true;
             // 
             // pnlEbsMain
             // 
@@ -915,6 +942,162 @@
             this.tbEventMaterialDetailsAvailable.Size = new System.Drawing.Size(256, 22);
             this.tbEventMaterialDetailsAvailable.TabIndex = 14;
             // 
+            // lblEventBeds
+            // 
+            this.lblEventBeds.AutoSize = true;
+            this.lblEventBeds.Location = new System.Drawing.Point(7, 7);
+            this.lblEventBeds.Name = "lblEventBeds";
+            this.lblEventBeds.Size = new System.Drawing.Size(118, 16);
+            this.lblEventBeds.TabIndex = 0;
+            this.lblEventBeds.Text = "Kampeerplaatsen:";
+            // 
+            // lboxEventBedsList
+            // 
+            this.lboxEventBedsList.FormattingEnabled = true;
+            this.lboxEventBedsList.ItemHeight = 16;
+            this.lboxEventBedsList.Location = new System.Drawing.Point(7, 27);
+            this.lboxEventBedsList.Name = "lboxEventBedsList";
+            this.lboxEventBedsList.Size = new System.Drawing.Size(300, 436);
+            this.lboxEventBedsList.TabIndex = 1;
+            // 
+            // btnEventBedsAdd
+            // 
+            this.btnEventBedsAdd.Location = new System.Drawing.Point(6, 464);
+            this.btnEventBedsAdd.Name = "btnEventBedsAdd";
+            this.btnEventBedsAdd.Size = new System.Drawing.Size(100, 23);
+            this.btnEventBedsAdd.TabIndex = 2;
+            this.btnEventBedsAdd.Text = "Toevoegen";
+            this.btnEventBedsAdd.UseVisualStyleBackColor = true;
+            // 
+            // btnEventBedsDelete
+            // 
+            this.btnEventBedsDelete.Location = new System.Drawing.Point(207, 464);
+            this.btnEventBedsDelete.Name = "btnEventBedsDelete";
+            this.btnEventBedsDelete.Size = new System.Drawing.Size(100, 23);
+            this.btnEventBedsDelete.TabIndex = 3;
+            this.btnEventBedsDelete.Text = "Verwijderen";
+            this.btnEventBedsDelete.UseVisualStyleBackColor = true;
+            // 
+            // gboxEventBedsDetails
+            // 
+            this.gboxEventBedsDetails.Controls.Add(this.cboxEventBedsDetailsOcuppied);
+            this.gboxEventBedsDetails.Controls.Add(this.tbEventBedsDetailsMaxRenters);
+            this.gboxEventBedsDetails.Controls.Add(this.tbEventBedsDetailsRenter);
+            this.gboxEventBedsDetails.Controls.Add(this.tbEventBedsDetailsPrice);
+            this.gboxEventBedsDetails.Controls.Add(this.tbEventBedsDetailsName);
+            this.gboxEventBedsDetails.Controls.Add(this.lblEventBedsDetailsMaxRenters);
+            this.gboxEventBedsDetails.Controls.Add(this.lblEventBedsDetailsRenter);
+            this.gboxEventBedsDetails.Controls.Add(this.lblEventBedsDetailsPrice);
+            this.gboxEventBedsDetails.Controls.Add(this.lblEventBedsDetailsOccupied);
+            this.gboxEventBedsDetails.Controls.Add(this.lblEventBedsDetailsName);
+            this.gboxEventBedsDetails.Location = new System.Drawing.Point(409, 27);
+            this.gboxEventBedsDetails.Name = "gboxEventBedsDetails";
+            this.gboxEventBedsDetails.Size = new System.Drawing.Size(333, 142);
+            this.gboxEventBedsDetails.TabIndex = 4;
+            this.gboxEventBedsDetails.TabStop = false;
+            this.gboxEventBedsDetails.Text = "Info";
+            // 
+            // pboxEventBedsMap
+            // 
+            this.pboxEventBedsMap.Image = global::Event_Beheer_Systeem.Properties.Resources.Plattegrond;
+            this.pboxEventBedsMap.Location = new System.Drawing.Point(409, 199);
+            this.pboxEventBedsMap.Name = "pboxEventBedsMap";
+            this.pboxEventBedsMap.Size = new System.Drawing.Size(333, 259);
+            this.pboxEventBedsMap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pboxEventBedsMap.TabIndex = 5;
+            this.pboxEventBedsMap.TabStop = false;
+            // 
+            // lblEventBedsMap
+            // 
+            this.lblEventBedsMap.AutoSize = true;
+            this.lblEventBedsMap.Location = new System.Drawing.Point(409, 180);
+            this.lblEventBedsMap.Name = "lblEventBedsMap";
+            this.lblEventBedsMap.Size = new System.Drawing.Size(80, 16);
+            this.lblEventBedsMap.TabIndex = 6;
+            this.lblEventBedsMap.Text = "Plattegrond:";
+            // 
+            // lblEventBedsDetailsName
+            // 
+            this.lblEventBedsDetailsName.AutoSize = true;
+            this.lblEventBedsDetailsName.Location = new System.Drawing.Point(15, 20);
+            this.lblEventBedsDetailsName.Name = "lblEventBedsDetailsName";
+            this.lblEventBedsDetailsName.Size = new System.Drawing.Size(48, 16);
+            this.lblEventBedsDetailsName.TabIndex = 0;
+            this.lblEventBedsDetailsName.Text = "Naam:";
+            // 
+            // lblEventBedsDetailsOccupied
+            // 
+            this.lblEventBedsDetailsOccupied.AutoSize = true;
+            this.lblEventBedsDetailsOccupied.Location = new System.Drawing.Point(15, 42);
+            this.lblEventBedsDetailsOccupied.Name = "lblEventBedsDetailsOccupied";
+            this.lblEventBedsDetailsOccupied.Size = new System.Drawing.Size(45, 16);
+            this.lblEventBedsDetailsOccupied.TabIndex = 1;
+            this.lblEventBedsDetailsOccupied.Text = "Bezet:";
+            // 
+            // lblEventBedsDetailsPrice
+            // 
+            this.lblEventBedsDetailsPrice.AutoSize = true;
+            this.lblEventBedsDetailsPrice.Location = new System.Drawing.Point(15, 64);
+            this.lblEventBedsDetailsPrice.Name = "lblEventBedsDetailsPrice";
+            this.lblEventBedsDetailsPrice.Size = new System.Drawing.Size(37, 16);
+            this.lblEventBedsDetailsPrice.TabIndex = 2;
+            this.lblEventBedsDetailsPrice.Text = "Prijs:";
+            // 
+            // lblEventBedsDetailsRenter
+            // 
+            this.lblEventBedsDetailsRenter.AutoSize = true;
+            this.lblEventBedsDetailsRenter.Location = new System.Drawing.Point(15, 86);
+            this.lblEventBedsDetailsRenter.Name = "lblEventBedsDetailsRenter";
+            this.lblEventBedsDetailsRenter.Size = new System.Drawing.Size(99, 16);
+            this.lblEventBedsDetailsRenter.TabIndex = 3;
+            this.lblEventBedsDetailsRenter.Text = "Naam Huurder:";
+            // 
+            // lblEventBedsDetailsMaxRenters
+            // 
+            this.lblEventBedsDetailsMaxRenters.AutoSize = true;
+            this.lblEventBedsDetailsMaxRenters.Location = new System.Drawing.Point(15, 110);
+            this.lblEventBedsDetailsMaxRenters.Name = "lblEventBedsDetailsMaxRenters";
+            this.lblEventBedsDetailsMaxRenters.Size = new System.Drawing.Size(94, 16);
+            this.lblEventBedsDetailsMaxRenters.TabIndex = 4;
+            this.lblEventBedsDetailsMaxRenters.Text = "Max Huurders:";
+            // 
+            // tbEventBedsDetailsName
+            // 
+            this.tbEventBedsDetailsName.Location = new System.Drawing.Point(116, 17);
+            this.tbEventBedsDetailsName.Name = "tbEventBedsDetailsName";
+            this.tbEventBedsDetailsName.Size = new System.Drawing.Size(211, 22);
+            this.tbEventBedsDetailsName.TabIndex = 5;
+            // 
+            // tbEventBedsDetailsPrice
+            // 
+            this.tbEventBedsDetailsPrice.Location = new System.Drawing.Point(116, 62);
+            this.tbEventBedsDetailsPrice.Name = "tbEventBedsDetailsPrice";
+            this.tbEventBedsDetailsPrice.Size = new System.Drawing.Size(211, 22);
+            this.tbEventBedsDetailsPrice.TabIndex = 6;
+            // 
+            // tbEventBedsDetailsRenter
+            // 
+            this.tbEventBedsDetailsRenter.Location = new System.Drawing.Point(116, 86);
+            this.tbEventBedsDetailsRenter.Name = "tbEventBedsDetailsRenter";
+            this.tbEventBedsDetailsRenter.Size = new System.Drawing.Size(211, 22);
+            this.tbEventBedsDetailsRenter.TabIndex = 7;
+            // 
+            // tbEventBedsDetailsMaxRenters
+            // 
+            this.tbEventBedsDetailsMaxRenters.Location = new System.Drawing.Point(116, 110);
+            this.tbEventBedsDetailsMaxRenters.Name = "tbEventBedsDetailsMaxRenters";
+            this.tbEventBedsDetailsMaxRenters.Size = new System.Drawing.Size(211, 22);
+            this.tbEventBedsDetailsMaxRenters.TabIndex = 8;
+            // 
+            // cboxEventBedsDetailsOcuppied
+            // 
+            this.cboxEventBedsDetailsOcuppied.AutoSize = true;
+            this.cboxEventBedsDetailsOcuppied.Location = new System.Drawing.Point(117, 44);
+            this.cboxEventBedsDetailsOcuppied.Name = "cboxEventBedsDetailsOcuppied";
+            this.cboxEventBedsDetailsOcuppied.Size = new System.Drawing.Size(15, 14);
+            this.cboxEventBedsDetailsOcuppied.TabIndex = 9;
+            this.cboxEventBedsDetailsOcuppied.UseVisualStyleBackColor = true;
+            // 
             // EbsHomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -939,9 +1122,14 @@
             this.gboxEventVisitorsDetails.PerformLayout();
             this.tabEventMaterialen.ResumeLayout(false);
             this.tabEventMaterialen.PerformLayout();
+            this.tabEventBeds.ResumeLayout(false);
+            this.tabEventBeds.PerformLayout();
             this.pnlEbsMain.ResumeLayout(false);
             this.gboxEventMaterialDetails.ResumeLayout(false);
             this.gboxEventMaterialDetails.PerformLayout();
+            this.gboxEventBedsDetails.ResumeLayout(false);
+            this.gboxEventBedsDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pboxEventBedsMap)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -962,7 +1150,7 @@
         private System.Windows.Forms.TabPage tabEventDeelnemers;
         private System.Windows.Forms.Label lblEbsTabEvent;
         private System.Windows.Forms.TabPage tabEventMaterialen;
-        private System.Windows.Forms.TabPage tabEventPlaatsen;
+        private System.Windows.Forms.TabPage tabEventBeds;
         private System.Windows.Forms.Button btnEventTerug;
         private System.Windows.Forms.Panel pnlEbsMain;
         private System.Windows.Forms.Label lblEventDetailsTitel;
@@ -995,7 +1183,7 @@
         private System.Windows.Forms.Label lblEventVisitorsDetailsMaterials;
         private System.Windows.Forms.ListBox lboxEventVisitorsDetailsMembers;
         private System.Windows.Forms.Label lblEventVisitorsDetailsMembers;
-        private System.Windows.Forms.Label lvlEventVisitorsDetailsBookingDate;
+        private System.Windows.Forms.Label lblEventVisitorsDetailsBookingDate;
         private System.Windows.Forms.Label lblEventVisitorsDetailsBednr;
         private System.Windows.Forms.Label lblEventVisitorsDetailsZipcode;
         private System.Windows.Forms.Label lblEventVisitorsDetailsAddress;
@@ -1029,6 +1217,23 @@
         private System.Windows.Forms.Label lblEventMaterialDetailsId;
         private System.Windows.Forms.Button btnEventMaterialDeleteMaterial;
         private System.Windows.Forms.Button btnEventMaterialAddMaterial;
+        private System.Windows.Forms.Label lblEventBedsMap;
+        private System.Windows.Forms.PictureBox pboxEventBedsMap;
+        private System.Windows.Forms.GroupBox gboxEventBedsDetails;
+        private System.Windows.Forms.Button btnEventBedsDelete;
+        private System.Windows.Forms.Button btnEventBedsAdd;
+        private System.Windows.Forms.ListBox lboxEventBedsList;
+        private System.Windows.Forms.Label lblEventBeds;
+        private System.Windows.Forms.CheckBox cboxEventBedsDetailsOcuppied;
+        private System.Windows.Forms.TextBox tbEventBedsDetailsMaxRenters;
+        private System.Windows.Forms.TextBox tbEventBedsDetailsRenter;
+        private System.Windows.Forms.TextBox tbEventBedsDetailsPrice;
+        private System.Windows.Forms.TextBox tbEventBedsDetailsName;
+        private System.Windows.Forms.Label lblEventBedsDetailsMaxRenters;
+        private System.Windows.Forms.Label lblEventBedsDetailsRenter;
+        private System.Windows.Forms.Label lblEventBedsDetailsPrice;
+        private System.Windows.Forms.Label lblEventBedsDetailsOccupied;
+        private System.Windows.Forms.Label lblEventBedsDetailsName;
 
     }
 }
