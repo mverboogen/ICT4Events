@@ -18,3 +18,6 @@ C:\Users\Jeroen\Documents\GitHub\ICT4Events\Event Beheer Systeem GUI\obj\Debug\E
 C:\Users\Jeroen\Documents\GitHub\ICT4Events\Event Beheer Systeem GUI\obj\Debug\Event_Beheer_Systeem.EbsHomeForm.resources
 C:\Users\Jeroen\Documents\GitHub\ICT4Events\Event Beheer Systeem GUI\obj\Debug\Event_Beheer_Systeem.Properties.Resources.resources
 C:\Users\Jeroen\Documents\GitHub\ICT4Events\Event Beheer Systeem GUI\obj\Debug\Event Beheer Systeem.csproj.GenerateResource.Cache
+E:\Git\ICT4Events\Event Beheer Systeem GUI\bin\Debug\Event Beheer Systeem.exe.config
+E:\Git\ICT4Events\Event Beheer Systeem GUI\obj\Debug\Event Beheer Systeem.exe
+E:\Git\ICT4Events\Event Beheer Systeem GUI\obj\Debug\Event Beheer Systeem.pdb
