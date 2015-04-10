@@ -1,0 +1,5 @@
+unieke identifier toevoegen aan Event
+
+een boolean toevoegen of het Event open is voor reservering/online is
+
+een boolean toevoegen aan reservation voor het controleren of betaald is

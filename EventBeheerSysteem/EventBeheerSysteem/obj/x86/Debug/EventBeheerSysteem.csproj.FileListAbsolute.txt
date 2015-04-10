@@ -1,0 +1,8 @@
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\bin\x86\Debug\EventBeheerSysteem.exe.config
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\bin\x86\Debug\EventBeheerSysteem.exe
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\bin\x86\Debug\EventBeheerSysteem.pdb
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\bin\x86\Debug\Oracle.DataAccess.dll
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\obj\x86\Debug\EventBeheerSysteem.Properties.Resources.resources
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\obj\x86\Debug\EventBeheerSysteem.csproj.GenerateResource.Cache
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\obj\x86\Debug\EventBeheerSysteem.exe
+E:\Dropbox\Fontys\Periode 1.3\Proftaak PTS2\Project\EventBeheerSysteem\EventBeheerSysteem\obj\x86\Debug\EventBeheerSysteem.pdb
