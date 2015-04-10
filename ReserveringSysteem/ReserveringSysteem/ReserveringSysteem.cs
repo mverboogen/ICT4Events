@@ -14,10 +14,21 @@ namespace ReserveringSysteem
     {
         private Manager manager = new Manager();
         private EnlargedPlattegrond Enlargedplattegrond = new EnlargedPlattegrond();
-       
+
+        int currentSelectedTab;
+
         public ReserveringSysteem()
         {
             InitializeComponent();
+
+            dgvKampeerplaats.Rows.Add("10","5","150");
+            dgvKampeerplaats.Rows.Add("20","5","150");
+            dgvKampeerplaats.Rows.Add("30","5","150");
+            dgvKampeerplaats.Rows.Add("40","7","200");
+            dgvKampeerplaats.Rows.Add("50","7","200");
+            dgvKampeerplaats.Rows.Add("60","7","200");
+            dgvKampeerplaats.Rows.Add("70", "7","200");
+
             dgvMateriaal.Rows.Add("Stekkerdoos", "12", "0");
             dgvMateriaal.Rows.Add("Camera", "24", "0");
             dgvMateriaal.Rows.Add("Zaklamp", "33", "0");
@@ -54,44 +65,57 @@ namespace ReserveringSysteem
 
         private void btResToDel_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 1;
             ((Control)this.tabpageDeelnemer).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabpageDeelnemer;
+            
         }
 
         private void btDelToKamp_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 2;
             ((Control)this.tabPageKampeerplaats).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabPageKampeerplaats;
         }
         private void btKampToMat_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 3;
             ((Control)this.tabPageMateriaal).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabPageMateriaal;
         }
 
         private void btMatToOver_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 4;
             ((Control)this.tabPageOverzicht).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabPageOverzicht;
+
+            int totaalprijs = 300;
+
+            lbTotaalPrijs.Text = totaalprijs.ToString();
         }
 
         private void btOverToMat_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 3;
             TabReserveringSysteem.SelectedTab = tabPageMateriaal;
         }
 
         private void btMatToKamp_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 2;
             TabReserveringSysteem.SelectedTab = tabPageKampeerplaats;
         }
 
         private void btKampToDel_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 1;
             TabReserveringSysteem.SelectedTab = tabpageDeelnemer;
         }
 
         private void btDelToRes_Click(object sender, EventArgs e)
         {
+            currentSelectedTab = 0;
             TabReserveringSysteem.SelectedTab = tabPageReserveerder;
         }
 
@@ -114,6 +138,18 @@ namespace ReserveringSysteem
         private void pbCamping_Click(object sender, EventArgs e)
         {
             Enlargedplattegrond.Show();
+        }
+
+        private void TabReserveringSysteem_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            int selectedTab = TabReserveringSysteem.SelectedIndex;
+            //Disable the tab selection
+            if (currentSelectedTab != selectedTab)
+            {
+                //If selected tab is different than the current one, re-select the current tab.
+                //This disables the navigation using the tab selection.
+                TabReserveringSysteem.SelectTab(currentSelectedTab);
+            }
         }
     }
 }

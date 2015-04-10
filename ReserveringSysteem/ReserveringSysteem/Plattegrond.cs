@@ -12,6 +12,7 @@ namespace ReserveringSysteem
 {
     public partial class EnlargedPlattegrond : Form
     {
+
         public EnlargedPlattegrond()
         {
             InitializeComponent();
@@ -19,6 +20,7 @@ namespace ReserveringSysteem
 
         private void pbPlattegrondLarge_Click(object sender, EventArgs e)
         {
+            this.Hide();
         }
     }
 }

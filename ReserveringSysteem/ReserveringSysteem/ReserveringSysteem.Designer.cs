@@ -61,6 +61,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.tabPageKampeerplaats = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pbCamping = new System.Windows.Forms.PictureBox();
             this.btKampToMat = new System.Windows.Forms.Button();
             this.dgvKampeerplaats = new System.Windows.Forms.DataGridView();
             this.ColumnPlaats = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,19 +79,32 @@
             this.ColumnAantal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.tabPageOverzicht = new System.Windows.Forms.TabPage();
+            this.lbTotaalPrijs = new System.Windows.Forms.Label();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.btOverToMat = new System.Windows.Forms.Button();
             this.btBevestigen = new System.Windows.Forms.Button();
-            this.pbCamping = new System.Windows.Forms.PictureBox();
             this.TabReserveringSysteem.SuspendLayout();
             this.tabPageReserveerder.SuspendLayout();
             this.tabpageDeelnemer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDeelnemers)).BeginInit();
             this.tabPageKampeerplaats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCamping)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvKampeerplaats)).BeginInit();
             this.tabPageMateriaal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMateriaal)).BeginInit();
             this.tabPageOverzicht.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCamping)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // TabReserveringSysteem
@@ -107,6 +122,7 @@
             this.TabReserveringSysteem.ShowToolTips = true;
             this.TabReserveringSysteem.Size = new System.Drawing.Size(593, 339);
             this.TabReserveringSysteem.TabIndex = 0;
+            this.TabReserveringSysteem.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.TabReserveringSysteem_Selecting);
             // 
             // tabPageReserveerder
             // 
@@ -460,6 +476,7 @@
             // 
             this.tabPageKampeerplaats.BackColor = System.Drawing.Color.Transparent;
             this.tabPageKampeerplaats.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPageKampeerplaats.Controls.Add(this.label3);
             this.tabPageKampeerplaats.Controls.Add(this.pbCamping);
             this.tabPageKampeerplaats.Controls.Add(this.btKampToMat);
             this.tabPageKampeerplaats.Controls.Add(this.dgvKampeerplaats);
@@ -471,6 +488,26 @@
             this.tabPageKampeerplaats.Size = new System.Drawing.Size(585, 307);
             this.tabPageKampeerplaats.TabIndex = 2;
             this.tabPageKampeerplaats.Text = "Kampeerplaats";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(303, 42);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(274, 16);
+            this.label3.TabIndex = 29;
+            this.label3.Text = "Druk op de plattegrond om deze te vergroten";
+            // 
+            // pbCamping
+            // 
+            this.pbCamping.Image = global::ReserveringSysteem.Properties.Resources.Camping2;
+            this.pbCamping.Location = new System.Drawing.Point(216, 61);
+            this.pbCamping.Name = "pbCamping";
+            this.pbCamping.Size = new System.Drawing.Size(361, 207);
+            this.pbCamping.TabIndex = 28;
+            this.pbCamping.TabStop = false;
+            this.pbCamping.Click += new System.EventHandler(this.pbCamping_Click);
             // 
             // btKampToMat
             // 
@@ -602,12 +639,12 @@
             this.ColumnItem,
             this.ColumnPrijs,
             this.ColumnAantal});
-            this.dgvMateriaal.Location = new System.Drawing.Point(21, 81);
+            this.dgvMateriaal.Location = new System.Drawing.Point(6, 70);
             this.dgvMateriaal.Name = "dgvMateriaal";
             this.dgvMateriaal.RowHeadersVisible = false;
             this.dgvMateriaal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvMateriaal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMateriaal.Size = new System.Drawing.Size(298, 218);
+            this.dgvMateriaal.Size = new System.Drawing.Size(199, 229);
             this.dgvMateriaal.TabIndex = 23;
             // 
             // ColumnItem
@@ -622,12 +659,14 @@
             this.ColumnPrijs.HeaderText = "Prijs";
             this.ColumnPrijs.Name = "ColumnPrijs";
             this.ColumnPrijs.ReadOnly = true;
+            this.ColumnPrijs.Width = 40;
             // 
             // ColumnAantal
             // 
             this.ColumnAantal.HeaderText = "Aantal";
             this.ColumnAantal.MaxInputLength = 2;
             this.ColumnAantal.Name = "ColumnAantal";
+            this.ColumnAantal.Width = 60;
             // 
             // textBox4
             // 
@@ -646,6 +685,12 @@
             // 
             this.tabPageOverzicht.BackColor = System.Drawing.Color.Transparent;
             this.tabPageOverzicht.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPageOverzicht.Controls.Add(this.lbTotaalPrijs);
+            this.tabPageOverzicht.Controls.Add(this.dataGridView2);
+            this.tabPageOverzicht.Controls.Add(this.dataGridView1);
+            this.tabPageOverzicht.Controls.Add(this.label12);
+            this.tabPageOverzicht.Controls.Add(this.label11);
+            this.tabPageOverzicht.Controls.Add(this.label10);
             this.tabPageOverzicht.Controls.Add(this.btOverToMat);
             this.tabPageOverzicht.Controls.Add(this.btBevestigen);
             this.tabPageOverzicht.Location = new System.Drawing.Point(4, 28);
@@ -654,6 +699,125 @@
             this.tabPageOverzicht.Size = new System.Drawing.Size(585, 307);
             this.tabPageOverzicht.TabIndex = 4;
             this.tabPageOverzicht.Text = "Overzicht";
+            // 
+            // lbTotaalPrijs
+            // 
+            this.lbTotaalPrijs.AutoSize = true;
+            this.lbTotaalPrijs.Location = new System.Drawing.Point(86, 193);
+            this.lbTotaalPrijs.Name = "lbTotaalPrijs";
+            this.lbTotaalPrijs.Size = new System.Drawing.Size(73, 16);
+            this.lbTotaalPrijs.TabIndex = 34;
+            this.lbTotaalPrijs.Text = "TotaalPrijs";
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.AllowUserToResizeColumns = false;
+            this.dataGridView2.AllowUserToResizeRows = false;
+            this.dataGridView2.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6});
+            this.dataGridView2.Location = new System.Drawing.Point(250, 22);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(203, 136);
+            this.dataGridView2.TabIndex = 33;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "Item";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "Prijs";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "Aantal";
+            this.dataGridViewTextBoxColumn6.MaxInputLength = 2;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.Width = 60;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dataGridView1.Location = new System.Drawing.Point(9, 22);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(203, 136);
+            this.dataGridView1.TabIndex = 32;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Plaats";
+            this.dataGridViewTextBoxColumn1.MaxInputLength = 999;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 60;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "MaxPersonen";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Prijs";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 40;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(6, 191);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(60, 18);
+            this.label12.TabIndex = 29;
+            this.label12.Text = "Totaal:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(247, 3);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(85, 16);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "Materialen:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(6, 3);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(134, 16);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "Kampeerplaatsen:";
             // 
             // btOverToMat
             // 
@@ -673,23 +837,13 @@
             this.btBevestigen.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btBevestigen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btBevestigen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btBevestigen.Location = new System.Drawing.Point(87, 64);
+            this.btBevestigen.Location = new System.Drawing.Point(9, 249);
             this.btBevestigen.Name = "btBevestigen";
-            this.btBevestigen.Size = new System.Drawing.Size(322, 146);
+            this.btBevestigen.Size = new System.Drawing.Size(140, 46);
             this.btBevestigen.TabIndex = 21;
             this.btBevestigen.Text = "Bevestigen";
             this.btBevestigen.UseVisualStyleBackColor = true;
             this.btBevestigen.Click += new System.EventHandler(this.btBevestigen_Click);
-            // 
-            // pbCamping
-            // 
-            this.pbCamping.Image = global::ReserveringSysteem.Properties.Resources.Camping2;
-            this.pbCamping.Location = new System.Drawing.Point(216, 61);
-            this.pbCamping.Name = "pbCamping";
-            this.pbCamping.Size = new System.Drawing.Size(361, 207);
-            this.pbCamping.TabIndex = 28;
-            this.pbCamping.TabStop = false;
-            this.pbCamping.Click += new System.EventHandler(this.pbCamping_Click);
             // 
             // ReserveringSysteem
             // 
@@ -707,12 +861,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDeelnemers)).EndInit();
             this.tabPageKampeerplaats.ResumeLayout(false);
             this.tabPageKampeerplaats.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCamping)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvKampeerplaats)).EndInit();
             this.tabPageMateriaal.ResumeLayout(false);
             this.tabPageMateriaal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMateriaal)).EndInit();
             this.tabPageOverzicht.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbCamping)).EndInit();
+            this.tabPageOverzicht.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -762,15 +919,28 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAchternaam;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnEmail;
         private System.Windows.Forms.Button btVerwijderen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPrijs;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAantal;
         private System.Windows.Forms.Button btKampToMat;
         private System.Windows.Forms.DataGridView dgvKampeerplaats;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPlaats;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMaxPersonen;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnKampeerPrijs;
         private System.Windows.Forms.PictureBox pbCamping;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPrijs;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAantal;
+        private System.Windows.Forms.Label lbTotaalPrijs;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
 
     }
 }
