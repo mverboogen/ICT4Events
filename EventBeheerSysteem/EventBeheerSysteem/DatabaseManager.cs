@@ -328,7 +328,7 @@ namespace EventBeheerSysteem
             {
                 while (dr.Read())
                 {
-                    if(dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         eventID = dr.GetInt32(0);
                     }
