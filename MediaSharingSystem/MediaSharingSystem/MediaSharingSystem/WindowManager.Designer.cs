@@ -169,7 +169,7 @@
             this.Controls.Add(this.btnNavUpload);
             this.Controls.Add(this.btnNavTimeline);
             this.Name = "WindowManager";
-            this.Text = "Form1";
+            this.Text = "Finstatter";
             this.ResumeLayout(false);
             this.PerformLayout();
 

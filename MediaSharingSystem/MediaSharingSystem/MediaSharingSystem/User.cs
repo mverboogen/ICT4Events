@@ -8,8 +8,14 @@ namespace MediaSharingSystem
 {
     class User
     {
+        private readonly int userID;
         private String userName;
         private String password;
+
+        public int ID
+        {
+            get { return this.userID; }
+        }
 
         public String Username
         {
@@ -23,8 +29,9 @@ namespace MediaSharingSystem
             set { password = value; }
         }
 
-        public User(String username, String password)
+        public User(int id, String username, String password)
         {
+            this.userID = id;
             userName = username;
             this.password = password;
         }

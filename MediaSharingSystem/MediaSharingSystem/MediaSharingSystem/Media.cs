@@ -8,13 +8,21 @@ namespace MediaSharingSystem
 {
     class Media
     {
+        private readonly int mediaID;
         private String title;
         private int likes;
-        private String path;
+        private DateTime postDate;
+
         // The user that has posted this mediafile
         private User mediaOwner;
+        private int userID;
         private List<Comment> commentList;
         private List<MediaTag> tagList;
+
+        public int ID
+        {
+            get { return mediaID; }
+        }
 
         public String Title
         {
@@ -28,17 +36,38 @@ namespace MediaSharingSystem
             set { likes = value; }
         }
 
-        public String Path
+        public DateTime Postdate
         {
-            get { return path; }
-            set { path = value; }
+            get { return postDate; }
+            set { postDate = value; }
         }
 
-        public Media(String title, User owner, String path)
+        public int UserID
         {
+            get { return userID; }
+            set { userID = value; }
+        }
+
+        public User User
+        {
+            get { return mediaOwner; }
+            set { mediaOwner = value; }
+        }
+
+        public Media(int id, String title, User owner, DateTime postdate)
+        {
+            this.mediaID = id;
             this.title = title;
             this.mediaOwner = owner;
-            this.path = path;
+            this.postDate = postdate;
+        }
+
+        public Media(int id, String title, int userid, DateTime postdate)
+        {
+            this.mediaID = id;
+            this.title = title;
+            this.userID = userid;
+            this.postDate = postdate;
         }
 
     }

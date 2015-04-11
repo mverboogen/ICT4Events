@@ -9,6 +9,7 @@ namespace MediaSharingSystem
     class AVVideo : Media
     {
         private String description;
+        private String filePath;
         private int width;
         private int height;
         private int fileSize;
@@ -32,23 +33,33 @@ namespace MediaSharingSystem
             set { height = value; }
         }
 
-        public int Filesize
-        {
-            get { return fileSize; }
-        }
-
         public int Duration
         {
             get { return duration; }
         }
 
-        public AVVideo(String title, User owner, String path, int filesize, int width, int height, int duration)
-            : base(title, owner, path)
+        public String Filepath
         {
-            fileSize = filesize;
+            get { return filePath; }
+            set { filePath = value; }
+        }
+
+        public AVVideo(int id, String title, User owner, String path, DateTime postdate, int width, int height, int duration)
+            : base(id, title, owner, postdate)
+        {
             this.duration = duration;
             this.width = width;
             this.height = height;
+            this.filePath = path;
+        }
+
+        public AVVideo(int id, String title, int ownerid, String path, DateTime postdate, int width, int height, int duration)
+            : base(id, title, ownerid, postdate)
+        {
+            this.duration = duration;
+            this.width = width;
+            this.height = height;
+            this.filePath = path;
         }
 
 

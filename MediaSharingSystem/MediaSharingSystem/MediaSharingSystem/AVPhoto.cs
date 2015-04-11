@@ -9,9 +9,9 @@ namespace MediaSharingSystem
     class AVPhoto : Media
     {
         private String description;
+        private String filePath;
         private int width;
         private int height;
-        private int fileSize;
 
         public String Description
         {
@@ -31,18 +31,26 @@ namespace MediaSharingSystem
             set { height = value; }
         }
 
-        public int Filesize
+        public String Filepath
         {
-            get { return fileSize; }
+            get{ return filePath; }
+            set{ filePath = value; }
         }
 
-        public AVPhoto(String title, User owner, String path, int filesize, int width, int height)
-            : base(title, owner, path)
+        public AVPhoto(int id, String title, User owner, String path, DateTime postdate, int width, int height)
+            : base(id, title, owner, postdate)
         {
-            this.fileSize = filesize;
             this.width = width;
             this.height = height;
+            this.filePath = path;
+        }
 
+        public AVPhoto(int id, String title, int ownerid, String path, DateTime postdate, int width, int height)
+            : base(id, title, ownerid, postdate)
+        {
+            this.width = width;
+            this.height = height;
+            this.filePath = path;
         }
 
     }

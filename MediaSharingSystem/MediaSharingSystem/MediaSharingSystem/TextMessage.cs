@@ -16,8 +16,14 @@ namespace MediaSharingSystem
             set { content = value; }
         }
 
-        public TextMessage(String title, User owner, String path, String content)
-            : base(title, owner, path)
+        public TextMessage(int id, String title, User owner, DateTime postdate, String content)
+            : base(id, title, owner, postdate)
+        {
+            this.content = content;
+        }
+
+        public TextMessage(int id, String title, int ownerid, DateTime postdate, String content)
+            : base(id, title, ownerid, postdate)
         {
             this.content = content;
         }

@@ -7,16 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AxWMPLib;
+using WMPLib;
 
 namespace MediaSharingSystem
 {
     public partial class WindowManager : Form
     {
 
+
         public enum MainView { Timeline, Photos, Videos, Messages };
-        public enum TimelineDimensions { PostWidth=760, PostHeight=324, PictureWidth=700, PictureHeight=200, PostBottomMargin=50, ButtonWidth=75, ButtonHeight=25 }
+        public enum TimelineDimensions { 
+            PostWidth=760, 
+            PostHeight=324, 
+            PostBottomMargin=50, 
+            ButtonWidth=75, 
+            ButtonHeight=25,
+            }
 
         private MediaManager mediaManager;
+        
         private MainView activeWindow;
 
         public MainView ActiveWindow
@@ -30,39 +40,17 @@ namespace MediaSharingSystem
 
             mediaManager = new MediaManager("Social Media Event");
 
-            //THIS IS DUMMY DATA AND INTENDED TO REMOVE WHEN THERE IS AN EXISTING DATABASE
-            initializeDummyData();
             // Sets the default option for the Search Filter
             cbNavSearchFilter.SelectedIndex = 0;
 
+            // Download and prepare all data
+            mediaManager.initializeData();
+            
             // Sets the initial view
             setView(MainView.Timeline);
-
         }
 
-        private void initializeDummyData()
-        {
-            // Create dummy user
-            mediaManager.addUser(new User("Crimson", "nosmirC"));
-
-            // Create dummy photos
-            for (int i = 0; i < 30; i++)
-            {
-                mediaManager.addPhoto(new AVPhoto("Photo"+i, mediaManager.Userlist[0],"C:\\dummypath", 100, 200,200));
-            }
-
-            // Create dummy videos
-            for (int i = 0; i < 30; i++)
-            {
-                mediaManager.addVideo(new AVVideo("Video" + i, mediaManager.Userlist[0], "C:\\dummypath", 100, 200, 200, 60));
-            }
-
-            // Create dummy messages
-            for (int i = 0; i < 30; i++)
-            {
-                mediaManager.addMessage(new TextMessage("Message" + i, mediaManager.Userlist[0], "C:\\dummypath", "DummyContent "));
-            }
-        }
+        
 
         /// <summary>
         /// Changes the active window.
@@ -145,12 +133,24 @@ namespace MediaSharingSystem
                             AVPhoto photo = (AVPhoto)media;
                             PictureBox picturebox = new PictureBox();
                             picturebox.SizeMode = PictureBoxSizeMode.Zoom;
-                            picturebox.BackColor = Color.Red;
-                            picturebox.ImageLocation = photo.Path;
+                            picturebox.ImageLocation = photo.Filepath;
+                            picturebox.Width = contentcontainer.Width;
+                            picturebox.Height = contentcontainer.Height;
+
+                            contentcontainer.Controls.Add(picturebox);
                         }
                         else if (media is AVVideo)
                         {
-
+                            try
+                            {
+                                AVVideo video = (AVVideo)media;
+                                AxWindowsMediaPlayer mediaplayer = new AxWindowsMediaPlayer();
+                                mediaplayer.URL = video.Filepath;
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.ToString());
+                            }
                         }
                         else if (media is TextMessage)
                         {
@@ -160,8 +160,8 @@ namespace MediaSharingSystem
                             messagelabel.Height = contentcontainer.Height;
                             Point messagelocation = new Point(0, 0);
                             messagelabel.Location = messagelocation;
-                            messagelabel.BackColor = Color.Blue;
                             messagelabel.Text = message.Content;
+                            contentcontainer.Controls.Add(messagelabel);
 
                         }
 
