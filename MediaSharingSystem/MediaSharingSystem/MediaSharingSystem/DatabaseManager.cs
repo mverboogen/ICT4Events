@@ -77,7 +77,10 @@ namespace MediaSharingSystem
                     postdate = dr.GetDateTime(3);
                     likes = dr.GetInt32(4);
 
-                    medialist.Add(new Media(mediaid, mediatitle, gebruikerid, postdate));
+                    Media media = new Media(mediaid, mediatitle, gebruikerid, postdate);
+                    media.Likes = likes;
+
+                    medialist.Add(media);
                 }
 
                 return medialist;
@@ -120,7 +123,9 @@ namespace MediaSharingSystem
                     {
                         if (media.ID == mediaid)
                         {
-                            photolist.Add(new AVPhoto(media.ID, media.Title, media.UserID, filepath, media.Postdate, width, height));
+                            AVPhoto photo = new AVPhoto(media.ID, media.Title, media.UserID, filepath, media.Postdate, width, height);
+                            photo.Likes = media.Likes;
+                            photolist.Add(photo);
                         }
                     }
                 }
@@ -143,7 +148,7 @@ namespace MediaSharingSystem
         /// <returns>A list with all AVVideo objects</returns>
         public List<AVVideo> getAllVideos(List<Media> list)
         {
-            List<AVVideo> photolist = new List<AVVideo>();
+            List<AVVideo> videolist = new List<AVVideo>();
 
             ReadData("SELECT * FROM Video");
 
@@ -167,12 +172,14 @@ namespace MediaSharingSystem
                     {
                         if (media.ID == mediaid)
                         {
-                            photolist.Add(new AVVideo(mediaid, media.Title, media.UserID, filepath, media.Postdate, width, height, duration));
+                            AVVideo video = new AVVideo(mediaid, media.Title, media.UserID, filepath, media.Postdate, width, height, duration);
+                            video.Likes = media.Likes;
+                            videolist.Add(video);
                         }
                     }
                 }
 
-                return photolist;
+                return videolist;
             }
             catch (InvalidCastException ex)
             {
@@ -208,7 +215,9 @@ namespace MediaSharingSystem
                     {
                         if (media.ID == mediaid)
                         {
-                            messagelist.Add(new TextMessage(mediaid, media.Title,media.UserID, media.Postdate, content));
+                            TextMessage message = new TextMessage(mediaid, media.Title, media.UserID, media.Postdate, content);
+                            message.Likes = media.Likes;
+                            messagelist.Add(message);
                         }
                     }
                 }

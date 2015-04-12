@@ -19,10 +19,11 @@ namespace MediaSharingSystem
         public enum MainView { Timeline, Photos, Videos, Messages };
         public enum TimelineDimensions { 
             PostWidth=760, 
-            PostHeight=324, 
+            PostHeight=500, 
             PostBottomMargin=50, 
             ButtonWidth=75, 
             ButtonHeight=25,
+            Defaultmargin=10
             }
 
         private MediaManager mediaManager;
@@ -85,24 +86,42 @@ namespace MediaSharingSystem
                         container.Location = containerlocation;
                         container.BorderStyle = BorderStyle.FixedSingle;
 
-                        // Add the panel to the screen
+                        // Add the postcontainerpanel to the screen
                         pnlWindowContent.Controls.Add(container);
+
+                        // Create a titlecontainer
+                        Panel titlecontainer = new Panel();
+                        titlecontainer.Width = (int)TimelineDimensions.PostWidth;
+                        titlecontainer.Height = ((int)TimelineDimensions.PostHeight / 20) + ((int)TimelineDimensions.Defaultmargin * 2);
+
+                        // Add the titlecontainerpanel to the parent container
+                        container.Controls.Add(titlecontainer);
+
+                        // Create a title
+                        Label titlelabel = new Label();
+                        titlelabel.Text = media.Title;
+                        titlelabel.Font = new Font("Century Gothic", 12, FontStyle.Bold);
+                        Point titlelocation = new Point((int)TimelineDimensions.Defaultmargin, (titlecontainer.Height - titlelabel.Height) / 2);
+                        titlelabel.Location = titlelocation;
+
+                        // Add the title to the container
+                        titlecontainer.Controls.Add(titlelabel);
 
                         // Create a container for the buttons
                         Panel buttoncontainer = new Panel();
                         buttoncontainer.Width = (int)TimelineDimensions.PostWidth;
-                        buttoncontainer.Height = (int)TimelineDimensions.ButtonHeight;
-                        Point buttonlocation = new Point(0, container.Height - (buttoncontainer.Height + 10));
+                        buttoncontainer.Height = (int)TimelineDimensions.ButtonHeight + ((int)TimelineDimensions.Defaultmargin * 2);
+                        Point buttonlocation = new Point(0, container.Height - buttoncontainer.Height);
                         buttoncontainer.Location = buttonlocation;
 
-                        // Add the panel to the parent container
+                        // Add the buttoncontainerpanel to the parent container
                         container.Controls.Add(buttoncontainer);
 
                         // Create the more button
                         MediaPostButton morebutton = new MediaPostButton(media, MediaPostButton.ButtonActions.More);
                         morebutton.Width = (int)TimelineDimensions.ButtonWidth;
                         morebutton.Height = (int)TimelineDimensions.ButtonHeight;
-                        Point morelocation = new Point(buttoncontainer.Width - (morebutton.Width + 10), (buttoncontainer.Height - morebutton.Height) / 2);
+                        Point morelocation = new Point(buttoncontainer.Width - (morebutton.Width + (int)TimelineDimensions.Defaultmargin), (buttoncontainer.Height - morebutton.Height) / 2);
                         morebutton.Location = morelocation;
                         morebutton.Text = "More";
                         morebutton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(moreButton_Clicked);
@@ -115,15 +134,28 @@ namespace MediaSharingSystem
                         likebutton.Location = likelocation;
                         likebutton.Text = "Like";
                         likebutton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(likeButton_Clicked);
-                        
-                        // Add the buttons to the button container
+
+                        // Create the total likes label
+                        Label likelabel = new Label();
+                        likelabel.Text = "This post has " + media.Likes + " likes";
+                        likelabel.Height = buttoncontainer.Height;
+                        // The width is hardcoded because of a problem that prevents a single line by default
+                        likelabel.Width = 120;
+                        likelabel.TextAlign = ContentAlignment.MiddleLeft;
+                        Point likelabellocation = new Point(likebutton.Location.X - (likelabel.Width + (int)TimelineDimensions.Defaultmargin), (buttoncontainer.Height - likelabel.Height) / 2);
+                        likelabel.Location = likelabellocation;
+
+                        // Add the buttons and label to the button container
                         buttoncontainer.Controls.Add(morebutton);
                         buttoncontainer.Controls.Add(likebutton);
+                        buttoncontainer.Controls.Add(likelabel);
 
-                        // Create the content container
+                        // Create the postcontent container
                         Panel contentcontainer = new Panel();
                         contentcontainer.Width = container.Width;
-                        contentcontainer.Height = container.Height - buttoncontainer.Height;
+                        contentcontainer.Height = container.Height - buttoncontainer.Height - titlecontainer.Height;
+                        Point contentlocation = new Point(0, titlecontainer.Height);
+                        contentcontainer.Location = contentlocation;
 
                         container.Controls.Add(contentcontainer);
 
@@ -144,12 +176,25 @@ namespace MediaSharingSystem
                             try
                             {
                                 AVVideo video = (AVVideo)media;
-                                AxWindowsMediaPlayer mediaplayer = new AxWindowsMediaPlayer();
-                                mediaplayer.URL = video.Filepath;
+                                AxWindowsMediaPlayer mediaPlayer = new AxWindowsMediaPlayer();
+
+                                mediaPlayer.CreateControl();
+                                mediaPlayer.enableContextMenu = false;
+                                ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).BeginInit();
+                                mediaPlayer.Name = "wmPlayer";
+                                mediaPlayer.Enabled = true;
+                                mediaPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+                                mediaPlayer.Size = contentcontainer.Size;
+                                contentcontainer.Controls.Add(mediaPlayer);
+                                ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).EndInit();
+                                mediaPlayer.uiMode = "mini";
+                                mediaPlayer.URL = video.Filepath;
+                                mediaPlayer.Ctlcontrols.stop();
+
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.ToString());
+                                MessageBox.Show(ex.ToString()); 
                             }
                         }
                         else if (media is TextMessage)
