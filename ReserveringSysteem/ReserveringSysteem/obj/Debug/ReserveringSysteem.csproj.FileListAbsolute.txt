@@ -17,3 +17,4 @@ C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSystee
 C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.Properties.Resources.resources
 C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.csproj.GenerateResource.Cache
 C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.EnlargedPlattegrond.resources
+C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\bin\Debug\Oracle.DataAccess.dll

@@ -14,8 +14,9 @@ namespace ReserveringSysteem
     {
         private Manager manager = new Manager();
         private EnlargedPlattegrond Enlargedplattegrond = new EnlargedPlattegrond();
+        private DatabaseManager databaseManager = new DatabaseManager();
 
-        int currentSelectedTab;
+        private int currentSelectedTab;
 
         public ReserveringSysteem()
         {
@@ -38,6 +39,8 @@ namespace ReserveringSysteem
             ((Control)this.tabPageKampeerplaats).Enabled = false;
             ((Control)this.tabPageMateriaal).Enabled = false;
             ((Control)this.tabPageOverzicht).Enabled = false;
+
+            databaseManager.GetAllCampSites();
             
             RefreshData();
         }
@@ -45,6 +48,16 @@ namespace ReserveringSysteem
         public void RefreshData()
         {
             dgvDeelnemers.Rows.Clear();
+            
+            foreach(Campsite c in databaseManager.campSiteList)
+            {
+                dgvKampeerplaats.Rows.Add(c.CampsiteID, c.MaxOccupation,c.CampPrice);
+            }
+
+            foreach(Item i in databaseManager.itemList)
+            {
+               dgvMateriaal.Rows.Add(i.ItemName,i.ItemPrice,i.Quantity);
+            }
 
             foreach(Visitor v in manager.visitors)
             {

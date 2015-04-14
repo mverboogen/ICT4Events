@@ -8,5 +8,33 @@ namespace ReserveringSysteem
 {
     class Item
     {
+        private string itemName;
+        private decimal itemPrice;
+        private int quantity;
+
+        public string ItemName
+        {
+            get { return itemName; }
+            set { itemName = value; }
+        }
+
+        public decimal ItemPrice
+        {
+            get { return itemPrice; }
+            set { itemPrice = value; }
+        }
+
+        public int Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
+        }
+
+        public Item(string itemName,decimal itemPrice, int quantity)
+        {
+            this.itemName = itemName;
+            this.itemPrice = itemPrice;
+            this.quantity = quantity;
+        }
     }
 }
