@@ -12,7 +12,7 @@ namespace EventBeheerSysteem
         private string name;
         private string location;
         private bool reservationsOpen;
-        private DateTime startDate;
+        private DateTime beginDate;
         private DateTime endDate;
         private int maxVisitor;
 
@@ -47,10 +47,10 @@ namespace EventBeheerSysteem
             set { reservationsOpen = value; }
         }
 
-        public DateTime StartDate
+        public DateTime BeginDate
         {
-            get { return startDate; }
-            set { startDate = value; }
+            get { return beginDate; }
+            set { beginDate = value; }
         }
 
         public DateTime EndDate
@@ -69,7 +69,7 @@ namespace EventBeheerSysteem
         {
             ID = id;
             Location = location;
-            StartDate = startDate;
+            BeginDate = startDate;
             EndDate = endDate;
         }
 

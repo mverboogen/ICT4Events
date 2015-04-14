@@ -14,13 +14,7 @@ namespace EventBeheerSysteem
 
         public EventManager()
         {
-
-            databaseHandler.AddEvent("TestEvent", new DateTime(2015, 08, 01), new DateTime(2015, 08, 08), "Someren");
             eventList = databaseHandler.GetEvents();
-            databaseHandler.AddEvent("MyTestEvent", new DateTime(2015, 11, 12), new DateTime(2015, 11, 16), "De Maan");
-            databaseHandler.AddCampSite(1, 500, 7, 25, 1);
-            databaseHandler.AddItem(1, "Stekkerdoos", 10, 25);
-
         }
 
         public void AddEvent(Event e)

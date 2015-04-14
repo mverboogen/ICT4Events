@@ -28,7 +28,7 @@ namespace EventBeheerSysteem
         public void Connect()
         {
             con = new OracleConnection();
-            con.ConnectionString = "User Id=system; Password=polpleitiir;Data Source=localhost";
+            con.ConnectionString = "User Id=system;Password=polpleitiir;Data Source=localhost";
             con.Open();
             Console.WriteLine("CONNECTION SUCCESFULL");
 
@@ -45,6 +45,21 @@ namespace EventBeheerSysteem
                 dr = cmd.ExecuteReader();
             }
             catch(Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void WriteData(string sql)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
             {
                 MessageBox.Show(e.ToString());
             }
@@ -317,6 +332,54 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        public int GetVistiorAmount(int eventID)
+        {
+            int visitorAmount = 0;
+
+            ReadData("SELECT COUNT(BezoekerID) FROM Bezoeker WHERE EventID = " + eventID.ToString());
+
+            try
+            {
+                while(dr.Read())
+                {
+                    visitorAmount = dr.GetInt32(0);
+                }
+            }
+            catch(InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return visitorAmount;
+        }
+
+        public bool GetReservationState(int eventID)
+        {
+            bool state = false;
+            int reservationState = 0;
+
+            ReadData("SELECT ReserveringOpen FROM Event WHERE EventID = " + eventID.ToString());
+
+            try
+            {
+                while (dr.Read())
+                {
+                    reservationState = dr.GetInt32(0);
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            if(reservationState == 1)
+            {
+                state = true;
+            }
+
+            return state;
+        }
+
         public void AddEvent(string name, DateTime beginDate, DateTime endDate, string location)
         {
 
@@ -438,6 +501,124 @@ namespace EventBeheerSysteem
                 cmd.Parameters.Add("Name", OracleDbType.Varchar2).Value = name;
                 cmd.Parameters.Add("Price", OracleDbType.Decimal).Value = price;
                 cmd.Parameters.Add("NewPrice", OracleDbType.Decimal).Value = newPrice;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void UpdateEventName(int eventID, string newEventName)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Event SET Naam = :NewEventName WHERE EventID = :EventID";
+                cmd.Parameters.Add("NewEventName", OracleDbType.Varchar2).Value = newEventName;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+        }
+
+        public void UpdateEventLocation(int eventID, string newEventLocation)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Event SET Lokatie = :NewEventLocation WHERE EventID = :EventID";
+                cmd.Parameters.Add("NewEventLocation", OracleDbType.Varchar2).Value = newEventLocation;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void UpdateEventReservationState(int eventID, bool newReservationState)
+        {
+            int state = 0;
+
+            if(newReservationState)
+            {
+                state = 1;
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Event SET ReserveringOpen = :NewReservationState WHERE EventID = :EventID";
+                cmd.Parameters.Add("NewReservationState", OracleDbType.Int32).Value = state;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void UpdateEventBeginDate(int eventID, DateTime newBeginDate)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Event SET BeginDatum = :NewBeginDate WHERE EventID = :EventID";
+                cmd.Parameters.Add("NewBeginDate", OracleDbType.Date).Value = newBeginDate;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void UpdateEventEndDate(int eventID, DateTime newEndDate)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Event SET EindDatum = :NewEndDate WHERE EventID = :EventID";
+                cmd.Parameters.Add("NewEndDate", OracleDbType.Date).Value = newEndDate;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
             }

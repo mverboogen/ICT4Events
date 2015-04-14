@@ -12,23 +12,26 @@ namespace EventBeheerSysteem
 {
     public partial class EbsHomeForm : Form
     {
+        EventManager eventManager = new EventManager();
+        Event selectedEvent;
+
         public EbsHomeForm()
         {
             InitializeComponent();
-            dgvEbsEvents.Rows.Add(99241,"Social Media Event", "Camping Blu", "22/12/2015", "26/12/2015");
-            dgvEbsEvents.Rows.Add(99243,"Test Event 312", "Stadspark", "02/04/2016", "08/04/2016");
-            dgvEbsEvents.Rows.Add(99244,"Nog een Test Event", "Aquabest", "12/06/2016", "20/06/2016");
+            foreach(Event e in eventManager.eventList)
+            {
+                dgvEbsEvents.Rows.Add(e.ID, e.Name, e.Location, e.BeginDate.ToString("dd/mm/yyyy"), e.EndDate.ToString("dd/mm/yyyy"));
+            }
             dgvEbsEvents.CurrentCell = null;
-            
         }
 
         private void btnEbsAdd_Click(object sender, EventArgs e)
         {
-            EbsAddEventForm addevent = new EbsAddEventForm();
-            addevent.Show();
+            EbsAddEventForm addEvent = new EbsAddEventForm();
+            addEvent.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnEventTerug_Click(object sender, EventArgs e)
         {
             pnlEbsEvent.Visible = false;
             pnlEbsMain.Visible = true;
@@ -36,13 +39,64 @@ namespace EventBeheerSysteem
 
         private void dgvEbsEvents_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            pnlEbsMain.Visible = false;
-            pnlEbsEvent.Visible = true;
+            if(dgvEbsEvents.CurrentCell != null)
+            {
+                pnlEbsMain.Visible = false;
+                pnlEbsEvent.Visible = true;
+
+                selectedEvent = eventManager.GetEvent(Convert.ToInt32(dgvEbsEvents.CurrentRow.Cells[0].Value.ToString()));
+                selectedEvent.ReservationsOpen = eventManager.databaseHandler.GetReservationState(selectedEvent.ID);
+
+                FillEventTab();
+            }
+            
+        }
+
+        private void FillEventTab()
+        {
+            lblEbsTabEvent.Text = selectedEvent.Name;
+
+            tbEventDetailsName.Text = selectedEvent.Name;
+            tbEventDetailsLocation.Text = selectedEvent.Location;
+
+            dtpEventDetailsBeginDate.Value = selectedEvent.BeginDate;
+            dtpEventDetailsEndDate.Value = selectedEvent.EndDate;
+
+            cboxEventDetailsOpen.Checked = selectedEvent.ReservationsOpen;
+
+            tbEventDetailsCounter.Text = Convert.ToString(eventManager.databaseHandler.GetVistiorAmount(selectedEvent.ID));
+        }
+
+        private void btnEventDetailsSave_Click(object sender, EventArgs e)
+        {
+            if(selectedEvent.Name != tbEventDetailsName.Text)
+            {
+                eventManager.databaseHandler.UpdateEventName(selectedEvent.ID, tbEventDetailsName.Text);
+            }
+            if(selectedEvent.Location != tbEventDetailsLocation.Text)
+            {
+                eventManager.databaseHandler.UpdateEventLocation(selectedEvent.ID, tbEventDetailsLocation.Text);
+            }
+            if(selectedEvent.BeginDate != dtpEventDetailsBeginDate.Value)
+            {
+                eventManager.databaseHandler.UpdateEventBeginDate(selectedEvent.ID, dtpEventDetailsBeginDate.Value);
+            }
+            if(selectedEvent.EndDate != dtpEventDetailsEndDate.Value)
+            {
+                eventManager.databaseHandler.UpdateEventEndDate(selectedEvent.ID, dtpEventDetailsEndDate.Value);
+            }
+            if(selectedEvent.ReservationsOpen != cboxEventDetailsOpen.Checked)
+            {
+                eventManager.databaseHandler.UpdateEventReservationState(selectedEvent.ID, cboxEventDetailsOpen.Checked);
+            }
+            
         }
 
         private void EbsHomeForm_Load(object sender, EventArgs e)
         {
             dgvEbsEvents.ClearSelection();
         }
+
+
     }
 }

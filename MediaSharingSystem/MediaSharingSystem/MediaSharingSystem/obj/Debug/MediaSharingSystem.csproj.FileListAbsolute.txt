@@ -31,3 +31,9 @@ C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSy
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\Interop.WMPLib.dll
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\AxInterop.WMPLib.dll
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.ResolveComReference.cache
+E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe.config
+E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\Interop.WMPLib.dll
+E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\AxInterop.WMPLib.dll
+E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.ResolveComReference.cache
+E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.exe
+E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.pdb
