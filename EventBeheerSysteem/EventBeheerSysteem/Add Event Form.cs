@@ -12,14 +12,23 @@ namespace EventBeheerSysteem
 {
     public partial class EbsAddEventForm : Form
     {
+
+        public string eventName;
+        public string eventLocation;
+        public DateTime beginDate;
+        public DateTime endDate;
+
         public EbsAddEventForm()
         {
             InitializeComponent();
         }
 
-        private void btnAddEventCancel_Click(object sender, EventArgs e)
+        private void btnAddEventOk_Click(object sender, EventArgs e)
         {
-            this.Close();
+            eventName = tbAddEventName.Text;
+            eventLocation = tbAddEventLocation.Text;
+            beginDate = dtpAddEventBeginDate.Value;
+            endDate = dtpAddEventEndDate.Value;
         }
     }
 }

@@ -73,7 +73,11 @@ namespace EventBeheerSysteem
 
             foreach (Visitor visitor in visitorList)
             {
-                if(visitor.Name == name)
+                if(visitor.Surname == name)
+                {
+                    return visitor;
+                }
+                else if (visitor.Lastname == name)
                 {
                     return visitor;
                 }

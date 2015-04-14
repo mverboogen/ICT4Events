@@ -32,8 +32,8 @@
             this.lblAddEventLocatie = new System.Windows.Forms.Label();
             this.lblAddEventBeginDate = new System.Windows.Forms.Label();
             this.lblAddEventEndDate = new System.Windows.Forms.Label();
-            this.tbAddEventNaam = new System.Windows.Forms.TextBox();
-            this.tbAddEventLokatie = new System.Windows.Forms.TextBox();
+            this.tbAddEventName = new System.Windows.Forms.TextBox();
+            this.tbAddEventLocation = new System.Windows.Forms.TextBox();
             this.dtpAddEventBeginDate = new System.Windows.Forms.DateTimePicker();
             this.dtpAddEventEndDate = new System.Windows.Forms.DateTimePicker();
             this.btnAddEventCancel = new System.Windows.Forms.Button();
@@ -80,19 +80,19 @@
             this.lblAddEventEndDate.TabIndex = 3;
             this.lblAddEventEndDate.Text = "Event Einddatum:";
             // 
-            // tbAddEventNaam
+            // tbAddEventName
             // 
-            this.tbAddEventNaam.Location = new System.Drawing.Point(150, 25);
-            this.tbAddEventNaam.Name = "tbAddEventNaam";
-            this.tbAddEventNaam.Size = new System.Drawing.Size(200, 20);
-            this.tbAddEventNaam.TabIndex = 4;
+            this.tbAddEventName.Location = new System.Drawing.Point(150, 25);
+            this.tbAddEventName.Name = "tbAddEventName";
+            this.tbAddEventName.Size = new System.Drawing.Size(200, 20);
+            this.tbAddEventName.TabIndex = 4;
             // 
-            // tbAddEventLokatie
+            // tbAddEventLocation
             // 
-            this.tbAddEventLokatie.Location = new System.Drawing.Point(150, 75);
-            this.tbAddEventLokatie.Name = "tbAddEventLokatie";
-            this.tbAddEventLokatie.Size = new System.Drawing.Size(200, 20);
-            this.tbAddEventLokatie.TabIndex = 5;
+            this.tbAddEventLocation.Location = new System.Drawing.Point(150, 75);
+            this.tbAddEventLocation.Name = "tbAddEventLocation";
+            this.tbAddEventLocation.Size = new System.Drawing.Size(200, 20);
+            this.tbAddEventLocation.TabIndex = 5;
             // 
             // dtpAddEventBeginDate
             // 
@@ -112,6 +112,7 @@
             // 
             // btnAddEventCancel
             // 
+            this.btnAddEventCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnAddEventCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddEventCancel.Location = new System.Drawing.Point(150, 225);
             this.btnAddEventCancel.Name = "btnAddEventCancel";
@@ -119,10 +120,10 @@
             this.btnAddEventCancel.TabIndex = 8;
             this.btnAddEventCancel.Text = "Annuleren";
             this.btnAddEventCancel.UseVisualStyleBackColor = true;
-            this.btnAddEventCancel.Click += new System.EventHandler(this.btnAddEventCancel_Click);
             // 
             // btnAddEventOk
             // 
+            this.btnAddEventOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnAddEventOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddEventOk.Location = new System.Drawing.Point(255, 225);
             this.btnAddEventOk.Name = "btnAddEventOk";
@@ -130,6 +131,7 @@
             this.btnAddEventOk.TabIndex = 9;
             this.btnAddEventOk.Text = "Toevoegen";
             this.btnAddEventOk.UseVisualStyleBackColor = true;
+            this.btnAddEventOk.Click += new System.EventHandler(this.btnAddEventOk_Click);
             // 
             // EbsAddEventForm
             // 
@@ -141,8 +143,8 @@
             this.Controls.Add(this.btnAddEventCancel);
             this.Controls.Add(this.dtpAddEventEndDate);
             this.Controls.Add(this.dtpAddEventBeginDate);
-            this.Controls.Add(this.tbAddEventLokatie);
-            this.Controls.Add(this.tbAddEventNaam);
+            this.Controls.Add(this.tbAddEventLocation);
+            this.Controls.Add(this.tbAddEventName);
             this.Controls.Add(this.lblAddEventEndDate);
             this.Controls.Add(this.lblAddEventBeginDate);
             this.Controls.Add(this.lblAddEventLocatie);
@@ -161,8 +163,8 @@
         private System.Windows.Forms.Label lblAddEventLocatie;
         private System.Windows.Forms.Label lblAddEventBeginDate;
         private System.Windows.Forms.Label lblAddEventEndDate;
-        private System.Windows.Forms.TextBox tbAddEventNaam;
-        private System.Windows.Forms.TextBox tbAddEventLokatie;
+        private System.Windows.Forms.TextBox tbAddEventName;
+        private System.Windows.Forms.TextBox tbAddEventLocation;
         private System.Windows.Forms.DateTimePicker dtpAddEventBeginDate;
         private System.Windows.Forms.DateTimePicker dtpAddEventEndDate;
         private System.Windows.Forms.Button btnAddEventCancel;

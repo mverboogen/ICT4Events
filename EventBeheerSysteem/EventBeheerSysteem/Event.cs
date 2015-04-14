@@ -16,10 +16,10 @@ namespace EventBeheerSysteem
         private DateTime endDate;
         private int maxVisitor;
 
-        private ItemManager itemManager = new ItemManager();
-        private ReservationManager reservationManager = new ReservationManager();
-        private VisitorManager visitorManager = new VisitorManager();
-        private CampSiteManager campsiteManager = new CampSiteManager();
+        public ItemManager itemManager = new ItemManager();
+        public ReservationManager reservationManager = new ReservationManager();
+        public VisitorManager visitorManager = new VisitorManager();
+        public CampSiteManager campsiteManager = new CampSiteManager();
 
         private DatabaseManager databaseHandler = new DatabaseManager();
 

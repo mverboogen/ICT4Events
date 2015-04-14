@@ -81,5 +81,10 @@ namespace EventBeheerSysteem
             Price = price;
             NewPrice = newPrice;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

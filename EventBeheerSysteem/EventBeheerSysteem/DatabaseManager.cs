@@ -71,6 +71,10 @@ namespace EventBeheerSysteem
             con.Dispose();
         }
 
+        /// <summary>
+        /// Retrieves all Events from the database
+        /// </summary>
+        /// <returns>A list with all Events</returns>
         public List<Event> GetEvents()
         {
             List<Event> eventList = new List<Event>();
@@ -109,6 +113,10 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Retrieves all Campsites from the database
+        /// </summary>
+        /// <returns>A list with all Campsites</returns>
         public List<CampSite> GetAllCampSites(int eventID)
         {
             List<CampSite> campSiteList = new List<CampSite>();
@@ -155,6 +163,10 @@ namespace EventBeheerSysteem
 
         }
 
+        /// <summary>
+        /// Retrieves all Items from the database
+        /// </summary>
+        /// <returns>A list with all Items</returns>
         public List<Item> GetAllItems(int eventID)
         {
             List<Item> itemList = new List<Item>();
@@ -192,6 +204,10 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Retrieves all Visitors from the database
+        /// </summary>
+        /// <returns>A list with all Visitors</returns>
         public List<Visitor> GetAllVisitors(int eventID)
         {
             List<Visitor> visitorList = new List<Visitor>();
@@ -203,18 +219,20 @@ namespace EventBeheerSysteem
                 while(dr.Read())
                 {
                     int id;
-                    string name;
+                    string surname;
+                    string lastname;
                     string email;
                     int bookerID;
                     int reservationID;
 
                     id = dr.GetInt32(0);
-                    name = dr.GetString(4) + " " + dr.GetString(5);
-                    email = Convert.ToString(dr.GetValue(6));
-                    bookerID = dr.GetInt32(7);
-                    reservationID = dr.GetInt32(2);
+                    surname = dr.GetString(3);
+                    lastname = dr.GetString(4);
+                    email = Convert.ToString(dr.GetValue(5));
+                    bookerID = dr.GetInt32(6);
+                    reservationID = dr.GetInt32(1);
 
-                    Visitor newVisitor = new Visitor(id, name, email, bookerID, reservationID);
+                    Visitor newVisitor = new Visitor(id, surname, lastname, email, bookerID, reservationID);
                     visitorList.Add(newVisitor);
                 }
                 return visitorList;
@@ -227,7 +245,11 @@ namespace EventBeheerSysteem
             return null;
             
         }
-        
+
+        /// <summary>
+        /// Retrieves all Reservations from the database
+        /// </summary>
+        /// <returns>A list with all Reservations</returns>
         public List<Reservation> GetAllReservations(int eventID)
         {
             List<Reservation> reservationList = new List<Reservation>();
@@ -267,15 +289,20 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Retrieves the booker from the database with the suppleid eventID
+        /// </summary>
+        /// <returns>A Booker Object</returns>
         public Booker GetBooker(int eventID, int reserveringsID)
         {
 
-            ReadData("SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString() + "AND ReserveringID = " + reserveringsID.ToString());
+            ReadData("SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString() + " AND ReserveringID = " + reserveringsID.ToString());
 
             try
             {
                 int id;
-                string name;
+                string surname;
+                string lastname;
                 string email;
                 int bookerID;
                 int reservationID;
@@ -286,15 +313,16 @@ namespace EventBeheerSysteem
                 while (dr.Read())
                 {
                     id = dr.GetInt32(0);
-                    name = dr.GetString(4) + " " + dr.GetString(5);
-                    email = Convert.ToString(dr.GetValue(6));
-                    bookerID = dr.GetInt32(7);
-                    reservationID = dr.GetInt32(2);
-                    address = dr.GetString(8);
-                    zipcode = dr.GetString(9);
-                    city = dr.GetString(10);
+                    surname = dr.GetString(3);
+                    lastname = dr.GetString(4);
+                    email = Convert.ToString(dr.GetValue(5));
+                    bookerID = dr.GetInt32(6);
+                    reservationID = dr.GetInt32(1);
+                    address = dr.GetString(7);
+                    zipcode = dr.GetString(8);
+                    city = dr.GetString(9);
 
-                    Booker newBooker = new Booker(id, name, email, bookerID, reservationID, address, zipcode, city);
+                    Booker newBooker = new Booker(id, surname, lastname, email, bookerID, reservationID, address, zipcode, city);
                     return newBooker;
                 }
                 
@@ -306,6 +334,11 @@ namespace EventBeheerSysteem
 
             return null;
         }
+
+        /// <summary>
+        /// Retrieves all Items from the database that belong to the supplied ReservationID and EventID
+        /// </summary>
+        /// <returns>A list with all Items that belong to the reservationID</returns>
         public List<int> GetReserverdItems(int eventID, int reservationID)
         {
             List<int> intList = new List<int>();
@@ -332,6 +365,10 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Counts the amount of Visitors that belong to the supplied EventID
+        /// </summary>
+        /// <returns>Returns a integer</returns>
         public int GetVistiorAmount(int eventID)
         {
             int visitorAmount = 0;
@@ -353,6 +390,10 @@ namespace EventBeheerSysteem
             return visitorAmount;
         }
 
+        /// <summary>
+        /// Checks if the reservations are open for the suppleid EventID
+        /// </summary>
+        /// <returns>Returns a boolean</returns>
         public bool GetReservationState(int eventID)
         {
             bool state = false;
@@ -364,7 +405,10 @@ namespace EventBeheerSysteem
             {
                 while (dr.Read())
                 {
-                    reservationState = dr.GetInt32(0);
+                    if(!dr.IsDBNull(0))
+                    {
+                        reservationState = dr.GetInt32(0);
+                    }
                 }
             }
             catch (InvalidCastException ICE)
@@ -380,18 +424,69 @@ namespace EventBeheerSysteem
             return state;
         }
 
-        public void AddEvent(string name, DateTime beginDate, DateTime endDate, string location)
+        public int GetItemAmount(int eventID, string itemName)
         {
+            int itemAmount = 0;
 
-            int eventID = 0;
-
-            ReadData("SELECT MAX(EventID) + 1 FROM Event");
+            ReadData("SELECT COUNT(Naam) FROM MATERIAAL WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName.ToString() + "'");
 
             try
             {
                 while (dr.Read())
                 {
-                    if(dr.IsDBNull(0))
+                    if (!dr.IsDBNull(0))
+                    {
+                        itemAmount = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return itemAmount;
+        }
+
+        public int GetAviableItemAmount(int eventID, string itemName)
+        {
+            int availibleItemAmount = 0;
+
+            ReadData("SELECT COUNT(M.Naam) FROM Materiaal M, Materiaal_GerMateriaal MGM WHERE M.EventID = " + eventID.ToString() + " AND M.Naam = '" + itemName.ToString() + "' AND MGM.MateriaalID != M.MateriaalID");
+
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        availibleItemAmount = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return availibleItemAmount;
+        }
+
+        /// <summary>
+        /// Adds a new Event to the database
+        /// </summary>
+        public void AddEvent(string name, DateTime beginDate, DateTime endDate, string location)
+        {
+
+            int eventID = 0;
+
+            ReadData("SELECT COUNT(EventID) + 1 FROM Event");
+
+            try
+            {
+                while (dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
                     {
                         eventID = dr.GetInt32(0);
                     }
@@ -425,6 +520,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a new Campsite to the database
+        /// </summary>
         public void AddCampSite(int eventID, decimal price, int maxPersons, int surfaceArea, int campType)
         {
             int campSiteID = 0;
@@ -470,6 +568,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a new Item to the database
+        /// </summary>
         public void AddItem(int eventID, string name, decimal price, decimal newPrice)
         {
             int materialID = 0;
@@ -514,6 +615,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Updates the Name based on the supplied eventID
+        /// </summary>
         public void UpdateEventName(int eventID, string newEventName)
         {
             try
@@ -537,6 +641,9 @@ namespace EventBeheerSysteem
 
         }
 
+        /// <summary>
+        /// Updates the Location based on the supplied eventID
+        /// </summary>
         public void UpdateEventLocation(int eventID, string newEventLocation)
         {
             try
@@ -559,6 +666,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Updates the ReservationState based on the supplied eventID
+        /// </summary>
         public void UpdateEventReservationState(int eventID, bool newReservationState)
         {
             int state = 0;
@@ -588,6 +698,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Updates the Begin Date based on the supplied eventID
+        /// </summary>
         public void UpdateEventBeginDate(int eventID, DateTime newBeginDate)
         {
             try
@@ -610,6 +723,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Updates the End Date based on the supplied eventID
+        /// </summary>
         public void UpdateEventEndDate(int eventID, DateTime newEndDate)
         {
             try
@@ -618,6 +734,27 @@ namespace EventBeheerSysteem
                 cmd.Connection = con;
                 cmd.CommandText = "UPDATE Event SET EindDatum = :NewEndDate WHERE EventID = :EventID";
                 cmd.Parameters.Add("NewEndDate", OracleDbType.Date).Value = newEndDate;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void DeleteEvent(int eventID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Event WHERE EventID = :EventID";
                 cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();

@@ -9,8 +9,9 @@ namespace EventBeheerSysteem
     class Visitor
     {
 
-        private int id;
-        private string name;
+        protected int id;
+        protected string surname;
+        protected string lastname;
         private string email;
         private int bookerID;
         private int reservationID;
@@ -23,10 +24,16 @@ namespace EventBeheerSysteem
             set { id = value; }
         }
 
-        public string Name
+        public string Surname
         {
-            get { return name; }
-            set { name = value; }
+            get { return surname; }
+            set { surname = value; }
+        }
+
+        public string Lastname
+        {
+            get { return lastname; }
+            set { lastname = value; }
         }
 
         public string Email
@@ -60,22 +67,29 @@ namespace EventBeheerSysteem
         }
 
 
-        public Visitor(int id, string name, string email, int bookerID, int reservationID)
+        public Visitor(int id, string surname, string lastname, string email, int bookerID, int reservationID)
         {
             ID = id;
-            Name = name;
+            Surname = surname;
+            Lastname = lastname;
             Email = email;
             BookerID = bookerID;
             ReservationID = reservationID;
         }
 
-        public Visitor(int id, string name, string email, Booker booker, Reservation reservation)
+        public Visitor(int id, string surname, string lastname, string email, Booker booker, Reservation reservation)
         {
             ID = id;
-            Name = name;
+            Surname = surname;
+            Lastname = lastname;
             Email = email;
             this.booker = booker;
             this.reservation = reservation;
+        }
+
+        public override string ToString()
+        {
+            return Surname + " " + Lastname;
         }
 
     }

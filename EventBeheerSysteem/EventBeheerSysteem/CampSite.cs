@@ -85,5 +85,10 @@ namespace EventBeheerSysteem
             CampSize = size;
             MaxOccupation = maxOccupation;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -37,10 +37,11 @@
             this.ColumnBeginDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlEbsEvent = new System.Windows.Forms.Panel();
-            this.btnEventTerug = new System.Windows.Forms.Button();
+            this.btnEventBack = new System.Windows.Forms.Button();
             this.lblEbsTabEvent = new System.Windows.Forms.Label();
             this.tabEvent = new System.Windows.Forms.TabControl();
             this.tabEventDetails = new System.Windows.Forms.TabPage();
+            this.btnEventDetailsSave = new System.Windows.Forms.Button();
             this.tbEventDetailsCounter = new System.Windows.Forms.TextBox();
             this.dtpEventDetailsEndDate = new System.Windows.Forms.DateTimePicker();
             this.dtpEventDetailsBeginDate = new System.Windows.Forms.DateTimePicker();
@@ -60,7 +61,7 @@
             this.cboxEventVisitorsDetailsPresent = new System.Windows.Forms.CheckBox();
             this.dtpEventVisitorsDetailsBookingDate = new System.Windows.Forms.DateTimePicker();
             this.tbEventVisitorsDetailsStreetNr = new System.Windows.Forms.TextBox();
-            this.tbEventVisitorsDetailsBednr = new System.Windows.Forms.TextBox();
+            this.tbEventVisitorsDetailsCampNr = new System.Windows.Forms.TextBox();
             this.tbEventVisitorsDetailsZipcode = new System.Windows.Forms.TextBox();
             this.tbEventVisitorsDetailsStreet = new System.Windows.Forms.TextBox();
             this.tbEventVisitorsDetailsLastname = new System.Windows.Forms.TextBox();
@@ -87,7 +88,7 @@
             this.tabEventMaterialen = new System.Windows.Forms.TabPage();
             this.gboxEventMaterialDetails = new System.Windows.Forms.GroupBox();
             this.tbEventMaterialDetailsAvailable = new System.Windows.Forms.TextBox();
-            this.tbEventMaterialDetailsDailyrent = new System.Windows.Forms.TextBox();
+            this.tbEventMaterialDetailsDailyRent = new System.Windows.Forms.TextBox();
             this.tbEventMaterialDetailsPrice = new System.Windows.Forms.TextBox();
             this.tbEventMaterialDetailsName = new System.Windows.Forms.TextBox();
             this.tbEventMaterialDetailsId = new System.Windows.Forms.TextBox();
@@ -124,7 +125,6 @@
             this.lboxEventBedsList = new System.Windows.Forms.ListBox();
             this.lblEventBeds = new System.Windows.Forms.Label();
             this.pnlEbsMain = new System.Windows.Forms.Panel();
-            this.btnEventDetailsSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEbsEvents)).BeginInit();
             this.pnlEbsEvent.SuspendLayout();
             this.tabEvent.SuspendLayout();
@@ -157,6 +157,7 @@
             this.btnEbsRemove.TabIndex = 2;
             this.btnEbsRemove.Text = "Event Verwijderen";
             this.btnEbsRemove.UseVisualStyleBackColor = true;
+            this.btnEbsRemove.Click += new System.EventHandler(this.btnEbsRemove_Click);
             // 
             // dgvEbsEvents
             // 
@@ -220,7 +221,7 @@
             // 
             // pnlEbsEvent
             // 
-            this.pnlEbsEvent.Controls.Add(this.btnEventTerug);
+            this.pnlEbsEvent.Controls.Add(this.btnEventBack);
             this.pnlEbsEvent.Controls.Add(this.lblEbsTabEvent);
             this.pnlEbsEvent.Controls.Add(this.tabEvent);
             this.pnlEbsEvent.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -230,18 +231,18 @@
             this.pnlEbsEvent.TabIndex = 4;
             this.pnlEbsEvent.Visible = false;
             // 
-            // btnEventTerug
+            // btnEventBack
             // 
-            this.btnEventTerug.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnEventTerug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEventTerug.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEventTerug.Location = new System.Drawing.Point(7, 7);
-            this.btnEventTerug.Name = "btnEventTerug";
-            this.btnEventTerug.Size = new System.Drawing.Size(75, 25);
-            this.btnEventTerug.TabIndex = 2;
-            this.btnEventTerug.Text = "Terug";
-            this.btnEventTerug.UseVisualStyleBackColor = true;
-            this.btnEventTerug.Click += new System.EventHandler(this.btnEventTerug_Click);
+            this.btnEventBack.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnEventBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEventBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEventBack.Location = new System.Drawing.Point(7, 7);
+            this.btnEventBack.Name = "btnEventBack";
+            this.btnEventBack.Size = new System.Drawing.Size(75, 25);
+            this.btnEventBack.TabIndex = 2;
+            this.btnEventBack.Text = "Terug";
+            this.btnEventBack.UseVisualStyleBackColor = true;
+            this.btnEventBack.Click += new System.EventHandler(this.btnEventTerug_Click);
             // 
             // lblEbsTabEvent
             // 
@@ -293,6 +294,16 @@
             this.tabEventDetails.TabIndex = 0;
             this.tabEventDetails.Text = "Details";
             this.tabEventDetails.UseVisualStyleBackColor = true;
+            // 
+            // btnEventDetailsSave
+            // 
+            this.btnEventDetailsSave.Location = new System.Drawing.Point(629, 462);
+            this.btnEventDetailsSave.Name = "btnEventDetailsSave";
+            this.btnEventDetailsSave.Size = new System.Drawing.Size(125, 25);
+            this.btnEventDetailsSave.TabIndex = 13;
+            this.btnEventDetailsSave.Text = "Opslaan";
+            this.btnEventDetailsSave.UseVisualStyleBackColor = true;
+            this.btnEventDetailsSave.Click += new System.EventHandler(this.btnEventDetailsSave_Click);
             // 
             // tbEventDetailsCounter
             // 
@@ -426,7 +437,7 @@
             this.gboxEventVisitorsDetails.Controls.Add(this.cboxEventVisitorsDetailsPresent);
             this.gboxEventVisitorsDetails.Controls.Add(this.dtpEventVisitorsDetailsBookingDate);
             this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsStreetNr);
-            this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsBednr);
+            this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsCampNr);
             this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsZipcode);
             this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsStreet);
             this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsLastname);
@@ -490,12 +501,12 @@
             this.tbEventVisitorsDetailsStreetNr.Size = new System.Drawing.Size(57, 22);
             this.tbEventVisitorsDetailsStreetNr.TabIndex = 28;
             // 
-            // tbEventVisitorsDetailsBednr
+            // tbEventVisitorsDetailsCampNr
             // 
-            this.tbEventVisitorsDetailsBednr.Location = new System.Drawing.Point(160, 120);
-            this.tbEventVisitorsDetailsBednr.Name = "tbEventVisitorsDetailsBednr";
-            this.tbEventVisitorsDetailsBednr.Size = new System.Drawing.Size(243, 22);
-            this.tbEventVisitorsDetailsBednr.TabIndex = 27;
+            this.tbEventVisitorsDetailsCampNr.Location = new System.Drawing.Point(160, 120);
+            this.tbEventVisitorsDetailsCampNr.Name = "tbEventVisitorsDetailsCampNr";
+            this.tbEventVisitorsDetailsCampNr.Size = new System.Drawing.Size(243, 22);
+            this.tbEventVisitorsDetailsCampNr.TabIndex = 27;
             // 
             // tbEventVisitorsDetailsZipcode
             // 
@@ -677,6 +688,7 @@
             this.lboxEventVisitorsList.Name = "lboxEventVisitorsList";
             this.lboxEventVisitorsList.Size = new System.Drawing.Size(299, 436);
             this.lboxEventVisitorsList.TabIndex = 2;
+            this.lboxEventVisitorsList.SelectedIndexChanged += new System.EventHandler(this.lboxEventVisitorsList_SelectedIndexChanged);
             // 
             // tbEventVisitorsSearch
             // 
@@ -713,7 +725,7 @@
             // gboxEventMaterialDetails
             // 
             this.gboxEventMaterialDetails.Controls.Add(this.tbEventMaterialDetailsAvailable);
-            this.gboxEventMaterialDetails.Controls.Add(this.tbEventMaterialDetailsDailyrent);
+            this.gboxEventMaterialDetails.Controls.Add(this.tbEventMaterialDetailsDailyRent);
             this.gboxEventMaterialDetails.Controls.Add(this.tbEventMaterialDetailsPrice);
             this.gboxEventMaterialDetails.Controls.Add(this.tbEventMaterialDetailsName);
             this.gboxEventMaterialDetails.Controls.Add(this.tbEventMaterialDetailsId);
@@ -741,12 +753,12 @@
             this.tbEventMaterialDetailsAvailable.Size = new System.Drawing.Size(256, 22);
             this.tbEventMaterialDetailsAvailable.TabIndex = 14;
             // 
-            // tbEventMaterialDetailsDailyrent
+            // tbEventMaterialDetailsDailyRent
             // 
-            this.tbEventMaterialDetailsDailyrent.Location = new System.Drawing.Point(147, 120);
-            this.tbEventMaterialDetailsDailyrent.Name = "tbEventMaterialDetailsDailyrent";
-            this.tbEventMaterialDetailsDailyrent.Size = new System.Drawing.Size(256, 22);
-            this.tbEventMaterialDetailsDailyrent.TabIndex = 13;
+            this.tbEventMaterialDetailsDailyRent.Location = new System.Drawing.Point(147, 120);
+            this.tbEventMaterialDetailsDailyRent.Name = "tbEventMaterialDetailsDailyRent";
+            this.tbEventMaterialDetailsDailyRent.Size = new System.Drawing.Size(256, 22);
+            this.tbEventMaterialDetailsDailyRent.TabIndex = 13;
             // 
             // tbEventMaterialDetailsPrice
             // 
@@ -885,6 +897,7 @@
             this.lboxEventMaterialList.Name = "lboxEventMaterialList";
             this.lboxEventMaterialList.Size = new System.Drawing.Size(300, 404);
             this.lboxEventMaterialList.TabIndex = 1;
+            this.lboxEventMaterialList.SelectedIndexChanged += new System.EventHandler(this.lboxEventMaterialList_SelectedIndexChanged);
             // 
             // lblEventMaterial
             // 
@@ -1058,6 +1071,7 @@
             this.lboxEventBedsList.Name = "lboxEventBedsList";
             this.lboxEventBedsList.Size = new System.Drawing.Size(300, 436);
             this.lboxEventBedsList.TabIndex = 1;
+            this.lboxEventBedsList.SelectedIndexChanged += new System.EventHandler(this.lboxEventBedsList_SelectedIndexChanged);
             // 
             // lblEventBeds
             // 
@@ -1078,16 +1092,6 @@
             this.pnlEbsMain.Name = "pnlEbsMain";
             this.pnlEbsMain.Size = new System.Drawing.Size(784, 561);
             this.pnlEbsMain.TabIndex = 5;
-            // 
-            // btnEventDetailsSave
-            // 
-            this.btnEventDetailsSave.Location = new System.Drawing.Point(629, 462);
-            this.btnEventDetailsSave.Name = "btnEventDetailsSave";
-            this.btnEventDetailsSave.Size = new System.Drawing.Size(125, 25);
-            this.btnEventDetailsSave.TabIndex = 13;
-            this.btnEventDetailsSave.Text = "Opslaan";
-            this.btnEventDetailsSave.UseVisualStyleBackColor = true;
-            this.btnEventDetailsSave.Click += new System.EventHandler(this.btnEventDetailsSave_Click);
             // 
             // EbsHomeForm
             // 
@@ -1142,7 +1146,7 @@
         private System.Windows.Forms.Label lblEbsTabEvent;
         private System.Windows.Forms.TabPage tabEventMaterialen;
         private System.Windows.Forms.TabPage tabEventBeds;
-        private System.Windows.Forms.Button btnEventTerug;
+        private System.Windows.Forms.Button btnEventBack;
         private System.Windows.Forms.Panel pnlEbsMain;
         private System.Windows.Forms.Label lblEventDetailsTitel;
         private System.Windows.Forms.Label lblEventDetailsVisitorcount;
@@ -1158,7 +1162,7 @@
         private System.Windows.Forms.TextBox tbEventDetailsName;
         private System.Windows.Forms.Label lblEventDetailsOpen;
         private System.Windows.Forms.GroupBox gboxEventVisitorsDetails;
-        private System.Windows.Forms.TextBox tbEventVisitorsDetailsBednr;
+        private System.Windows.Forms.TextBox tbEventVisitorsDetailsCampNr;
         private System.Windows.Forms.TextBox tbEventVisitorsDetailsZipcode;
         private System.Windows.Forms.TextBox tbEventVisitorsDetailsStreet;
         private System.Windows.Forms.TextBox tbEventVisitorsDetailsLastname;
@@ -1190,7 +1194,7 @@
         private System.Windows.Forms.Label lblEventMaterial;
         private System.Windows.Forms.GroupBox gboxEventMaterialDetails;
         private System.Windows.Forms.TextBox tbEventMaterialDetailsAvailable;
-        private System.Windows.Forms.TextBox tbEventMaterialDetailsDailyrent;
+        private System.Windows.Forms.TextBox tbEventMaterialDetailsDailyRent;
         private System.Windows.Forms.TextBox tbEventMaterialDetailsPrice;
         private System.Windows.Forms.TextBox tbEventMaterialDetailsName;
         private System.Windows.Forms.TextBox tbEventMaterialDetailsId;

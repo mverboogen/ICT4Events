@@ -14,7 +14,7 @@ namespace EventBeheerSysteem
 
         public EventManager()
         {
-            eventList = databaseHandler.GetEvents();
+            GetAllEvents();
         }
 
         public void AddEvent(Event e)
@@ -72,6 +72,12 @@ namespace EventBeheerSysteem
             }
 
             return null;
+        }
+
+        public void GetAllEvents()
+        {
+            eventList.Clear();
+            eventList = databaseHandler.GetEvents();
         }
     }
 }
