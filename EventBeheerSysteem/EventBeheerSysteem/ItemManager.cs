@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class ItemManager
+    public class ItemManager
     {
 
         public List<Item> itemList = new List<Item>();

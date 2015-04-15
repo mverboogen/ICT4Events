@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class CampSiteManager
+    public class CampSiteManager
     {
 
         public List<CampSite> campSiteList = new List<CampSite>();

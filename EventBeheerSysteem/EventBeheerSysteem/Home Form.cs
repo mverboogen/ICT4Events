@@ -244,7 +244,7 @@ namespace EventBeheerSysteem
                     eventManager.databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, selectedEvent.ID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
                     selectedVisitor.VisitorReservation.AddVisitor(newVisitor);
 
-                    eventManager.eventList[selectedEvent.ID - 1].visitorManager.AddVisitor(newVisitor);
+                    selectedEvent.visitorManager.AddVisitor(newVisitor);
                     FillVisitorsTab();
                     RefreshDetailMembers();
                 }
@@ -276,7 +276,7 @@ namespace EventBeheerSysteem
                     if (lbVisitor.ID != lbVisitor.BookerID)
                     {
                         eventManager.databaseHandler.DeleteVisitor(lbVisitor.VisitorReservation.ID, lbVisitor.ID);
-                        eventManager.eventList[selectedEvent.ID - 1].visitorManager.RemoveVisitor(lbVisitor);
+                        selectedEvent.visitorManager.RemoveVisitor(lbVisitor);
                         lbVisitor.VisitorReservation.VisitorList.Remove(lbVisitor);
                         FillVisitorsTab();
                         RefreshDetailMembers();
@@ -286,7 +286,7 @@ namespace EventBeheerSysteem
                         if (lbVisitor.VisitorReservation.VisitorList.Count == 1)
                         {
                             eventManager.databaseHandler.DeleteVisitor(lbVisitor.VisitorReservation.ID, lbVisitor.ID);
-                            eventManager.eventList[selectedEvent.ID - 1].visitorManager.RemoveVisitor(lbVisitor);
+                            selectedEvent.visitorManager.RemoveVisitor(lbVisitor);
                             lbVisitor.VisitorReservation.VisitorList.Remove(lbVisitor);
                             FillVisitorsTab();
                             RefreshDetailMembers();
@@ -336,6 +336,17 @@ namespace EventBeheerSysteem
             }
         }
 
+        private void ClearMaterialsDetailsTab()
+        {
+            lboxEventMaterialList.SelectedIndex = -1;
+
+            tbEventMaterialDetailsName.Clear();
+            tbEventMaterialDetailsPrice.Clear();
+            tbEventMaterialDetailsDailyRent.Clear();
+            tbEventMaterialDetailsAvailable.Clear();
+            lboxEventMaterialDetailsRentersList.Items.Clear();
+        }
+
         private void lboxEventMaterialList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(lboxEventMaterialList.SelectedIndex != -1)
@@ -353,6 +364,102 @@ namespace EventBeheerSysteem
                     tbEventMaterialDetailsAvailable.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
                 }
             }
+        }
+
+        private void btnEventMaterialAddMaterial_Click(object sender, EventArgs e)
+        {
+            using (var form = new AddItem())
+            {
+                var result = form.ShowDialog();
+                if(result == DialogResult.OK)
+                {
+                    for(int i = 0; i < form.amount; i++)
+                    {
+                        int id = eventManager.databaseHandler.GetnewItemID(selectedEvent.ID);
+
+                        Item newItem = new Item(id, form.name, form.rentPrice, form.price);
+                        selectedEvent.itemManager.AddItem(newItem);
+                        eventManager.databaseHandler.AddItem(selectedEvent.ID, form.name, form.rentPrice, form.price);
+                        FillMaterialsTab();
+                        ClearMaterialsDetailsTab();
+                    }
+                }
+            }
+        }
+
+        private void btnEventMaterialDeleteMaterial_Click(object sender, EventArgs e)
+        {
+            List<Item> selectedItemsList = new List<Item>();
+            bool failed = false;
+
+            foreach(Item item in selectedEvent.itemManager.itemList)
+            {
+                if(item.Name == selectedItem.Name)
+                {
+                    selectedItemsList.Add(item);
+                }
+            }
+
+            foreach(Reservation reservation in selectedEvent.reservationManager.reservationList)
+            {
+                foreach(Item reservationItem in reservation.ItemList)
+                {
+                    foreach(Item item in selectedItemsList)
+                    {
+                        if(item.ID == reservationItem.ID)
+                        {
+                            failed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(!failed)
+            {
+                eventManager.databaseHandler.DeleteItem(selectedEvent.ID, selectedItem.Name);
+                foreach(Item item in selectedItemsList)
+                {
+                    selectedEvent.itemManager.RemoveItem(item);
+                }
+
+                FillMaterialsTab();
+                ClearMaterialsDetailsTab();
+            }
+            else
+            {
+                MessageBox.Show("Cannot delete item. Item has already been reserved. Remove reservations before removing item");
+            }
+        }
+
+        private void btnEventMaterialDetailsAddRenter_Click(object sender, EventArgs e)
+        {
+            if(lboxEventMaterialList.SelectedIndex != -1)
+            {
+                using (var form = new AddItemToReservation(eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, selectedItem.Name), selectedEvent.reservationManager.reservationList))
+                {
+
+                    var result = form.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        for(int i = 0; i < form.amount; i++)
+                        {
+                            if(form.selectedReservation.ReservedItemID == 0)
+                            {
+                                form.selectedReservation.ReservedItemID = eventManager.databaseHandler.GetNewItemReservationID(selectedEvent.ID);
+                                eventManager.databaseHandler.AddItemReservationID(selectedEvent.ID, form.selectedReservation.ID, form.selectedReservation.ReservedItemID);
+                            }
+
+                            eventManager.databaseHandler.AddItemToReservation(selectedEvent.ID, form.selectedReservation.ReservedItemID, selectedItem.Name);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecteer een item eerst");
+            }
+            
         }
 
         //----------------------------------------------------------------------------------------------------
@@ -393,8 +500,35 @@ namespace EventBeheerSysteem
             }
         }
 
+        private void btnEventBedsAdd_Click(object sender, EventArgs e)
+        {
+            using (var form = new AddCampSite())
+            {
 
+                var result = form.ShowDialog();
+                if(result == DialogResult.OK)
+                {
+                    int id = eventManager.databaseHandler.GetNewCampSiteID(selectedEvent.ID);
+                    CampSite newCampsite = new CampSite(id, id.ToString(), form.price, form.type, form.surfaceArea, form.maxRenters);
 
+                    selectedEvent.campsiteManager.campSiteList.Add(newCampsite);
+                    eventManager.databaseHandler.AddCampSite(selectedEvent.ID, newCampsite.Price, newCampsite.MaxOccupation, newCampsite.CampSize, newCampsite.Type);
+                    FillCampSitesTab();
+                }
+            }
+        }
 
+        private void btnEventBedsDelete_Click(object sender, EventArgs e)
+        {
+            if(selectedCampSite != null)
+            {
+                if(selectedCampSite.CampSiteReservation == null)
+                {
+                    eventManager.databaseHandler.DeleteCampSite(selectedEvent.ID, selectedCampSite.ID);
+                    selectedEvent.campsiteManager.campSiteList.Remove(selectedCampSite);
+                    FillCampSitesTab();
+                }
+            }
+        }
     }
 }

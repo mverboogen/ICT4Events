@@ -12,7 +12,7 @@ using Oracle.DataAccess.Client;
 
 namespace EventBeheerSysteem
 {
-    class DatabaseManager
+    public class DatabaseManager
     {
 
         private OracleConnection con;
@@ -46,7 +46,7 @@ namespace EventBeheerSysteem
             }
             catch(Exception e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -131,15 +131,15 @@ namespace EventBeheerSysteem
                     string name;
                     decimal price;
                     int type;
-                    Size size;
+                    int size;
                     int maxOccupation;
                     int reservationID;
 
                     id = dr.GetInt32(0);
                     name = Convert.ToString(dr.GetInt32(0));
                     price = dr.GetDecimal(2);
+                    size = dr.GetInt32(4);
                     type = dr.GetInt32(5);
-                    size = new Size(5, 5);
                     maxOccupation = dr.GetInt32(3);
 
                     CampSite newCampSite = new CampSite(id, name, price, type, size, maxOccupation);
@@ -423,7 +423,7 @@ namespace EventBeheerSysteem
         {
             int newID = 0;
 
-            ReadData("SELECT COUNT(BezoekerID) + 1 FROM Bezoeker WHERE EventID = " + eventID.ToString());
+            ReadData("SELECT MAX(BezoekerID) + 1 FROM Bezoeker WHERE EventID = " + eventID.ToString());
 
             try
             {
@@ -504,6 +504,27 @@ namespace EventBeheerSysteem
             return itemAmount;
         }
 
+        public int GetnewItemID(int eventID)
+        {
+            int newID = 0;
+
+            ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal WHERE EventID = " + eventID.ToString());
+
+            try
+            {
+                while (dr.Read())
+                {
+                    newID = dr.GetInt32(0);
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return newID;
+        }
+
         /// <summary>
         /// An function to check how many items there are left of a type by name
         /// </summary>
@@ -534,6 +555,56 @@ namespace EventBeheerSysteem
             return availibleItemAmount;
         }
 
+
+        public int GetNewItemReservationID(int eventID)
+        {
+            int newID = 1;
+
+            ReadData("SELECT MAX(GereserveerdeMateriaalID) + 1 FROM GereserveerdeMateriaal WHERE EventID = " + eventID.ToString());
+
+            try
+            {
+                while (dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        newID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return newID;
+        }
+
+
+        public int GetNewCampSiteID(int eventID)
+        {
+            int newID = 1;
+
+            ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats WHERE EventID = " + eventID.ToString());
+
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        newID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return newID; 
+        }
+
         /// <summary>
         /// Adds a new Event to the database
         /// </summary>
@@ -542,7 +613,7 @@ namespace EventBeheerSysteem
 
             int eventID = 0;
 
-            ReadData("SELECT COUNT(EventID) + 1 FROM Event");
+            ReadData("SELECT MAX(EventID) + 1 FROM Event");
 
             try
             {
@@ -624,7 +695,7 @@ namespace EventBeheerSysteem
         /// </summary>
         public void AddCampSite(int eventID, decimal price, int maxPersons, int surfaceArea, int campType)
         {
-            int campSiteID = 0;
+            int campSiteID = 1;
 
             ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats");
 
@@ -711,6 +782,94 @@ namespace EventBeheerSysteem
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void AddItemReservationID(int eventID, int reservationID, int itemReservationID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO GereserveerdeMateriaal (GereserveerdeMateriaalID, EventID) VALUES (:ItemReservationID, :EventID)";
+                cmd.Parameters.Add("ItemReservationID", OracleDbType.Int32).Value = itemReservationID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET GereserveerdeMateriaalID = " + itemReservationID.ToString() + " WHERE EventID = " + eventID.ToString() + " AND ReserveringID = " + reservationID.ToString();
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void AddItemToReservation(int eventID, int itemReservationID, string itemName)
+        {
+            int itemID = 0;
+            try
+            {
+                ReadData("SELECT MateriaalID FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName + "' AND MateriaalID NOT IN (SELECT MateriaalID FROM Materiaal_GerMateriaal) AND ROWNUM = 1");
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            try
+            {
+                while(dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        itemID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Materiaal_GerMateriaal (MateriaalID, GereserveerdeMateriaalID) VALUES (:ItemID, :ItemReservationID)";
+                cmd.Parameters.Add("ItemID", OracleDbType.Int32).Value = itemID;
+                cmd.Parameters.Add("ItemReservationID", OracleDbType.Int32).Value = itemReservationID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                Console.WriteLine(OE.ToString());
+                MessageBox.Show(OE.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -928,6 +1087,28 @@ namespace EventBeheerSysteem
             }
         }
 
+        public void DeleteItem(int eventID, string itemName)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE Materiaal WHERE EventID = :EventID AND Naam = :ItemName";
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("ItemName", OracleDbType.Varchar2).Value = itemName;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
         public void DeleteVisitor(int eventID, int visitorID)
         {
             try
@@ -943,6 +1124,28 @@ namespace EventBeheerSysteem
             catch (OracleException OE)
             {
                 MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void DeleteCampSite(int eventID, int campSiteID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE Kampeerplaats WHERE EventID = :EventID AND KampeerplaatsID = :CampSiteID";
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("CampSiteID", OracleDbType.Int32).Value = campSiteID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.Message);
             }
             catch (Exception e)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Size
+    public class Size
     {
         private int sizeLength;
         private int sizeWidth;

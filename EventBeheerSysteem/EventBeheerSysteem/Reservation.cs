@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Reservation : IComparable<Reservation>
+    public class Reservation : IComparable<Reservation>
     {
         private List<CampSite> campSiteList = new List<CampSite>();
         private List<Visitor> visitorList = new List<Visitor>();
@@ -129,6 +129,11 @@ namespace EventBeheerSysteem
         public int CompareTo(Reservation reservation)
         {
             return id.CompareTo(reservation.ID);
+        }
+
+        public override string ToString()
+        {
+            return Booker.ToString();
         }
     }
 }

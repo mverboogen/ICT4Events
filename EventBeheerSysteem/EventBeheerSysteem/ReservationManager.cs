@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class ReservationManager
+    public class ReservationManager
     {
 
         public List<Reservation> reservationList = new List<Reservation>();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Visitor : IComparable<Visitor>
+    public class Visitor : IComparable<Visitor>
     {
 
         protected int id;

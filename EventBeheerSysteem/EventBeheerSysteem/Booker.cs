@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Booker : Visitor
+    public class Booker : Visitor
     {
         private string address;
         private string zipcode;

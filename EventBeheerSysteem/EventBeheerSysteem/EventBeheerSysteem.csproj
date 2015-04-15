@@ -94,6 +94,24 @@
     <Compile Include="Add Event Form.designer.cs">
       <DependentUpon>Add Event Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddCampSite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddCampSite.Designer.cs">
+      <DependentUpon>AddCampSite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddItem.Designer.cs">
+      <DependentUpon>AddItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddItemToReservation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddItemToReservation.Designer.cs">
+      <DependentUpon>AddItemToReservation.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddMember.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +153,15 @@
     <Compile Include="VisitorManager.cs" />
     <EmbeddedResource Include="Add Event Form.resx">
       <DependentUpon>Add Event Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCampSite.resx">
+      <DependentUpon>AddCampSite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddItem.resx">
+      <DependentUpon>AddItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddItemToReservation.resx">
+      <DependentUpon>AddItemToReservation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddMember.resx">
       <DependentUpon>AddMember.cs</DependentUpon>

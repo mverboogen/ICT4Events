@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Event : IComparable<Event>
+    public class Event : IComparable<Event>
     {
         private int id;
         private string name;
@@ -106,6 +106,8 @@ namespace EventBeheerSysteem
                     if (campSite.ReservationID == reservation.ID)
                     {
                         reservation.CampSiteList.Add(campSite);
+                        campSite.CampSiteReservation = reservation;
+                        campSite.ReservationID = reservation.ID;
                     }
                 }
 

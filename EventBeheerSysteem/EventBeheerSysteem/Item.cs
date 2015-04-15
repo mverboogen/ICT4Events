@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Item : IComparable<Item>
+    public class Item : IComparable<Item>
     {
         private int id;
         private string name;

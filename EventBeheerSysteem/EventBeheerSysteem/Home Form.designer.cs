@@ -746,6 +746,7 @@
             this.btnEventMaterialDetailsAddRenter.TabIndex = 7;
             this.btnEventMaterialDetailsAddRenter.Text = "Toevoegen";
             this.btnEventMaterialDetailsAddRenter.UseVisualStyleBackColor = true;
+            this.btnEventMaterialDetailsAddRenter.Click += new System.EventHandler(this.btnEventMaterialDetailsAddRenter_Click);
             // 
             // lboxEventMaterialDetailsRentersList
             // 
@@ -809,6 +810,7 @@
             this.btnEventMaterialDeleteMaterial.TabIndex = 3;
             this.btnEventMaterialDeleteMaterial.Text = "Materiaal Verwijderen";
             this.btnEventMaterialDeleteMaterial.UseVisualStyleBackColor = true;
+            this.btnEventMaterialDeleteMaterial.Click += new System.EventHandler(this.btnEventMaterialDeleteMaterial_Click);
             // 
             // btnEventMaterialAddMaterial
             // 
@@ -818,6 +820,7 @@
             this.btnEventMaterialAddMaterial.TabIndex = 2;
             this.btnEventMaterialAddMaterial.Text = "Materiaal Toevoegen";
             this.btnEventMaterialAddMaterial.UseVisualStyleBackColor = true;
+            this.btnEventMaterialAddMaterial.Click += new System.EventHandler(this.btnEventMaterialAddMaterial_Click);
             // 
             // lboxEventMaterialList
             // 
@@ -983,6 +986,7 @@
             this.btnEventBedsDelete.TabIndex = 3;
             this.btnEventBedsDelete.Text = "Verwijderen";
             this.btnEventBedsDelete.UseVisualStyleBackColor = true;
+            this.btnEventBedsDelete.Click += new System.EventHandler(this.btnEventBedsDelete_Click);
             // 
             // btnEventBedsAdd
             // 
@@ -992,6 +996,7 @@
             this.btnEventBedsAdd.TabIndex = 2;
             this.btnEventBedsAdd.Text = "Toevoegen";
             this.btnEventBedsAdd.UseVisualStyleBackColor = true;
+            this.btnEventBedsAdd.Click += new System.EventHandler(this.btnEventBedsAdd_Click);
             // 
             // lboxEventBedsList
             // 

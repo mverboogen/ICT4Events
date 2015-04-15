@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem 
 {
-    class CampSite : IComparable<CampSite>
+    public class CampSite : IComparable<CampSite>
     {
         private int id;
         private string name;
         private decimal price;
         private int type;
-        private Size campSize;
+        private int campSize;
         private int maxOccupation;
         private int occupation;
         private int reservationID;
@@ -42,7 +42,7 @@ namespace EventBeheerSysteem
             set { type = value; }
         }
 
-        public Size CampSize
+        public int CampSize
         {
             get { return campSize; }
             set { campSize = value; }
@@ -74,9 +74,10 @@ namespace EventBeheerSysteem
         public Reservation CampSiteReservation
         {
             get { return reservation; }
+            set { reservation = value; }
         }
 
-        public CampSite(int id, string name, decimal price, int type, Size size, int maxOccupation)
+        public CampSite(int id, string name, decimal price, int type, int size, int maxOccupation)
         {
             ID = id;
             Name = name;
