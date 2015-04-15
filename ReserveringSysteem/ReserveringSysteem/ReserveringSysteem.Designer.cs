@@ -530,12 +530,14 @@
             this.dgvKampeerplaats.AllowUserToResizeRows = false;
             this.dgvKampeerplaats.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvKampeerplaats.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvKampeerplaats.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvKampeerplaats.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnPlaats,
             this.ColumnMaxPersonen,
             this.ColumnKampeerPrijs});
             this.dgvKampeerplaats.Location = new System.Drawing.Point(6, 61);
             this.dgvKampeerplaats.Name = "dgvKampeerplaats";
+            this.dgvKampeerplaats.ReadOnly = true;
             this.dgvKampeerplaats.RowHeadersVisible = false;
             this.dgvKampeerplaats.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvKampeerplaats.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -547,17 +549,20 @@
             this.ColumnPlaats.HeaderText = "Plaats";
             this.ColumnPlaats.MaxInputLength = 999;
             this.ColumnPlaats.Name = "ColumnPlaats";
+            this.ColumnPlaats.ReadOnly = true;
             this.ColumnPlaats.Width = 60;
             // 
             // ColumnMaxPersonen
             // 
             this.ColumnMaxPersonen.HeaderText = "MaxPersonen";
             this.ColumnMaxPersonen.Name = "ColumnMaxPersonen";
+            this.ColumnMaxPersonen.ReadOnly = true;
             // 
             // ColumnKampeerPrijs
             // 
             this.ColumnKampeerPrijs.HeaderText = "Prijs";
             this.ColumnKampeerPrijs.Name = "ColumnKampeerPrijs";
+            this.ColumnKampeerPrijs.ReadOnly = true;
             this.ColumnKampeerPrijs.Width = 40;
             // 
             // btKampToDel
@@ -679,7 +684,7 @@
             this.textBox4.TabIndex = 14;
             this.textBox4.TabStop = false;
             this.textBox4.Text = "Selecteer hieronder alle materialen die u wilt huren.\r\nWilt u niets huren laat da" +
-    "n alles op 0.\r\n";
+    "n alles op 0.";
             // 
             // tabPageOverzicht
             // 

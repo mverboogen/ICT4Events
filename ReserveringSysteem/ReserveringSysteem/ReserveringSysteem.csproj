@@ -56,6 +56,7 @@
     <Compile Include="Plattegrond.Designer.cs">
       <DependentUpon>Plattegrond.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reservering.cs" />
     <Compile Include="ReserveringSysteem.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -80,7 +80,7 @@ namespace ReserveringSysteem
 
         public void GetAllCampSites()
         {
-            ReadData("SELECT KampeerplaatsID, Prijs, MaxPersonen FROM KAMPEERPLAATS");
+            ReadData("SELECT k.KampeerplaatsID, Prijs, MaxPersonen FROM KAMPEERPLAATS k WHERE k.KampeerplaatsID NOT IN (SELECT v.KampeerplaatsID FROM verhuurdeplaats v) ORDER BY k.kampeerplaatsID");
 
             try
             {
@@ -91,8 +91,8 @@ namespace ReserveringSysteem
                     int maxOccupation;
 
                     id = dr.GetInt32(0);
-                    price = dr.GetDecimal(2);
-                    maxOccupation = dr.GetInt32(3);
+                    price = dr.GetDecimal(1);
+                    maxOccupation = dr.GetInt32(2);
 
                     Campsite newCampSite = new Campsite(id, price, maxOccupation);
 
@@ -110,9 +110,7 @@ namespace ReserveringSysteem
 
         public List<Item> GetAllItems()
         {
-
-
-            ReadData("SELECT * FROM MATERIAAL");
+            ReadData("SELECT * FROM MATERIAAL m WHERE m.materiaalID NOT IN (SELECT g.gereserveerdemateriaalID FROM gereserveerdemateriaal g) ORDER BY m.naam");
 
             try
             {
@@ -121,6 +119,7 @@ namespace ReserveringSysteem
                     string name;
                     decimal price;
                     int quantity = 0;
+
                     name = dr.GetString(2);
                     price = dr.GetDecimal(3);
 

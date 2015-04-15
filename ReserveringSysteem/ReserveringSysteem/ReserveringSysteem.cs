@@ -22,58 +22,58 @@ namespace ReserveringSysteem
         {
             InitializeComponent();
 
-            dgvKampeerplaats.Rows.Add("10","5","150");
-            dgvKampeerplaats.Rows.Add("20","5","150");
-            dgvKampeerplaats.Rows.Add("30","5","150");
-            dgvKampeerplaats.Rows.Add("40","7","200");
-            dgvKampeerplaats.Rows.Add("50","7","200");
-            dgvKampeerplaats.Rows.Add("60","7","200");
-            dgvKampeerplaats.Rows.Add("70", "7","200");
-
-            dgvMateriaal.Rows.Add("Stekkerdoos", "12", "0");
-            dgvMateriaal.Rows.Add("Camera", "24", "0");
-            dgvMateriaal.Rows.Add("Zaklamp", "33", "0");
-            dgvMateriaal.Rows.Add("Adapter", "6", "0");
-
             ((Control)this.tabpageDeelnemer).Enabled = false;
             ((Control)this.tabPageKampeerplaats).Enabled = false;
             ((Control)this.tabPageMateriaal).Enabled = false;
             ((Control)this.tabPageOverzicht).Enabled = false;
 
             databaseManager.GetAllCampSites();
+            databaseManager.GetAllItems();
             
-            RefreshData();
+            LoadDataBaseData();
         }
 
         public void RefreshData()
         {
             dgvDeelnemers.Rows.Clear();
-            
-            foreach(Campsite c in databaseManager.campSiteList)
-            {
-                dgvKampeerplaats.Rows.Add(c.CampsiteID, c.MaxOccupation,c.CampPrice);
-            }
-
-            foreach(Item i in databaseManager.itemList)
-            {
-               dgvMateriaal.Rows.Add(i.ItemName,i.ItemPrice,i.Quantity);
-            }
-
+           
             foreach(Visitor v in manager.visitors)
             {
                 dgvDeelnemers.Rows.Add(v.Name,v.Lastname,v.Email);
             }
         }
 
+        public void LoadDataBaseData()
+        {
+            foreach (Campsite c in databaseManager.campSiteList)
+            {
+                dgvKampeerplaats.Rows.Add(c.CampsiteID, c.MaxOccupation, c.CampPrice);
+            }
+
+            foreach (Item i in databaseManager.itemList)
+            {
+                dgvMateriaal.Rows.Add(i.ItemName, i.ItemPrice, i.Quantity);
+            }
+        }
+
         private void btDelToevoegen_Click(object sender, EventArgs e)
         {
-            string visvoornaam = tbVisVoornaam.Text;
-            string visachternaam = tbVisAchternaam.Text;
-            string visemail = tbVisEmail.Text;
+           string  visvoornaam = tbVisVoornaam.Text;
+           string visachternaam = tbVisAchternaam.Text;
+           string  visemail = tbVisEmail.Text;
 
-            Visitor visitor = new Visitor(visvoornaam, visachternaam, visemail);
-            manager.AddVisitor(visitor);
-            RefreshData();
+            if(string.IsNullOrWhiteSpace(tbVisVoornaam.Text)
+                || string.IsNullOrWhiteSpace(tbVisAchternaam.Text)
+                || string.IsNullOrWhiteSpace(tbVisEmail.Text))
+            {
+                MessageBox.Show("Niet alle velden zijn correct ingevuld");
+            }
+            else
+            {
+                Visitor visitor = new Visitor(visvoornaam, visachternaam, visemail);
+                manager.AddVisitor(visitor);    
+            }
+                RefreshData();
         }
 
         private void btResToDel_Click(object sender, EventArgs e)
@@ -95,6 +95,8 @@ namespace ReserveringSysteem
             currentSelectedTab = 3;
             ((Control)this.tabPageMateriaal).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabPageMateriaal;
+
+
         }
 
         private void btMatToOver_Click(object sender, EventArgs e)
@@ -145,7 +147,19 @@ namespace ReserveringSysteem
             string bookerCity = tbBookWoonplaats.Text;
             string bookerEmail = tbBookEmail.Text;
 
-            Booker booker = new Booker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
+            if (string.IsNullOrWhiteSpace(tbBookVoornaam.Text)
+                || string.IsNullOrWhiteSpace(tbBookAchternaam.Text)
+                || string.IsNullOrWhiteSpace(tbBookAdres.Text)
+                || string.IsNullOrWhiteSpace(tbBookPostcode.Text)
+                || string.IsNullOrWhiteSpace(tbBookWoonplaats.Text)
+                || string.IsNullOrWhiteSpace(tbBookEmail.Text))
+            {
+                MessageBox.Show("Ongeldige informatie van deelnemer");
+            }
+            else
+            {
+                Booker booker = new Booker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
+            }
         }
 
         private void pbCamping_Click(object sender, EventArgs e)
