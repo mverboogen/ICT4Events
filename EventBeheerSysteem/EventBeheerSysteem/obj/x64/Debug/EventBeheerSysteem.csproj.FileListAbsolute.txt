@@ -27,3 +27,4 @@ E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\x64\Debug\EventBehee
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\x64\Debug\EventBeheerSysteem.EbsHomeForm.resources
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\x64\Debug\EventBeheerSysteem.Properties.Resources.resources
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\x64\Debug\EventBeheerSysteem.csproj.GenerateResource.Cache
+E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\x64\Debug\EventBeheerSysteem.AddMember.resources

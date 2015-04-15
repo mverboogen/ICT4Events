@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBeheerSysteem
+namespace EventBeheerSysteem 
 {
-    class CampSite
+    class CampSite : IComparable<CampSite>
     {
         private int id;
         private string name;
@@ -89,6 +89,11 @@ namespace EventBeheerSysteem
         public override string ToString()
         {
             return Name;
+        }
+
+        public int CompareTo(CampSite campSite)
+        {
+            return id.CompareTo(campSite.ID);
         }
     }
 }

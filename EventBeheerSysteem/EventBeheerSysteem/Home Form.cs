@@ -12,13 +12,16 @@ namespace EventBeheerSysteem
 {
     public partial class EbsHomeForm : Form
     {
-        EventManager eventManager = new EventManager();
-        Event selectedEvent;
+        private EventManager eventManager = new EventManager();
+        private Event selectedEvent;
+        private Visitor selectedVisitor;
+        private Item selectedItem;
+        private CampSite selectedCampSite;
 
         public EbsHomeForm()
         {
             InitializeComponent();
-            RefreshList();
+            RefreshEventList();
             dgvEbsEvents.CurrentCell = null;
         }
 
@@ -36,7 +39,7 @@ namespace EventBeheerSysteem
 
                     eventManager.databaseHandler.AddEvent(eventName, beginDate, endDate, eventLocation);
                     eventManager.GetAllEvents();
-                    RefreshList();
+                    RefreshEventList();
                 }
             }
         }
@@ -46,9 +49,9 @@ namespace EventBeheerSysteem
             if (dgvEbsEvents.CurrentCell != null)
             {
                 selectedEvent = eventManager.GetEvent(Convert.ToInt32(dgvEbsEvents.CurrentRow.Cells[0].Value.ToString()));
-                eventManager.databaseHandler.DeleteEvent(selectedEvent.ID);
+                eventManager.databaseHandler.UpdateDisableEvent(selectedEvent.ID);
                 eventManager.GetAllEvents();
-                RefreshList();
+                RefreshEventList();
             }
         }
 
@@ -56,6 +59,11 @@ namespace EventBeheerSysteem
         {
             pnlEbsEvent.Visible = false;
             pnlEbsMain.Visible = true;
+
+            selectedEvent = null;
+            selectedVisitor = null;
+            selectedItem = null;
+            selectedCampSite = null;
         }
 
         /// <summary>
@@ -83,13 +91,13 @@ namespace EventBeheerSysteem
             
         }
 
-        private void RefreshList()
+        private void RefreshEventList()
         {
             dgvEbsEvents.Rows.Clear();
 
             foreach (Event currentEvent in eventManager.eventList)
             {
-                dgvEbsEvents.Rows.Add(currentEvent.ID, currentEvent.Name, currentEvent.Location, currentEvent.BeginDate.ToString("dd/mm/yyyy"), currentEvent.EndDate.ToString("dd/mm/yyyy"));
+                dgvEbsEvents.Rows.Add(currentEvent.ID, currentEvent.Name, currentEvent.Location, currentEvent.BeginDate.ToString("dd/MM/yyyy"), currentEvent.EndDate.ToString("dd/MM/yyyy"));
             }
         }
 
@@ -172,11 +180,11 @@ namespace EventBeheerSysteem
         {
             if(lboxEventVisitorsList.SelectedIndex != -1)
             {
-                Visitor selectedVisitor = lboxEventVisitorsList.SelectedItem as Visitor;
+                selectedVisitor = lboxEventVisitorsList.SelectedItem as Visitor;
                 if(selectedVisitor != null)
                 {
-                    tbEventVisitorsDetailsSurname.Text = selectedVisitor.VisitorBooker.Surname;
-                    tbEventVisitorsDetailsLastname.Text = selectedVisitor.VisitorBooker.Lastname;
+                    tbEventVisitorsDetailsSurname.Text = selectedVisitor.Surname;
+                    tbEventVisitorsDetailsLastname.Text = selectedVisitor.Lastname;
                     tbEventVisitorsDetailsStreet.Text = selectedVisitor.VisitorBooker.Address;
                     tbEventVisitorsDetailsZipcode.Text = selectedVisitor.VisitorBooker.Zipcode;
 
@@ -186,10 +194,25 @@ namespace EventBeheerSysteem
                     {
                         campSites += campSite.Name + ", ";
                     }
-
+                    if(campSites != "")
+                    {
+                        campSites = campSites.Substring(0, campSites.Length - 2);
+                    }
+                    
                     tbEventVisitorsDetailsCampNr.Text = campSites;
 
                     dtpEventVisitorsDetailsBookingDate.Value = selectedVisitor.VisitorReservation.ReservationDate;
+
+                    cboxEventVisitorsDetailsPaid.Checked = selectedVisitor.VisitorReservation.Payed;
+
+                    if(selectedVisitor.VisitorReservation.CheckinDate != null)
+                    {
+                        cboxEventVisitorsDetailsPresent.Checked = true;
+                    }
+                    else
+                    {
+                        cboxEventVisitorsDetailsPresent.Checked = false;
+                    }
 
                     lboxEventVisitorsDetailsMembers.Items.Clear();
                     lboxEventVisitorsDetailsMaterials.Items.Clear();
@@ -207,10 +230,90 @@ namespace EventBeheerSysteem
             }
         }
 
+        private void btnEventVisitorsDetailsAddMember_Click(object sender, EventArgs e)
+        {
+            using (var form = new AddMember())
+            {
+                var result = form.ShowDialog();
+                if(result == DialogResult.OK)
+                {
+                    int id = eventManager.databaseHandler.GetNewVisitorID(selectedEvent.ID);
+                    Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID);
+                    newVisitor.VisitorReservation = selectedVisitor.VisitorReservation;
+                    newVisitor.VisitorBooker = selectedVisitor.VisitorBooker;
+                    eventManager.databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, selectedEvent.ID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
+                    selectedVisitor.VisitorReservation.AddVisitor(newVisitor);
+
+                    eventManager.eventList[selectedEvent.ID - 1].visitorManager.AddVisitor(newVisitor);
+                    FillVisitorsTab();
+                    RefreshDetailMembers();
+                }
+            }
+            
+        }
+
+        private void btnEventVisitorsDetailsSave_Click(object sender, EventArgs e)
+        {
+            if (cboxEventVisitorsDetailsPresent.Checked != selectedVisitor.VisitorReservation.CheckinDate.HasValue)
+            {
+                selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
+                eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+            }
+            else
+            {
+                selectedVisitor.VisitorReservation.CheckinDate = null;
+                eventManager.databaseHandler.RemoveReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+            }
+        }
+
+        private void btnEventVisitorsDetailsDeleteMember_Click(object sender, EventArgs e)
+        {
+            if(lboxEventVisitorsDetailsMembers.SelectedIndex != -1)
+            {
+                Visitor lbVisitor = lboxEventVisitorsDetailsMembers.SelectedItem as Visitor;
+                if (lbVisitor != null)
+                {
+                    if (lbVisitor.ID != lbVisitor.BookerID)
+                    {
+                        eventManager.databaseHandler.DeleteVisitor(lbVisitor.VisitorReservation.ID, lbVisitor.ID);
+                        eventManager.eventList[selectedEvent.ID - 1].visitorManager.RemoveVisitor(lbVisitor);
+                        lbVisitor.VisitorReservation.VisitorList.Remove(lbVisitor);
+                        FillVisitorsTab();
+                        RefreshDetailMembers();
+                    }
+                    else
+                    {
+                        if (lbVisitor.VisitorReservation.VisitorList.Count == 1)
+                        {
+                            eventManager.databaseHandler.DeleteVisitor(lbVisitor.VisitorReservation.ID, lbVisitor.ID);
+                            eventManager.eventList[selectedEvent.ID - 1].visitorManager.RemoveVisitor(lbVisitor);
+                            lbVisitor.VisitorReservation.VisitorList.Remove(lbVisitor);
+                            FillVisitorsTab();
+                            RefreshDetailMembers();
+                        }
+                        else
+                        {
+                            MessageBox.Show("De deelnemer is een boeker, boeker kan alleen verwijdert worden als de overige deelnemers worden verwijdert");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RefreshDetailMembers()
+        {
+            lboxEventVisitorsDetailsMembers.Items.Clear();
+
+            foreach (Visitor visitor in selectedVisitor.VisitorReservation.VisitorList)
+            {
+                lboxEventVisitorsDetailsMembers.Items.Add(visitor);
+            }
+        }
+
         //TODO: Insert search function
 
         //----------------------------------------------------------------------------------------------------
-        //VISITORS TAB
+        //MATERIALS TAB
         //----------------------------------------------------------------------------------------------------
 
         private void FillMaterialsTab()
@@ -218,7 +321,18 @@ namespace EventBeheerSysteem
             lboxEventMaterialList.Items.Clear();
             foreach(Item item in selectedEvent.itemManager.itemList)
             {
-                lboxEventMaterialList.Items.Add(item);
+                bool exsists = false;
+                for (int i = 0; i < lboxEventMaterialList.Items.Count; i++)
+                {
+                    if (lboxEventMaterialList.Items[i].ToString() == item.Name)
+                    {
+                        exsists = true;
+                    }
+                }
+                if(!exsists)
+                {
+                    lboxEventMaterialList.Items.Add(item);
+                }
             }
         }
 
@@ -226,15 +340,15 @@ namespace EventBeheerSysteem
         {
             if(lboxEventMaterialList.SelectedIndex != -1)
             {
-                Item item = lboxEventMaterialList.SelectedItem as Item;
-                if(item != null)
+                selectedItem = lboxEventMaterialList.SelectedItem as Item;
+                if(selectedItem != null)
                 {
-                    tbEventMaterialDetailsName.Text = item.Name;
-                    tbEventMaterialDetailsDailyRent.Text = item.Price.ToString("N2");
-                    tbEventMaterialDetailsPrice.Text = item.NewPrice.ToString("N2");
+                    tbEventMaterialDetailsName.Text = selectedItem.Name;
+                    tbEventMaterialDetailsDailyRent.Text = selectedItem.Price.ToString("N2");
+                    tbEventMaterialDetailsPrice.Text = selectedItem.NewPrice.ToString("N2");
 
-                    int availible = eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, item.Name);
-                    int used = eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, item.Name);
+                    int availible = eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, selectedItem.Name);
+                    int used = eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name);
 
                     tbEventMaterialDetailsAvailable.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
                 }
@@ -258,24 +372,29 @@ namespace EventBeheerSysteem
         {
             if(lboxEventBedsList.SelectedIndex != -1)
             {
-                CampSite campSite = lboxEventBedsList.SelectedItem as CampSite;
-                if(campSite != null)
+                selectedCampSite = lboxEventBedsList.SelectedItem as CampSite;
+                if(selectedCampSite != null)
                 {
-                    tbEventBedsDetailsName.Text = campSite.Name;
-                    tbEventBedsDetailsPrice.Text = campSite.Price.ToString("N2");
-                    if(campSite.CampSiteReservation != null)
+                    tbEventBedsDetailsName.Text = selectedCampSite.Name;
+                    tbEventBedsDetailsPrice.Text = selectedCampSite.Price.ToString("N2");
+                    if(selectedCampSite.CampSiteReservation != null)
                     {
                         cboxEventBedsDetailsOcuppied.Checked = true;
-                        tbEventBedsDetailsRenter.Text = campSite.CampSiteReservation.Booker.Surname + " " + campSite.CampSiteReservation.Booker.Lastname;
+                        tbEventBedsDetailsRenter.Text = selectedCampSite.CampSiteReservation.Booker.Surname + " " + selectedCampSite.CampSiteReservation.Booker.Lastname;
                     }
                     else
                     {
                         cboxEventBedsDetailsOcuppied.Checked = false;
                     }
-                    tbEventBedsDetailsMaxRenters.Text = campSite.Occupation.ToString() + " / " + campSite.MaxOccupation.ToString();
+
+                    tbEventBedsDetailsMaxRenters.Text = selectedCampSite.Occupation.ToString() + " / " + selectedCampSite.MaxOccupation.ToString();
+
                 }
             }
         }
+
+
+
 
     }
 }

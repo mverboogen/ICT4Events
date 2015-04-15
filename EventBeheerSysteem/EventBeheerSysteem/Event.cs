@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Event
+    class Event : IComparable<Event>
     {
         private int id;
         private string name;
@@ -105,13 +105,7 @@ namespace EventBeheerSysteem
                 {
                     if (campSite.ReservationID == reservation.ID)
                     {
-                        foreach(CampSite knownCampSite in campsiteManager.campSiteList)
-                        {
-                            if(campSite.ID != knownCampSite.ID)
-                            {
-                                reservation.CampSiteList.Add(campSite);
-                            }
-                        }
+                        reservation.CampSiteList.Add(campSite);
                     }
                 }
 
@@ -125,6 +119,11 @@ namespace EventBeheerSysteem
                     }
                 } 
             }
+        }
+
+        public int CompareTo(Event e)
+        {
+            return id.CompareTo(e.ID);
         }
     }
 }

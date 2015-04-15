@@ -94,6 +94,12 @@
     <Compile Include="Add Event Form.designer.cs">
       <DependentUpon>Add Event Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddMember.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddMember.Designer.cs">
+      <DependentUpon>AddMember.cs</DependentUpon>
+    </Compile>
     <Compile Include="Booker.cs" />
     <Compile Include="CampSite.cs" />
     <Compile Include="CampSiteManager.cs" />
@@ -129,6 +135,9 @@
     <Compile Include="VisitorManager.cs" />
     <EmbeddedResource Include="Add Event Form.resx">
       <DependentUpon>Add Event Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddMember.resx">
+      <DependentUpon>AddMember.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home Form.resx">
       <DependentUpon>Home Form.cs</DependentUpon>

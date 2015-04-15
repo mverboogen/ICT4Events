@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Item
+    class Item : IComparable<Item>
     {
         private int id;
         private string name;
@@ -85,6 +85,11 @@ namespace EventBeheerSysteem
         public override string ToString()
         {
             return Name;
+        }
+
+        public int CompareTo(Item item)
+        {
+            return id.CompareTo(item.ID);
         }
     }
 }

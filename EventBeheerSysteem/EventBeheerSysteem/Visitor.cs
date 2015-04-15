@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Visitor
+    class Visitor : IComparable<Visitor>
     {
 
         protected int id;
@@ -92,5 +92,9 @@ namespace EventBeheerSysteem
             return Surname + " " + Lastname;
         }
 
+        public int CompareTo(Visitor visitor)
+        {
+            return id.CompareTo(visitor.ID);
+        }
     }
 }

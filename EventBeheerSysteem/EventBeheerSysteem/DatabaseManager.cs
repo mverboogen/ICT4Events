@@ -79,7 +79,7 @@ namespace EventBeheerSysteem
         {
             List<Event> eventList = new List<Event>();
 
-            ReadData("SELECT * FROM EVENT");
+            ReadData("SELECT * FROM EVENT WHERE Zichtbaar = 1");
 
             try
             {
@@ -152,6 +152,8 @@ namespace EventBeheerSysteem
                     campSiteList.Add(newCampSite);
                 }
 
+                campSiteList.Sort();
+
                 return campSiteList;
             }
             catch(InvalidCastException ex)
@@ -192,6 +194,8 @@ namespace EventBeheerSysteem
                     Item item = new Item(id, name, price, newPrice);
                     itemList.Add(item);
                 }
+
+                itemList.Sort();
 
                 return itemList;
                 
@@ -235,6 +239,9 @@ namespace EventBeheerSysteem
                     Visitor newVisitor = new Visitor(id, surname, lastname, email, bookerID, reservationID);
                     visitorList.Add(newVisitor);
                 }
+
+                visitorList.Sort();
+
                 return visitorList;
             }
             catch(InvalidCastException ex)
@@ -273,10 +280,32 @@ namespace EventBeheerSysteem
                     {
                         newReservation.ReservedItemID = dr.GetInt32(2);
                     }
+
+                    if(!dr.IsDBNull(5))
+                    {
+                        newReservation.CheckinDate = dr.GetDateTime(5);
+                    }
+
+                    if (!dr.IsDBNull(6))
+                    {
+                        newReservation.DepartDate = dr.GetDateTime(6);
+                    }
+
+                    if(dr.GetInt32(7) == 1)
+                    {
+                        newReservation.Payed = true;
+                    }
+                    else
+                    {
+                        newReservation.Payed = false;
+                    }
+
                     reservationList.Add(newReservation);
 
                     
                 }
+
+                reservationList.Sort();
 
                 return reservationList;
 
@@ -373,7 +402,7 @@ namespace EventBeheerSysteem
         {
             int visitorAmount = 0;
 
-            ReadData("SELECT COUNT(BezoekerID) FROM Bezoeker WHERE EventID = " + eventID.ToString());
+            ReadData("SELECT COUNT(*) + 1 FROM Bezoeker WHERE EventID = " + eventID.ToString());
 
             try
             {
@@ -388,6 +417,27 @@ namespace EventBeheerSysteem
             }
 
             return visitorAmount;
+        }
+
+        public int GetNewVisitorID(int eventID)
+        {
+            int newID = 0;
+
+            ReadData("SELECT COUNT(BezoekerID) + 1 FROM Bezoeker WHERE EventID = " + eventID.ToString());
+
+            try
+            {
+                while (dr.Read())
+                {
+                    newID = dr.GetInt32(0);
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            return newID;
         }
 
         /// <summary>
@@ -424,6 +474,12 @@ namespace EventBeheerSysteem
             return state;
         }
 
+        /// <summary>
+        /// An function to check how many items there are of a type by name
+        /// </summary>
+        /// <param name="eventID">For which event</param>
+        /// <param name="itemName">What item</param>
+        /// <returns>Returns an int containing the amount of items</returns>
         public int GetItemAmount(int eventID, string itemName)
         {
             int itemAmount = 0;
@@ -448,6 +504,12 @@ namespace EventBeheerSysteem
             return itemAmount;
         }
 
+        /// <summary>
+        /// An function to check how many items there are left of a type by name
+        /// </summary>
+        /// <param name="eventID">For which event</param>
+        /// <param name="itemName">What item</param>
+        /// <returns>Returns an in containg the amount of items left</returns>
         public int GetAviableItemAmount(int eventID, string itemName)
         {
             int availibleItemAmount = 0;
@@ -507,6 +569,43 @@ namespace EventBeheerSysteem
                 cmd.Parameters.Add("BeginDate", OracleDbType.Date).Value = beginDate;
                 cmd.Parameters.Add("EndDate", OracleDbType.Date).Value = endDate;
                 cmd.Parameters.Add("Location", OracleDbType.Varchar2).Value = location;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="visitorID"></param>
+        /// <param name="reservationID"></param>
+        /// <param name="eventID"></param>
+        /// <param name="surname"></param>
+        /// <param name="lastname"></param>
+        /// <param name="email"></param>
+        /// <param name="reserver"></param>
+        public void AddVisitor(int visitorID, int reservationID, int eventID, string surname, string lastname, string email, int reserver)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Bezoeker (BezoekerID, ReserveringID, EventID, Voornaam, Achternaam, Email, Reserveerder) VALUES (:VisitorID, :ReservationID, :EventID, :Surname, :Lastname, :Email, :Reserver)";
+                cmd.Parameters.Add("VisitorID", OracleDbType.Int32).Value = visitorID;
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("Surname", OracleDbType.Varchar2).Value = surname;
+                cmd.Parameters.Add("Lastname", OracleDbType.Varchar2).Value = lastname;
+                cmd.Parameters.Add("Email", OracleDbType.Varchar2).Value = email;
+                cmd.Parameters.Add("Reserver", OracleDbType.Int32).Value = reserver;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
             }
@@ -748,13 +847,17 @@ namespace EventBeheerSysteem
             }
         }
 
-        public void DeleteEvent(int eventID)
+        /// <summary>
+        /// Disables the event from visibility
+        /// </summary>
+        /// <param name="eventID"></param>
+        public void UpdateDisableEvent(int eventID)
         {
             try
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "DELETE FROM Event WHERE EventID = :EventID";
+                cmd.CommandText = "UPDATE Event SET Zichtbaar = 0 WHERE EventID = :EventID";
                 cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
@@ -768,5 +871,85 @@ namespace EventBeheerSysteem
                 MessageBox.Show(e.ToString());
             }
         }
+
+        /// <summary>
+        /// TODO: FILL IN
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <param name="reservationID"></param>
+        public void SetReservationCheckInDate(int eventID, int reservationID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET IncheckDatum = :IncheckDatum WHERE EventID = :EventID AND ReserveringID = :ReserveringID";
+                cmd.Parameters.Add("IncheckDatum", OracleDbType.Date).Value = System.DateTime.Now.Date;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("ReserveringID", OracleDbType.Int32).Value = reservationID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        /// <summary>
+        /// TODO: FILL IN
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <param name="reservationID"></param>
+        public void RemoveReservationCheckInDate(int eventID, int reservationID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET IncheckDatum = :IncheckDatum WHERE EventID = :EventID AND ReserveringID = :ReserveringID";
+                cmd.Parameters.Add("IncheckDatum", OracleDbType.Date).Value = null;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("ReserveringID", OracleDbType.Int32).Value = reservationID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void DeleteVisitor(int eventID, int visitorID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE Bezoeker WHERE EventID = :EventID AND BezoekerID = :VisitorID";
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("VisitorID", OracleDbType.Int32).Value = visitorID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        
     }
 }

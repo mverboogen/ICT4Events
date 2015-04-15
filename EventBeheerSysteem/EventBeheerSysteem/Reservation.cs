@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBeheerSysteem
 {
-    class Reservation
+    class Reservation : IComparable<Reservation>
     {
         private List<CampSite> campSiteList = new List<CampSite>();
         private List<Visitor> visitorList = new List<Visitor>();
@@ -17,8 +17,8 @@ namespace EventBeheerSysteem
         private int bookerID;
         private Booker booker;
         private DateTime reservationDate;
-        private DateTime checkinDate;
-        private DateTime departDate;
+        private DateTime? checkinDate;
+        private DateTime? departDate;
         private int reservedItemID;
         private decimal price;
         private int visitorAmount;
@@ -47,13 +47,13 @@ namespace EventBeheerSysteem
             set { reservationDate = value; }
         }
 
-        public DateTime CheckinDate
+        public DateTime? CheckinDate
         {
             get { return checkinDate; }
             set { checkinDate = value; }
         }
 
-        public DateTime DepartDate
+        public DateTime? DepartDate
         {
             get { return departDate; }
             set { departDate = value; }
@@ -126,5 +126,9 @@ namespace EventBeheerSysteem
             VisitorAmount = visitorList.Count;
         }
 
+        public int CompareTo(Reservation reservation)
+        {
+            return id.CompareTo(reservation.ID);
+        }
     }
 }

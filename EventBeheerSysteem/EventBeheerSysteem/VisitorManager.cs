@@ -13,16 +13,23 @@ namespace EventBeheerSysteem
 
         public void AddVisitor(Visitor visitor)
         {
-
-            foreach(Visitor selectedVisitor  in visitorList)
+            try
             {
-                if(selectedVisitor.ID == visitor.ID)
+                foreach (Visitor selectedVisitor in visitorList)
                 {
-                    throw new UsedIDException("Visitor ID " + visitor.ID + ", is already used. No visitor was added");
+                    if (selectedVisitor.ID == visitor.ID)
+                    {
+                        throw new UsedIDException("Visitor ID " + visitor.ID + ", is already used. No visitor was added");
+                    }
                 }
+
+                visitorList.Add(visitor);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
             }
 
-            visitorList.Add(visitor);
         }
 
         public void RemoveVisitor(Visitor visitor)
