@@ -254,15 +254,30 @@ namespace EventBeheerSysteem
 
         private void btnEventVisitorsDetailsSave_Click(object sender, EventArgs e)
         {
-            if (cboxEventVisitorsDetailsPresent.Checked != selectedVisitor.VisitorReservation.CheckinDate.HasValue)
+            if (cboxEventVisitorsDetailsPresent.Checked)
             {
-                selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
-                eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+                if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation.CheckinDate == null)
+                {
+                    selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
+                    eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+                }
             }
             else
             {
                 selectedVisitor.VisitorReservation.CheckinDate = null;
                 eventManager.databaseHandler.RemoveReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+            }
+
+            if(cboxEventVisitorsDetailsPaid.Checked && !selectedVisitor.VisitorReservation.Payed)
+            {
+                selectedVisitor.VisitorReservation.Payed = true;
+            }
+            else
+            {
+                if(selectedVisitor.VisitorReservation.Payed)
+                {
+                    selectedVisitor.VisitorReservation.Payed = false;
+                }
             }
         }
 
@@ -338,8 +353,6 @@ namespace EventBeheerSysteem
 
         private void ClearMaterialsDetailsTab()
         {
-            lboxEventMaterialList.SelectedIndex = -1;
-
             tbEventMaterialDetailsName.Clear();
             tbEventMaterialDetailsPrice.Clear();
             tbEventMaterialDetailsDailyRent.Clear();
@@ -351,6 +364,7 @@ namespace EventBeheerSysteem
         {
             if(lboxEventMaterialList.SelectedIndex != -1)
             {
+                ClearMaterialsDetailsTab();
                 selectedItem = lboxEventMaterialList.SelectedItem as Item;
                 if(selectedItem != null)
                 {
@@ -362,6 +376,17 @@ namespace EventBeheerSysteem
                     int used = eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name);
 
                     tbEventMaterialDetailsAvailable.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
+
+                    foreach(Item item in selectedEvent.itemManager.itemList)
+                    {
+                        if(item.Name == selectedItem.Name)
+                        {
+                            if(item.itemReservation != null)
+                            {
+                                lboxEventMaterialDetailsRentersList.Items.Add(item.itemReservation);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -423,8 +448,9 @@ namespace EventBeheerSysteem
                     selectedEvent.itemManager.RemoveItem(item);
                 }
 
-                FillMaterialsTab();
                 ClearMaterialsDetailsTab();
+                FillMaterialsTab();
+
             }
             else
             {
@@ -459,7 +485,31 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show("Selecteer een item eerst");
             }
-            
+        }
+
+        private void btnEventMaterialDetailsDeleteRenter_Click(object sender, EventArgs e)
+        {
+            if (lboxEventMaterialDetailsRentersList.SelectedIndex != -1)
+            {
+                Reservation reservation = lboxEventMaterialDetailsRentersList.SelectedItem as Reservation;
+                if (reservation != null)
+                {
+                    foreach (Item item in reservation.ItemList)
+                    {
+                        if (item.Name == selectedItem.Name)
+                        {
+                            item.ReservationID = null;
+                            item.itemReservation = null;
+                            reservation.ItemList.Remove(item);
+
+                            eventManager.databaseHandler.DeleteItemReservation(item.ID);
+                            ClearMaterialsDetailsTab();
+                            FillMaterialsTab();
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         //----------------------------------------------------------------------------------------------------
@@ -530,5 +580,7 @@ namespace EventBeheerSysteem
                 }
             }
         }
+
+
     }
 }

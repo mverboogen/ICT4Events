@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBeheerSysteem
+namespace MateriaalBeheerSysteem
 {
     public class Item : IComparable<Item>
     {

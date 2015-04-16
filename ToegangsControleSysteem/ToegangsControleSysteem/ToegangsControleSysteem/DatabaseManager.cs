@@ -10,7 +10,7 @@ using Oracle;
 using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
 
-namespace EventBeheerSysteem
+namespace ToegangsControleSysteem
 {
     public class DatabaseManager
     {
@@ -69,48 +69,6 @@ namespace EventBeheerSysteem
         {
             con.Close();
             con.Dispose();
-        }
-
-        /// <summary>
-        /// Retrieves all Events from the database
-        /// </summary>
-        /// <returns>A list with all Events</returns>
-        public List<Event> GetEvents()
-        {
-            List<Event> eventList = new List<Event>();
-
-            ReadData("SELECT * FROM EVENT WHERE Zichtbaar = 1");
-
-            try
-            {
-                while (dr.Read())
-                {
-                    int id;
-                    string name;
-                    string location;
-                    DateTime beginDate = new DateTime();
-                    DateTime endDate = new DateTime();
-
-                    id = dr.GetInt32(0);
-                    name = Convert.ToString(dr.GetValue(1));
-                    beginDate = dr.GetDateTime(2);
-                    endDate = dr.GetDateTime(3);
-                    location = dr.GetString(4);
-
-                    Event newEvent = new Event(id, location, beginDate, endDate, this);
-                    newEvent.Name = name;
-
-                    eventList.Add(newEvent);
-                }
-
-                return eventList;
-            }
-            catch(InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -682,11 +640,11 @@ namespace EventBeheerSysteem
             }
             catch (OracleException OE)
             {
-                MessageBox.Show(OE.ToString());
+                MessageBox.Show(OE.Message);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(e.Message);
             }
         }
 

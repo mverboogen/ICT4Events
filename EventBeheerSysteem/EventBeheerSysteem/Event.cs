@@ -96,6 +96,9 @@ namespace EventBeheerSysteem
                             if(itemID == item.ID)
                             {
                                 reservation.ItemList.Add(item);
+                                item.itemReservation = reservation;
+                                item.ReservationID = reservation.ID;
+                                break;
                             }
                         }
                     }

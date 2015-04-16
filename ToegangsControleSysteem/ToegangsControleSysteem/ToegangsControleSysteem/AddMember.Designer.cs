@@ -1,4 +1,4 @@
-﻿namespace EventBeheerSysteem
+﻿namespace ToegangsControleSysteem
 {
     partial class AddMember
     {
