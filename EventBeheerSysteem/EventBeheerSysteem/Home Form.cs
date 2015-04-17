@@ -65,6 +65,8 @@ namespace EventBeheerSysteem
             selectedItem = null;
             selectedCampSite = null;
 
+            tabEvent.SelectTab(0);
+
             eventManager.GetAllEvents();
             RefreshEventList();
         }
@@ -84,7 +86,14 @@ namespace EventBeheerSysteem
                 selectedEvent = eventManager.GetEvent(Convert.ToInt32(dgvEbsEvents.CurrentRow.Cells[0].Value.ToString()));
                 selectedEvent.ReservationsOpen = eventManager.databaseHandler.GetReservationState(selectedEvent.ID);
 
-                selectedEvent.LoadData();
+                try
+                {
+                    selectedEvent.LoadData();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
                 FillEventDetailsTab();
                 FillVisitorsTab();
@@ -284,64 +293,57 @@ namespace EventBeheerSysteem
 
         private void btnEventVisitorsDetailsAddMember_Click(object sender, EventArgs e)
         {
-            using (var form = new AddMember())
+            if(lboxEventVisitorsList.SelectedIndex != -1)
             {
-                var result = form.ShowDialog();
-                if(result == DialogResult.OK)
+                using (var form = new AddMember())
                 {
-                    int id = eventManager.databaseHandler.GetNewVisitorID(selectedEvent.ID);
-                    Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID, form.rfid);
-                    newVisitor.VisitorReservation = selectedVisitor.VisitorReservation;
-                    newVisitor.VisitorBooker = selectedVisitor.VisitorBooker;
-                    eventManager.databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, selectedEvent.ID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
-                    selectedVisitor.VisitorReservation.AddVisitor(newVisitor);
+                    var result = form.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        int id = eventManager.databaseHandler.GetNewVisitorID(selectedEvent.ID);
+                        Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID, "");
+                        newVisitor.VisitorReservation = selectedVisitor.VisitorReservation;
+                        newVisitor.VisitorBooker = selectedVisitor.VisitorBooker;
+                        eventManager.databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, selectedEvent.ID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
+                        selectedVisitor.VisitorReservation.AddVisitor(newVisitor);
 
-                    selectedEvent.visitorManager.AddVisitor(newVisitor);
-                    FillVisitorsTab();
-                    RefreshDetailMembers();
+                        selectedEvent.visitorManager.AddVisitor(newVisitor);
+                        FillVisitorsTab();
+                        RefreshDetailMembers();
+                    }
                 }
             }
-            
         }
 
         private void btnEventVisitorsDetailsSave_Click(object sender, EventArgs e)
         {
-
-            //TODO: Check this
             if (cboxEventVisitorsDetailsPaid.Checked && !selectedVisitor.VisitorReservation.Payed)
             {
-                selectedVisitor.VisitorReservation.Payed = true;
+                selectedVisitor.VisitorReservation.Payed = cboxEventVisitorsDetailsPaid.Checked;
                 eventManager.databaseHandler.SetReservationPayement(selectedEvent.ID, selectedVisitor.VisitorReservation.ID, cboxEventVisitorsDetailsPaid.Checked);
             }
-            else
+            else if (!cboxEventVisitorsDetailsPaid.Checked && selectedVisitor.VisitorReservation.Payed)
             {
-                if (selectedVisitor.VisitorReservation.Payed)
-                {
-                    selectedVisitor.VisitorReservation.Payed = false;
-                    eventManager.databaseHandler.SetReservationPayement(selectedEvent.ID, selectedVisitor.VisitorReservation.ID, cboxEventVisitorsDetailsPaid.Checked);
-                }
+                selectedVisitor.VisitorReservation.Payed = cboxEventVisitorsDetailsPaid.Checked;
+                eventManager.databaseHandler.SetReservationPayement(selectedEvent.ID, selectedVisitor.VisitorReservation.ID, cboxEventVisitorsDetailsPaid.Checked);
             }
 
-            if (cboxEventVisitorsDetailsPresent.Checked)
+            if (cboxEventVisitorsDetailsPresent.Checked && !selectedVisitor.VisitorReservation.Payed)
             {
-                if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation.CheckinDate == null)
-                {
-                    if(selectedVisitor.VisitorReservation.Payed)
-                    {
-                        selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
-                        eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Bezoeker heeft nog niet betaalt");
-                        FillVisitorDetailsTab();
-                    }
-                }
+                MessageBox.Show("Reservering heeft nog niet betaalt!");
             }
             else
             {
-                selectedVisitor.VisitorReservation.CheckinDate = null;
-                eventManager.databaseHandler.RemoveReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+                if (cboxEventVisitorsDetailsPresent.Checked && (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation == null))
+                {
+                    selectedVisitor.VisitorReservation.CheckinDate = DateTime.Now;
+                    eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+                }
+                else if (!cboxEventVisitorsDetailsPresent.Checked && selectedVisitor.VisitorReservation.CheckinDate.HasValue)
+                {
+                    selectedVisitor.VisitorReservation.CheckinDate = null;
+                    eventManager.databaseHandler.RemoveReservationCheckInDate(selectedEvent.ID, selectedVisitor.ReservationID);
+                }
             }
         }
 
@@ -552,7 +554,7 @@ namespace EventBeheerSysteem
         {
             if(lboxEventMaterialList.SelectedIndex != -1)
             {
-                using (var form = new AddItemToReservation(eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, selectedItem.Name), selectedEvent.reservationManager.reservationList))
+                using (var form = new AddItemToReservation(eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name), selectedEvent.reservationManager.reservationList))
                 {
 
                     var result = form.ShowDialog();

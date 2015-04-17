@@ -57,6 +57,7 @@
             this.lblEventDetailsName = new System.Windows.Forms.Label();
             this.tabEventDeelnemers = new System.Windows.Forms.TabPage();
             this.gboxEventVisitorsDetails = new System.Windows.Forms.GroupBox();
+            this.btnEventVisitorsDetailsRFID = new System.Windows.Forms.Button();
             this.tbEventVisitorsDetailsRFID = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnEventVisitorsDetailsSave = new System.Windows.Forms.Button();
@@ -120,7 +121,6 @@
             this.lboxEventBedsList = new System.Windows.Forms.ListBox();
             this.lblEventBeds = new System.Windows.Forms.Label();
             this.pnlEbsMain = new System.Windows.Forms.Panel();
-            this.btnEventVisitorsDetailsRFID = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEbsEvents)).BeginInit();
             this.pnlEbsEvent.SuspendLayout();
             this.tabEvent.SuspendLayout();
@@ -459,6 +459,16 @@
             this.gboxEventVisitorsDetails.TabIndex = 3;
             this.gboxEventVisitorsDetails.TabStop = false;
             this.gboxEventVisitorsDetails.Text = "Details";
+            // 
+            // btnEventVisitorsDetailsRFID
+            // 
+            this.btnEventVisitorsDetailsRFID.Location = new System.Drawing.Point(218, 215);
+            this.btnEventVisitorsDetailsRFID.Name = "btnEventVisitorsDetailsRFID";
+            this.btnEventVisitorsDetailsRFID.Size = new System.Drawing.Size(88, 23);
+            this.btnEventVisitorsDetailsRFID.TabIndex = 35;
+            this.btnEventVisitorsDetailsRFID.Text = "RFID";
+            this.btnEventVisitorsDetailsRFID.UseVisualStyleBackColor = true;
+            this.btnEventVisitorsDetailsRFID.Click += new System.EventHandler(this.btnEventVisitorsDetailsRFID_Click);
             // 
             // tbEventVisitorsDetailsRFID
             // 
@@ -1050,16 +1060,6 @@
             this.pnlEbsMain.Name = "pnlEbsMain";
             this.pnlEbsMain.Size = new System.Drawing.Size(784, 561);
             this.pnlEbsMain.TabIndex = 5;
-            // 
-            // btnEventVisitorsDetailsRFID
-            // 
-            this.btnEventVisitorsDetailsRFID.Location = new System.Drawing.Point(218, 215);
-            this.btnEventVisitorsDetailsRFID.Name = "btnEventVisitorsDetailsRFID";
-            this.btnEventVisitorsDetailsRFID.Size = new System.Drawing.Size(88, 23);
-            this.btnEventVisitorsDetailsRFID.TabIndex = 35;
-            this.btnEventVisitorsDetailsRFID.Text = "RFID";
-            this.btnEventVisitorsDetailsRFID.UseVisualStyleBackColor = true;
-            this.btnEventVisitorsDetailsRFID.Click += new System.EventHandler(this.btnEventVisitorsDetailsRFID_Click);
             // 
             // EbsHomeForm
             // 

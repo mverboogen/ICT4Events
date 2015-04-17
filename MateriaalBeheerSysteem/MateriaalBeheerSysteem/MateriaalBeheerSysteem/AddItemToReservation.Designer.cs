@@ -59,7 +59,7 @@
             this.dtpReservationDate.Location = new System.Drawing.Point(144, 148);
             this.dtpReservationDate.Name = "dtpReservationDate";
             this.dtpReservationDate.Size = new System.Drawing.Size(243, 20);
-            this.dtpReservationDate.TabIndex = 43;
+            this.dtpReservationDate.TabIndex = 5;
             // 
             // tbCampSites
             // 
@@ -67,7 +67,7 @@
             this.tbCampSites.Name = "tbCampSites";
             this.tbCampSites.ReadOnly = true;
             this.tbCampSites.Size = new System.Drawing.Size(243, 20);
-            this.tbCampSites.TabIndex = 42;
+            this.tbCampSites.TabIndex = 4;
             // 
             // tbZipcode
             // 
@@ -75,7 +75,7 @@
             this.tbZipcode.Name = "tbZipcode";
             this.tbZipcode.ReadOnly = true;
             this.tbZipcode.Size = new System.Drawing.Size(244, 20);
-            this.tbZipcode.TabIndex = 41;
+            this.tbZipcode.TabIndex = 3;
             // 
             // tbAddress
             // 
@@ -83,7 +83,7 @@
             this.tbAddress.Name = "tbAddress";
             this.tbAddress.ReadOnly = true;
             this.tbAddress.Size = new System.Drawing.Size(244, 20);
-            this.tbAddress.TabIndex = 40;
+            this.tbAddress.TabIndex = 2;
             // 
             // tbLastname
             // 
@@ -91,7 +91,7 @@
             this.tbLastname.Name = "tbLastname";
             this.tbLastname.ReadOnly = true;
             this.tbLastname.Size = new System.Drawing.Size(243, 20);
-            this.tbLastname.TabIndex = 39;
+            this.tbLastname.TabIndex = 1;
             // 
             // tbSurname
             // 
@@ -99,7 +99,7 @@
             this.tbSurname.Name = "tbSurname";
             this.tbSurname.ReadOnly = true;
             this.tbSurname.Size = new System.Drawing.Size(243, 20);
-            this.tbSurname.TabIndex = 38;
+            this.tbSurname.TabIndex = 0;
             // 
             // lboxMembers
             // 
@@ -107,7 +107,7 @@
             this.lboxMembers.Location = new System.Drawing.Point(97, 176);
             this.lboxMembers.Name = "lboxMembers";
             this.lboxMembers.Size = new System.Drawing.Size(290, 95);
-            this.lboxMembers.TabIndex = 37;
+            this.lboxMembers.TabIndex = 13;
             // 
             // lblEventVisitorsDetailsMembers
             // 
@@ -115,7 +115,7 @@
             this.lblEventVisitorsDetailsMembers.Location = new System.Drawing.Point(6, 177);
             this.lblEventVisitorsDetailsMembers.Name = "lblEventVisitorsDetailsMembers";
             this.lblEventVisitorsDetailsMembers.Size = new System.Drawing.Size(40, 13);
-            this.lblEventVisitorsDetailsMembers.TabIndex = 36;
+            this.lblEventVisitorsDetailsMembers.TabIndex = 12;
             this.lblEventVisitorsDetailsMembers.Text = "Leden:";
             // 
             // lblEventVisitorsDetailsBookingDate
@@ -124,7 +124,7 @@
             this.lblEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(6, 153);
             this.lblEventVisitorsDetailsBookingDate.Name = "lblEventVisitorsDetailsBookingDate";
             this.lblEventVisitorsDetailsBookingDate.Size = new System.Drawing.Size(101, 13);
-            this.lblEventVisitorsDetailsBookingDate.TabIndex = 35;
+            this.lblEventVisitorsDetailsBookingDate.TabIndex = 11;
             this.lblEventVisitorsDetailsBookingDate.Text = "Reserveringsdatum:";
             // 
             // lblCampSites
@@ -133,7 +133,7 @@
             this.lblCampSites.Location = new System.Drawing.Point(6, 123);
             this.lblCampSites.Name = "lblCampSites";
             this.lblCampSites.Size = new System.Drawing.Size(80, 13);
-            this.lblCampSites.TabIndex = 34;
+            this.lblCampSites.TabIndex = 10;
             this.lblCampSites.Text = "Kampeerplaats:";
             // 
             // lblZipcode
@@ -142,7 +142,7 @@
             this.lblZipcode.Location = new System.Drawing.Point(6, 98);
             this.lblZipcode.Name = "lblZipcode";
             this.lblZipcode.Size = new System.Drawing.Size(55, 13);
-            this.lblZipcode.TabIndex = 33;
+            this.lblZipcode.TabIndex = 9;
             this.lblZipcode.Text = "Postcode:";
             // 
             // lblAddress
@@ -151,7 +151,7 @@
             this.lblAddress.Location = new System.Drawing.Point(6, 73);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(37, 13);
-            this.lblAddress.TabIndex = 32;
+            this.lblAddress.TabIndex = 8;
             this.lblAddress.Text = "Adres:";
             // 
             // lblLastname
@@ -160,7 +160,7 @@
             this.lblLastname.Location = new System.Drawing.Point(6, 46);
             this.lblLastname.Name = "lblLastname";
             this.lblLastname.Size = new System.Drawing.Size(67, 13);
-            this.lblLastname.TabIndex = 31;
+            this.lblLastname.TabIndex = 7;
             this.lblLastname.Text = "Achternaam:";
             // 
             // lblSurname
@@ -169,7 +169,7 @@
             this.lblSurname.Location = new System.Drawing.Point(6, 16);
             this.lblSurname.Name = "lblSurname";
             this.lblSurname.Size = new System.Drawing.Size(58, 13);
-            this.lblSurname.TabIndex = 30;
+            this.lblSurname.TabIndex = 6;
             this.lblSurname.Text = "Voornaam:";
             // 
             // gbDetails
@@ -191,7 +191,7 @@
             this.gbDetails.Location = new System.Drawing.Point(325, 12);
             this.gbDetails.Name = "gbDetails";
             this.gbDetails.Size = new System.Drawing.Size(402, 278);
-            this.gbDetails.TabIndex = 44;
+            this.gbDetails.TabIndex = 0;
             this.gbDetails.TabStop = false;
             this.gbDetails.Text = "Details";
             // 
@@ -200,7 +200,7 @@
             this.numAmount.Location = new System.Drawing.Point(494, 347);
             this.numAmount.Name = "numAmount";
             this.numAmount.Size = new System.Drawing.Size(133, 20);
-            this.numAmount.TabIndex = 45;
+            this.numAmount.TabIndex = 3;
             // 
             // lblAmount
             // 
@@ -208,7 +208,7 @@
             this.lblAmount.Location = new System.Drawing.Point(419, 349);
             this.lblAmount.Name = "lblAmount";
             this.lblAmount.Size = new System.Drawing.Size(40, 13);
-            this.lblAmount.TabIndex = 46;
+            this.lblAmount.TabIndex = 6;
             this.lblAmount.Text = "Aantal:";
             // 
             // btnCancel
@@ -217,7 +217,7 @@
             this.btnCancel.Location = new System.Drawing.Point(323, 344);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 47;
+            this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Annuleren";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -226,7 +226,7 @@
             this.btnOK.Location = new System.Drawing.Point(649, 344);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 48;
+            this.btnOK.TabIndex = 1;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -237,7 +237,7 @@
             this.label1.Location = new System.Drawing.Point(419, 317);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 49;
+            this.label1.TabIndex = 5;
             this.label1.Text = "Beschikbaar:";
             // 
             // tbAvailable
@@ -246,7 +246,7 @@
             this.tbAvailable.Name = "tbAvailable";
             this.tbAvailable.ReadOnly = true;
             this.tbAvailable.Size = new System.Drawing.Size(133, 20);
-            this.tbAvailable.TabIndex = 44;
+            this.tbAvailable.TabIndex = 4;
             // 
             // lboxReservations
             // 
@@ -254,7 +254,7 @@
             this.lboxReservations.Location = new System.Drawing.Point(12, 12);
             this.lboxReservations.Name = "lboxReservations";
             this.lboxReservations.Size = new System.Drawing.Size(305, 355);
-            this.lboxReservations.TabIndex = 50;
+            this.lboxReservations.TabIndex = 7;
             this.lboxReservations.SelectedIndexChanged += new System.EventHandler(this.lboxReservations_SelectedIndexChanged);
             // 
             // AddItemToReservation

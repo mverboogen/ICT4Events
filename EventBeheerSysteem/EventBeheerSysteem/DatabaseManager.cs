@@ -77,6 +77,8 @@ namespace EventBeheerSysteem
         /// <returns>A list with all Events</returns>
         public List<Event> GetEvents()
         {
+            Connect();
+
             List<Event> eventList = new List<Event>();
 
             ReadData("SELECT * FROM EVENT WHERE Zichtbaar = 1");
@@ -110,6 +112,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
         }
 
@@ -119,6 +123,8 @@ namespace EventBeheerSysteem
         /// <returns>A list with all Campsites</returns>
         public List<CampSite> GetAllCampSites(int eventID)
         {
+            Connect();
+
             List<CampSite> campSiteList = new List<CampSite>();
 
             ReadData("SELECT K.KampeerplaatsID, K.EventID, K.Prijs, K.MaxPersonen, K.Oppervlakte, K.KampeerType, V.ReserveringID FROM KAMPEERPLAATS K LEFT JOIN VERHUURDEPLAATS V ON K.KampeerplaatsID = V.KampeerplaatsID WHERE EventID = " + eventID.ToString());
@@ -161,6 +167,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
 
         }
@@ -171,6 +179,9 @@ namespace EventBeheerSysteem
         /// <returns>A list with all Items</returns>
         public List<Item> GetAllItems(int eventID)
         {
+
+            Connect();
+
             List<Item> itemList = new List<Item>();
 
             ReadData("SELECT * FROM MATERIAAL WHERE EventID = " + eventID.ToString());
@@ -205,6 +216,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
         }
 
@@ -214,6 +227,9 @@ namespace EventBeheerSysteem
         /// <returns>A list with all Visitors</returns>
         public List<Visitor> GetAllVisitors(int eventID)
         {
+
+            Connect();
+
             List<Visitor> visitorList = new List<Visitor>();
 
             ReadData("SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString());
@@ -222,23 +238,71 @@ namespace EventBeheerSysteem
             {
                 while(dr.Read())
                 {
-                    int id;
-                    string surname;
-                    string lastname;
-                    string email;
+                    int id = 0;
+                    string surname = "";
+                    string lastname = "";
+                    string email = "";
                     string rfid = "";
-                    int bookerID;
-                    int reservationID;
+                    int bookerID = 0;
+                    int reservationID = 0;
+                    
+                    if(!dr.IsDBNull(0))
+                    {
+                        id = dr.GetInt32(0);
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("ID is null");
+                    }
 
-                    id = dr.GetInt32(0);
-                    surname = dr.GetString(3);
-                    lastname = dr.GetString(4);
-                    email = Convert.ToString(dr.GetValue(5));
-                    bookerID = dr.GetInt32(7);
-                    reservationID = dr.GetInt32(1);
-                    if(!dr.IsDBNull(6))
+                    if (!dr.IsDBNull(1))
+                    {
+                        reservationID = dr.GetInt32(1);
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("reservationID is null");
+                    }
+
+                    if (!dr.IsDBNull(3))
+                    {
+                        surname = dr.GetString(3);
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("Surname is null");
+                    }
+
+                    if (!dr.IsDBNull(4))
+                    {
+                        lastname = dr.GetString(4);
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("Lastname is null");
+                    }
+
+                    if (!dr.IsDBNull(5))
+                    {
+                        email = Convert.ToString(dr.GetValue(5));
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("Email is null");
+                    }
+
+                    if (!dr.IsDBNull(6))
                     {
                         rfid = dr.GetString(6);
+                    }
+
+                    if (!dr.IsDBNull(7))
+                    {
+                        bookerID = dr.GetInt32(7);
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("BookerID is null");
                     }
 
                     Visitor newVisitor = new Visitor(id, surname, lastname, email, bookerID, reservationID, rfid);
@@ -254,6 +318,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
             
         }
@@ -264,6 +330,9 @@ namespace EventBeheerSysteem
         /// <returns>A list with all Reservations</returns>
         public List<Reservation> GetAllReservations(int eventID)
         {
+
+            Connect();
+
             List<Reservation> reservationList = new List<Reservation>();
 
             ReadData("SELECT * FROM RESERVERING WHERE EventID = " + eventID.ToString());
@@ -320,6 +389,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
         }
 
@@ -329,6 +400,7 @@ namespace EventBeheerSysteem
         /// <returns>A Booker Object</returns>
         public Booker GetBooker(int eventID, int reserveringsID)
         {
+            Connect();
 
             ReadData("SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString() + " AND ReserveringID = " + reserveringsID.ToString());
 
@@ -371,6 +443,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
         }
 
@@ -380,6 +454,9 @@ namespace EventBeheerSysteem
         /// <returns>A list with all Items that belong to the reservationID</returns>
         public List<int> GetReserverdItems(int eventID, int reservationID)
         {
+
+            Connect();
+
             List<int> intList = new List<int>();
 
             ReadData("SELECT M.MateriaalID FROM Materiaal M, Materiaal_Germateriaal MGM, GereserveerdeMateriaal GM, Reservering G WHERE M.MateriaalID = MGM.MateriaalID AND MGM.GereserveerdeMateriaalID = GM.GereserveerdeMateriaalID AND GM.GereserveerdeMateriaalID = " + reservationID.ToString() + "AND M.EventID = " + eventID.ToString() + "GROUP BY M.MateriaalID");
@@ -401,6 +478,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ex.ToString());
             }
 
+            Disconnect();
+
             return null;
         }
 
@@ -410,6 +489,9 @@ namespace EventBeheerSysteem
         /// <returns>Returns a integer</returns>
         public int GetVistiorAmount(int eventID)
         {
+
+            Connect();
+
             int visitorAmount = 0;
 
             ReadData("SELECT COUNT(*) FROM Bezoeker WHERE EventID = " + eventID.ToString());
@@ -426,11 +508,16 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return visitorAmount;
         }
 
         public int GetNewVisitorID(int eventID)
         {
+
+            Connect();
+            
             int newID = 0;
 
             ReadData("SELECT MAX(BezoekerID) + 1 FROM Bezoeker WHERE EventID = " + eventID.ToString());
@@ -447,6 +534,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return newID;
         }
 
@@ -456,6 +545,9 @@ namespace EventBeheerSysteem
         /// <returns>Returns a boolean</returns>
         public bool GetReservationState(int eventID)
         {
+
+            Connect();
+
             bool state = false;
             int reservationState = 0;
 
@@ -481,6 +573,8 @@ namespace EventBeheerSysteem
                 state = true;
             }
 
+            Disconnect();
+
             return state;
         }
 
@@ -492,6 +586,9 @@ namespace EventBeheerSysteem
         /// <returns>Returns an int containing the amount of items</returns>
         public int GetItemAmount(int eventID, string itemName)
         {
+
+            Connect();
+
             int itemAmount = 0;
 
             ReadData("SELECT COUNT(Naam) FROM MATERIAAL WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName.ToString() + "'");
@@ -511,11 +608,15 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return itemAmount;
         }
 
         public int GetnewItemID()
         {
+            Connect();
+
             int newID = 1;
 
             ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal");
@@ -535,6 +636,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return newID;
         }
 
@@ -546,6 +649,9 @@ namespace EventBeheerSysteem
         /// <returns>Returns an in containg the amount of items left</returns>
         public int GetAviableItemAmount(int eventID, string itemName)
         {
+
+            Connect();
+
             int availibleItemAmount = 0;
 
             ReadData("SELECT COUNT(*) FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '"+ itemName +"' AND MateriaalID IN (SELECT MateriaalID FROM Materiaal_GerMateriaal)");
@@ -565,12 +671,17 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return availibleItemAmount;
         }
 
 
         public int GetNewItemReservationID(int eventID)
         {
+
+            Connect();
+
             int newID = 1;
 
             ReadData("SELECT MAX(GereserveerdeMateriaalID) + 1 FROM GereserveerdeMateriaal WHERE EventID = " + eventID.ToString());
@@ -590,12 +701,17 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return newID;
         }
 
 
         public int GetNewCampSiteID()
         {
+
+            Connect();
+
             int newID = 1;
 
             ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats");
@@ -615,6 +731,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
+            Disconnect();
+
             return newID; 
         }
 
@@ -623,6 +741,8 @@ namespace EventBeheerSysteem
         /// </summary>
         public void AddEvent(string name, DateTime beginDate, DateTime endDate, string location)
         {
+
+            Connect();
 
             int eventID = 0;
 
@@ -664,6 +784,8 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
         }
 
         /// <summary>
@@ -678,6 +800,9 @@ namespace EventBeheerSysteem
         /// <param name="reserver"></param>
         public void AddVisitor(int visitorID, int reservationID, int eventID, string surname, string lastname, string email, int reserver)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -701,6 +826,8 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
         }
 
         /// <summary>
@@ -708,6 +835,9 @@ namespace EventBeheerSysteem
         /// </summary>
         public void AddCampSite(int eventID, decimal price, int maxPersons, int surfaceArea, int campType)
         {
+
+            Connect();
+
             int campSiteID = 1;
 
             ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats");
@@ -749,6 +879,9 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         /// <summary>
@@ -756,6 +889,8 @@ namespace EventBeheerSysteem
         /// </summary>
         public void AddItem(int eventID, string name, decimal price, decimal newPrice)
         {
+            Connect();
+
             int materialID = 0;
 
             ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal");
@@ -798,10 +933,15 @@ namespace EventBeheerSysteem
                 Console.WriteLine(e.ToString());
                 MessageBox.Show(e.Message);
             }
+
+            Disconnect();
         }
 
         public void AddItemReservationID(int eventID, int reservationID, int itemReservationID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -837,10 +977,16 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         public int AddItemToReservation(int eventID, int itemReservationID, string itemName)
         {
+
+            Connect();
+
             int itemID = 0;
             try
             {
@@ -887,11 +1033,16 @@ namespace EventBeheerSysteem
                 MessageBox.Show(e.Message);
             }
 
+            Disconnect();
+
             return itemID;
         }
 
         public void UpdateRFID(int eventID, int visitorID, string RFID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -910,6 +1061,8 @@ namespace EventBeheerSysteem
                 Console.WriteLine(e.ToString());
                 MessageBox.Show(e.Message);
             }
+
+            Disconnect();
         }
 
         /// <summary>
@@ -917,6 +1070,9 @@ namespace EventBeheerSysteem
         /// </summary>
         public void UpdateEventName(int eventID, string newEventName)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -936,6 +1092,8 @@ namespace EventBeheerSysteem
                 MessageBox.Show(e.ToString());
             }
 
+            Disconnect();
+
         }
 
         /// <summary>
@@ -943,6 +1101,9 @@ namespace EventBeheerSysteem
         /// </summary>
         public void UpdateEventLocation(int eventID, string newEventLocation)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -961,6 +1122,9 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         /// <summary>
@@ -968,6 +1132,9 @@ namespace EventBeheerSysteem
         /// </summary>
         public void UpdateEventReservationState(int eventID, bool newReservationState)
         {
+
+            Connect();
+
             int state = 0;
 
             if(newReservationState)
@@ -993,6 +1160,8 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
         }
 
         /// <summary>
@@ -1000,6 +1169,9 @@ namespace EventBeheerSysteem
         /// </summary>
         public void UpdateEventBeginDate(int eventID, DateTime newBeginDate)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1018,6 +1190,9 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         /// <summary>
@@ -1025,6 +1200,9 @@ namespace EventBeheerSysteem
         /// </summary>
         public void UpdateEventEndDate(int eventID, DateTime newEndDate)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1043,6 +1221,9 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         /// <summary>
@@ -1051,6 +1232,9 @@ namespace EventBeheerSysteem
         /// <param name="eventID"></param>
         public void UpdateDisableEvent(int eventID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1068,10 +1252,15 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         public void SetReservationPayement(int eventID, int reservationID, bool payment)
         {
+
+            Connect();
 
             int paymentValue = payment == true ? 1:0;
 
@@ -1095,6 +1284,8 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
         }
 
         /// <summary>
@@ -1104,6 +1295,9 @@ namespace EventBeheerSysteem
         /// <param name="reservationID"></param>
         public void SetReservationCheckInDate(int eventID, int reservationID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1123,6 +1317,9 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         /// <summary>
@@ -1132,6 +1329,9 @@ namespace EventBeheerSysteem
         /// <param name="reservationID"></param>
         public void RemoveReservationCheckInDate(int eventID, int reservationID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1151,10 +1351,16 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         public void DeleteItem(int eventID, string itemName)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1173,10 +1379,16 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
+
         }
 
         public void DeleteItemReservation(int itemID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1194,10 +1406,15 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.Message);
             }
+
+            Disconnect();
         }
 
         public void DeleteVisitor(int eventID, int visitorID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1216,10 +1433,15 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
+
+            Disconnect();
         }
 
         public void DeleteCampSite(int eventID, int campSiteID)
         {
+
+            Connect();
+
             try
             {
                 cmd = new OracleCommand();
@@ -1238,8 +1460,9 @@ namespace EventBeheerSysteem
             {
                 MessageBox.Show(e.ToString());
             }
-        }
 
-        
+            Disconnect();
+
+        }        
     }
 }

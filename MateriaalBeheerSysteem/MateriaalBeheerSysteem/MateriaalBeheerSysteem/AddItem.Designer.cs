@@ -48,7 +48,7 @@
             this.tbName.Location = new System.Drawing.Point(139, 15);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(256, 20);
-            this.tbName.TabIndex = 17;
+            this.tbName.TabIndex = 0;
             // 
             // lblEventMaterialDetailsDailyrent
             // 
@@ -56,7 +56,7 @@
             this.lblEventMaterialDetailsDailyrent.Location = new System.Drawing.Point(12, 75);
             this.lblEventMaterialDetailsDailyrent.Name = "lblEventMaterialDetailsDailyrent";
             this.lblEventMaterialDetailsDailyrent.Size = new System.Drawing.Size(72, 13);
-            this.lblEventMaterialDetailsDailyrent.TabIndex = 16;
+            this.lblEventMaterialDetailsDailyrent.TabIndex = 7;
             this.lblEventMaterialDetailsDailyrent.Text = "Huur per dag:";
             // 
             // lblEventMaterialDetailsPrice
@@ -65,7 +65,7 @@
             this.lblEventMaterialDetailsPrice.Location = new System.Drawing.Point(12, 45);
             this.lblEventMaterialDetailsPrice.Name = "lblEventMaterialDetailsPrice";
             this.lblEventMaterialDetailsPrice.Size = new System.Drawing.Size(29, 13);
-            this.lblEventMaterialDetailsPrice.TabIndex = 15;
+            this.lblEventMaterialDetailsPrice.TabIndex = 8;
             this.lblEventMaterialDetailsPrice.Text = "Prijs:";
             // 
             // lblEventMaterialDetailsName
@@ -74,20 +74,20 @@
             this.lblEventMaterialDetailsName.Location = new System.Drawing.Point(12, 15);
             this.lblEventMaterialDetailsName.Name = "lblEventMaterialDetailsName";
             this.lblEventMaterialDetailsName.Size = new System.Drawing.Size(38, 13);
-            this.lblEventMaterialDetailsName.TabIndex = 14;
+            this.lblEventMaterialDetailsName.TabIndex = 9;
             this.lblEventMaterialDetailsName.Text = "Naam:";
             // 
             // numAmount
             // 
             this.numAmount.Location = new System.Drawing.Point(139, 101);
             this.numAmount.Maximum = new decimal(new int[] {
-            500,
+            50000,
             0,
             0,
             0});
             this.numAmount.Name = "numAmount";
             this.numAmount.Size = new System.Drawing.Size(255, 20);
-            this.numAmount.TabIndex = 20;
+            this.numAmount.TabIndex = 3;
             // 
             // label1
             // 
@@ -95,7 +95,7 @@
             this.label1.Location = new System.Drawing.Point(12, 103);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 13);
-            this.label1.TabIndex = 21;
+            this.label1.TabIndex = 6;
             this.label1.Text = "Aantal:";
             // 
             // btnCancel
@@ -104,17 +104,16 @@
             this.btnCancel.Location = new System.Drawing.Point(320, 140);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 22;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Annuleren";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Location = new System.Drawing.Point(15, 140);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 23;
+            this.btnOK.TabIndex = 4;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -130,7 +129,7 @@
             0});
             this.numRentPrice.Name = "numRentPrice";
             this.numRentPrice.Size = new System.Drawing.Size(256, 20);
-            this.numRentPrice.TabIndex = 24;
+            this.numRentPrice.TabIndex = 2;
             // 
             // numPrice
             // 
@@ -143,7 +142,7 @@
             0});
             this.numPrice.Name = "numPrice";
             this.numPrice.Size = new System.Drawing.Size(255, 20);
-            this.numPrice.TabIndex = 25;
+            this.numPrice.TabIndex = 1;
             // 
             // AddItem
             // 

@@ -242,30 +242,33 @@ namespace ToegangsControleSysteem
 
         private void btnVisitorSave_Click(object sender, EventArgs e)
         {
-            if (cboxVisitorPresent.Checked)
+
+            if(cboxVisitorPayed.Checked && !selectedVisitor.VisitorReservation.Payed)
             {
-                if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation.CheckinDate == null)
+                selectedVisitor.VisitorReservation.Payed = cboxVisitorPayed.Checked;
+                databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, cboxVisitorPayed.Checked);
+            }
+            else if(!cboxVisitorPayed.Checked && selectedVisitor.VisitorReservation.Payed)
+            {
+                selectedVisitor.VisitorReservation.Payed = cboxVisitorPayed.Checked;
+                databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, cboxVisitorPayed.Checked);
+            }
+
+            if(cboxVisitorPresent.Checked && !selectedVisitor.VisitorReservation.Payed)
+            {
+                MessageBox.Show("Reservering heeft nog niet betaalt!");
+            }
+            else
+            {
+                if(cboxVisitorPresent.Checked && (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation == null))
                 {
-                    selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
+                    selectedVisitor.VisitorReservation.CheckinDate = DateTime.Now;
                     databaseHandler.SetReservationCheckInDate(eventID, selectedVisitor.VisitorReservation.ID);
                 }
-            }
-            else
-            {
-                selectedVisitor.VisitorReservation.CheckinDate = null;
-                databaseHandler.RemoveReservationCheckInDate(eventID, selectedVisitor.VisitorReservation.ID);
-            }
-
-
-            if (cboxVisitorPresent.Checked && !selectedVisitor.VisitorReservation.Payed)
-            {
-                selectedVisitor.VisitorReservation.Payed = true;
-            }
-            else
-            {
-                if (selectedVisitor.VisitorReservation.Payed)
+                else if (!cboxVisitorPresent.Checked && selectedVisitor.VisitorReservation.CheckinDate.HasValue)
                 {
-                    selectedVisitor.VisitorReservation.Payed = false;
+                    selectedVisitor.VisitorReservation.CheckinDate = null;
+                    databaseHandler.RemoveReservationCheckInDate(eventID, selectedVisitor.ReservationID);
                 }
             }
 
@@ -315,23 +318,23 @@ namespace ToegangsControleSysteem
 
         private void btnVisitorAdd_Click(object sender, EventArgs e)
         {
-            using (var form = new AddMember())
+            if (selectedVisitor != null)
             {
-                var result = form.ShowDialog();
-                if (result == DialogResult.OK)
+                using (var form = new AddMember())
                 {
-                    int id = databaseHandler.GetNewVisitorID(eventID);
-                    Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID);
-                    newVisitor.VisitorReservation = selectedVisitor.VisitorReservation;
-                    newVisitor.VisitorBooker = selectedVisitor.VisitorBooker;
-                    databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, eventID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
-                    selectedVisitor.VisitorReservation.AddVisitor(newVisitor);
+                    var result = form.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        int id = databaseHandler.GetNewVisitorID(eventID);
+                        Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID, "");
+                        newVisitor.VisitorReservation = selectedVisitor.VisitorReservation;
+                        newVisitor.VisitorBooker = selectedVisitor.VisitorBooker;
+                        databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, eventID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
+                        selectedVisitor.VisitorReservation.AddVisitor(newVisitor);
 
-                    visitorManager.AddVisitor(newVisitor);
-                    lboxAllVisitors.Items.Clear();
-                    lboxCheckedInVisitors.Items.Clear();
-                    FillData();
-                    RefreshDetailMembers();
+                        visitorManager.AddVisitor(newVisitor);
+                        RefreshDetailMembers();
+                    }
                 }
             }
         }

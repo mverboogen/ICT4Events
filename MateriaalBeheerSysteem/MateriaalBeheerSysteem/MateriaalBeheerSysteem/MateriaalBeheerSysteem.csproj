@@ -84,13 +84,13 @@
     <Compile Include="CampSite.cs" />
     <Compile Include="CampSiteManager.cs" />
     <Compile Include="DatabaseManager.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Materiaal Beheer Systeem.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Materiaal Beheer Systeem.Designer.cs">
       <DependentUpon>Materiaal Beheer Systeem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Item.cs" />
     <Compile Include="ItemManager.cs" />
     <Compile Include="NoCampsiteException.cs" />
     <Compile Include="NoItemException.cs" />

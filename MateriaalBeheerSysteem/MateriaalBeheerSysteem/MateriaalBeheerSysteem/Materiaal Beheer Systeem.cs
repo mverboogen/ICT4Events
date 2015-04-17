@@ -155,7 +155,7 @@ namespace MateriaalBeheerSysteem
                 {
                     for (int i = 0; i < form.amount; i++)
                     {
-                        int id = databaseHandler.GetnewItemID(eventID);
+                        int id = databaseHandler.GetnewItemID();
 
                         Item newItem = new Item(id, form.name, form.rentPrice, form.price);
                         itemManager.AddItem(newItem);

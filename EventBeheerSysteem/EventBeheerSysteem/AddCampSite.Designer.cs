@@ -59,7 +59,7 @@
             this.gboxEventBedsDetails.Location = new System.Drawing.Point(12, 12);
             this.gboxEventBedsDetails.Name = "gboxEventBedsDetails";
             this.gboxEventBedsDetails.Size = new System.Drawing.Size(333, 123);
-            this.gboxEventBedsDetails.TabIndex = 5;
+            this.gboxEventBedsDetails.TabIndex = 0;
             this.gboxEventBedsDetails.TabStop = false;
             this.gboxEventBedsDetails.Text = "Info";
             // 
@@ -67,13 +67,13 @@
             // 
             this.numAmount.Location = new System.Drawing.Point(116, 95);
             this.numAmount.Maximum = new decimal(new int[] {
-            50,
+            500,
             0,
             0,
             0});
             this.numAmount.Name = "numAmount";
             this.numAmount.Size = new System.Drawing.Size(211, 20);
-            this.numAmount.TabIndex = 13;
+            this.numAmount.TabIndex = 3;
             // 
             // label1
             // 
@@ -81,7 +81,7 @@
             this.label1.Location = new System.Drawing.Point(15, 97);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 13);
-            this.label1.TabIndex = 12;
+            this.label1.TabIndex = 7;
             this.label1.Text = "Aantal:";
             // 
             // numSurfaceArea
@@ -89,7 +89,7 @@
             this.numSurfaceArea.Location = new System.Drawing.Point(116, 69);
             this.numSurfaceArea.Name = "numSurfaceArea";
             this.numSurfaceArea.Size = new System.Drawing.Size(211, 20);
-            this.numSurfaceArea.TabIndex = 11;
+            this.numSurfaceArea.TabIndex = 2;
             // 
             // lblSurfaceArea
             // 
@@ -97,7 +97,7 @@
             this.lblSurfaceArea.Location = new System.Drawing.Point(15, 71);
             this.lblSurfaceArea.Name = "lblSurfaceArea";
             this.lblSurfaceArea.Size = new System.Drawing.Size(68, 13);
-            this.lblSurfaceArea.TabIndex = 10;
+            this.lblSurfaceArea.TabIndex = 6;
             this.lblSurfaceArea.Text = "Oppervlakte:";
             // 
             // numMaxRenters
@@ -105,7 +105,7 @@
             this.numMaxRenters.Location = new System.Drawing.Point(116, 43);
             this.numMaxRenters.Name = "numMaxRenters";
             this.numMaxRenters.Size = new System.Drawing.Size(211, 20);
-            this.numMaxRenters.TabIndex = 7;
+            this.numMaxRenters.TabIndex = 1;
             // 
             // numPrice
             // 
@@ -118,7 +118,7 @@
             0});
             this.numPrice.Name = "numPrice";
             this.numPrice.Size = new System.Drawing.Size(211, 20);
-            this.numPrice.TabIndex = 6;
+            this.numPrice.TabIndex = 0;
             // 
             // lblMaxRenters
             // 
@@ -126,7 +126,7 @@
             this.lblMaxRenters.Location = new System.Drawing.Point(15, 45);
             this.lblMaxRenters.Name = "lblMaxRenters";
             this.lblMaxRenters.Size = new System.Drawing.Size(76, 13);
-            this.lblMaxRenters.TabIndex = 4;
+            this.lblMaxRenters.TabIndex = 5;
             this.lblMaxRenters.Text = "Max Huurders:";
             // 
             // lblPrice
@@ -135,7 +135,7 @@
             this.lblPrice.Location = new System.Drawing.Point(15, 21);
             this.lblPrice.Name = "lblPrice";
             this.lblPrice.Size = new System.Drawing.Size(29, 13);
-            this.lblPrice.TabIndex = 2;
+            this.lblPrice.TabIndex = 4;
             this.lblPrice.Text = "Prijs:";
             // 
             // btnOK
@@ -143,7 +143,7 @@
             this.btnOK.Location = new System.Drawing.Point(270, 141);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 6;
+            this.btnOK.TabIndex = 1;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -154,7 +154,7 @@
             this.btnCancel.Location = new System.Drawing.Point(14, 141);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 7;
+            this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Annuleren";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 

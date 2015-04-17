@@ -30,8 +30,8 @@ namespace ToegangsControleSysteem
             set { city = value; }
         }
 
-        public Booker(int id, string surname, string lastname, string email, int bookerID, int reservationID, string address, string zipcode, string city)
-            :base(id, surname, lastname, email, bookerID, reservationID)
+        public Booker(int id, string surname, string lastname, string email, int bookerID, int reservationID, string rfid, string address, string zipcode, string city)
+            : base(id, surname, lastname, email, bookerID, reservationID, rfid)
         {
             Address = address;
             Zipcode = zipcode;

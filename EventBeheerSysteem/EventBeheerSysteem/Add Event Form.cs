@@ -34,12 +34,22 @@ namespace EventBeheerSysteem
                 failed = true;
                 MessageBox.Show("Vul een naam in voor het event");
             }
+            if(eventName.Length > 40)
+            {
+                failed = true;
+                MessageBox.Show("Naam kan niet groter dan 40 characters zijn");
+            }
 
             eventLocation = tbAddEventLocation.Text;
             if(eventLocation == "")
             {
                 failed = true;
                 MessageBox.Show("Vul een lokatie in");
+            }
+            if (eventLocation.Length > 40)
+            {
+                failed = true;
+                MessageBox.Show("Lokatie naam kan niet groter dan 40 characters zijn");
             }
 
             beginDate = dtpAddEventBeginDate.Value;

@@ -19,8 +19,6 @@ namespace EventBeheerSysteem
         public string rfidString;
         private RFID rfid;
 
-        private bool disposed;
-
         public AddRFID(List<Visitor> visitorList)
         {
             InitializeComponent();
@@ -29,15 +27,12 @@ namespace EventBeheerSysteem
             rfid = new RFID();
             rfid.open();
 
-            rfid.waitForAttachment();
+            //rfid.waitForAttachment();
 
             rfid.Attach += new AttachEventHandler(RFID_Attach);
             rfid.Detach += new DetachEventHandler(RFID_Detach);
 
             rfid.Tag += new TagEventHandler(RFID_Tag);
-
-            rfid.Antenna = true;
-            rfid.LED = true;
 
         }
 
@@ -45,7 +40,8 @@ namespace EventBeheerSysteem
         {
             RFID attached = (RFID)sender;
 
-
+            rfid.Antenna = true;
+            rfid.LED = true;
         }
 
         void RFID_Detach(object sender, DetachEventArgs e)
@@ -63,6 +59,11 @@ namespace EventBeheerSysteem
         {
             rfidString = tbRFID.Text;
             bool failed = false;
+
+            if(rfidString == "")
+            {
+                failed = true;
+            }
 
             foreach(Visitor visitor in visitorList)
             {

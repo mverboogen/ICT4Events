@@ -13,6 +13,7 @@ namespace MateriaalBeheerSysteem
         protected string surname;
         protected string lastname;
         private string email;
+        private string rfid;
         private int bookerID;
         private int reservationID;
         private Booker booker;
@@ -66,14 +67,20 @@ namespace MateriaalBeheerSysteem
             set { reservation = value; }
         }
 
+        public string RFID
+        {
+            get { return rfid; }
+            set { rfid = value; }
+        }
 
-        public Visitor(int id, string surname, string lastname, string email, int bookerID, int reservationID)
+        public Visitor(int id, string surname, string lastname, string email, int bookerID, int reservationID, string rfid)
         {
             ID = id;
             Surname = surname;
             Lastname = lastname;
             Email = email;
             BookerID = bookerID;
+            RFID = rfid;
             ReservationID = reservationID;
         }
 
