@@ -123,7 +123,6 @@
             // 
             // btnAddEventOk
             // 
-            this.btnAddEventOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnAddEventOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddEventOk.Location = new System.Drawing.Point(255, 225);
             this.btnAddEventOk.Name = "btnAddEventOk";

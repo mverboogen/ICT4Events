@@ -226,6 +226,7 @@ namespace EventBeheerSysteem
                     string surname;
                     string lastname;
                     string email;
+                    string rfid = "";
                     int bookerID;
                     int reservationID;
 
@@ -233,10 +234,14 @@ namespace EventBeheerSysteem
                     surname = dr.GetString(3);
                     lastname = dr.GetString(4);
                     email = Convert.ToString(dr.GetValue(5));
-                    bookerID = dr.GetInt32(6);
+                    bookerID = dr.GetInt32(7);
                     reservationID = dr.GetInt32(1);
+                    if(!dr.IsDBNull(6))
+                    {
+                        rfid = dr.GetString(6);
+                    }
 
-                    Visitor newVisitor = new Visitor(id, surname, lastname, email, bookerID, reservationID);
+                    Visitor newVisitor = new Visitor(id, surname, lastname, email, bookerID, reservationID, rfid);
                     visitorList.Add(newVisitor);
                 }
 
@@ -335,6 +340,7 @@ namespace EventBeheerSysteem
                 string email;
                 int bookerID;
                 int reservationID;
+                string rfid = "";
                 string address;
                 string zipcode;
                 string city;
@@ -345,13 +351,17 @@ namespace EventBeheerSysteem
                     surname = dr.GetString(3);
                     lastname = dr.GetString(4);
                     email = Convert.ToString(dr.GetValue(5));
-                    bookerID = dr.GetInt32(6);
+                    bookerID = dr.GetInt32(7);
                     reservationID = dr.GetInt32(1);
-                    address = dr.GetString(7);
-                    zipcode = dr.GetString(8);
-                    city = dr.GetString(9);
+                    if(!dr.IsDBNull(6))
+                    {
+                        rfid = dr.GetString(6);
+                    }
+                    address = dr.GetString(8);
+                    zipcode = dr.GetString(9);
+                    city = dr.GetString(10);
 
-                    Booker newBooker = new Booker(id, surname, lastname, email, bookerID, reservationID, address, zipcode, city);
+                    Booker newBooker = new Booker(id, surname, lastname, email, bookerID, reservationID, rfid, address, zipcode, city);
                     return newBooker;
                 }
                 
@@ -504,17 +514,20 @@ namespace EventBeheerSysteem
             return itemAmount;
         }
 
-        public int GetnewItemID(int eventID)
+        public int GetnewItemID()
         {
-            int newID = 0;
+            int newID = 1;
 
-            ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal WHERE EventID = " + eventID.ToString());
+            ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal");
 
             try
             {
                 while (dr.Read())
                 {
-                    newID = dr.GetInt32(0);
+                    if(!dr.IsDBNull(0))
+                    {
+                        newID = dr.GetInt32(0);
+                    }
                 }
             }
             catch (InvalidCastException ICE)
@@ -581,11 +594,11 @@ namespace EventBeheerSysteem
         }
 
 
-        public int GetNewCampSiteID(int eventID)
+        public int GetNewCampSiteID()
         {
             int newID = 1;
 
-            ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats WHERE EventID = " + eventID.ToString());
+            ReadData("SELECT MAX(KampeerplaatsID) + 1 FROM Kampeerplaats");
 
             try
             {
@@ -777,11 +790,13 @@ namespace EventBeheerSysteem
             }
             catch (OracleException OE)
             {
-                MessageBox.Show(OE.ToString());
+                Console.WriteLine(OE.ToString());
+                MessageBox.Show(OE.Message);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                Console.WriteLine(e.ToString());
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -824,12 +839,12 @@ namespace EventBeheerSysteem
             }
         }
 
-        public void AddItemToReservation(int eventID, int itemReservationID, string itemName)
+        public int AddItemToReservation(int eventID, int itemReservationID, string itemName)
         {
             int itemID = 0;
             try
             {
-                ReadData("SELECT MateriaalID FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName + "' AND MateriaalID NOT IN (SELECT MateriaalID FROM Materiaal_GerMateriaal) AND ROWNUM = 1");
+                ReadData("SELECT MateriaalID FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName + "' AND MateriaalID NOT IN (SELECT MateriaalID FROM Materiaal_GerMateriaal)");
             }
             catch(Exception e)
             {
@@ -858,6 +873,30 @@ namespace EventBeheerSysteem
                 cmd.CommandText = "INSERT INTO Materiaal_GerMateriaal (MateriaalID, GereserveerdeMateriaalID) VALUES (:ItemID, :ItemReservationID)";
                 cmd.Parameters.Add("ItemID", OracleDbType.Int32).Value = itemID;
                 cmd.Parameters.Add("ItemReservationID", OracleDbType.Int32).Value = itemReservationID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                Console.WriteLine(OE.ToString());
+                MessageBox.Show(OE.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                MessageBox.Show(e.Message);
+            }
+
+            return itemID;
+        }
+
+        public void UpdateRFID(int eventID, int visitorID, string RFID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Bezoeker SET RFID = '" + RFID + "' WHERE EventID = '" + eventID.ToString() + "' AND BezoekerID = " + visitorID.ToString();
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
             }
@@ -1018,6 +1057,33 @@ namespace EventBeheerSysteem
                 cmd.Connection = con;
                 cmd.CommandText = "UPDATE Event SET Zichtbaar = 0 WHERE EventID = :EventID";
                 cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void SetReservationPayement(int eventID, int reservationID, bool payment)
+        {
+
+            int paymentValue = payment == true ? 1:0;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET Betaald = :Betaald WHERE EventID = :EventID AND ReserveringID = :ReserveringID";
+                cmd.Parameters.Add("Betaald", OracleDbType.Int32).Value = paymentValue;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("ReserveringID", OracleDbType.Int32).Value = reservationID;
+
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
             }

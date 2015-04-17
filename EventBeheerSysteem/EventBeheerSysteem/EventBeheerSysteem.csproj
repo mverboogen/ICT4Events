@@ -76,6 +76,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\oraclexe\odp.net\bin\4\Oracle.DataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="Phidget21.NET, Version=2.1.8.208, Culture=neutral, PublicKeyToken=c2b1f2a3594bce52, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Phidgets\Phidget21.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -118,16 +122,16 @@
     <Compile Include="AddMember.Designer.cs">
       <DependentUpon>AddMember.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddRFID.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddRFID.Designer.cs">
+      <DependentUpon>AddRFID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Booker.cs" />
     <Compile Include="CampSite.cs" />
     <Compile Include="CampSiteManager.cs" />
     <Compile Include="DatabaseManager.cs" />
-    <Compile Include="EBSForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EBSForm.Designer.cs">
-      <DependentUpon>EBSForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Event.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="Home Form.cs">
@@ -138,6 +142,7 @@
     </Compile>
     <Compile Include="Item.cs" />
     <Compile Include="ItemManager.cs" />
+    <Compile Include="NoBookerException.cs" />
     <Compile Include="NoCampsiteException.cs" />
     <Compile Include="NoItemException.cs" />
     <Compile Include="NoReservationException.cs" />
@@ -165,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddMember.resx">
       <DependentUpon>AddMember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRFID.resx">
+      <DependentUpon>AddRFID.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Home Form.resx">
       <DependentUpon>Home Form.cs</DependentUpon>

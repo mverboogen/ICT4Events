@@ -64,6 +64,9 @@ namespace EventBeheerSysteem
             selectedVisitor = null;
             selectedItem = null;
             selectedCampSite = null;
+
+            eventManager.GetAllEvents();
+            RefreshEventList();
         }
 
         /// <summary>
@@ -136,23 +139,59 @@ namespace EventBeheerSysteem
         {
             if(selectedEvent.Name != tbEventDetailsName.Text)
             {
-                eventManager.databaseHandler.UpdateEventName(selectedEvent.ID, tbEventDetailsName.Text);
+                if(tbEventDetailsName.Text == "")
+                {
+                    MessageBox.Show("Vul een geldige naam in");
+                }
+                else
+                {
+                    eventManager.databaseHandler.UpdateEventName(selectedEvent.ID, tbEventDetailsName.Text);
+                    selectedEvent.Name = tbEventDetailsName.Text;
+                }
             }
             if(selectedEvent.Location != tbEventDetailsLocation.Text)
             {
-                eventManager.databaseHandler.UpdateEventLocation(selectedEvent.ID, tbEventDetailsLocation.Text);
+                if(tbEventDetailsLocation.Text == "")
+                {
+                    MessageBox.Show("Vul een geldige location in");
+                }
+                else
+                {
+                    eventManager.databaseHandler.UpdateEventLocation(selectedEvent.ID, tbEventDetailsLocation.Text);
+                    selectedEvent.Location = tbEventDetailsLocation.Text;
+                }
+                
             }
             if(selectedEvent.BeginDate != dtpEventDetailsBeginDate.Value)
             {
-                eventManager.databaseHandler.UpdateEventBeginDate(selectedEvent.ID, dtpEventDetailsBeginDate.Value);
+                if(dtpEventDetailsBeginDate.Value < dtpEventDetailsEndDate.Value)
+                {
+                    eventManager.databaseHandler.UpdateEventBeginDate(selectedEvent.ID, dtpEventDetailsBeginDate.Value);
+                    selectedEvent.BeginDate = dtpEventDetailsBeginDate.Value;
+                }
+                else
+                {
+                    MessageBox.Show("Begin Datum moet kleiner zijn dan Eind Datum");
+                }
+                
             }
             if(selectedEvent.EndDate != dtpEventDetailsEndDate.Value)
             {
-                eventManager.databaseHandler.UpdateEventEndDate(selectedEvent.ID, dtpEventDetailsEndDate.Value);
+                if(dtpEventDetailsEndDate.Value > dtpEventDetailsBeginDate.Value)
+                {
+                    eventManager.databaseHandler.UpdateEventEndDate(selectedEvent.ID, dtpEventDetailsEndDate.Value);
+                    selectedEvent.EndDate = dtpEventDetailsEndDate.Value;
+                }
+                else
+                {
+                    MessageBox.Show("Eind Datum moet groter zijn dan Begin Datum");
+                }
+                
             }
             if(selectedEvent.ReservationsOpen != cboxEventDetailsOpen.Checked)
             {
                 eventManager.databaseHandler.UpdateEventReservationState(selectedEvent.ID, cboxEventDetailsOpen.Checked);
+                selectedEvent.ReservationsOpen = cboxEventDetailsOpen.Checked;
             }
         }
 
@@ -173,6 +212,61 @@ namespace EventBeheerSysteem
             }
         }
 
+        private void FillVisitorDetailsTab()
+        {
+            tbEventVisitorsDetailsSurname.Text = selectedVisitor.Surname;
+            tbEventVisitorsDetailsLastname.Text = selectedVisitor.Lastname;
+            tbEventVisitorsDetailsRFID.Text = selectedVisitor.RFID;
+            tbEventVisitorsDetailsStreet.Text = selectedVisitor.VisitorBooker.Address;
+            tbEventVisitorsDetailsZipcode.Text = selectedVisitor.VisitorBooker.Zipcode;
+
+            string campSites = "";
+
+            foreach (CampSite campSite in selectedVisitor.VisitorReservation.CampSiteList)
+            {
+                campSites += campSite.Name + ", ";
+            }
+            if (campSites != "")
+            {
+                campSites = campSites.Substring(0, campSites.Length - 2);
+            }
+
+            tbEventVisitorsDetailsCampNr.Text = campSites;
+
+            dtpEventVisitorsDetailsBookingDate.Value = selectedVisitor.VisitorReservation.ReservationDate;
+
+            if(selectedVisitor.VisitorReservation.Payed != null)
+            {
+                cboxEventVisitorsDetailsPaid.Checked = selectedVisitor.VisitorReservation.Payed;
+            }
+            else
+            {
+                cboxEventVisitorsDetailsPaid.Checked = false;
+            }
+
+            if (selectedVisitor.VisitorReservation.CheckinDate != null)
+            {
+                cboxEventVisitorsDetailsPresent.Checked = true;
+            }
+            else
+            {
+                cboxEventVisitorsDetailsPresent.Checked = false;
+            }
+
+            lboxEventVisitorsDetailsMembers.Items.Clear();
+            lboxEventVisitorsDetailsMaterials.Items.Clear();
+
+            foreach (Visitor visitor in selectedVisitor.VisitorReservation.VisitorList)
+            {
+                lboxEventVisitorsDetailsMembers.Items.Add(visitor);
+            }
+
+            foreach (Item item in selectedVisitor.VisitorReservation.ItemList)
+            {
+                lboxEventVisitorsDetailsMaterials.Items.Add(item);
+            }
+        }
+
         /// <summary>
         /// Fills the details menu with the informatie of the selected object
         /// </summary>
@@ -183,49 +277,7 @@ namespace EventBeheerSysteem
                 selectedVisitor = lboxEventVisitorsList.SelectedItem as Visitor;
                 if(selectedVisitor != null)
                 {
-                    tbEventVisitorsDetailsSurname.Text = selectedVisitor.Surname;
-                    tbEventVisitorsDetailsLastname.Text = selectedVisitor.Lastname;
-                    tbEventVisitorsDetailsStreet.Text = selectedVisitor.VisitorBooker.Address;
-                    tbEventVisitorsDetailsZipcode.Text = selectedVisitor.VisitorBooker.Zipcode;
-
-                    string campSites = "";
-
-                    foreach (CampSite campSite in selectedVisitor.VisitorReservation.CampSiteList)
-                    {
-                        campSites += campSite.Name + ", ";
-                    }
-                    if(campSites != "")
-                    {
-                        campSites = campSites.Substring(0, campSites.Length - 2);
-                    }
-                    
-                    tbEventVisitorsDetailsCampNr.Text = campSites;
-
-                    dtpEventVisitorsDetailsBookingDate.Value = selectedVisitor.VisitorReservation.ReservationDate;
-
-                    cboxEventVisitorsDetailsPaid.Checked = selectedVisitor.VisitorReservation.Payed;
-
-                    if(selectedVisitor.VisitorReservation.CheckinDate != null)
-                    {
-                        cboxEventVisitorsDetailsPresent.Checked = true;
-                    }
-                    else
-                    {
-                        cboxEventVisitorsDetailsPresent.Checked = false;
-                    }
-
-                    lboxEventVisitorsDetailsMembers.Items.Clear();
-                    lboxEventVisitorsDetailsMaterials.Items.Clear();
-
-                    foreach (Visitor visitor in selectedVisitor.VisitorReservation.VisitorList)
-                    {
-                        lboxEventVisitorsDetailsMembers.Items.Add(visitor);
-                    }
-
-                    foreach (Item item in selectedVisitor.VisitorReservation.ItemList)
-                    {
-                        lboxEventVisitorsDetailsMaterials.Items.Add(item);
-                    }
+                    FillVisitorDetailsTab();
                 }
             }
         }
@@ -238,7 +290,7 @@ namespace EventBeheerSysteem
                 if(result == DialogResult.OK)
                 {
                     int id = eventManager.databaseHandler.GetNewVisitorID(selectedEvent.ID);
-                    Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID);
+                    Visitor newVisitor = new Visitor(id, form.surname, form.lastname, form.email, selectedVisitor.BookerID, selectedVisitor.ReservationID, form.rfid);
                     newVisitor.VisitorReservation = selectedVisitor.VisitorReservation;
                     newVisitor.VisitorBooker = selectedVisitor.VisitorBooker;
                     eventManager.databaseHandler.AddVisitor(id, selectedVisitor.ReservationID, selectedEvent.ID, form.surname, form.lastname, form.email, selectedVisitor.BookerID);
@@ -254,30 +306,42 @@ namespace EventBeheerSysteem
 
         private void btnEventVisitorsDetailsSave_Click(object sender, EventArgs e)
         {
+
+            //TODO: Check this
+            if (cboxEventVisitorsDetailsPaid.Checked && !selectedVisitor.VisitorReservation.Payed)
+            {
+                selectedVisitor.VisitorReservation.Payed = true;
+                eventManager.databaseHandler.SetReservationPayement(selectedEvent.ID, selectedVisitor.VisitorReservation.ID, cboxEventVisitorsDetailsPaid.Checked);
+            }
+            else
+            {
+                if (selectedVisitor.VisitorReservation.Payed)
+                {
+                    selectedVisitor.VisitorReservation.Payed = false;
+                    eventManager.databaseHandler.SetReservationPayement(selectedEvent.ID, selectedVisitor.VisitorReservation.ID, cboxEventVisitorsDetailsPaid.Checked);
+                }
+            }
+
             if (cboxEventVisitorsDetailsPresent.Checked)
             {
                 if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation.CheckinDate == null)
                 {
-                    selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
-                    eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+                    if(selectedVisitor.VisitorReservation.Payed)
+                    {
+                        selectedVisitor.VisitorReservation.CheckinDate = System.DateTime.Now.Date;
+                        eventManager.databaseHandler.SetReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bezoeker heeft nog niet betaalt");
+                        FillVisitorDetailsTab();
+                    }
                 }
             }
             else
             {
                 selectedVisitor.VisitorReservation.CheckinDate = null;
                 eventManager.databaseHandler.RemoveReservationCheckInDate(selectedEvent.ID, selectedVisitor.VisitorReservation.ID);
-            }
-
-            if(cboxEventVisitorsDetailsPaid.Checked && !selectedVisitor.VisitorReservation.Payed)
-            {
-                selectedVisitor.VisitorReservation.Payed = true;
-            }
-            else
-            {
-                if(selectedVisitor.VisitorReservation.Payed)
-                {
-                    selectedVisitor.VisitorReservation.Payed = false;
-                }
             }
         }
 
@@ -325,6 +389,20 @@ namespace EventBeheerSysteem
             }
         }
 
+        private void btnEventVisitorsDetailsRFID_Click(object sender, EventArgs e)
+        {
+            using (var form = new AddRFID(selectedEvent.visitorManager.visitorList))
+            {
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    selectedVisitor.RFID = form.rfidString;
+                    eventManager.databaseHandler.UpdateRFID(selectedEvent.ID, selectedVisitor.ID, form.rfidString);
+                    FillVisitorDetailsTab();
+                }
+            }
+        }
+
         //TODO: Insert search function
 
         //----------------------------------------------------------------------------------------------------
@@ -351,6 +429,29 @@ namespace EventBeheerSysteem
             }
         }
 
+        private void FillMaterialsDetailsTab()
+        {
+            tbEventMaterialDetailsName.Text = selectedItem.Name;
+            tbEventMaterialDetailsDailyRent.Text = selectedItem.Price.ToString("N2");
+            tbEventMaterialDetailsPrice.Text = selectedItem.NewPrice.ToString("N2");
+
+            int availible = eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, selectedItem.Name);
+            int used = eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name);
+
+            tbEventMaterialDetailsAvailable.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
+
+            foreach (Item item in selectedEvent.itemManager.itemList)
+            {
+                if (item.Name == selectedItem.Name)
+                {
+                    if (item.itemReservation != null)
+                    {
+                        lboxEventMaterialDetailsRentersList.Items.Add(item.itemReservation);
+                    }
+                }
+            }
+        }
+
         private void ClearMaterialsDetailsTab()
         {
             tbEventMaterialDetailsName.Clear();
@@ -368,25 +469,7 @@ namespace EventBeheerSysteem
                 selectedItem = lboxEventMaterialList.SelectedItem as Item;
                 if(selectedItem != null)
                 {
-                    tbEventMaterialDetailsName.Text = selectedItem.Name;
-                    tbEventMaterialDetailsDailyRent.Text = selectedItem.Price.ToString("N2");
-                    tbEventMaterialDetailsPrice.Text = selectedItem.NewPrice.ToString("N2");
-
-                    int availible = eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, selectedItem.Name);
-                    int used = eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name);
-
-                    tbEventMaterialDetailsAvailable.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
-
-                    foreach(Item item in selectedEvent.itemManager.itemList)
-                    {
-                        if(item.Name == selectedItem.Name)
-                        {
-                            if(item.itemReservation != null)
-                            {
-                                lboxEventMaterialDetailsRentersList.Items.Add(item.itemReservation);
-                            }
-                        }
-                    }
+                    FillMaterialsDetailsTab();
                 }
             }
         }
@@ -400,13 +483,20 @@ namespace EventBeheerSysteem
                 {
                     for(int i = 0; i < form.amount; i++)
                     {
-                        int id = eventManager.databaseHandler.GetnewItemID(selectedEvent.ID);
+                        int id = eventManager.databaseHandler.GetnewItemID();
+                        try
+                        {
+                            Item newItem = new Item(id, form.name, form.rentPrice, form.price);
+                            selectedEvent.itemManager.AddItem(newItem);
+                            eventManager.databaseHandler.AddItem(selectedEvent.ID, form.name, form.rentPrice, form.price);
+                            FillMaterialsTab();
+                            ClearMaterialsDetailsTab();
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
 
-                        Item newItem = new Item(id, form.name, form.rentPrice, form.price);
-                        selectedEvent.itemManager.AddItem(newItem);
-                        eventManager.databaseHandler.AddItem(selectedEvent.ID, form.name, form.rentPrice, form.price);
-                        FillMaterialsTab();
-                        ClearMaterialsDetailsTab();
                     }
                 }
             }
@@ -476,8 +566,14 @@ namespace EventBeheerSysteem
                                 eventManager.databaseHandler.AddItemReservationID(selectedEvent.ID, form.selectedReservation.ID, form.selectedReservation.ReservedItemID);
                             }
 
-                            eventManager.databaseHandler.AddItemToReservation(selectedEvent.ID, form.selectedReservation.ReservedItemID, selectedItem.Name);
+                            int itemID = eventManager.databaseHandler.AddItemToReservation(selectedEvent.ID, form.selectedReservation.ReservedItemID, selectedItem.Name);
+                            Item item = selectedEvent.itemManager.GetItem(itemID);
+                            form.selectedReservation.ItemList.Add(item);
+                            item.itemReservation = form.selectedReservation;
+
                         }
+
+                        FillMaterialsDetailsTab();
                     }
                 }
             }
@@ -544,7 +640,7 @@ namespace EventBeheerSysteem
                         cboxEventBedsDetailsOcuppied.Checked = false;
                     }
 
-                    tbEventBedsDetailsMaxRenters.Text = selectedCampSite.Occupation.ToString() + " / " + selectedCampSite.MaxOccupation.ToString();
+                    tbEventBedsDetailsMaxRenters.Text = selectedCampSite.MaxOccupation.ToString();
 
                 }
             }
@@ -558,13 +654,20 @@ namespace EventBeheerSysteem
                 var result = form.ShowDialog();
                 if(result == DialogResult.OK)
                 {
-                    int id = eventManager.databaseHandler.GetNewCampSiteID(selectedEvent.ID);
-                    CampSite newCampsite = new CampSite(id, id.ToString(), form.price, form.type, form.surfaceArea, form.maxRenters);
+                    for(int i = 0; i < form.amount; i++)
+                    {
+                        int id = eventManager.databaseHandler.GetNewCampSiteID();
+                        CampSite newCampsite = new CampSite(id, id.ToString(), form.price, 1, form.surfaceArea, form.maxRenters);
 
-                    selectedEvent.campsiteManager.campSiteList.Add(newCampsite);
-                    eventManager.databaseHandler.AddCampSite(selectedEvent.ID, newCampsite.Price, newCampsite.MaxOccupation, newCampsite.CampSize, newCampsite.Type);
-                    FillCampSitesTab();
+                        System.Threading.Thread.Sleep(10);
+
+                        selectedEvent.campsiteManager.campSiteList.Add(newCampsite);
+                        eventManager.databaseHandler.AddCampSite(selectedEvent.ID, newCampsite.Price, newCampsite.MaxOccupation, newCampsite.CampSize, newCampsite.Type);
+                        
+                    }
                 }
+
+                FillCampSitesTab();
             }
         }
 
@@ -580,6 +683,8 @@ namespace EventBeheerSysteem
                 }
             }
         }
+
+
 
 
     }

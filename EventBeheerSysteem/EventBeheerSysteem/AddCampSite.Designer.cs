@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.gboxEventBedsDetails = new System.Windows.Forms.GroupBox();
+            this.numAmount = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.numSurfaceArea = new System.Windows.Forms.NumericUpDown();
             this.lblSurfaceArea = new System.Windows.Forms.Label();
-            this.lblType = new System.Windows.Forms.Label();
-            this.cbType = new System.Windows.Forms.ComboBox();
             this.numMaxRenters = new System.Windows.Forms.NumericUpDown();
             this.numPrice = new System.Windows.Forms.NumericUpDown();
             this.lblMaxRenters = new System.Windows.Forms.Label();
@@ -40,6 +40,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gboxEventBedsDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSurfaceArea)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxRenters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPrice)).BeginInit();
@@ -47,24 +48,45 @@
             // 
             // gboxEventBedsDetails
             // 
+            this.gboxEventBedsDetails.Controls.Add(this.numAmount);
+            this.gboxEventBedsDetails.Controls.Add(this.label1);
             this.gboxEventBedsDetails.Controls.Add(this.numSurfaceArea);
             this.gboxEventBedsDetails.Controls.Add(this.lblSurfaceArea);
-            this.gboxEventBedsDetails.Controls.Add(this.lblType);
-            this.gboxEventBedsDetails.Controls.Add(this.cbType);
             this.gboxEventBedsDetails.Controls.Add(this.numMaxRenters);
             this.gboxEventBedsDetails.Controls.Add(this.numPrice);
             this.gboxEventBedsDetails.Controls.Add(this.lblMaxRenters);
             this.gboxEventBedsDetails.Controls.Add(this.lblPrice);
             this.gboxEventBedsDetails.Location = new System.Drawing.Point(12, 12);
             this.gboxEventBedsDetails.Name = "gboxEventBedsDetails";
-            this.gboxEventBedsDetails.Size = new System.Drawing.Size(333, 168);
+            this.gboxEventBedsDetails.Size = new System.Drawing.Size(333, 123);
             this.gboxEventBedsDetails.TabIndex = 5;
             this.gboxEventBedsDetails.TabStop = false;
             this.gboxEventBedsDetails.Text = "Info";
             // 
+            // numAmount
+            // 
+            this.numAmount.Location = new System.Drawing.Point(116, 95);
+            this.numAmount.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numAmount.Name = "numAmount";
+            this.numAmount.Size = new System.Drawing.Size(211, 20);
+            this.numAmount.TabIndex = 13;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 97);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Aantal:";
+            // 
             // numSurfaceArea
             // 
-            this.numSurfaceArea.Location = new System.Drawing.Point(116, 92);
+            this.numSurfaceArea.Location = new System.Drawing.Point(116, 69);
             this.numSurfaceArea.Name = "numSurfaceArea";
             this.numSurfaceArea.Size = new System.Drawing.Size(211, 20);
             this.numSurfaceArea.TabIndex = 11;
@@ -72,42 +94,15 @@
             // lblSurfaceArea
             // 
             this.lblSurfaceArea.AutoSize = true;
-            this.lblSurfaceArea.Location = new System.Drawing.Point(15, 94);
+            this.lblSurfaceArea.Location = new System.Drawing.Point(15, 71);
             this.lblSurfaceArea.Name = "lblSurfaceArea";
             this.lblSurfaceArea.Size = new System.Drawing.Size(68, 13);
             this.lblSurfaceArea.TabIndex = 10;
             this.lblSurfaceArea.Text = "Oppervlakte:";
             // 
-            // lblType
-            // 
-            this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(15, 121);
-            this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(34, 13);
-            this.lblType.TabIndex = 9;
-            this.lblType.Text = "Type:";
-            // 
-            // cbType
-            // 
-            this.cbType.FormattingEnabled = true;
-            this.cbType.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9"});
-            this.cbType.Location = new System.Drawing.Point(116, 118);
-            this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(211, 21);
-            this.cbType.TabIndex = 8;
-            // 
             // numMaxRenters
             // 
-            this.numMaxRenters.Location = new System.Drawing.Point(116, 66);
+            this.numMaxRenters.Location = new System.Drawing.Point(116, 43);
             this.numMaxRenters.Name = "numMaxRenters";
             this.numMaxRenters.Size = new System.Drawing.Size(211, 20);
             this.numMaxRenters.TabIndex = 7;
@@ -115,7 +110,12 @@
             // numPrice
             // 
             this.numPrice.DecimalPlaces = 2;
-            this.numPrice.Location = new System.Drawing.Point(116, 42);
+            this.numPrice.Location = new System.Drawing.Point(116, 19);
+            this.numPrice.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
             this.numPrice.Name = "numPrice";
             this.numPrice.Size = new System.Drawing.Size(211, 20);
             this.numPrice.TabIndex = 6;
@@ -123,7 +123,7 @@
             // lblMaxRenters
             // 
             this.lblMaxRenters.AutoSize = true;
-            this.lblMaxRenters.Location = new System.Drawing.Point(15, 68);
+            this.lblMaxRenters.Location = new System.Drawing.Point(15, 45);
             this.lblMaxRenters.Name = "lblMaxRenters";
             this.lblMaxRenters.Size = new System.Drawing.Size(76, 13);
             this.lblMaxRenters.TabIndex = 4;
@@ -132,7 +132,7 @@
             // lblPrice
             // 
             this.lblPrice.AutoSize = true;
-            this.lblPrice.Location = new System.Drawing.Point(15, 44);
+            this.lblPrice.Location = new System.Drawing.Point(15, 21);
             this.lblPrice.Name = "lblPrice";
             this.lblPrice.Size = new System.Drawing.Size(29, 13);
             this.lblPrice.TabIndex = 2;
@@ -140,7 +140,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(268, 199);
+            this.btnOK.Location = new System.Drawing.Point(270, 141);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 6;
@@ -151,7 +151,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(12, 199);
+            this.btnCancel.Location = new System.Drawing.Point(14, 141);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
@@ -162,14 +162,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 255);
+            this.ClientSize = new System.Drawing.Size(355, 168);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.gboxEventBedsDetails);
             this.Name = "AddCampSite";
-            this.Text = "AddCampSite";
+            this.Text = "Kampeerplaats Toevoegen";
             this.gboxEventBedsDetails.ResumeLayout(false);
             this.gboxEventBedsDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSurfaceArea)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxRenters)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPrice)).EndInit();
@@ -186,9 +187,9 @@
         private System.Windows.Forms.Label lblPrice;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label lblType;
-        private System.Windows.Forms.ComboBox cbType;
         private System.Windows.Forms.NumericUpDown numSurfaceArea;
         private System.Windows.Forms.Label lblSurfaceArea;
+        private System.Windows.Forms.NumericUpDown numAmount;
+        private System.Windows.Forms.Label label1;
     }
 }

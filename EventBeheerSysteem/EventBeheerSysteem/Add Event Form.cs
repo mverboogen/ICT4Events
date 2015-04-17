@@ -25,10 +25,30 @@ namespace EventBeheerSysteem
 
         private void btnAddEventOk_Click(object sender, EventArgs e)
         {
+
+            bool failed = false;
+
             eventName = tbAddEventName.Text;
+            if(eventName == "")
+            {
+                failed = true;
+                MessageBox.Show("Vul een naam in voor het event");
+            }
+
             eventLocation = tbAddEventLocation.Text;
+            if(eventLocation == "")
+            {
+                failed = true;
+                MessageBox.Show("Vul een lokatie in");
+            }
+
             beginDate = dtpAddEventBeginDate.Value;
             endDate = dtpAddEventEndDate.Value;
+
+            if(!failed)
+            {
+                this.DialogResult = DialogResult.OK;
+            }
         }
     }
 }

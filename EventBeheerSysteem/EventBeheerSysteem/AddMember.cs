@@ -16,6 +16,7 @@ namespace EventBeheerSysteem
         public string surname;
         public string lastname;
         public string email;
+        public string rfid;
 
         public AddMember()
         {
@@ -27,6 +28,7 @@ namespace EventBeheerSysteem
             surname = tbSurname.Text;
             lastname = tbLastname.Text;
             email = tbEmail.Text;
+            rfid = tbRFID.Text;
         }
     }
 }

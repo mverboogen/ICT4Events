@@ -36,6 +36,8 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.tbLastname = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.tbRFID = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -73,7 +75,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(12, 85);
+            this.btnOK.Location = new System.Drawing.Point(12, 124);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 3;
@@ -84,7 +86,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(317, 85);
+            this.btnCancel.Location = new System.Drawing.Point(317, 124);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 4;
@@ -107,11 +109,29 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Achternaam:";
             // 
+            // tbRFID
+            // 
+            this.tbRFID.Location = new System.Drawing.Point(88, 84);
+            this.tbRFID.Name = "tbRFID";
+            this.tbRFID.Size = new System.Drawing.Size(304, 20);
+            this.tbRFID.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(15, 87);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Email:";
+            // 
             // AddMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 120);
+            this.ClientSize = new System.Drawing.Size(404, 155);
+            this.Controls.Add(this.tbRFID);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.tbLastname);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnCancel);
@@ -137,5 +157,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TextBox tbLastname;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tbRFID;
+        private System.Windows.Forms.Label label4;
     }
 }

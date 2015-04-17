@@ -57,6 +57,8 @@
             this.lblEventDetailsName = new System.Windows.Forms.Label();
             this.tabEventDeelnemers = new System.Windows.Forms.TabPage();
             this.gboxEventVisitorsDetails = new System.Windows.Forms.GroupBox();
+            this.tbEventVisitorsDetailsRFID = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnEventVisitorsDetailsSave = new System.Windows.Forms.Button();
             this.cboxEventVisitorsDetailsPaid = new System.Windows.Forms.CheckBox();
             this.cboxEventVisitorsDetailsPresent = new System.Windows.Forms.CheckBox();
@@ -118,6 +120,7 @@
             this.lboxEventBedsList = new System.Windows.Forms.ListBox();
             this.lblEventBeds = new System.Windows.Forms.Label();
             this.pnlEbsMain = new System.Windows.Forms.Panel();
+            this.btnEventVisitorsDetailsRFID = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEbsEvents)).BeginInit();
             this.pnlEbsEvent.SuspendLayout();
             this.tabEvent.SuspendLayout();
@@ -426,6 +429,9 @@
             // 
             // gboxEventVisitorsDetails
             // 
+            this.gboxEventVisitorsDetails.Controls.Add(this.btnEventVisitorsDetailsRFID);
+            this.gboxEventVisitorsDetails.Controls.Add(this.tbEventVisitorsDetailsRFID);
+            this.gboxEventVisitorsDetails.Controls.Add(this.label1);
             this.gboxEventVisitorsDetails.Controls.Add(this.btnEventVisitorsDetailsSave);
             this.gboxEventVisitorsDetails.Controls.Add(this.cboxEventVisitorsDetailsPaid);
             this.gboxEventVisitorsDetails.Controls.Add(this.cboxEventVisitorsDetailsPresent);
@@ -454,9 +460,25 @@
             this.gboxEventVisitorsDetails.TabStop = false;
             this.gboxEventVisitorsDetails.Text = "Details";
             // 
+            // tbEventVisitorsDetailsRFID
+            // 
+            this.tbEventVisitorsDetailsRFID.Location = new System.Drawing.Point(160, 65);
+            this.tbEventVisitorsDetailsRFID.Name = "tbEventVisitorsDetailsRFID";
+            this.tbEventVisitorsDetailsRFID.Size = new System.Drawing.Size(243, 22);
+            this.tbEventVisitorsDetailsRFID.TabIndex = 34;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 16);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "RFID:";
+            // 
             // btnEventVisitorsDetailsSave
             // 
-            this.btnEventVisitorsDetailsSave.Location = new System.Drawing.Point(312, 213);
+            this.btnEventVisitorsDetailsSave.Location = new System.Drawing.Point(312, 215);
             this.btnEventVisitorsDetailsSave.Name = "btnEventVisitorsDetailsSave";
             this.btnEventVisitorsDetailsSave.Size = new System.Drawing.Size(88, 23);
             this.btnEventVisitorsDetailsSave.TabIndex = 32;
@@ -467,7 +489,7 @@
             // cboxEventVisitorsDetailsPaid
             // 
             this.cboxEventVisitorsDetailsPaid.AutoSize = true;
-            this.cboxEventVisitorsDetailsPaid.Location = new System.Drawing.Point(234, 192);
+            this.cboxEventVisitorsDetailsPaid.Location = new System.Drawing.Point(234, 194);
             this.cboxEventVisitorsDetailsPaid.Name = "cboxEventVisitorsDetailsPaid";
             this.cboxEventVisitorsDetailsPaid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cboxEventVisitorsDetailsPaid.Size = new System.Drawing.Size(98, 20);
@@ -478,7 +500,7 @@
             // cboxEventVisitorsDetailsPresent
             // 
             this.cboxEventVisitorsDetailsPresent.AutoSize = true;
-            this.cboxEventVisitorsDetailsPresent.Location = new System.Drawing.Point(22, 192);
+            this.cboxEventVisitorsDetailsPresent.Location = new System.Drawing.Point(22, 194);
             this.cboxEventVisitorsDetailsPresent.Name = "cboxEventVisitorsDetailsPresent";
             this.cboxEventVisitorsDetailsPresent.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cboxEventVisitorsDetailsPresent.Size = new System.Drawing.Size(103, 20);
@@ -488,35 +510,35 @@
             // 
             // dtpEventVisitorsDetailsBookingDate
             // 
-            this.dtpEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(160, 148);
+            this.dtpEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(160, 166);
             this.dtpEventVisitorsDetailsBookingDate.Name = "dtpEventVisitorsDetailsBookingDate";
             this.dtpEventVisitorsDetailsBookingDate.Size = new System.Drawing.Size(243, 22);
             this.dtpEventVisitorsDetailsBookingDate.TabIndex = 29;
             // 
             // tbEventVisitorsDetailsCampNr
             // 
-            this.tbEventVisitorsDetailsCampNr.Location = new System.Drawing.Point(160, 120);
+            this.tbEventVisitorsDetailsCampNr.Location = new System.Drawing.Point(160, 141);
             this.tbEventVisitorsDetailsCampNr.Name = "tbEventVisitorsDetailsCampNr";
             this.tbEventVisitorsDetailsCampNr.Size = new System.Drawing.Size(243, 22);
             this.tbEventVisitorsDetailsCampNr.TabIndex = 27;
             // 
             // tbEventVisitorsDetailsZipcode
             // 
-            this.tbEventVisitorsDetailsZipcode.Location = new System.Drawing.Point(160, 95);
+            this.tbEventVisitorsDetailsZipcode.Location = new System.Drawing.Point(160, 116);
             this.tbEventVisitorsDetailsZipcode.Name = "tbEventVisitorsDetailsZipcode";
             this.tbEventVisitorsDetailsZipcode.Size = new System.Drawing.Size(244, 22);
             this.tbEventVisitorsDetailsZipcode.TabIndex = 26;
             // 
             // tbEventVisitorsDetailsStreet
             // 
-            this.tbEventVisitorsDetailsStreet.Location = new System.Drawing.Point(160, 70);
+            this.tbEventVisitorsDetailsStreet.Location = new System.Drawing.Point(160, 91);
             this.tbEventVisitorsDetailsStreet.Name = "tbEventVisitorsDetailsStreet";
             this.tbEventVisitorsDetailsStreet.Size = new System.Drawing.Size(244, 22);
             this.tbEventVisitorsDetailsStreet.TabIndex = 25;
             // 
             // tbEventVisitorsDetailsLastname
             // 
-            this.tbEventVisitorsDetailsLastname.Location = new System.Drawing.Point(160, 43);
+            this.tbEventVisitorsDetailsLastname.Location = new System.Drawing.Point(160, 40);
             this.tbEventVisitorsDetailsLastname.Name = "tbEventVisitorsDetailsLastname";
             this.tbEventVisitorsDetailsLastname.Size = new System.Drawing.Size(243, 22);
             this.tbEventVisitorsDetailsLastname.TabIndex = 23;
@@ -587,7 +609,7 @@
             // lblEventVisitorsDetailsBookingDate
             // 
             this.lblEventVisitorsDetailsBookingDate.AutoSize = true;
-            this.lblEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(22, 153);
+            this.lblEventVisitorsDetailsBookingDate.Location = new System.Drawing.Point(22, 171);
             this.lblEventVisitorsDetailsBookingDate.Name = "lblEventVisitorsDetailsBookingDate";
             this.lblEventVisitorsDetailsBookingDate.Size = new System.Drawing.Size(129, 16);
             this.lblEventVisitorsDetailsBookingDate.TabIndex = 10;
@@ -596,7 +618,7 @@
             // lblEventVisitorsDetailsBednr
             // 
             this.lblEventVisitorsDetailsBednr.AutoSize = true;
-            this.lblEventVisitorsDetailsBednr.Location = new System.Drawing.Point(22, 123);
+            this.lblEventVisitorsDetailsBednr.Location = new System.Drawing.Point(22, 144);
             this.lblEventVisitorsDetailsBednr.Name = "lblEventVisitorsDetailsBednr";
             this.lblEventVisitorsDetailsBednr.Size = new System.Drawing.Size(103, 16);
             this.lblEventVisitorsDetailsBednr.TabIndex = 9;
@@ -605,7 +627,7 @@
             // lblEventVisitorsDetailsZipcode
             // 
             this.lblEventVisitorsDetailsZipcode.AutoSize = true;
-            this.lblEventVisitorsDetailsZipcode.Location = new System.Drawing.Point(22, 98);
+            this.lblEventVisitorsDetailsZipcode.Location = new System.Drawing.Point(22, 119);
             this.lblEventVisitorsDetailsZipcode.Name = "lblEventVisitorsDetailsZipcode";
             this.lblEventVisitorsDetailsZipcode.Size = new System.Drawing.Size(69, 16);
             this.lblEventVisitorsDetailsZipcode.TabIndex = 8;
@@ -614,7 +636,7 @@
             // lblEventVisitorsDetailsAddress
             // 
             this.lblEventVisitorsDetailsAddress.AutoSize = true;
-            this.lblEventVisitorsDetailsAddress.Location = new System.Drawing.Point(22, 73);
+            this.lblEventVisitorsDetailsAddress.Location = new System.Drawing.Point(22, 94);
             this.lblEventVisitorsDetailsAddress.Name = "lblEventVisitorsDetailsAddress";
             this.lblEventVisitorsDetailsAddress.Size = new System.Drawing.Size(47, 16);
             this.lblEventVisitorsDetailsAddress.TabIndex = 7;
@@ -623,7 +645,7 @@
             // lblEventVisitorsDetailsLastname
             // 
             this.lblEventVisitorsDetailsLastname.AutoSize = true;
-            this.lblEventVisitorsDetailsLastname.Location = new System.Drawing.Point(22, 46);
+            this.lblEventVisitorsDetailsLastname.Location = new System.Drawing.Point(22, 43);
             this.lblEventVisitorsDetailsLastname.Name = "lblEventVisitorsDetailsLastname";
             this.lblEventVisitorsDetailsLastname.Size = new System.Drawing.Size(83, 16);
             this.lblEventVisitorsDetailsLastname.TabIndex = 5;
@@ -1029,6 +1051,16 @@
             this.pnlEbsMain.Size = new System.Drawing.Size(784, 561);
             this.pnlEbsMain.TabIndex = 5;
             // 
+            // btnEventVisitorsDetailsRFID
+            // 
+            this.btnEventVisitorsDetailsRFID.Location = new System.Drawing.Point(218, 215);
+            this.btnEventVisitorsDetailsRFID.Name = "btnEventVisitorsDetailsRFID";
+            this.btnEventVisitorsDetailsRFID.Size = new System.Drawing.Size(88, 23);
+            this.btnEventVisitorsDetailsRFID.TabIndex = 35;
+            this.btnEventVisitorsDetailsRFID.Text = "RFID";
+            this.btnEventVisitorsDetailsRFID.UseVisualStyleBackColor = true;
+            this.btnEventVisitorsDetailsRFID.Click += new System.EventHandler(this.btnEventVisitorsDetailsRFID_Click);
+            // 
             // EbsHomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1160,6 +1192,9 @@
         private System.Windows.Forms.Label lblEventBedsDetailsName;
         private System.Windows.Forms.Button btnEventDetailsSave;
         private System.Windows.Forms.Button btnEventVisitorsDetailsSave;
+        private System.Windows.Forms.TextBox tbEventVisitorsDetailsRFID;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnEventVisitorsDetailsRFID;
 
     }
 }

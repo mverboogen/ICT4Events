@@ -82,9 +82,16 @@ namespace EventBeheerSysteem
 
             foreach(Reservation reservation in reservationManager.reservationList)
             {
+                try
+                {
+                    reservation.Booker = databaseHandler.GetBooker(id, reservation.ID);
+                    reservation.BookerID = reservation.Booker.ID;
+                }
+                catch
+                {
+                    throw new Exception("No Booker");
+                }
 
-                reservation.Booker = databaseHandler.GetBooker(id, reservation.ID);
-                reservation.BookerID = reservation.Booker.ID;
 
                 if(reservation.ReservedItemID != null)
                 {
