@@ -13,11 +13,14 @@ namespace ReserveringSysteem
 {
     class DatabaseManager
     {
-        public List<Item> itemList = new List<Item>();
-        public List<Campsite> campSiteList = new List<Campsite>();
+        private List<Item> itemList = new List<Item>();
+        private List<Campsite> campSiteList = new List<Campsite>();
         private OracleConnection con;
         private OracleCommand cmd;
         private OracleDataReader dr;
+
+        public List<Item> ItemList { get { return itemList; } }
+        public List<Campsite> CampsiteList { get { return campSiteList; } }
 
         private int eventID = 1;
         int bookerID = 0;
@@ -28,6 +31,10 @@ namespace ReserveringSysteem
             //Disconnect();
         }
 
+
+        /// <summary>
+        /// Connect with database
+        /// </summary>
         public void Connect()
         {
             try
@@ -50,6 +57,9 @@ namespace ReserveringSysteem
             con.Dispose();
         }
 
+        /// <summary>
+        /// Read data from database
+        /// </summary>
         public void ReadData(string sql)
         {
             try
@@ -57,7 +67,6 @@ namespace ReserveringSysteem
                 cmd = new OracleCommand();
                 cmd.Connection = con;
                 cmd.CommandText = sql;
-              //cmd.CommandType = CommandType.Text;
                 dr = cmd.ExecuteReader();
             }
             catch (Exception e)
@@ -66,6 +75,9 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Write data to database
+        /// </summary>
         public void WriteData(string sql)
         {
             try
@@ -81,6 +93,9 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Get all available campsites from database
+        /// </summary>
         public void GetAllCampSites()
         {
             ReadData("SELECT k.KampeerplaatsID, Prijs, MaxPersonen FROM KAMPEERPLAATS k WHERE k.KampeerplaatsID NOT IN (SELECT v.KampeerplaatsID FROM verhuurdeplaats v) ORDER BY k.kampeerplaatsID");
@@ -110,7 +125,9 @@ namespace ReserveringSysteem
         }
 
 
-
+        /// <summary>
+        /// Get all available items from database
+        /// </summary>
         public List<Item> GetAllItems()
         {
             ReadData("SELECT * FROM MATERIAAL m WHERE m.materiaalID NOT IN (SELECT g.gereserveerdemateriaalID FROM gereserveerdemateriaal g) ORDER BY m.naam");
@@ -122,13 +139,12 @@ namespace ReserveringSysteem
                     int id;
                     string name;
                     decimal price;
-                    int quantity = 0;
 
                     id = dr.GetInt32(0);
                     name = dr.GetString(2);
                     price = dr.GetDecimal(3);
 
-                    Item item = new Item(id, name, price,quantity);
+                    Item item = new Item(id, name, price);
                     itemList.Add(item);
                 }
 
@@ -143,6 +159,9 @@ namespace ReserveringSysteem
             return null;
         }
 
+        /// <summary>
+        /// Add reservation to database
+        /// </summary>
         public void AddReservation(int aantalpersonen, int itemID)
         {
 
@@ -189,6 +208,9 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Add a booker to database
+        /// </summary>
         public void AddBooker(string surname, string lastname, string address, string zipcode, string city, string email)
         {
             int visitorID = 0;
@@ -272,6 +294,9 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Add visistor to database
+        /// </summary>
         public void AddVisitor(string surname, string lastname, string email)
         {
             int visitorID = 0;
@@ -355,6 +380,9 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Add campsite to database
+        /// </summary>
         public void AddCampsite(int campsiteID)
         {
             int reservationID = 0;
@@ -399,6 +427,9 @@ namespace ReserveringSysteem
 
         }
 
+        /// <summary>
+        /// Add item to database
+        /// </summary>
         public void AddItem(int itemID)
         {
             try

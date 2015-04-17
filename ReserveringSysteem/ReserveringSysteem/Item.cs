@@ -11,7 +11,7 @@ namespace ReserveringSysteem
         private int itemid;
         private string itemName;
         private decimal itemPrice;
-        private int quantity;
+
 
 
         public int ItemID
@@ -32,18 +32,11 @@ namespace ReserveringSysteem
             set { itemPrice = value; }
         }
 
-        public int Quantity
-        {
-            get { return quantity; }
-            set { quantity = value; }
-        }
-
-        public Item(int itemID, string itemName,decimal itemPrice, int quantity)
+        public Item(int itemID, string itemName,decimal itemPrice)
         {
             this.itemid = itemID;
             this.itemName = itemName;
             this.itemPrice = itemPrice;
-            this.quantity = quantity;
         }
     }
 }
