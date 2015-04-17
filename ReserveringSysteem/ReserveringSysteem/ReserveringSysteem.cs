@@ -52,15 +52,15 @@ namespace ReserveringSysteem
 
             foreach (Item i in databaseManager.itemList)
             {
-                dgvMateriaal.Rows.Add(i.ItemName, i.ItemPrice, i.Quantity);
+                dgvMateriaal.Rows.Add(i.ItemName, i.ItemPrice, i.Quantity, i.ItemID);
             }
         }
 
         private void btDelToevoegen_Click(object sender, EventArgs e)
         {
-           string  visvoornaam = tbVisVoornaam.Text;
+           string visvoornaam = tbVisVoornaam.Text;
            string visachternaam = tbVisAchternaam.Text;
-           string  visemail = tbVisEmail.Text;
+           string visemail = tbVisEmail.Text;
 
             if(string.IsNullOrWhiteSpace(tbVisVoornaam.Text)
                 || string.IsNullOrWhiteSpace(tbVisAchternaam.Text)
@@ -95,7 +95,6 @@ namespace ReserveringSysteem
             currentSelectedTab = 3;
             ((Control)this.tabPageMateriaal).Enabled = true;
             TabReserveringSysteem.SelectedTab = tabPageMateriaal;
-
 
         }
 
@@ -136,16 +135,12 @@ namespace ReserveringSysteem
 
         private void btVerwijderen_Click(object sender, EventArgs e)
         {
+           
         }
 
         private void btBevestigen_Click(object sender, EventArgs e)
         {
-            string bookerName = tbBookVoornaam.Text;
-            string bookerLastname = tbBookAchternaam.Text;
-            string bookerAddress = tbBookAdres.Text;
-            string bookerZipcode = tbBookPostcode.Text;
-            string bookerCity = tbBookWoonplaats.Text;
-            string bookerEmail = tbBookEmail.Text;
+
 
             if (string.IsNullOrWhiteSpace(tbBookVoornaam.Text)
                 || string.IsNullOrWhiteSpace(tbBookAchternaam.Text)
@@ -158,8 +153,34 @@ namespace ReserveringSysteem
             }
             else
             {
-                Booker booker = new Booker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
-            }
+                string bookerName = tbBookVoornaam.Text;
+                string bookerLastname = tbBookAchternaam.Text;
+                string bookerAddress = tbBookAdres.Text;
+                string bookerZipcode = tbBookPostcode.Text;
+                string bookerCity = tbBookWoonplaats.Text;
+                string bookerEmail = tbBookEmail.Text;
+
+                int itemID = 0;
+                int campsiteID = 0;
+                int aantaldeelnemers = 0;
+
+                itemID = Convert.ToInt32(dgvMateriaal.CurrentRow.Cells[3].Value);
+                campsiteID = Convert.ToInt32(dgvKampeerplaats.CurrentRow.Cells[0].Value);
+
+                aantaldeelnemers = dgvDeelnemers.RowCount + 1;
+
+                databaseManager.AddCampsite(campsiteID);
+                databaseManager.AddItem(itemID);
+
+                databaseManager.AddReservation(aantaldeelnemers, itemID);
+
+                databaseManager.AddBooker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
+
+                foreach (Visitor v in manager.visitors)
+                {
+                    databaseManager.AddVisitor(v.Name, v.Lastname, v.Email);
+                }
+            }   
         }
 
         private void pbCamping_Click(object sender, EventArgs e)

@@ -9,6 +9,12 @@ namespace ReserveringSysteem
     class Manager
     {
         public List<Visitor> visitors = new List<Visitor>();
+        public List<Campsite> campsites = new List<Campsite>();
+
+        public void AddCampsite(Campsite campsite)
+        {
+            campsites.Add(campsite);
+        }
 
         public void AddVisitor(Visitor visitor)
         {

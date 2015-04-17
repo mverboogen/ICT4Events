@@ -93,6 +93,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.btOverToMat = new System.Windows.Forms.Button();
             this.btBevestigen = new System.Windows.Forms.Button();
+            this.ColumnItemID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TabReserveringSysteem.SuspendLayout();
             this.tabPageReserveerder.SuspendLayout();
             this.tabpageDeelnemer.SuspendLayout();
@@ -643,13 +644,14 @@
             this.dgvMateriaal.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnItem,
             this.ColumnPrijs,
-            this.ColumnAantal});
+            this.ColumnAantal,
+            this.ColumnItemID});
             this.dgvMateriaal.Location = new System.Drawing.Point(6, 70);
             this.dgvMateriaal.Name = "dgvMateriaal";
             this.dgvMateriaal.RowHeadersVisible = false;
             this.dgvMateriaal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvMateriaal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMateriaal.Size = new System.Drawing.Size(199, 229);
+            this.dgvMateriaal.Size = new System.Drawing.Size(267, 229);
             this.dgvMateriaal.TabIndex = 23;
             // 
             // ColumnItem
@@ -850,6 +852,12 @@
             this.btBevestigen.UseVisualStyleBackColor = true;
             this.btBevestigen.Click += new System.EventHandler(this.btBevestigen_Click);
             // 
+            // ColumnItemID
+            // 
+            this.ColumnItemID.HeaderText = "ItemID";
+            this.ColumnItemID.Name = "ColumnItemID";
+            this.ColumnItemID.ReadOnly = true;
+            // 
             // ReserveringSysteem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -946,6 +954,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnItemID;
 
     }
 }

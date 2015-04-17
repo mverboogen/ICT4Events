@@ -8,9 +8,17 @@ namespace ReserveringSysteem
 {
     class Item
     {
+        private int itemid;
         private string itemName;
         private decimal itemPrice;
         private int quantity;
+
+
+        public int ItemID
+        {
+            get{return itemid;}
+            set {itemid = value;}
+        }
 
         public string ItemName
         {
@@ -30,8 +38,9 @@ namespace ReserveringSysteem
             set { quantity = value; }
         }
 
-        public Item(string itemName,decimal itemPrice, int quantity)
+        public Item(int itemID, string itemName,decimal itemPrice, int quantity)
         {
+            this.itemid = itemID;
             this.itemName = itemName;
             this.itemPrice = itemPrice;
             this.quantity = quantity;

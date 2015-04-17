@@ -19,6 +19,9 @@ namespace ReserveringSysteem
         private OracleCommand cmd;
         private OracleDataReader dr;
 
+        private int eventID = 1;
+        int bookerID = 0;
+
         public DatabaseManager()
         {
             Connect();
@@ -116,14 +119,16 @@ namespace ReserveringSysteem
             {
                 while (dr.Read())
                 {
+                    int id;
                     string name;
                     decimal price;
                     int quantity = 0;
 
+                    id = dr.GetInt32(0);
                     name = dr.GetString(2);
                     price = dr.GetDecimal(3);
 
-                    Item item = new Item(name, price,quantity);
+                    Item item = new Item(id, name, price,quantity);
                     itemList.Add(item);
                 }
 
@@ -136,6 +141,286 @@ namespace ReserveringSysteem
             }
 
             return null;
+        }
+
+        public void AddReservation(int aantalpersonen, int itemID)
+        {
+
+            int reservationID = 0;
+            DateTime date = DateTime.Now;
+
+            ReadData("SELECT MAX(reserveringID) + 1 FROM RESERVERING");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        reservationID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Reservering (RESERVERINGID, EVENTID, GERESERVEERDEMATERIAALID, AANTALPERSONEN) VALUES (:ReservationID, :EventID, :ReservedMaterialID, :NumberOfVisitors)";
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("ReservedMaterialID", OracleDbType.Int32).Value = itemID;
+                cmd.Parameters.Add("NumberOfVisitors", OracleDbType.Int32).Value = aantalpersonen;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Add Reservation Succes");
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.Message);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public void AddBooker(string surname, string lastname, string address, string zipcode, string city, string email)
+        {
+            int visitorID = 0;
+            int reservationID = 0;
+
+            ReadData("SELECT MAX(bezoekerID) +1 FROM BEZOEKER");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        bookerID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
+            ReadData("SELECT MAX(reserveringID) FROM RESERVERING");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        reservationID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
+            ReadData("SELECT MAX(bezoekerID) + 1 FROM BEZOEKER");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        visitorID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Bezoeker (BezoekerID, ReserveringID, EventID, Voornaam, Achternaam, Email, Reserveerder) VALUES (:VisitorID, :ReservationID, :EventID, :Surname, :Lastname, :Email, :Reserver)";
+                cmd.Parameters.Add("VisitorID", OracleDbType.Int32).Value = visitorID;
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("Surname", OracleDbType.Varchar2).Value = surname;
+                cmd.Parameters.Add("Lastname", OracleDbType.Varchar2).Value = lastname;
+                cmd.Parameters.Add("Email", OracleDbType.Varchar2).Value = email;
+                cmd.Parameters.Add("Reserver", OracleDbType.Int32).Value = bookerID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                MessageBox.Show("ADD BOOKER SUCCES");
+
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void AddVisitor(string surname, string lastname, string email)
+        {
+            int visitorID = 0;
+            int reservationID = 0;
+
+            ReadData("SELECT MAX(bezoekerID) FROM BEZOEKER");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        bookerID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
+            ReadData("SELECT MAX(reserveringID) FROM RESERVERING");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        reservationID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
+            ReadData("SELECT MAX(bezoekerID) + 1 FROM BEZOEKER");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        visitorID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Bezoeker (BezoekerID, ReserveringID, EventID, Voornaam, Achternaam, Email, Reserveerder) VALUES (:VisitorID, :ReservationID, :EventID, :Surname, :Lastname, :Email, :Reserver)";
+                cmd.Parameters.Add("VisitorID", OracleDbType.Int32).Value = visitorID;
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("Surname", OracleDbType.Varchar2).Value = surname;
+                cmd.Parameters.Add("Lastname", OracleDbType.Varchar2).Value = lastname;
+                cmd.Parameters.Add("Email", OracleDbType.Varchar2).Value = email;
+                cmd.Parameters.Add("Reserver", OracleDbType.Int32).Value = bookerID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                MessageBox.Show("ADD VISITOR SUCCES");
+
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        public void AddCampsite(int campsiteID)
+        {
+            int reservationID = 0;
+            ReadData("SELECT MAX(reserveringID) FROM RESERVERING");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        reservationID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Verhuurdeplaats (KampeerplaatsID, ReserveringID) VALUES (:CampsiteID, :ReservationID)";
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                MessageBox.Show("ADD CAMPSITE SUCCES");
+
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+        }
+
+        public void AddItem(int itemID)
+        {
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Gereserveerdemateriaal (GereserveerdemateriaalID) VALUES (:ReservedItemID)";
+                cmd.Parameters.Add("ReservedItemID", OracleDbType.Int32).Value = itemID;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                MessageBox.Show("ADD ITEM SUCCES");
+
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
         }
     }
 }
