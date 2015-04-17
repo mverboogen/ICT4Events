@@ -166,7 +166,7 @@ namespace ReserveringSysteem
         {
 
             int reservationID = 0;
-            DateTime date = DateTime.Now;
+           // DateTime date = DateTime.Now;
 
             ReadData("SELECT MAX(reserveringID) + 1 FROM RESERVERING");
             try

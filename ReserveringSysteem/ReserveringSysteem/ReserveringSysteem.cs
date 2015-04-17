@@ -207,8 +207,8 @@ namespace ReserveringSysteem
                 string bookerCity = tbBookWoonplaats.Text;
                 string bookerEmail = tbBookEmail.Text;
 
-                int itemID = 0;
-                int campsiteID = 0;
+                //int itemID = 0;
+                //int campsiteID = 0;
                 int aantaldeelnemers = 0;
 
                 aantaldeelnemers = dgvDeelnemers.RowCount + 1;
@@ -219,12 +219,12 @@ namespace ReserveringSysteem
                     databaseManager.AddCampsite(c.CampsiteID);
                 }
                 
-                foreach(Item i in manager.Items)
-                {
-                    databaseManager.AddItem(i.ItemID);
-                }
+               //foreach(Item i in manager.Items)
+                //{
+                //    databaseManager.AddItem(i.ItemID);
+                //}
                 
-                databaseManager.AddReservation(aantaldeelnemers, itemID);
+                databaseManager.AddReservation(aantaldeelnemers, 1);
 
                 databaseManager.AddBooker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
 
