@@ -39,7 +39,7 @@ namespace MediaSharingSystem
             con.Dispose();
         }
 
-        public void ReadData(string sql)
+        private void ReadData(string sql)
         {
             try
             {
@@ -54,10 +54,25 @@ namespace MediaSharingSystem
                 MessageBox.Show(e.ToString());
             }
         }
-        
-        public List<Media> getAllMedia()
+
+        private void WriteData(string sql)
         {
-            List<Media> medialist = new List<Media>();
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+        
+        public List<MediaData> getAllMedia()
+        {
+            List<MediaData> medialist = new List<MediaData>();
 
             ReadData("SELECT * FROM Media");
 
@@ -77,8 +92,8 @@ namespace MediaSharingSystem
                     postdate = dr.GetDateTime(3);
                     likes = dr.GetInt32(4);
 
-                    Media media = new Media(mediaid, mediatitle, gebruikerid, postdate);
-                    media.Likes = likes;
+                    MediaData media = new MediaData(mediaid, mediatitle, gebruikerid, postdate);
+                    //media.Likes = likes;
 
                     medialist.Add(media);
                 }
@@ -99,9 +114,9 @@ namespace MediaSharingSystem
         /// </summary>
         /// <param name="list">The parent medialist to connect the photos to</param>
         /// <returns>A list with all AVPhoto objects</returns>
-        public List<AVPhoto> getAllPhotos(List<Media> list)
+        public List<AVPhotoData> getAllPhotos(List<MediaData> list)
         {
-            List<AVPhoto> photolist = new List<AVPhoto>();
+            List<AVPhotoData> photolist = new List<AVPhotoData>();
 
             ReadData("SELECT * FROM Photo");
 
@@ -119,12 +134,12 @@ namespace MediaSharingSystem
                     width = dr.GetInt32(2);
                     height = dr.GetInt32(3);
 
-                    foreach (Media media in list)
+                    foreach (MediaData media in list)
                     {
                         if (media.ID == mediaid)
                         {
-                            AVPhoto photo = new AVPhoto(media.ID, media.Title, media.UserID, filepath, media.Postdate, width, height);
-                            photo.Likes = media.Likes;
+                            AVPhotoData photo = new AVPhotoData(media.ID, media.Title, media.UserID, filepath, media.Postdate, width, height);
+                            //photo.Likes = media.Likes;
                             photolist.Add(photo);
                         }
                     }
@@ -146,9 +161,9 @@ namespace MediaSharingSystem
         /// </summary>
         /// <param name="list">The parent medialist to connect the videos to</param>
         /// <returns>A list with all AVVideo objects</returns>
-        public List<AVVideo> getAllVideos(List<Media> list)
+        public List<AVVideoData> getAllVideos(List<MediaData> list)
         {
-            List<AVVideo> videolist = new List<AVVideo>();
+            List<AVVideoData> videolist = new List<AVVideoData>();
 
             ReadData("SELECT * FROM Video");
 
@@ -168,12 +183,13 @@ namespace MediaSharingSystem
                     width = dr.GetInt32(3);
                     height = dr.GetInt32(4);
 
-                    foreach (Media media in list)
+                    foreach (MediaData media in list)
                     {
                         if (media.ID == mediaid)
                         {
-                            AVVideo video = new AVVideo(mediaid, media.Title, media.UserID, filepath, media.Postdate, width, height, duration);
-                            video.Likes = media.Likes;
+                            AVVideoData video = new AVVideoData(mediaid, media.Title, media.UserID, filepath, media.Postdate, width, height, duration);
+                            video.PreviewImage = Properties.Resources.video_call;
+                            //video.Likes = media.Likes;
                             videolist.Add(video);
                         }
                     }
@@ -191,11 +207,11 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Downloads all videos and links them with the right parent object
+        /// Downloads all messages and links them with the right parent object
         /// </summary>
-        /// <param name="list">The parent medialist to connect the videos to</param>
-        /// <returns>A list with all AVVideo objects</returns>
-        public List<TextMessage> getAllMessages(List<Media> list)
+        /// <param name="list">The parent medialist to connect the message to</param>
+        /// <returns>A list with all TextMessage objects</returns>
+        public List<TextMessage> getAllMessages(List<MediaData> list)
         {
             List<TextMessage> messagelist = new List<TextMessage>();
 
@@ -211,12 +227,12 @@ namespace MediaSharingSystem
                     mediaid = dr.GetInt32(0);
                     content = dr.GetString(1);
 
-                    foreach (Media media in list)
+                    foreach (MediaData media in list)
                     {
                         if (media.ID == mediaid)
                         {
                             TextMessage message = new TextMessage(mediaid, media.Title, media.UserID, media.Postdate, content);
-                            message.Likes = media.Likes;
+                            //message.Likes = media.Likes;
                             messagelist.Add(message);
                         }
                     }
@@ -246,12 +262,15 @@ namespace MediaSharingSystem
                     int userid;
                     String username;
                     String password;
+                    bool isadmin;
 
                     userid = dr.GetInt32(0);
                     username = dr.GetString(1);
                     password = dr.GetString(2);
+                    isadmin = dr.GetInt32(3) == 1 ? true : false;
 
-                    User media = new User(userid, username, password);
+
+                    User media = new User(userid, username, password, isadmin);
 
                     userlist.Add(media);
                 }
@@ -266,145 +285,41 @@ namespace MediaSharingSystem
             return null;
 
         }
-        /*
-        public List<Item> GetAllItems(int eventID)
-        {
-            List<Item> itemList = new List<Item>();
 
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM MATERIAAL WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+        public List<LikeData> getAllLikes()
+        {
+            List<LikeData> likelist = new List<LikeData>();
+
+            ReadData("SELECT * FROM Likes");
 
             try
             {
                 while (dr.Read())
                 {
-                    int id;
-                    int eventId;
-                    string name;
-                    decimal price;
-                    decimal newPrice;
+                    int likeid = 0;
+                    int mediaid = 0;
+                    int commentid = 0;
+                    int userid = 0;
 
-                    id = dr.GetInt32(0);
-                    eventId = dr.GetInt32(1);
-                    name = dr.GetString(2);
-                    price = dr.GetDecimal(3);
-                    newPrice = dr.GetDecimal(4);
+                    likeid = dr.GetInt32(0);
+                    if (!dr.IsDBNull(1))
+                    {
+                        mediaid = dr.GetInt32(1);
 
-                    Item item = new Item(id, name, price, newPrice);
-                    itemList.Add(item);
-                }
-
-                return itemList;
-                
-            }
-            catch(InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return null;
-        }
-
-        public List<Visitor> GetAllVisitors(int eventID)
-        {
-            List<Visitor> visitorList = new List<Visitor>();
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
-
-            try
-            {
-                while(dr.Read())
-                {
-                    int id;
-                    string name;
-                    string email;
-                    int bookerID;
-                    int reservationID;
-
-                    id = dr.GetInt32(0);
-                    name = dr.GetString(4) + " " + dr.GetString(5);
-                    email = Convert.ToString(dr.GetValue(6));
-                    bookerID = dr.GetInt32(7);
-                    reservationID = dr.GetInt32(2);
-
-                    Visitor newVisitor = new Visitor(id, name, email, bookerID, reservationID);
-                    visitorList.Add(newVisitor);
-                }
-                return visitorList;
-            }
-            catch(InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return null;
-            
-        }
-        
-        public List<Reservation> GetAllReservations(int eventID)
-        {
-            List<Reservation> reservationList = new List<Reservation>();
-
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM RESERVERING WHERE EventID = " + eventID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
-
-            try
-            {
-                while(dr.Read())
-                {
-                    int id;
-                    DateTime reservationDate;
-                    
-
-                    id = dr.GetInt32(0);
-                    reservationDate = dr.GetDateTime(4);
-
-                    Reservation newReservation = new Reservation(id, reservationDate);
-
+                    }
                     if (!dr.IsDBNull(2))
                     {
-                        newReservation.ReservedItemID = dr.GetInt32(2);
+                        commentid = dr.GetInt32(2);
                     }
-                    reservationList.Add(newReservation);
 
-                    
+                    userid = dr.GetInt32(3);
+
+                    LikeData like = new LikeData(likeid, mediaid, commentid, userid);
+
+                    likelist.Add(like);
                 }
 
-                return reservationList;
-
+                return likelist;
             }
             catch (InvalidCastException ex)
             {
@@ -412,50 +327,33 @@ namespace MediaSharingSystem
             }
 
             return null;
+
         }
 
-        public Booker GetBooker(int eventID, int reserveringsID)
+        public List<Report> getAllReports()
         {
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT * FROM BEZOEKER WHERE EventID = " + eventID.ToString() + "AND ReserveringID = " + reserveringsID.ToString();
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            
+            List<Report> reportlist = new List<Report>();
+
+            ReadData("SELECT * FROM Reports");
 
             try
             {
-                int id;
-                string name;
-                string email;
-                int bookerID;
-                int reservationID;
-                string address;
-                string zipcode;
-                string city;
-
                 while (dr.Read())
                 {
-                    id = dr.GetInt32(0);
-                    name = dr.GetString(4) + " " + dr.GetString(5);
-                    email = Convert.ToString(dr.GetValue(6));
-                    bookerID = dr.GetInt32(7);
-                    reservationID = dr.GetInt32(2);
-                    address = dr.GetString(8);
-                    zipcode = dr.GetString(9);
-                    city = dr.GetString(10);
+                    int reportid = 0;
+                    int mediaid = 0;
+                    int userid = 0;
 
-                    Booker newBooker = new Booker(id, name, email, bookerID, reservationID, address, zipcode, city);
-                    return newBooker;
+                    reportid = dr.GetInt32(0);
+                    mediaid = dr.GetInt32(1);
+                    userid = dr.GetInt32(2);
+
+                    Report report = new Report(reportid, mediaid, userid);
+
+                    reportlist.Add(report);
                 }
-                
+
+                return reportlist;
             }
             catch (InvalidCastException ex)
             {
@@ -463,41 +361,43 @@ namespace MediaSharingSystem
             }
 
             return null;
+
         }
-        public List<int> GetReserverdItems(int eventID, int reservationID)
+
+        public void likePost(MediaData media, User user)
         {
-            List<int> intList = new List<int>();
+            WriteData("UPDATE MEDIA SET LIKES = " + media.Likes + " WHERE MediaID = " + media.ID);
+            
+            ReadData("SELECT MAX(likeid) FROM LIKES");
+            int nextid = 1;
             try
             {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT M.MateriaalID FROM Materiaal M, Materiaal_Germateriaal MGM, GereserveerdeMateriaal GM, Reservering G WHERE M.MateriaalID = MGM.MateriaalID AND MGM.GereserveerdeMateriaalID = GM.GereserveerdeMateriaalID AND GM.GereserveerdeMateriaalID = " + reservationID.ToString() + "AND M.EventID = " + eventID.ToString() + "GROUP BY M.MateriaalID";
-                cmd.CommandType = CommandType.Text;
-                dr = cmd.ExecuteReader();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-
-            try
-            {
-                int id;
-
-                while(dr.Read())
-                {
-                    id = dr.GetInt32(0);
-                    intList.Add(id);
+                while(dr.Read()){
+                    if (!dr.IsDBNull(0))
+                    {
+                        nextid = dr.GetInt32(0) + 1;
+                    }
                 }
 
-                return intList;
             }
-            catch (InvalidCastException ex)
+            catch(InvalidCastException ex)
             {
                 MessageBox.Show(ex.ToString());
             }
 
-            return null;
-        }*/
+            WriteData("INSERT INTO LIKES(likeID, mediaID, commentID, gebruikerID) VALUES (" + nextid + "," + media.ID + ", null ," + user.ID + ")");
+        }
+
+        public void dislikePost(MediaData media, User user)
+        {
+            WriteData("UPDATE MEDIA SET LIKES = " + media.Likes + " WHERE MediaID = " + media.ID);
+            WriteData("DELETE FROM LIKES WHERE gebruikerID = " + user.ID +"AND mediaID = "+media.ID);
+        }
+
+        public void uploadMedia(MediaData media)
+        {
+
+        }
+
     }
 }

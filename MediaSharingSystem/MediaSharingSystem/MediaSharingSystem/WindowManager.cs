@@ -9,22 +9,31 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxWMPLib;
 using WMPLib;
+using System.IO;
 
 namespace MediaSharingSystem
 {
     public partial class WindowManager : Form
     {
-
-
-        public enum MainView { Timeline, Photos, Videos, Messages };
-        public enum TimelineDimensions { 
+        public enum MainView { Timeline, Photos, Videos, Messages, Admin };
+        public enum TimelineDimensions 
+        { 
             PostWidth=760, 
             PostHeight=500, 
+            TextMessageHeight=250,
             PostBottomMargin=50, 
             ButtonWidth=75, 
             ButtonHeight=25,
             Defaultmargin=10
-            }
+        }
+
+        public enum PhotoDimensions
+        {
+            TileWidth=200,
+            TileHeight=200,
+            Defaultmargin=10,
+            TileColumns = 4
+        }
 
         private MediaManager mediaManager;
         
@@ -45,10 +54,16 @@ namespace MediaSharingSystem
             cbNavSearchFilter.SelectedIndex = 0;
 
             // Download and prepare all data
-            mediaManager.initializeData();
+            mediaManager.downloadData();
             
             // Sets the initial view
-            setView(MainView.Timeline);
+            changeView(MainView.Timeline, mediaManager.Medialist);
+
+            // Hide adminsbutton if user is no admin
+            if (!mediaManager.CurrentUser.IsAdmin)
+            {
+                btnNavAdmins.Visible = false;
+            }
         }
 
         
@@ -57,173 +72,169 @@ namespace MediaSharingSystem
         /// Changes the active window.
         /// </summary>
         /// <param name="view">The view to show</param>
-        public void changeView(MainView view)
+        private void changeView(MainView view, List<MediaData> source)
         {
-
+            pnlWindowContent.Controls.Clear();
+            updateViews(view, source);
         }
 
         /// <summary>
         /// Sets the active view
         /// </summary>
         /// <param name="view">The view to show</param>
-        private void setView(MainView view)
+        private void updateViews(MainView view, List<MediaData> source)
         {
+            pnlWindowContent.Controls.Clear();
             switch (view)
             {
                 case MainView.Timeline:
                     activeWindow = view;
-                    List<Media> medialist = mediaManager.Medialist;
 
                     // Loop through all media and create a view for the media
-                    foreach (Media media in medialist)
+                    foreach (MediaData media in source)
                     {
+                        MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, (int)TimelineDimensions.PostHeight);
+                        Point postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (pnlWindowContent.Controls.Count * ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
+                        post.Location = postlocation;
+                        post.BorderStyle = BorderStyle.FixedSingle;
+                        post.BackColor = Color.LightGray;
 
-                        // Create a panel as a container for the post.
-                        Panel container = new Panel();
-                        container.Width = (int)TimelineDimensions.PostWidth;
-                        container.Height = (int)TimelineDimensions.PostHeight;
-                        Point containerlocation = new Point((pnlWindowContent.Width - (int)TimelineDimensions.PostWidth) / 2, (medialist.IndexOf(media) * ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
-                        container.Location = containerlocation;
-                        container.BorderStyle = BorderStyle.FixedSingle;
-
-                        // Add the postcontainerpanel to the screen
-                        pnlWindowContent.Controls.Add(container);
-
-                        // Create a titlecontainer
-                        Panel titlecontainer = new Panel();
-                        titlecontainer.Width = (int)TimelineDimensions.PostWidth;
-                        titlecontainer.Height = ((int)TimelineDimensions.PostHeight / 20) + ((int)TimelineDimensions.Defaultmargin * 2);
-
-                        // Add the titlecontainerpanel to the parent container
-                        container.Controls.Add(titlecontainer);
-
-                        // Create a title
-                        Label titlelabel = new Label();
-                        titlelabel.Text = media.Title;
-                        titlelabel.Font = new Font("Century Gothic", 12, FontStyle.Bold);
-                        Point titlelocation = new Point((int)TimelineDimensions.Defaultmargin, (titlecontainer.Height - titlelabel.Height) / 2);
-                        titlelabel.Location = titlelocation;
-
-                        // Add the title to the container
-                        titlecontainer.Controls.Add(titlelabel);
-
-                        // Create a container for the buttons
-                        Panel buttoncontainer = new Panel();
-                        buttoncontainer.Width = (int)TimelineDimensions.PostWidth;
-                        buttoncontainer.Height = (int)TimelineDimensions.ButtonHeight + ((int)TimelineDimensions.Defaultmargin * 2);
-                        Point buttonlocation = new Point(0, container.Height - buttoncontainer.Height);
-                        buttoncontainer.Location = buttonlocation;
-
-                        // Add the buttoncontainerpanel to the parent container
-                        container.Controls.Add(buttoncontainer);
-
-                        // Create the more button
-                        MediaPostButton morebutton = new MediaPostButton(media, MediaPostButton.ButtonActions.More);
-                        morebutton.Width = (int)TimelineDimensions.ButtonWidth;
-                        morebutton.Height = (int)TimelineDimensions.ButtonHeight;
-                        Point morelocation = new Point(buttoncontainer.Width - (morebutton.Width + (int)TimelineDimensions.Defaultmargin), (buttoncontainer.Height - morebutton.Height) / 2);
-                        morebutton.Location = morelocation;
-                        morebutton.Text = "More";
-                        morebutton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(moreButton_Clicked);
-
-                        // Create the like button
-                        MediaPostButton likebutton = new MediaPostButton(media, MediaPostButton.ButtonActions.Like);
-                        likebutton.Width = (int)TimelineDimensions.ButtonWidth;
-                        likebutton.Height = (int)TimelineDimensions.ButtonHeight;
-                        Point likelocation = new Point(buttoncontainer.Width - (morebutton.Width + likebutton.Width + 10), (buttoncontainer.Height - likebutton.Height) / 2);
-                        likebutton.Location = likelocation;
-                        likebutton.Text = "Like";
-                        likebutton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(likeButton_Clicked);
-
-                        // Create the total likes label
-                        Label likelabel = new Label();
-                        likelabel.Text = "This post has " + media.Likes + " likes";
-                        likelabel.Height = buttoncontainer.Height;
-                        // The width is hardcoded because of a problem that prevents a single line by default
-                        likelabel.Width = 120;
-                        likelabel.TextAlign = ContentAlignment.MiddleLeft;
-                        Point likelabellocation = new Point(likebutton.Location.X - (likelabel.Width + (int)TimelineDimensions.Defaultmargin), (buttoncontainer.Height - likelabel.Height) / 2);
-                        likelabel.Location = likelabellocation;
-
-                        // Add the buttons and label to the button container
-                        buttoncontainer.Controls.Add(morebutton);
-                        buttoncontainer.Controls.Add(likebutton);
-                        buttoncontainer.Controls.Add(likelabel);
-
-                        // Create the postcontent container
-                        Panel contentcontainer = new Panel();
-                        contentcontainer.Width = container.Width;
-                        contentcontainer.Height = container.Height - buttoncontainer.Height - titlecontainer.Height;
-                        Point contentlocation = new Point(0, titlecontainer.Height);
-                        contentcontainer.Location = contentlocation;
-
-                        container.Controls.Add(contentcontainer);
-
-                        // Create the content of the post depending on the media type
-                        if(media is AVPhoto)
-                        {
-                            AVPhoto photo = (AVPhoto)media;
-                            PictureBox picturebox = new PictureBox();
-                            picturebox.SizeMode = PictureBoxSizeMode.Zoom;
-                            picturebox.ImageLocation = photo.Filepath;
-                            picturebox.Width = contentcontainer.Width;
-                            picturebox.Height = contentcontainer.Height;
-
-                            contentcontainer.Controls.Add(picturebox);
-                        }
-                        else if (media is AVVideo)
-                        {
-                            try
-                            {
-                                AVVideo video = (AVVideo)media;
-                                AxWindowsMediaPlayer mediaPlayer = new AxWindowsMediaPlayer();
-
-                                mediaPlayer.CreateControl();
-                                mediaPlayer.enableContextMenu = false;
-                                ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).BeginInit();
-                                mediaPlayer.Name = "wmPlayer";
-                                mediaPlayer.Enabled = true;
-                                mediaPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-                                mediaPlayer.Size = contentcontainer.Size;
-                                contentcontainer.Controls.Add(mediaPlayer);
-                                ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).EndInit();
-                                mediaPlayer.uiMode = "mini";
-                                mediaPlayer.URL = video.Filepath;
-                                mediaPlayer.Ctlcontrols.stop();
-
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.ToString()); 
-                            }
-                        }
-                        else if (media is TextMessage)
-                        {
-                            TextMessage message = (TextMessage)media;
-                            Label messagelabel = new Label();
-                            messagelabel.Width = contentcontainer.Width;
-                            messagelabel.Height = contentcontainer.Height;
-                            Point messagelocation = new Point(0, 0);
-                            messagelabel.Location = messagelocation;
-                            messagelabel.Text = message.Content;
-                            contentcontainer.Controls.Add(messagelabel);
-
-                        }
-
-
+                        // Add post to panel
+                        pnlWindowContent.Controls.Add(post);
 
                     }
                     break;
                 case MainView.Photos:
                     activeWindow = view;
+                    int maxcolumns = (int)PhotoDimensions.TileColumns;
+                    int columncount = 0;
+                    int rowcount = 0;
+
+                    foreach (MediaData media in source)
+                    {
+                        // Checks for all media that's from the AVPhoto type
+                        AVPhotoData photo = media as AVPhotoData;
+                        if (photo != null)
+                        {
+                            
+                            // Create a GridTile that contains the picture in the tile
+                            GridTileView tilephoto = new GridTileView(mediaManager);
+                            tilephoto.Width = (int)PhotoDimensions.TileWidth;
+                            tilephoto.Height = (int)PhotoDimensions.TileHeight;
+                            Point tilelocation = new Point(columncount * ((int)PhotoDimensions.TileWidth + (int)PhotoDimensions.Defaultmargin), rowcount * ((int)PhotoDimensions.TileHeight + (int)PhotoDimensions.Defaultmargin));
+                            tilephoto.Location = tilelocation;
+                            tilephoto.BackColor = Color.LightGray;
+                            tilephoto.setImage(photo);
+
+                            tilephoto.tileClicked += new GridTileView.MediaPostTileHandler(gridtile_Clicked);
+
+                            // Keeps track on which row and column the tile should be placed
+                            if (columncount >= maxcolumns - 1)
+                            {
+                                rowcount++;
+                                columncount = 0;
+                            }
+                            else
+                            {
+                                columncount++;
+                            }
+
+                            // Add the phototile to the parent panel
+                            pnlWindowContent.Controls.Add(tilephoto);
+                        }
+                    } 
 
                     break;
                 case MainView.Videos:
                     activeWindow = view;
 
+                    int maxvideocolumns = (int)PhotoDimensions.TileColumns;
+                    int videocolumncount = 0;
+                    int videorowcount = 0;
+
+                    foreach (MediaData media in source)
+                    {
+                        // Checks for all media that's from the AVPhoto type
+                        AVVideoData video = media as AVVideoData;
+                        if (video != null)
+                        {
+                            
+                            // Create a GridTile that contains the picture in the tile
+                            GridTileView tilevideo = new GridTileView(mediaManager);
+                            tilevideo.Width = (int)PhotoDimensions.TileWidth;
+                            tilevideo.Height = (int)PhotoDimensions.TileHeight;
+                            Point tilelocation = new Point(videocolumncount * ((int)PhotoDimensions.TileWidth + (int)PhotoDimensions.Defaultmargin), videorowcount * ((int)PhotoDimensions.TileHeight + (int)PhotoDimensions.Defaultmargin));
+                            tilevideo.Location = tilelocation;
+                            tilevideo.BackColor = Color.LightGray;
+                            tilevideo.setVideo(video);
+
+                            tilevideo.tileClicked += new GridTileView.MediaPostTileHandler(gridtile_Clicked);
+
+                            // Keeps track on which row and column the tile should be placed
+                            if (videocolumncount >= maxvideocolumns - 1)
+                            {
+                                videorowcount++;
+                                videocolumncount = 0;
+                            }
+                            else
+                            {
+                                videocolumncount++;
+                            }
+                            
+                            // Add the phototile to the parent panel
+                            pnlWindowContent.Controls.Add(tilevideo);
+                        }
+                    } 
+
                     break;
                 case MainView.Messages:
                     activeWindow = view;
+                    foreach (MediaData media in source)
+                    {
+                        TextMessage message = media as TextMessage;
+                        if (message != null)
+                        {
+                            MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, (int)TimelineDimensions.PostHeight);
+                            Point postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (pnlWindowContent.Controls.Count * ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
+                            post.Location = postlocation;
+                            post.BorderStyle = BorderStyle.FixedSingle;
+                            post.BackColor = Color.LightGray;
+
+                            // Add post to panel
+                            pnlWindowContent.Controls.Add(post);
+                        }
+                    }
+                    break;
+                case MainView.Admin:
+                    activeWindow = view;
+
+                    DataGridView gridview = new DataGridView();
+                    gridview.Width = pnlWindowContent.Width;
+                    gridview.Height = pnlWindowContent.Height;
+
+                    DataGridViewTextBoxColumn titlecolumn = new DataGridViewTextBoxColumn();
+                    titlecolumn.HeaderText = "Titel";
+                    titlecolumn.Width = gridview.Width / 2;
+
+                    DataGridViewTextBoxColumn reportcolumn = new DataGridViewTextBoxColumn();
+                    reportcolumn.HeaderText = "Reports";
+                    reportcolumn.Width = gridview.Width / 2;
+
+                    // Add the button column to the control.
+                    gridview.Columns.Insert(0, titlecolumn);
+                    gridview.Columns.Insert(1, reportcolumn);
+
+
+                    // Add listbox to panel
+                    pnlWindowContent.Controls.Add(gridview);
+
+                    foreach (MediaData media in source)
+                    {
+                        if (media.Reports > 5)
+                        {
+                            gridview.Rows.Add(media.Title, media.Reports);
+                        }
+                    }
 
                     break;
             }
@@ -231,42 +242,184 @@ namespace MediaSharingSystem
 
         private void btnNavTimeline_Click(object sender, EventArgs e)
         {
-
+            changeView(MainView.Timeline, mediaManager.Medialist);
         }
 
         private void btnNavPictures_Click(object sender, EventArgs e)
         {
-
+            changeView(MainView.Photos, mediaManager.Medialist);
         }
 
         private void btnNavVideos_Click(object sender, EventArgs e)
         {
-
+            changeView(MainView.Videos, mediaManager.Medialist);
         }
 
         private void btnNavMessages_Click(object sender, EventArgs e)
         {
-
+            changeView(MainView.Messages, mediaManager.Medialist);
         }
 
         private void btnNavUpload_Click(object sender, EventArgs e)
         {
+            using (UploadForm form = new UploadForm())
+            {
+                if (form.DialogResult == DialogResult.OK)
+                {
+                    string title = form.Title;
+                    string summary = form.Summary;
+                    string filepath = form.FilePath;
+                    //string filetype = form.Filetype.ToString();
+                    /*switch (filetype)
+                    {
+                        case "Photo":
+                            // upload file.. how to copy uploaded file to server? 
+                            // filepath should direct to the serverlocation not the local location
+                            break;
+                        case "Video":
 
+                            break;
+                        case "Message":
+
+                            break;
+                    }*/
+                }
+            }
+        }
+
+        private void btnNavAdmins_Click(object sender, EventArgs e)
+        {
+            changeView(MainView.Admin, mediaManager.Medialist);
         }
 
         private void btnNavSearch_Click(object sender, EventArgs e)
         {
+            string searchstring = tbNavSearch.Text;
+            List<MediaData> resultlist = new List<MediaData>();
+            
 
+            switch (cbNavSearchFilter.SelectedIndex)
+            {
+                case 0:
+                    // All filter selected
+                    foreach (MediaData media in mediaManager.Medialist)
+                    {
+                        if (media.Title.ToLower().Contains(searchstring.ToLower()))
+                        {
+
+                            resultlist.Add(media);
+                        }
+                    }
+                    changeView(MainView.Timeline, resultlist);
+                    break;
+                case 1:
+                    // Photo filter selected
+                    foreach (MediaData media in mediaManager.Medialist)
+                    {
+                        if (media is AVPhotoData)
+                        {
+                            if (media.Title.ToLower().Contains(searchstring.ToLower()))
+                            {
+
+                                resultlist.Add(media);
+                            }
+                        }
+                    }
+                    changeView(MainView.Photos, resultlist);
+                    break;
+                case 2:
+                    // Video filter selected
+                    foreach (MediaData media in mediaManager.Medialist)
+                    {
+                        if (media is AVVideoData)
+                        {
+                            if (media.Title.ToLower().Contains(searchstring.ToLower()))
+                            {
+
+                                resultlist.Add(media);
+                            }
+                        }
+                    }
+                    changeView(MainView.Videos, resultlist);
+                    break;
+                case 3:
+                    // Message filter selected
+                    foreach (MediaData media in mediaManager.Medialist)
+                    {
+                        if (media is TextMessage)
+                        {
+                            if (media.Title.ToLower().Contains(searchstring.ToLower()))
+                            {
+
+                                resultlist.Add(media);
+                            }
+                        }
+                    }
+                    changeView(MainView.Messages, resultlist);
+                    break;
+            }
         }
 
-        private void moreButton_Clicked(Media sender, MediaPostButton.ButtonActions action)
+        private void moreButton_Clicked(Button button, MediaData sender, MediaPostButton.ButtonActions action)
         {
             MessageBox.Show("morebutton clicked");
         }
 
-        private void likeButton_Clicked(Media sender, MediaPostButton.ButtonActions action)
+        private void gridtile_Clicked(MediaData sender)
         {
-            MessageBox.Show("likebutton clicked");
+            if (sender is AVPhotoData)
+            {
+                AVPhotoData photo = (AVPhotoData)sender;
+                PictureBox pb = new PictureBox();
+                pb.Size = pnlWindowContent.Size;
+                pb.SizeMode = PictureBoxSizeMode.Zoom;
+                pb.ImageLocation = photo.Filepath;
+                pnlWindowContent.Controls.Add(pb);
+                pb.BringToFront();
+
+                // When the fullscreen picture is clicked the image closes
+                pb.Click += new EventHandler(fullscreenphoto_Clicked);
+            }
+            else if (sender is AVVideoData)
+            {
+                try
+                {
+                    AVVideoData video = (AVVideoData)sender;
+                    AxWindowsMediaPlayer mediaPlayer = new AxWindowsMediaPlayer();
+
+                    mediaPlayer.CreateControl();
+                    mediaPlayer.enableContextMenu = false;
+                    ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).BeginInit();
+                    mediaPlayer.Name = "wmPlayer";
+                    mediaPlayer.Enabled = true;
+                    mediaPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+                    mediaPlayer.Size = pnlWindowContent.Size;
+                    pnlWindowContent.Controls.Add(mediaPlayer);
+                    ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).EndInit();
+                    mediaPlayer.uiMode = "mini";
+                    mediaPlayer.URL = video.Filepath;
+                    mediaPlayer.Ctlcontrols.stop();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
         }
+
+        private void videotile_Clicked(AVVideoData sender)
+        {
+
+        }
+
+        private void fullscreenphoto_Clicked(object sender, EventArgs args)
+        {
+            pnlWindowContent.Controls.Remove((PictureBox)sender);
+        }
+
+        
+
+        
     }
 }

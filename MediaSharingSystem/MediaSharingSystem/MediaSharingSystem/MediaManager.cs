@@ -9,8 +9,9 @@ namespace MediaSharingSystem
     class MediaManager
     {
         private List<User> userList;
-        private List<Media> mediaList;
+        private List<MediaData> mediaList;
         private String eventName;
+        private User currentUser;
 
         // Custom DatabaseHandler
         private DatabaseManager dbmanager;
@@ -20,7 +21,7 @@ namespace MediaSharingSystem
             get { return userList; }
         }
 
-        public List<Media> Medialist
+        public List<MediaData> Medialist
         {
             get { return mediaList; }
         }
@@ -31,10 +32,20 @@ namespace MediaSharingSystem
             set { eventName = value; }
         }
 
+        public User CurrentUser
+        {
+            get { return currentUser; }
+        }
+
         public MediaManager(String eventname)
         {
+            
+            // THIS IS A DUMMY USER ONLY.. 
+            currentUser = new User(1, "JasperRouwhorst", "Drowssap", true);
+
+
             userList = new List<User>();
-            mediaList = new List<Media>();
+            mediaList = new List<MediaData>();
             eventName = eventname;
 
             // Create databasemanager and connect to the database
@@ -45,20 +56,20 @@ namespace MediaSharingSystem
         /// <summary>
         /// This method downloads all media from the database and prepares it so there will be a ready to user media list with all derived objects with it
         /// </summary>
-        public void initializeData()
+        public void downloadData()
         {
             addUserRange(dbmanager.getAllUsers());
 
             // Downloads all media
-            List<Media> medialist = new List<Media>();
+            List<MediaData> medialist = new List<MediaData>();
             medialist = dbmanager.getAllMedia();
 
             // Downloads all photos and links them with the right parent object
-            List<AVPhoto> photolist = new List<AVPhoto>();
+            List<AVPhotoData> photolist = new List<AVPhotoData>();
             photolist = dbmanager.getAllPhotos(medialist);
 
             // Downloads all videos and links them with the right parent object
-            List<AVVideo> videolist = new List<AVVideo>();
+            List<AVVideoData> videolist = new List<AVVideoData>();
             videolist = dbmanager.getAllVideos(medialist);
 
             // Downloads all messages and links them with the right parent object
@@ -72,17 +83,56 @@ namespace MediaSharingSystem
             medialist.AddRange(messagelist);
 
             // Adds the complete medialist to the mediamanager so it's available for use now
+            mediaList.Clear();
             addMediaRange(medialist);
+
+            // Downloads all likes
+            List<LikeData> likelist = dbmanager.getAllLikes();
+            foreach (LikeData like in likelist)
+            {
+                foreach (MediaData media in medialist)
+                {
+                    if (like.MediaID == media.ID)
+                    {
+                        foreach (User user in userList)
+                        {
+                            if (user.ID == like.UserID)
+                            {
+                                media.Like(user);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Download all reports
+            List<Report> reportlist = dbmanager.getAllReports();
+            foreach (Report report in reportlist)
+            {
+                foreach (MediaData media in medialist)
+                {
+                    if (report.MediaID == media.ID)
+                    {
+                        foreach (User user in userList)
+                        {
+                            if (user.ID == report.UserID)
+                            {
+                                media.Report(user);
+                            }
+                        }
+                    }
+                }
+            }
 
         }
 
-        public bool addMedia(Media media)
+        public bool addMedia(MediaData media)
         {
             mediaList.Add(media);
             return true;
         }
 
-        public bool addMediaRange(List<Media> list)
+        public bool addMediaRange(List<MediaData> list)
         {
             mediaList.AddRange(list);
             return true;
@@ -94,19 +144,19 @@ namespace MediaSharingSystem
             return true;
         }
 
-        public bool addVideo(AVVideo video)
+        public bool addVideo(AVVideoData video)
         {
             mediaList.Add(video);
             return true;
         }
 
-        public bool addPhoto(AVPhoto photo)
+        public bool addPhoto(AVPhotoData photo)
         {
             mediaList.Add(photo);
             return true;
         }
 
-        public bool removeMedia(Media media)
+        public bool removeMedia(MediaData media)
         {
             mediaList.Remove(media);
             return true;
@@ -142,6 +192,33 @@ namespace MediaSharingSystem
                 Console.WriteLine(ex.Message);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Increments the likes of the selected media
+        /// and sends an update query to the database
+        /// </summary>
+        /// <param name="media">The media you want to like</param>
+        public void likeMedia(MediaData media)
+        {
+            media.Like(currentUser);
+            dbmanager.likePost(media, currentUser);
+        }
+
+        /// <summary>
+        /// Decrement the likes of the selected media
+        /// and sends an delete query to the database
+        /// </summary>
+        /// <param name="media">The media you want to dislike</param>
+        public void dislikeMedia(MediaData media)
+        {
+            media.Dislike(currentUser);
+            dbmanager.dislikePost(media, currentUser);
+        }
+
+        public void uploadMedia(MediaData media)
+        {
+            dbmanager.uploadMedia(media);
         }
         
     }

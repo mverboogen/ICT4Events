@@ -11,6 +11,7 @@ namespace MediaSharingSystem
         private readonly int userID;
         private String userName;
         private String password;
+        private bool isAdmin;
 
         public int ID
         {
@@ -29,11 +30,18 @@ namespace MediaSharingSystem
             set { password = value; }
         }
 
-        public User(int id, String username, String password)
+        public bool IsAdmin
+        {
+            get { return isAdmin; }
+            set { isAdmin = value; }
+        }
+
+        public User(int id, String username, String password, bool isadmin)
         {
             this.userID = id;
             userName = username;
             this.password = password;
+            isAdmin = isadmin;
         }
 
 

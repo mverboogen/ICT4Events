@@ -31,18 +31,13 @@ C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSy
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\Interop.WMPLib.dll
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\AxInterop.WMPLib.dll
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.ResolveComReference.cache
+<<<<<<< HEAD
+C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.UploadForm.resources
+=======
 E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe.config
 E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\Interop.WMPLib.dll
 E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\AxInterop.WMPLib.dll
 E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.ResolveComReference.cache
 E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.exe
 E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.pdb
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.exe
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\MediaSharingSystem.pdb
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\Oracle.DataAccess.dll
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\Interop.WMPLib.dll
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\bin\Debug\AxInterop.WMPLib.dll
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csprojResolveAssemblyReference.cache
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.WindowManager.resources
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.Properties.Resources.resources
-E:\Git\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.GenerateResource.Cache
+>>>>>>> origin/master

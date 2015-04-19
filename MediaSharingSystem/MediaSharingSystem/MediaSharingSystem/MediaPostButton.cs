@@ -11,10 +11,10 @@ namespace MediaSharingSystem
     {
         public enum ButtonActions {Like, More}
 
-        public delegate void MediaPostButtonHandler(Media sender, ButtonActions action);
+        public delegate void MediaPostButtonHandler(Button button, MediaData sender, ButtonActions action);
         public event MediaPostButtonHandler buttonClicked;
 
-        private Media parentContainer;
+        private MediaData parentContainer;
         private ButtonActions buttonAction;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace MediaSharingSystem
         /// </summary>
         /// <param name="parent">The container panel the Media post exists in</param>
         /// <param name="action">The kind of action this button performs</param>
-        public MediaPostButton(Media parent, ButtonActions action)
+        public MediaPostButton(MediaData parent, ButtonActions action)
         {
             parentContainer = parent;
             this.Click += new EventHandler(button_Clicked);
@@ -31,7 +31,7 @@ namespace MediaSharingSystem
 
         private void button_Clicked(object sender, EventArgs args)
         {
-            buttonClicked(parentContainer, buttonAction);
+            buttonClicked(this, parentContainer, buttonAction);
         }
 
         

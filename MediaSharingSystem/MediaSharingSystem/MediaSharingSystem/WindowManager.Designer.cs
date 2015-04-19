@@ -39,6 +39,7 @@
             this.cbNavSearchFilter = new System.Windows.Forms.ComboBox();
             this.pnlWindowContent = new System.Windows.Forms.Panel();
             this.pnlWindowCategories = new System.Windows.Forms.Panel();
+            this.btnNavAdmins = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnNavTimeline
@@ -153,11 +154,25 @@
             this.pnlWindowCategories.Size = new System.Drawing.Size(162, 648);
             this.pnlWindowCategories.TabIndex = 9;
             // 
+            // btnNavAdmins
+            // 
+            this.btnNavAdmins.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNavAdmins.BackgroundImage")));
+            this.btnNavAdmins.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnNavAdmins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNavAdmins.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNavAdmins.Location = new System.Drawing.Point(537, 13);
+            this.btnNavAdmins.Name = "btnNavAdmins";
+            this.btnNavAdmins.Size = new System.Drawing.Size(60, 50);
+            this.btnNavAdmins.TabIndex = 10;
+            this.btnNavAdmins.UseVisualStyleBackColor = true;
+            this.btnNavAdmins.Click += new System.EventHandler(this.btnNavAdmins_Click);
+            // 
             // WindowManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.btnNavAdmins);
             this.Controls.Add(this.pnlWindowCategories);
             this.Controls.Add(this.pnlWindowContent);
             this.Controls.Add(this.cbNavSearchFilter);
@@ -187,6 +202,7 @@
         private System.Windows.Forms.ComboBox cbNavSearchFilter;
         private System.Windows.Forms.Panel pnlWindowContent;
         private System.Windows.Forms.Panel pnlWindowCategories;
+        private System.Windows.Forms.Button btnNavAdmins;
 
     }
 }

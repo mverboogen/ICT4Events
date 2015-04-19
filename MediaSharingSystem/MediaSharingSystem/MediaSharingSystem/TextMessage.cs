@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaSharingSystem
 {
-    class TextMessage : Media
+    class TextMessage : MediaData
     {
         private String content;
 
