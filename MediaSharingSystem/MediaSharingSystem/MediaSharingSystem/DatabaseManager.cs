@@ -211,9 +211,9 @@ namespace MediaSharingSystem
         /// </summary>
         /// <param name="list">The parent medialist to connect the message to</param>
         /// <returns>A list with all TextMessage objects</returns>
-        public List<TextMessage> getAllMessages(List<MediaData> list)
+        public List<MessageData> getAllMessages(List<MediaData> list)
         {
-            List<TextMessage> messagelist = new List<TextMessage>();
+            List<MessageData> messagelist = new List<MessageData>();
 
             ReadData("SELECT * FROM Message");
 
@@ -231,7 +231,7 @@ namespace MediaSharingSystem
                     {
                         if (media.ID == mediaid)
                         {
-                            TextMessage message = new TextMessage(mediaid, media.Title, media.UserID, media.Postdate, content);
+                            MessageData message = new MessageData(mediaid, media.Title, media.UserID, media.Postdate, content);
                             //message.Likes = media.Likes;
                             messagelist.Add(message);
                         }
@@ -249,9 +249,9 @@ namespace MediaSharingSystem
 
         }
 
-        public List<User> getAllUsers()
+        public List<UserData> getAllUsers()
         {
-            List<User> userlist = new List<User>();
+            List<UserData> userlist = new List<UserData>();
 
             ReadData("SELECT * FROM Gebruiker");
 
@@ -270,7 +270,7 @@ namespace MediaSharingSystem
                     isadmin = dr.GetInt32(3) == 1 ? true : false;
 
 
-                    User media = new User(userid, username, password, isadmin);
+                    UserData media = new UserData(userid, username, password, isadmin);
 
                     userlist.Add(media);
                 }
@@ -330,9 +330,9 @@ namespace MediaSharingSystem
 
         }
 
-        public List<Report> getAllReports()
+        public List<ReportData> getAllReports()
         {
-            List<Report> reportlist = new List<Report>();
+            List<ReportData> reportlist = new List<ReportData>();
 
             ReadData("SELECT * FROM Reports");
 
@@ -348,7 +348,7 @@ namespace MediaSharingSystem
                     mediaid = dr.GetInt32(1);
                     userid = dr.GetInt32(2);
 
-                    Report report = new Report(reportid, mediaid, userid);
+                    ReportData report = new ReportData(reportid, mediaid, userid);
 
                     reportlist.Add(report);
                 }
@@ -364,7 +364,48 @@ namespace MediaSharingSystem
 
         }
 
-        public void likePost(MediaData media, User user)
+        public List<CommentData> getAllComments()
+        {
+            List<CommentData> commentlist = new List<CommentData>();
+
+            ReadData("SELECT * FROM MediaComment");
+
+            try
+            {
+                while (dr.Read())
+                {
+                    int commentid = 0;
+                    int mediaid = 0;
+                    int userid = 0;
+                    string content = "";
+                    int likes = 0;
+
+                    commentid = dr.GetInt32(0);
+                    mediaid = dr.GetInt32(1);
+                    userid = dr.GetInt32(2);
+                    content = dr.GetString(3);
+                    if (!dr.IsDBNull(4))
+                    {
+                        likes = dr.GetInt32(4);
+                    }
+
+                    CommentData comment = new CommentData(commentid, userid, mediaid, content);
+
+                    commentlist.Add(comment);
+                }
+
+                return commentlist;
+            }
+            catch (InvalidCastException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            return null;
+
+        }
+
+        public void likePost(MediaData media, UserData user)
         {
             WriteData("UPDATE MEDIA SET LIKES = " + media.Likes + " WHERE MediaID = " + media.ID);
             
@@ -388,10 +429,70 @@ namespace MediaSharingSystem
             WriteData("INSERT INTO LIKES(likeID, mediaID, commentID, gebruikerID) VALUES (" + nextid + "," + media.ID + ", null ," + user.ID + ")");
         }
 
-        public void dislikePost(MediaData media, User user)
+        public void dislikePost(MediaData media, UserData user)
         {
             WriteData("UPDATE MEDIA SET LIKES = " + media.Likes + " WHERE MediaID = " + media.ID);
             WriteData("DELETE FROM LIKES WHERE gebruikerID = " + user.ID +"AND mediaID = "+media.ID);
+        }
+
+        public void likeComment(CommentData comment, UserData user)
+        {
+            WriteData("UPDATE MEDIACOMMENT SET LIKES = " + comment.Likes + " WHERE CommentID = " + comment.ID);
+
+            ReadData("SELECT MAX(likeid) FROM LIKES");
+            int nextid = 1;
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        nextid = dr.GetInt32(0) + 1;
+                    }
+                }
+
+            }
+            catch (InvalidCastException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            WriteData("INSERT INTO LIKES(likeID, mediaID, commentID, gebruikerID) VALUES (" + nextid + ", null ,"+ comment.ID +"," + user.ID + ")");
+        }
+
+        public void dislikeComment(CommentData comment, UserData user)
+        {
+            WriteData("UPDATE MEDIACOMMENT SET LIKES = " + comment.Likes + " WHERE CommentID = " + comment.ID);
+            WriteData("DELETE FROM LIKES WHERE gebruikerID = " + user.ID + "AND commentID = " + comment.ID);
+        }
+
+        public void reportPost(MediaData media, UserData user)
+        {
+
+            ReadData("SELECT MAX(reportid) FROM Reports");
+            int nextid = 1;
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        nextid = dr.GetInt32(0) + 1;
+                    }
+                }
+
+            }
+            catch (InvalidCastException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            WriteData("INSERT INTO Reports(reportID, mediaID, gebruikerID) VALUES (" + nextid + "," + media.ID + "," + user.ID + ")");
+        }
+
+        public void dereportPost(MediaData media, UserData user)
+        {
+            WriteData("DELETE FROM Reports WHERE gebruikerID = " + user.ID + "AND mediaID = " + media.ID);
         }
 
         public void uploadMedia(MediaData media)

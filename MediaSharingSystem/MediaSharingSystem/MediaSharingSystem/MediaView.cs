@@ -28,6 +28,7 @@ namespace MediaSharingSystem
         Label likeLabel;
         MediaPostButton moreButton;
         MediaPostButton likeButton;
+        MediaPostButton reportButton;
         
         // Comment controls
         Panel commentPanel;
@@ -82,17 +83,48 @@ namespace MediaSharingSystem
             moreButton.Text = "More";
             moreButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(moreButton_Clicked);
 
+            // Create the report button
+            reportButton = new MediaPostButton(media, MediaPostButton.ButtonActions.More);
+            reportButton.Width = (int)PostDimensions.ButtonWidth;
+            reportButton.Height = (int)PostDimensions.ButtonHeight;
+            Point reportlocation = new Point(buttoncontainer.Width - (reportButton.Width + moreButton.Width + (int)PostDimensions.DefaultMargin), (buttoncontainer.Height - reportButton.Height) / 2);
+            reportButton.Location = reportlocation;
+            // Checks if the media has already been reported
+            if (media.ReportedBy.Count > 0)
+            {
+                // If the media has been liked, loop through the likes and enable the dislike button if this post has been liked by the current user
+                foreach (UserData reportedby in media.ReportedBy)
+                {
+                    if (reportedby.ID == manager.CurrentUser.ID)
+                    {
+                        reportButton.Text = "Dereport";
+                        reportButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(dereportButton_Clicked);
+                    }
+                    else
+                    {
+                        reportButton.Text = "Report";
+                        reportButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(reportButton_Clicked);
+                    }
+                }
+            }
+            else
+            {
+                reportButton.Text = "Report";
+                reportButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(reportButton_Clicked);
+            }
+
+            // Create the like button
             likeButton = new MediaPostButton(media, MediaPostButton.ButtonActions.Like);
             likeButton.Width = (int)PostDimensions.ButtonWidth;
             likeButton.Height = (int)PostDimensions.ButtonHeight;
-            Point likelocation = new Point(buttoncontainer.Width - (moreButton.Width + likeButton.Width + (int)PostDimensions.ButtonWidth), (buttoncontainer.Height - likeButton.Height) / 2);
+            Point likelocation = new Point(buttoncontainer.Width - (moreButton.Width + likeButton.Width + reportButton.Width + (int)PostDimensions.DefaultMargin), (buttoncontainer.Height - likeButton.Height) / 2);
             likeButton.Location = likelocation;
 
             // Checks if the media has already been liked
             if (media.LikedBy.Count > 0)
             {
                 // If the media has been liked, loop through the likes and enable the dislike button if this post has been liked by the current user
-                foreach (User likedby in media.LikedBy)
+                foreach (UserData likedby in media.LikedBy)
                 {
                     if (likedby.ID == manager.CurrentUser.ID)
                     {
@@ -124,6 +156,7 @@ namespace MediaSharingSystem
 
             // Add the buttons and label to the button container
             buttoncontainer.Controls.Add(moreButton);
+            buttoncontainer.Controls.Add(reportButton);
             buttoncontainer.Controls.Add(likeButton);
             buttoncontainer.Controls.Add(likeLabel);
 
@@ -174,9 +207,9 @@ namespace MediaSharingSystem
                     MessageBox.Show(ex.ToString());
                 }
             }
-            else if (media is TextMessage)
+            else if (media is MessageData)
             {
-                TextMessage message = (TextMessage)media;
+                MessageData message = (MessageData)media;
                 Label messagelabel = new Label();
                 messagelabel.Width = contentcontainer.Width;
                 messagelabel.Height = contentcontainer.Height;
@@ -201,9 +234,18 @@ namespace MediaSharingSystem
             {
                 likeButton.Text = "Like";
             }
+
+            if (media.ReportedBy.Contains(manager.CurrentUser))
+            {
+                reportButton.Text = "Dereport";
+            }
+            else
+            {
+                reportButton.Text = "Report";
+            }
         }
 
-        private void moreButton_Clicked(Button button, MediaData sender, MediaPostButton.ButtonActions action)
+        private void moreButton_Clicked(Button button, MediaData sender)
         {
             commentPanel = new Panel();
             commentPanel.Width = this.Width;
@@ -249,42 +291,53 @@ namespace MediaSharingSystem
             contentcontainer.Height = commentPanel.Height - buttoncontainer.Height;
             // Enable this panel to scroll when the content doesn't fit the screen
             contentcontainer.AutoScroll = true;
-            foreach (CommentData comment in media.Comments)
+
+            commentPanel.Controls.Add(contentcontainer);
+
+            if (media.Comments.Count > 0)
             {
-              /*  Panel contentpanel = new Panel();
-                contentpanel.Width = contentcontainer.Width;
-                contentpanel.Height = (int)PostDimensions.CommentHeight;
-                Point commentpnllocation = new Point((int)PostDimensions.DefaultMargin, contentcontainer.Controls.Count * (commentpanel.Height + (int)PostDimensions.DefaultMargin));
-                contentpanel.Location = commentpnllocation;
+                foreach (CommentData comment in media.Comments)
+                {
+                    int width = this.Width - ((int)PostDimensions.DefaultMargin * 2);
+                    int height = (int)PostDimensions.CommentHeight;
+                    CommentView commentview = new CommentView(manager, comment, width, height);
+                    Point commentviewlocation = new Point((contentcontainer.Width - commentview.Width)/2, contentcontainer.Controls.Count * (commentview.Height + (int)PostDimensions.DefaultMargin));
+                    commentview.Location = commentviewlocation;
+                    commentview.BackColor = Color.LightGray;
 
-                contentcontainer.Controls.Add(contentpanel);
-
-                Panel commentbuttoncontainer = new Panel();
-                commentbuttoncontainer.Width = commentPanel.Width;
-                commentbuttoncontainer.Height = (int)PostDimensions.ButtonHeight + ((int)PostDimensions.DefaultMargin * 2);
-                Point commentbtnlocation = new Point(0, commentPanel.Height - commentbuttoncontainer.Height);
-                commentbuttoncontainer.Location = commentbtnlocation;
-
-                // Add buttoncontainer to parent controls
-                contentpanel.Controls.Add(buttoncontainer);
-
-                Button commentlike = new Button();
-                commentlike.Width = (int)PostDimensions.ButtonWidth;
-                commentlike.Height = (int)PostDimensions.ButtonHeight;
-                commentlike.Text = "Like";
-                Point commentlikelocation = new Point(commentbuttoncontainer.Width - (commentlike.Width + (int)PostDimensions.DefaultMargin), commentbuttoncontainer.Height - (commentlike.Height + (int)PostDimensions.DefaultMargin));
-                commentlike.Location = commentlikelocation;
-                //commentlike.Click += new MediaPostButton.MediaPostButtonHandler(likeButton_Clicked);
-
-
-                Label lblcomment = new Label();
-                lblcomment.Text = comment.Content + " - "+comment.CommentOwner.Username;
-                commentpanel.Controls.Add(lblcomment);*/
+                    contentcontainer.Controls.Add(commentview);
+                }
+            }
+            else
+            {
+                Label nocomments = new Label();
+                nocomments.Width = contentcontainer.Width;
+                nocomments.Height = contentcontainer.Height;
+                nocomments.TextAlign = ContentAlignment.MiddleCenter;
+                nocomments.Text = "This post has no comments";
+                nocomments.Font = new Font("Century Gothic", 20, FontStyle.Bold);
+                contentcontainer.Controls.Add(nocomments);
             }
 
         }
 
-        private void likeButton_Clicked(Button button, MediaData sender, MediaPostButton.ButtonActions action)
+        private void reportButton_Clicked(Button button, MediaData sender)
+        {
+            reportButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(dereportButton_Clicked);
+            reportButton.buttonClicked -= new MediaPostButton.MediaPostButtonHandler(reportButton_Clicked);
+            manager.reportMedia(media);
+            updateView();
+        }
+
+        private void dereportButton_Clicked(Button button, MediaData sender)
+        {
+            reportButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(reportButton_Clicked);
+            reportButton.buttonClicked -= new MediaPostButton.MediaPostButtonHandler(dereportButton_Clicked);
+            manager.dereportMedia(media);
+            updateView();
+        }
+
+        private void likeButton_Clicked(Button button, MediaData sender)
         {
             likeButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(dislikeButton_Clicked);
             likeButton.buttonClicked -= new MediaPostButton.MediaPostButtonHandler(likeButton_Clicked);
@@ -292,7 +345,7 @@ namespace MediaSharingSystem
             updateView();
         }
 
-        private void dislikeButton_Clicked(Button button, MediaData sender, MediaPostButton.ButtonActions action)
+        private void dislikeButton_Clicked(Button button, MediaData sender)
         {
             likeButton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(likeButton_Clicked);
             likeButton.buttonClicked -= new MediaPostButton.MediaPostButtonHandler(dislikeButton_Clicked);

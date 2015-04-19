@@ -37,7 +37,7 @@ namespace MediaSharingSystem
             set{ filePath = value; }
         }
 
-        public AVPhotoData(int id, String title, User owner, String path, DateTime postdate, int width, int height)
+        public AVPhotoData(int id, String title, UserData owner, String path, DateTime postdate, int width, int height)
             : base(id, title, owner, postdate)
         {
             this.width = width;

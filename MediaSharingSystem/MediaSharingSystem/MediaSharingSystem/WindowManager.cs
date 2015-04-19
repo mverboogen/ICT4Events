@@ -191,7 +191,7 @@ namespace MediaSharingSystem
                     activeWindow = view;
                     foreach (MediaData media in source)
                     {
-                        TextMessage message = media as TextMessage;
+                        MessageData message = media as MessageData;
                         if (message != null)
                         {
                             MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, (int)TimelineDimensions.PostHeight);
@@ -346,7 +346,7 @@ namespace MediaSharingSystem
                     // Message filter selected
                     foreach (MediaData media in mediaManager.Medialist)
                     {
-                        if (media is TextMessage)
+                        if (media is MessageData)
                         {
                             if (media.Title.ToLower().Contains(searchstring.ToLower()))
                             {

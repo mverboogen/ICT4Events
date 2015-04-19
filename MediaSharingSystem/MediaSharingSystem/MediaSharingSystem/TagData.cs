@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaSharingSystem
 {
-    class MediaTag
+    class TagData
     {
         private String tag;
 

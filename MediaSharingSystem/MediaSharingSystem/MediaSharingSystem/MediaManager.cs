@@ -8,15 +8,15 @@ namespace MediaSharingSystem
 {
     class MediaManager
     {
-        private List<User> userList;
+        private List<UserData> userList;
         private List<MediaData> mediaList;
         private String eventName;
-        private User currentUser;
+        private UserData currentUser;
 
         // Custom DatabaseHandler
         private DatabaseManager dbmanager;
 
-        public List<User> Userlist
+        public List<UserData> Userlist
         {
             get { return userList; }
         }
@@ -32,7 +32,7 @@ namespace MediaSharingSystem
             set { eventName = value; }
         }
 
-        public User CurrentUser
+        public UserData CurrentUser
         {
             get { return currentUser; }
         }
@@ -41,10 +41,10 @@ namespace MediaSharingSystem
         {
             
             // THIS IS A DUMMY USER ONLY.. 
-            currentUser = new User(1, "JasperRouwhorst", "Drowssap", true);
+            currentUser = new UserData(1, "JasperRouwhorst", "Drowssap", true);
 
 
-            userList = new List<User>();
+            userList = new List<UserData>();
             mediaList = new List<MediaData>();
             eventName = eventname;
 
@@ -73,7 +73,7 @@ namespace MediaSharingSystem
             videolist = dbmanager.getAllVideos(medialist);
 
             // Downloads all messages and links them with the right parent object
-            List<TextMessage> messagelist = new List<TextMessage>();
+            List<MessageData> messagelist = new List<MessageData>();
             messagelist = dbmanager.getAllMessages(medialist);
 
             // Clears the unlinked medialist and adds the derived objects to the list
@@ -94,7 +94,7 @@ namespace MediaSharingSystem
                 {
                     if (like.MediaID == media.ID)
                     {
-                        foreach (User user in userList)
+                        foreach (UserData user in userList)
                         {
                             if (user.ID == like.UserID)
                             {
@@ -106,20 +106,33 @@ namespace MediaSharingSystem
             }
 
             // Download all reports
-            List<Report> reportlist = dbmanager.getAllReports();
-            foreach (Report report in reportlist)
+            List<ReportData> reportlist = dbmanager.getAllReports();
+            foreach (ReportData report in reportlist)
             {
                 foreach (MediaData media in medialist)
                 {
                     if (report.MediaID == media.ID)
                     {
-                        foreach (User user in userList)
+                        foreach (UserData user in userList)
                         {
                             if (user.ID == report.UserID)
                             {
                                 media.Report(user);
                             }
                         }
+                    }
+                }
+            }
+
+            // Download all comments
+            List<CommentData> commentlist = dbmanager.getAllComments();
+            foreach (CommentData comment in commentlist)
+            {
+                foreach (MediaData media in medialist)
+                {
+                    if (comment.MediaID == media.ID)
+                    {
+                        media.addComment(comment);
                     }
                 }
             }
@@ -138,7 +151,7 @@ namespace MediaSharingSystem
             return true;
         }
 
-        public bool addMessage(TextMessage message)
+        public bool addMessage(MessageData message)
         {
             mediaList.Add(message);
             return true;
@@ -162,23 +175,23 @@ namespace MediaSharingSystem
             return true;
         }
 
-        public bool addUser(User user)
+        public bool addUser(UserData user)
         {
             userList.Add(user);
             return true;
         }
 
-        public bool addUserRange(List<User> list)
+        public bool addUserRange(List<UserData> list)
         {
             userList.AddRange(list);
             return true;
         }
 
-        public User getUserById(int id)
+        public UserData getUserById(int id)
         {
             try
             {
-                foreach (User user in userList)
+                foreach (UserData user in userList)
                 {
                     if (user.ID == id)
                     {
@@ -215,6 +228,49 @@ namespace MediaSharingSystem
             media.Dislike(currentUser);
             dbmanager.dislikePost(media, currentUser);
         }
+
+        /// <summary>
+        /// Increments the likes of the selected comment
+        /// and sends an update query to the database
+        /// </summary>
+        /// <param name="comment">The comment you want to like</param>
+        public void likeComment(CommentData comment)
+        {
+            comment.Like(currentUser);
+            dbmanager.likeComment(comment, currentUser);
+        }
+
+        /// <summary>
+        /// Decrement the likes of the selected comment
+        /// and sends an delete query to the database
+        /// </summary>
+        /// <param name="comment">The media you want to dislike</param>
+        public void dislikeComment(CommentData comment)
+        {
+            comment.Dislike(currentUser);
+            dbmanager.dislikeComment(comment, currentUser);
+        }
+
+        /// <summary>
+        /// Increments the reports of the selected media
+        /// and sends an update query to the database
+        /// </summary>
+        /// <param name="media">The media you want to report</param>
+        public void reportMedia(MediaData media)
+        {
+            dbmanager.reportPost(media, currentUser);
+        }
+
+        /// <summary>
+        /// Decrement the reports of the selected media
+        /// and sends an delete query to the database
+        /// </summary>
+        /// <param name="media">The media you want to dereport</param>
+        public void dereportMedia(MediaData media)
+        {
+            dbmanager.dereportPost(media, currentUser);
+        }
+
 
         public void uploadMedia(MediaData media)
         {

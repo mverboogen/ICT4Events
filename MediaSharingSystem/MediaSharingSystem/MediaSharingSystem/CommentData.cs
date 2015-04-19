@@ -8,21 +8,30 @@ namespace MediaSharingSystem
 {
     class CommentData
     {
+        private int commentID;
         private int userID;
+        private int mediaID;
         private int likes;
         private string content;
         // The user that has posted this comment
-        private User commentOwner;
+        private UserData commentOwner;
+
+        // Contains all users that liked this post. 
+        // This is also the counter that returns the amount of likes
+        private List<UserData> likedByList;
+
+        // contains all users that reported this post
+        // This is also the counter that returns the amount of reports
+        private List<UserData> reportedByList;
 
         public int ID
         {
-            get { return this.userID; }
+            get { return this.commentID; }
         }
 
-        public int Likes
+        public int MediaID
         {
-            get { return likes; }
-            set { likes = value; }
+            get { return mediaID; }
         }
 
         public string Content
@@ -31,22 +40,62 @@ namespace MediaSharingSystem
             set { content = value; }
         }
 
-        public User CommentOwner
+        public UserData CommentOwner
         {
             get { return commentOwner; }
             set { commentOwner = value; }
         }
 
-        public CommentData(User owner, string content)
+        public CommentData(int commentid, UserData owner, int mediaid, string content)
         {
+            commentID = commentid;
             commentOwner = owner;
             this.content = content;
+            mediaID = mediaid;
+
+            likedByList = new List<UserData>();
+            reportedByList = new List<UserData>();
         }
 
-        public CommentData(int userid, string content)
+        public CommentData(int commentid, int userid, int mediaid, string content)
         {
+            commentID = commentid;
             userID = userid;
             this.content = content;
+            mediaID = mediaid;
+
+            likedByList = new List<UserData>();
+            reportedByList = new List<UserData>();
+        }
+
+        public int Likes
+        {
+            get { return likedByList.Count; }
+        }
+
+        public List<UserData> LikedBy
+        {
+            get { return likedByList; }
+        }
+
+        public void Like(UserData user)
+        {
+            likedByList.Add(user);
+        }
+
+        public void Dislike(UserData user)
+        {
+            likedByList.Remove(user);
+        }
+
+        public void Report(UserData user)
+        {
+            reportedByList.Add(user);
+        }
+
+        public void UndoReport(UserData user)
+        {
+            reportedByList.Remove(user);
         }
 
     }

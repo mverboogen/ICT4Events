@@ -13,17 +13,17 @@ namespace MediaSharingSystem
         private DateTime postDate;
 
         // The user that has posted this mediafile
-        private User mediaOwner;
+        private UserData mediaOwner;
         private int userID;
         private List<CommentData> commentList;
-        private List<MediaTag> tagList;
+        private List<TagData> tagList;
         // Contains all users that liked this post. 
         // This is also the counter that returns the amount of likes
-        private List<User> likedByList;
+        private List<UserData> likedByList;
 
         // contains all users that reported this post
         // This is also the counter that returns the amount of reports
-        private List<User> reportedByList;
+        private List<UserData> reportedByList;
 
         public int ID
         {
@@ -47,7 +47,7 @@ namespace MediaSharingSystem
             get { return likedByList.Count; }
         }
 
-        public List<User> LikedBy
+        public List<UserData> LikedBy
         {
             get { return likedByList; }
         }
@@ -57,7 +57,7 @@ namespace MediaSharingSystem
             get { return reportedByList.Count; }
         }
 
-        public List<User> ReportedBy
+        public List<UserData> ReportedBy
         {
             get { return reportedByList; }
         }
@@ -74,21 +74,24 @@ namespace MediaSharingSystem
             set { userID = value; }
         }
 
-        public User User
+        public UserData User
         {
             get { return mediaOwner; }
             set { mediaOwner = value; }
         }
 
-        public MediaData(int id, String title, User owner, DateTime postdate)
+        public MediaData(int id, String title, UserData owner, DateTime postdate)
         {
             this.mediaID = id;
             this.title = title;
             this.mediaOwner = owner;
             this.postDate = postdate;
 
-            likedByList = new List<User>();
-            reportedByList = new List<User>();
+            likedByList = new List<UserData>();
+            reportedByList = new List<UserData>();
+            commentList = new List<CommentData>();
+            tagList = new List<TagData>();
+
         }
 
         public MediaData(int id, String title, int userid, DateTime postdate)
@@ -98,28 +101,35 @@ namespace MediaSharingSystem
             this.userID = userid;
             this.postDate = postdate;
 
-            likedByList = new List<User>();
-            reportedByList = new List<User>();
+            likedByList = new List<UserData>();
+            reportedByList = new List<UserData>();
+            commentList = new List<CommentData>();
+            tagList = new List<TagData>();
         }
 
-        public void Like(User user)
+        public void Like(UserData user)
         {
             likedByList.Add(user);
         }
 
-        public void Dislike(User user)
+        public void Dislike(UserData user)
         {
             likedByList.Remove(user);
         }
 
-        public void Report(User user)
+        public void Report(UserData user)
         {
             reportedByList.Add(user);
         }
 
-        public void UndoReport(User user)
+        public void UndoReport(UserData user)
         {
             reportedByList.Remove(user);
+        }
+
+        public void addComment(CommentData comment)
+        {
+            commentList.Add(comment);
         }
 
     }

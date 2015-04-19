@@ -51,7 +51,7 @@ namespace MediaSharingSystem
             set { previewImage = value; }
         }
 
-        public AVVideoData(int id, String title, User owner, String path, DateTime postdate, int width, int height, int duration)
+        public AVVideoData(int id, String title, UserData owner, String path, DateTime postdate, int width, int height, int duration)
             : base(id, title, owner, postdate)
         {
             this.duration = duration;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaSharingSystem
 {
-    class User
+    class UserData
     {
         private readonly int userID;
         private String userName;
@@ -36,7 +36,7 @@ namespace MediaSharingSystem
             set { isAdmin = value; }
         }
 
-        public User(int id, String username, String password, bool isadmin)
+        public UserData(int id, String username, String password, bool isadmin)
         {
             this.userID = id;
             userName = username;

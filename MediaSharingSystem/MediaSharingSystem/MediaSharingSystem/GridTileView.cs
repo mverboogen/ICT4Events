@@ -64,7 +64,7 @@ namespace MediaSharingSystem
             if (photo.LikedBy.Count > 0)
             {
                 // If the media has been liked, loop through the likes and enable the dislike button if this post has been liked by the current user
-                foreach (User likedby in photo.LikedBy)
+                foreach (UserData likedby in photo.LikedBy)
                 {
                     if (likedby.ID == manager.CurrentUser.ID)
                     {
@@ -124,7 +124,7 @@ namespace MediaSharingSystem
             if (video.LikedBy.Count > 0)
             {
                 // If the media has been liked, loop through the likes and enable the dislike button if this post has been liked by the current user
-                foreach (User likedby in photo.LikedBy)
+                foreach (UserData likedby in photo.LikedBy)
                 {
                     if (likedby.ID == manager.CurrentUser.ID)
                     {
@@ -160,7 +160,7 @@ namespace MediaSharingSystem
             }
         }
 
-        public void likeButton_Clicked(Button button, MediaData media, MediaPostButton.ButtonActions action)
+        public void likeButton_Clicked(Button button, MediaData media)
         {
             manager.likeMedia(media);    
             MediaPostButton mpbutton = (MediaPostButton)button;
@@ -169,7 +169,7 @@ namespace MediaSharingSystem
             mpbutton.buttonClicked += new MediaPostButton.MediaPostButtonHandler(dislikeButton_Clicked);
         }
 
-        public void dislikeButton_Clicked(Button button, MediaData media, MediaPostButton.ButtonActions action)
+        public void dislikeButton_Clicked(Button button, MediaData media)
         {
             manager.dislikeMedia(media);
             MediaPostButton mpbutton = (MediaPostButton)button;

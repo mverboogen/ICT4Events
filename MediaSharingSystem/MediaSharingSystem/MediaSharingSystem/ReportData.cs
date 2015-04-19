@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaSharingSystem
 {
-    class Report : IComparable
+    class ReportData : IComparable
     {
         private int reportID;
         private int mediaID;
@@ -27,7 +27,7 @@ namespace MediaSharingSystem
             get { return userID; }
         }
 
-        public Report(int reportid, int mediaid, int userid)
+        public ReportData(int reportid, int mediaid, int userid)
         {
             reportID = reportid;
             mediaID = mediaid;

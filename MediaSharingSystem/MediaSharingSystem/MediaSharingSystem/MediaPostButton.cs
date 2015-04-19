@@ -11,11 +11,10 @@ namespace MediaSharingSystem
     {
         public enum ButtonActions {Like, More}
 
-        public delegate void MediaPostButtonHandler(Button button, MediaData sender, ButtonActions action);
+        public delegate void MediaPostButtonHandler(Button button, MediaData sender);
         public event MediaPostButtonHandler buttonClicked;
 
         private MediaData parentContainer;
-        private ButtonActions buttonAction;
 
         /// <summary>
         /// This button is custom made for this project. 
@@ -31,7 +30,7 @@ namespace MediaSharingSystem
 
         private void button_Clicked(object sender, EventArgs args)
         {
-            buttonClicked(this, parentContainer, buttonAction);
+            buttonClicked(this, parentContainer);
         }
 
         

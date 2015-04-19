@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaSharingSystem
 {
-    class TextMessage : MediaData
+    class MessageData : MediaData
     {
         private String content;
 
@@ -16,13 +16,13 @@ namespace MediaSharingSystem
             set { content = value; }
         }
 
-        public TextMessage(int id, String title, User owner, DateTime postdate, String content)
+        public MessageData(int id, String title, UserData owner, DateTime postdate, String content)
             : base(id, title, owner, postdate)
         {
             this.content = content;
         }
 
-        public TextMessage(int id, String title, int ownerid, DateTime postdate, String content)
+        public MessageData(int id, String title, int ownerid, DateTime postdate, String content)
             : base(id, title, ownerid, postdate)
         {
             this.content = content;
