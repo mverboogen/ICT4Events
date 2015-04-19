@@ -48,15 +48,54 @@ namespace ReserveringSysteem
             items.Add(item);
         }
 
-        /*
+        public Visitor FindVisitor(string VisitorID)
+        {
+            foreach (Visitor visitor in visitors)
+            {
+                if(visitor.Name.ToLower() == VisitorID.ToLower())
+                {
+                    return visitor;
+                }
+            }
+            return null;
+        }
+
+        public Campsite FindCampsite(int CampsiteID)
+        {
+            foreach (Campsite campsite in campsites)
+            {
+                if (campsite.CampsiteID == CampsiteID)
+                {
+                    return campsite;
+                }
+            }
+            return null;
+        }
+        public Item FindItem(int ItemID)
+        {
+            foreach (Item item in items)
+            {
+                if (item.ItemID == ItemID)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+        
         public void RemoveVisitor(Visitor visitor)
         {
             visitors.Remove(visitor);
         }
-        */
+        
         public void RemoveCampsite(Campsite campsite)
         {
+            campsites.Remove(campsite);
+        }
 
+        public void RemoveItem(Item item)
+        {
+            items.Remove(item);
         }
          
     }

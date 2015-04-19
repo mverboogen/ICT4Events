@@ -153,21 +153,14 @@ namespace ReserveringSysteem
 
         private void btOverToMat_Click(object sender, EventArgs e)
         {
-            manager.Items.Clear();
-
             currentSelectedTab = 3;
             TabReserveringSysteem.SelectedTab = tabPageMateriaal;
         }
 
         private void btMatToKamp_Click(object sender, EventArgs e)
         {
-            manager.Campsites.Clear();
-
             currentSelectedTab = 2;
             TabReserveringSysteem.SelectedTab = tabPageKampeerplaats;
-
-            RefreshData();
-
         }
 
         private void btKampToDel_Click(object sender, EventArgs e)
@@ -184,7 +177,14 @@ namespace ReserveringSysteem
 
         private void btVerwijderen_Click(object sender, EventArgs e)
         {
-           
+            string VisitorName = "";
+
+            VisitorName = dgvDeelnemers.CurrentRow.Cells[0].Value.ToString();
+
+            Visitor removeID = manager.FindVisitor(VisitorName);
+            manager.RemoveVisitor(removeID);
+
+            RefreshData();
         }
 
         private void btBevestigen_Click(object sender, EventArgs e)
@@ -207,35 +207,36 @@ namespace ReserveringSysteem
                 string bookerCity = tbBookWoonplaats.Text;
                 string bookerEmail = tbBookEmail.Text;
 
-                //int itemID = 0;
-                //int campsiteID = 0;
                 int aantaldeelnemers = 0;
+                int aantalItems = 0;
 
                 aantaldeelnemers = dgvDeelnemers.RowCount + 1;
 
-                
+                aantalItems = manager.Items.Count;
+
+                databaseManager.AddReservation(aantaldeelnemers,aantalItems);
+  
                 foreach(Campsite c in manager.Campsites)
                 {
                     databaseManager.AddCampsite(c.CampsiteID);
                 }
                 
-               //foreach(Item i in manager.Items)
-                //{
-                //    databaseManager.AddItem(i.ItemID);
-                //}
-                
-                databaseManager.AddReservation(aantaldeelnemers, 1);
-
+                foreach(Item i in manager.Items)
+                {
+                    databaseManager.AddReservedItem(i.ItemID);
+                }
+                   
                 databaseManager.AddBooker(bookerName, bookerLastname, bookerAddress, bookerZipcode, bookerCity, bookerEmail);
 
                 foreach (Visitor v in manager.Visitors)
                 {
                     databaseManager.AddVisitor(v.Name, v.Lastname, v.Email);
                 }
-
+                
                 MessageBox.Show("RESERVERING BEVESTIGD");
                 
                 this.Close();
+                databaseManager.Disconnect();
             }   
         }
 
@@ -272,10 +273,6 @@ namespace ReserveringSysteem
             RefreshData();
         }
 
-        private void dgvReservedCampsite_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-        }
-
         private void dgvMateriaal_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int matID = 0;
@@ -291,5 +288,30 @@ namespace ReserveringSysteem
 
             RefreshData();
         }
+
+        private void dgvReservedCampsite_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int campID = 0;
+
+            campID = Convert.ToInt32(dgvReservedCampsite.CurrentRow.Cells[0].Value);
+
+            Campsite removeID = manager.FindCampsite(campID);
+            manager.RemoveCampsite(removeID);
+
+            RefreshData();
+        }
+
+        private void dgvReservedMat_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int ItemID = 0;
+
+            ItemID = Convert.ToInt32(dgvReservedMat.CurrentRow.Cells[2].Value);
+
+            Item removeID = manager.FindItem(ItemID);
+            manager.RemoveItem(removeID);
+
+            RefreshData();
+        }
+
     }
 }

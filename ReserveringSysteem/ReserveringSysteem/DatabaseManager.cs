@@ -13,6 +13,8 @@ namespace ReserveringSysteem
 {
     class DatabaseManager
     {
+        private Manager manager = new Manager();
+
         private List<Item> itemList = new List<Item>();
         private List<Campsite> campSiteList = new List<Campsite>();
         private OracleConnection con;
@@ -23,7 +25,8 @@ namespace ReserveringSysteem
         public List<Campsite> CampsiteList { get { return campSiteList; } }
 
         private int eventID = 1;
-        int bookerID = 0;
+        private int reservationID;
+        private int bookerID;
 
         public DatabaseManager()
         {
@@ -130,7 +133,7 @@ namespace ReserveringSysteem
         /// </summary>
         public List<Item> GetAllItems()
         {
-            ReadData("SELECT * FROM MATERIAAL m WHERE m.materiaalID NOT IN (SELECT g.gereserveerdemateriaalID FROM gereserveerdemateriaal g) ORDER BY m.naam");
+            ReadData("SELECT * FROM MATERIAAL m WHERE m.materiaalID NOT IN (SELECT mg.materiaalID FROM MATERIAAL_GERMATERIAAL mg) ORDER BY m.naam");
 
             try
             {
@@ -161,13 +164,13 @@ namespace ReserveringSysteem
 
         /// <summary>
         /// Add reservation to database
+        /// If items reserved, Set items as reserved
         /// </summary>
-        public void AddReservation(int aantalpersonen, int itemID)
+        public void AddReservation(int aantalpersonen, int aantalItems)
         {
+            int ReservedItemID = 0;
 
-            int reservationID = 0;
-           // DateTime date = DateTime.Now;
-
+            //Maak een nieuw reserveringsID aan
             ReadData("SELECT MAX(reserveringID) + 1 FROM RESERVERING");
             try
             {
@@ -184,28 +187,99 @@ namespace ReserveringSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
-            try
-            {
-                cmd = new OracleCommand();
-                cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Reservering (RESERVERINGID, EVENTID, GERESERVEERDEMATERIAALID, AANTALPERSONEN) VALUES (:ReservationID, :EventID, :ReservedMaterialID, :NumberOfVisitors)";
-                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
-                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
-                cmd.Parameters.Add("ReservedMaterialID", OracleDbType.Int32).Value = itemID;
-                cmd.Parameters.Add("NumberOfVisitors", OracleDbType.Int32).Value = aantalpersonen;
 
-                int rowsUpdated = cmd.ExecuteNonQuery();
+            //Kijk of er items gereserveerd zijn zo ja, maak reserveringsID aan
+            if (aantalItems >= 1)
+            {
 
-                MessageBox.Show("Add Reservation Succes");
+                ReadData("SELECT MAX(GERESERVEERDEMATERIAALID) + 1 FROM GERESERVEERDEMATERIAAL");
+                try
+                {
+                    while (dr.Read())
+                    {
+                        if (!dr.IsDBNull(0))
+                        {
+                            ReservedItemID = dr.GetInt32(0);
+                        }
+                    }
+                }
+                catch (InvalidCastException ICE)
+                {
+                    MessageBox.Show(ICE.ToString());
+                }
+
+
+                try
+                {
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "INSERT INTO GERESERVEERDEMATERIAAL (GERESERVEERDEMATERIAALID, EVENTID) VALUES (:ReservedMaterialID, :EventID)";
+                    cmd.Parameters.Add("ReservedMaterialID", OracleDbType.Int32).Value = ReservedItemID;
+                    cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+
+                    int rowsUpdated = cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("ADD RESERVATIONMATERIALID SUCCES");
+                }
+                catch (OracleException OE)
+                {
+                    MessageBox.Show(OE.Message);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+
+                try
+                {
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "INSERT INTO Reservering (RESERVERINGID, EVENTID, GERESERVEERDEMATERIAALID, AANTALPERSONEN) VALUES (:ReservationID, :EventID, :ReservedMaterialID, :NumberOfVisitors)";
+                    cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+                    cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                    cmd.Parameters.Add("ReservedMaterialID", OracleDbType.Int32).Value = ReservedItemID;
+                    cmd.Parameters.Add("NumberOfVisitors", OracleDbType.Int32).Value = aantalpersonen;
+
+                    int rowsUpdated = cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("ADD RESERVATION SUCCES");
+                }
+                catch (OracleException OE)
+                {
+                    MessageBox.Show(OE.Message);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
             }
-            catch (OracleException OE)
+
+            else
             {
-                MessageBox.Show(OE.Message);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+                try
+                {
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "INSERT INTO Reservering (RESERVERINGID, EVENTID, AANTALPERSONEN) VALUES (:ReservationID, :EventID, :NumberOfVisitors)";
+                    cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+                    cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                    cmd.Parameters.Add("NumberOfVisitors", OracleDbType.Int32).Value = aantalpersonen;
+
+                    int rowsUpdated = cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("ADD RESERVATION SUCCES");
+                }
+                catch (OracleException OE)
+                {
+                    MessageBox.Show(OE.Message);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }            
+          
         }
 
         /// <summary>
@@ -231,7 +305,6 @@ namespace ReserveringSysteem
             {
                 MessageBox.Show(ICE.ToString());
             }
-
 
             ReadData("SELECT MAX(reserveringID) FROM RESERVERING");
             try
@@ -270,7 +343,7 @@ namespace ReserveringSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Bezoeker (BezoekerID, ReserveringID, EventID, Voornaam, Achternaam, Email, Reserveerder) VALUES (:VisitorID, :ReservationID, :EventID, :Surname, :Lastname, :Email, :Reserver)";
+                cmd.CommandText = "INSERT INTO Bezoeker (BezoekerID, ReserveringID, EventID, Voornaam, Achternaam, Email, Reserveerder, Adres, Postcode, Woonplaats) VALUES (:VisitorID, :ReservationID, :EventID, :Surname, :Lastname, :Email, :Reserver, :Address, :Zipcode, :City)";
                 cmd.Parameters.Add("VisitorID", OracleDbType.Int32).Value = visitorID;
                 cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
                 cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
@@ -278,6 +351,9 @@ namespace ReserveringSysteem
                 cmd.Parameters.Add("Lastname", OracleDbType.Varchar2).Value = lastname;
                 cmd.Parameters.Add("Email", OracleDbType.Varchar2).Value = email;
                 cmd.Parameters.Add("Reserver", OracleDbType.Int32).Value = bookerID;
+                cmd.Parameters.Add("Reserver", OracleDbType.Varchar2).Value = address;
+                cmd.Parameters.Add("Reserver", OracleDbType.Varchar2).Value = zipcode;
+                cmd.Parameters.Add("Reserver", OracleDbType.Varchar2).Value = city;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
 
@@ -381,7 +457,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Add campsite to database
+        /// set campsite as reserved
         /// </summary>
         public void AddCampsite(int campsiteID)
         {
@@ -428,16 +504,36 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Add item to database
+        /// Set item as reserved
         /// </summary>
-        public void AddItem(int itemID)
+        public void AddReservedItem(int itemID)
         {
+            int ReservedItemID = 0;
+
+            ReadData("SELECT MAX(GERESERVEERDEMATERIAALID) FROM GERESERVEERDEMATERIAAL");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        ReservedItemID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
             try
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Gereserveerdemateriaal (GereserveerdemateriaalID) VALUES (:ReservedItemID)";
-                cmd.Parameters.Add("ReservedItemID", OracleDbType.Int32).Value = itemID;
+                cmd.CommandText = "INSERT INTO MATERIAAL_GERMATERIAAL (MateriaalID, GereserveerdemateriaalID) VALUES (:ItemID, :ReservedItemID)";
+                cmd.Parameters.Add("ItemID", OracleDbType.Int32).Value = itemID;
+                cmd.Parameters.Add("ReservedItemID", OracleDbType.Int32).Value = ReservedItemID;
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
 
