@@ -32,6 +32,55 @@ namespace ToegangsControleSysteem
             FillData();
         }
 
+        private void RefreshUI()
+        {
+            ClearDetails();
+
+            tbVisitorSurname.Text = selectedVisitor.Surname;
+            tbVisitorLastname.Text = selectedVisitor.Lastname;
+            tbVisitorAddress.Text = selectedVisitor.VisitorBooker.Address;
+            tbVisitorZipcode.Text = selectedVisitor.VisitorBooker.Zipcode;
+
+            string campSites = "";
+
+            foreach (CampSite campSite in selectedVisitor.VisitorReservation.CampSiteList)
+            {
+                campSites += campSite.Name + ", ";
+            }
+            if (campSites != "")
+            {
+                campSites = campSites.Substring(0, campSites.Length - 2);
+            }
+
+            tbVisitorCampSite.Text = campSites;
+
+            dtpVisitorReservationDate.Value = selectedVisitor.VisitorReservation.ReservationDate;
+
+            cboxVisitorPayed.Checked = selectedVisitor.VisitorReservation.Payed;
+
+            if (selectedVisitor.VisitorReservation.CheckinDate.HasValue)
+            {
+                cboxVisitorPresent.Checked = true;
+            }
+            else
+            {
+                cboxVisitorPresent.Checked = false;
+            }
+
+            lboxVisitorsDetailsMembers.Items.Clear();
+            lboxVisitorsDetailsMaterials.Items.Clear();
+
+            foreach (Visitor visitor in selectedVisitor.VisitorReservation.VisitorList)
+            {
+                lboxVisitorsDetailsMembers.Items.Add(visitor);
+            }
+
+            foreach (Item item in selectedVisitor.VisitorReservation.ItemList)
+            {
+                lboxVisitorsDetailsMaterials.Items.Add(item);
+            }
+        }
+
         private void ClearDetails()
         {
             tbVisitorSurname.Clear();
@@ -131,49 +180,7 @@ namespace ToegangsControleSysteem
                 selectedVisitor = lboxAllVisitors.SelectedItem as Visitor;
                 if (selectedVisitor != null)
                 {
-                    tbVisitorSurname.Text = selectedVisitor.Surname;
-                    tbVisitorLastname.Text = selectedVisitor.Lastname;
-                    tbVisitorAddress.Text = selectedVisitor.VisitorBooker.Address;
-                    tbVisitorZipcode.Text = selectedVisitor.VisitorBooker.Zipcode;
-
-                    string campSites = "";
-
-                    foreach (CampSite campSite in selectedVisitor.VisitorReservation.CampSiteList)
-                    {
-                        campSites += campSite.Name + ", ";
-                    }
-                    if (campSites != "")
-                    {
-                        campSites = campSites.Substring(0, campSites.Length - 2);
-                    }
-
-                    tbVisitorCampSite.Text = campSites;
-
-                    dtpVisitorReservationDate.Value = selectedVisitor.VisitorReservation.ReservationDate;
-
-                    cboxVisitorPayed.Checked = selectedVisitor.VisitorReservation.Payed;
-
-                    if (selectedVisitor.VisitorReservation.CheckinDate.HasValue)
-                    {
-                        cboxVisitorPresent.Checked = true;
-                    }
-                    else
-                    {
-                        cboxVisitorPresent.Checked = false;
-                    }
-
-                    lboxVisitorsDetailsMembers.Items.Clear();
-                    lboxVisitorsDetailsMaterials.Items.Clear();
-
-                    foreach (Visitor visitor in selectedVisitor.VisitorReservation.VisitorList)
-                    {
-                        lboxVisitorsDetailsMembers.Items.Add(visitor);
-                    }
-
-                    foreach (Item item in selectedVisitor.VisitorReservation.ItemList)
-                    {
-                        lboxVisitorsDetailsMaterials.Items.Add(item);
-                    }
+                    RefreshUI();
                 }
             }
         }
@@ -336,6 +343,53 @@ namespace ToegangsControleSysteem
                         RefreshDetailMembers();
                     }
                 }
+            }
+        }
+
+        private void btnAttend_Click(object sender, EventArgs e)
+        {
+            if (!selectedVisitor.VisitorReservation.Payed)
+            {
+                MessageBox.Show("Reservering heeft nog niet betaalt!");
+            }
+            else
+            {
+                if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation == null)
+                {
+                    selectedVisitor.VisitorReservation.CheckinDate = DateTime.Now;
+                    databaseHandler.SetReservationCheckInDate(eventID, selectedVisitor.VisitorReservation.ID);
+                }
+                else
+                {
+                    selectedVisitor.VisitorReservation.CheckinDate = null;
+                    databaseHandler.RemoveReservationCheckInDate(eventID, selectedVisitor.ReservationID);
+                }
+
+                RefreshUI();
+            }
+        }
+
+        private void btnPayed_Click(object sender, EventArgs e)
+        {
+
+            if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation != null)
+            {
+                MessageBox.Show("Reservering is al ingechecked");
+            }
+            else
+            {
+                if (!selectedVisitor.VisitorReservation.Payed)
+                {
+                    selectedVisitor.VisitorReservation.Payed = !cboxVisitorPayed.Checked;
+                    databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, !cboxVisitorPayed.Checked);
+                }
+                else
+                {
+                    selectedVisitor.VisitorReservation.Payed = !cboxVisitorPayed.Checked;
+                    databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, !cboxVisitorPayed.Checked);
+                }
+
+                RefreshUI();
             }
         }
     }
