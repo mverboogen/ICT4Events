@@ -46,7 +46,7 @@ namespace ReserveringSysteem
                 con.ConnectionString = "User Id=WesleyDB;Password=WesOracleDB;Data Source=localhost";
                 con.Open();
 
-                MessageBox.Show("DATABASE VERBINDING GELUKT");
+                //MessageBox.Show("DATABASE VERBINDING GELUKT");
             }
             catch
             {
@@ -219,7 +219,7 @@ namespace ReserveringSysteem
 
                     int rowsUpdated = cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("ADD RESERVATIONMATERIALID SUCCES");
+                   // MessageBox.Show("ADD RESERVATIONMATERIALID SUCCES");
                 }
                 catch (OracleException OE)
                 {
@@ -243,7 +243,7 @@ namespace ReserveringSysteem
 
                     int rowsUpdated = cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("ADD RESERVATION SUCCES");
+                    //MessageBox.Show("ADD RESERVATION SUCCES");
                 }
                 catch (OracleException OE)
                 {
@@ -268,7 +268,7 @@ namespace ReserveringSysteem
 
                     int rowsUpdated = cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("ADD RESERVATION SUCCES");
+                    //MessageBox.Show("ADD RESERVATION SUCCES");
                 }
                 catch (OracleException OE)
                 {
@@ -357,7 +357,7 @@ namespace ReserveringSysteem
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
 
-                MessageBox.Show("ADD BOOKER SUCCES");
+                //MessageBox.Show("ADD BOOKER SUCCES");
 
             }
             catch (OracleException OE)
@@ -443,7 +443,7 @@ namespace ReserveringSysteem
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
 
-                MessageBox.Show("ADD VISITOR SUCCES");
+                //MessageBox.Show("ADD VISITOR SUCCES");
 
             }
             catch (OracleException OE)
@@ -489,7 +489,7 @@ namespace ReserveringSysteem
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
 
-                MessageBox.Show("ADD CAMPSITE SUCCES");
+                //MessageBox.Show("ADD CAMPSITE SUCCES");
 
             }
             catch (OracleException OE)
@@ -537,7 +537,7 @@ namespace ReserveringSysteem
 
                 int rowsUpdated = cmd.ExecuteNonQuery();
 
-                MessageBox.Show("ADD ITEM SUCCES");
+                //MessageBox.Show("ADD ITEM SUCCES");
 
             }
             catch (OracleException OE)
