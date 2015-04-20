@@ -59,6 +59,7 @@
             this.btnScanRFID = new System.Windows.Forms.Button();
             this.btnPayed = new System.Windows.Forms.Button();
             this.btnAttend = new System.Windows.Forms.Button();
+            this.cbAutoScan = new System.Windows.Forms.CheckBox();
             this.gboxEventVisitorsDetails.SuspendLayout();
             this.tbcVisitors.SuspendLayout();
             this.tpAll.SuspendLayout();
@@ -341,12 +342,13 @@
             // 
             // btnScanRFID
             // 
-            this.btnScanRFID.Location = new System.Drawing.Point(427, 443);
+            this.btnScanRFID.Location = new System.Drawing.Point(345, 443);
             this.btnScanRFID.Name = "btnScanRFID";
             this.btnScanRFID.Size = new System.Drawing.Size(250, 120);
             this.btnScanRFID.TabIndex = 33;
             this.btnScanRFID.Text = "Scan RFID";
             this.btnScanRFID.UseVisualStyleBackColor = true;
+            this.btnScanRFID.Click += new System.EventHandler(this.btnScanRFID_Click);
             // 
             // btnPayed
             // 
@@ -368,11 +370,24 @@
             this.btnAttend.UseVisualStyleBackColor = true;
             this.btnAttend.Click += new System.EventHandler(this.btnAttend_Click);
             // 
+            // cbAutoScan
+            // 
+            this.cbAutoScan.AutoSize = true;
+            this.cbAutoScan.Location = new System.Drawing.Point(664, 543);
+            this.cbAutoScan.Name = "cbAutoScan";
+            this.cbAutoScan.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbAutoScan.Size = new System.Drawing.Size(79, 17);
+            this.cbAutoScan.TabIndex = 36;
+            this.cbAutoScan.Text = ":Auto Scan";
+            this.cbAutoScan.UseVisualStyleBackColor = true;
+            this.cbAutoScan.CheckedChanged += new System.EventHandler(this.cbAutoScan_CheckedChanged);
+            // 
             // IncheckSystemForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(762, 572);
+            this.Controls.Add(this.cbAutoScan);
             this.Controls.Add(this.btnAttend);
             this.Controls.Add(this.btnPayed);
             this.Controls.Add(this.btnScanRFID);
@@ -389,6 +404,7 @@
             this.tpInchecked.ResumeLayout(false);
             this.tpInchecked.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -425,6 +441,7 @@
         private System.Windows.Forms.Button btnScanRFID;
         private System.Windows.Forms.Button btnPayed;
         private System.Windows.Forms.Button btnAttend;
+        private System.Windows.Forms.CheckBox cbAutoScan;
     }
 }
 

@@ -56,6 +56,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\oraclexe\odp.net\bin\4\Oracle.DataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="Phidget21.NET, Version=2.1.8.208, Culture=neutral, PublicKeyToken=c2b1f2a3594bce52, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Phidgets\Phidget21.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -94,6 +98,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reservation.cs" />
     <Compile Include="ReservationManager.cs" />
+    <Compile Include="ScanRFID.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScanRFID.Designer.cs">
+      <DependentUpon>ScanRFID.cs</DependentUpon>
+    </Compile>
     <Compile Include="UnkownIDException.cs" />
     <Compile Include="UsedIDException.cs" />
     <Compile Include="Visitor.cs" />
@@ -113,6 +123,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ScanRFID.resx">
+      <DependentUpon>ScanRFID.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

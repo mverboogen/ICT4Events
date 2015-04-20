@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Media;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Phidgets;
+using Phidgets.Events;
 
 namespace ToegangsControleSysteem
 {
@@ -14,6 +18,8 @@ namespace ToegangsControleSysteem
     {
 
         private int eventID = 1;
+
+        private RFID rfid = new RFID();
 
         private ItemManager itemManager = new ItemManager();
         private VisitorManager visitorManager = new VisitorManager();
@@ -392,5 +398,116 @@ namespace ToegangsControleSysteem
                 RefreshUI();
             }
         }
+
+        private void btnScanRFID_Click(object sender, EventArgs e)
+        {
+            if(cbAutoScan.Checked)
+            {
+                cbAutoScan.Checked = false;
+            }
+
+            using(var form = new ScanRFID())
+            {
+                var result = form.ShowDialog();
+                if(result == System.Windows.Forms.DialogResult.OK)
+                {
+                    GetVisitorDetails(form.rfidString);
+                }
+            }
+        }
+
+        private void GetVisitorDetails(string rfidTag)
+        {
+            int index = 0;
+            foreach (Visitor visitor in lboxAllVisitors.Items)
+            {
+                if (visitor.RFID == rfidTag)
+                {
+                    lboxAllVisitors.SelectedIndex = index;
+                    break;
+                }
+                else
+                {
+                    index++;
+                }
+            }
+
+            if (index < lboxAllVisitors.Items.Count)
+            {
+                lboxAllVisitors.SelectedIndex = index;
+                Console.Beep(1000, 500);
+
+            }
+            else
+            {
+                int freq = 1250;
+                int dur = 125;
+                int del = 125;
+
+                lboxAllVisitors.SelectedIndex = -1;
+                ClearDetails();
+                Console.Beep(freq, dur);
+                Thread.Sleep(del);
+                Console.Beep(freq, dur);
+                Thread.Sleep(del);
+                Console.Beep(freq, dur);
+
+                MessageBox.Show("RFID tag niet bekend");
+            }
+        }
+
+        private void cbAutoScan_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbAutoScan.Checked)
+            {
+                rfid.open();
+
+                rfid.Attach += new AttachEventHandler(RFID_Attach);
+                rfid.Detach += new DetachEventHandler(RFID_Detach);
+
+                rfid.Tag += new TagEventHandler(RFID_Tag);
+            }
+            else
+            {
+                rfid.Attach -= new AttachEventHandler(RFID_Attach);
+                rfid.Detach -= new DetachEventHandler(RFID_Detach);
+                rfid.Tag -= new TagEventHandler(RFID_Tag);
+
+                rfid.close();
+            }
+        }
+
+
+        private void RFID_Attach(object sender, AttachEventArgs e)
+        {
+            RFID attached = (RFID)sender;
+
+
+            if (rfid.outputs.Count > 0)
+            {
+                rfid.Antenna = true;
+                rfid.LED = true;
+            }
+        }
+
+        void RFID_Detach(object sender, DetachEventArgs e)
+        {
+            RFID detached = (RFID)sender;
+
+            if (rfid.outputs.Count > 0)
+            {
+                rfid.Antenna = false;
+                rfid.LED = false;
+            }
+        }
+
+        private void RFID_Tag(object sender, TagEventArgs e)
+        {
+            if (e.Tag.Length == 10)
+            {
+                GetVisitorDetails(e.Tag);
+            }
+        }
+
     }
 }

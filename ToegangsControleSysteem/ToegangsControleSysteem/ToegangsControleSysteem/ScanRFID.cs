@@ -10,19 +10,17 @@ using System.Windows.Forms;
 using Phidgets;
 using Phidgets.Events;
 
-namespace EventBeheerSysteem
+namespace ToegangsControleSysteem
 {
-    public partial class AddRFID : Form
+    public partial class ScanRFID : Form
     {
-        private List<Visitor> visitorList = new List<Visitor>();
 
         public string rfidString;
         private RFID rfid;
 
-        public AddRFID(List<Visitor> visitorList)
+        public ScanRFID()
         {
             InitializeComponent();
-            this.visitorList = visitorList;
 
             rfid = new RFID();
             rfid.open();
@@ -39,7 +37,7 @@ namespace EventBeheerSysteem
             RFID attached = (RFID)sender;
 
 
-            if(rfid.outputs.Count > 0)
+            if (rfid.outputs.Count > 0)
             {
                 rfid.Antenna = true;
                 rfid.LED = true;
@@ -50,7 +48,7 @@ namespace EventBeheerSysteem
         {
             RFID detached = (RFID)sender;
 
-            if(rfid.outputs.Count > 0)
+            if (rfid.outputs.Count > 0)
             {
                 rfid.Antenna = false;
                 rfid.LED = false;
@@ -59,37 +57,14 @@ namespace EventBeheerSysteem
 
         private void RFID_Tag(object sender, TagEventArgs e)
         {
-            tbRFID.Clear();
-            tbRFID.Text = e.Tag;
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            rfidString = tbRFID.Text;
-            bool failed = false;
-
-            if(rfidString == "")
+            if(e.Tag.Length == 10)
             {
-                failed = true;
-            }
-
-            foreach(Visitor visitor in visitorList)
-            {
-                if(visitor.RFID == rfidString)
-                {
-                    MessageBox.Show("RFID Tag al in gebruik");
-                    failed = true;
-                    break;
-                }
-            }
-
-            if(!failed)
-            {
-                this.DialogResult = DialogResult.OK;
+                rfidString = e.Tag;
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
             }
         }
 
-        private void AddRFID_FormClosing(object sender, FormClosingEventArgs e)
+        private void ScanRFID_FormClosing(object sender, FormClosingEventArgs e)
         {
             rfid.Attach -= new AttachEventHandler(RFID_Attach);
             rfid.Detach -= new DetachEventHandler(RFID_Detach);
