@@ -170,7 +170,7 @@
             this.btResToDel.Location = new System.Drawing.Point(549, 274);
             this.btResToDel.Name = "btResToDel";
             this.btResToDel.Size = new System.Drawing.Size(28, 25);
-            this.btResToDel.TabIndex = 22;
+            this.btResToDel.TabIndex = 7;
             this.btResToDel.Text = ">";
             this.btResToDel.UseVisualStyleBackColor = true;
             this.btResToDel.Click += new System.EventHandler(this.btResToDel_Click);
@@ -182,7 +182,7 @@
             this.tbBookEmail.MaxLength = 50;
             this.tbBookEmail.Name = "tbBookEmail";
             this.tbBookEmail.Size = new System.Drawing.Size(162, 22);
-            this.tbBookEmail.TabIndex = 14;
+            this.tbBookEmail.TabIndex = 6;
             // 
             // Label123
             // 
@@ -203,6 +203,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(283, 77);
             this.textBox1.TabIndex = 12;
+            this.textBox1.TabStop = false;
             this.textBox1.Text = "Vul hieronder de gegevens in van een van de deelnemers. Deze deelnemer zal alle b" +
     "andjes ontvangen. Ook zal het event op zijn naam staan.";
             // 
@@ -213,7 +214,7 @@
             this.tbBookWoonplaats.MaxLength = 50;
             this.tbBookWoonplaats.Name = "tbBookWoonplaats";
             this.tbBookWoonplaats.Size = new System.Drawing.Size(162, 22);
-            this.tbBookWoonplaats.TabIndex = 11;
+            this.tbBookWoonplaats.TabIndex = 5;
             // 
             // tbBookPostcode
             // 
@@ -222,7 +223,7 @@
             this.tbBookPostcode.MaxLength = 50;
             this.tbBookPostcode.Name = "tbBookPostcode";
             this.tbBookPostcode.Size = new System.Drawing.Size(162, 22);
-            this.tbBookPostcode.TabIndex = 10;
+            this.tbBookPostcode.TabIndex = 4;
             // 
             // tbBookAdres
             // 
@@ -231,7 +232,7 @@
             this.tbBookAdres.MaxLength = 50;
             this.tbBookAdres.Name = "tbBookAdres";
             this.tbBookAdres.Size = new System.Drawing.Size(162, 22);
-            this.tbBookAdres.TabIndex = 9;
+            this.tbBookAdres.TabIndex = 3;
             // 
             // tbBookAchternaam
             // 
@@ -240,7 +241,7 @@
             this.tbBookAchternaam.MaxLength = 50;
             this.tbBookAchternaam.Name = "tbBookAchternaam";
             this.tbBookAchternaam.Size = new System.Drawing.Size(162, 22);
-            this.tbBookAchternaam.TabIndex = 7;
+            this.tbBookAchternaam.TabIndex = 2;
             // 
             // tbBookVoornaam
             // 
@@ -249,7 +250,7 @@
             this.tbBookVoornaam.MaxLength = 50;
             this.tbBookVoornaam.Name = "tbBookVoornaam";
             this.tbBookVoornaam.Size = new System.Drawing.Size(162, 22);
-            this.tbBookVoornaam.TabIndex = 6;
+            this.tbBookVoornaam.TabIndex = 1;
             // 
             // label6
             // 
@@ -332,7 +333,7 @@
             this.btVerwijderen.Location = new System.Drawing.Point(314, 274);
             this.btVerwijderen.Name = "btVerwijderen";
             this.btVerwijderen.Size = new System.Drawing.Size(83, 25);
-            this.btVerwijderen.TabIndex = 25;
+            this.btVerwijderen.TabIndex = 12;
             this.btVerwijderen.Text = "Verwijderen";
             this.btVerwijderen.UseVisualStyleBackColor = true;
             this.btVerwijderen.Click += new System.EventHandler(this.btVerwijderen_Click);
@@ -345,7 +346,7 @@
             this.btDelToRes.Location = new System.Drawing.Point(515, 274);
             this.btDelToRes.Name = "btDelToRes";
             this.btDelToRes.Size = new System.Drawing.Size(28, 25);
-            this.btDelToRes.TabIndex = 24;
+            this.btDelToRes.TabIndex = 14;
             this.btDelToRes.Text = "<";
             this.btDelToRes.UseVisualStyleBackColor = true;
             this.btDelToRes.Click += new System.EventHandler(this.btDelToRes_Click);
@@ -358,7 +359,7 @@
             this.btDelToKamp.Location = new System.Drawing.Point(549, 274);
             this.btDelToKamp.Name = "btDelToKamp";
             this.btDelToKamp.Size = new System.Drawing.Size(28, 25);
-            this.btDelToKamp.TabIndex = 23;
+            this.btDelToKamp.TabIndex = 13;
             this.btDelToKamp.Text = ">";
             this.btDelToKamp.UseVisualStyleBackColor = true;
             this.btDelToKamp.Click += new System.EventHandler(this.btDelToKamp_Click);
@@ -376,12 +377,12 @@
             this.ColumnVoornaam,
             this.ColumnAchternaam,
             this.ColumnEmail});
-            this.dgvDeelnemers.Location = new System.Drawing.Point(9, 196);
+            this.dgvDeelnemers.Location = new System.Drawing.Point(9, 214);
             this.dgvDeelnemers.Name = "dgvDeelnemers";
             this.dgvDeelnemers.RowHeadersVisible = false;
             this.dgvDeelnemers.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvDeelnemers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDeelnemers.Size = new System.Drawing.Size(302, 103);
+            this.dgvDeelnemers.Size = new System.Drawing.Size(302, 85);
             this.dgvDeelnemers.TabIndex = 22;
             // 
             // ColumnVoornaam
@@ -407,10 +408,10 @@
             this.btVisToevoegen.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btVisToevoegen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btVisToevoegen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btVisToevoegen.Location = new System.Drawing.Point(9, 165);
+            this.btVisToevoegen.Location = new System.Drawing.Point(9, 184);
             this.btVisToevoegen.Name = "btVisToevoegen";
             this.btVisToevoegen.Size = new System.Drawing.Size(83, 25);
-            this.btVisToevoegen.TabIndex = 20;
+            this.btVisToevoegen.TabIndex = 11;
             this.btVisToevoegen.Text = "Toevoegen";
             this.btVisToevoegen.UseVisualStyleBackColor = true;
             this.btVisToevoegen.Click += new System.EventHandler(this.btDelToevoegen_Click);
@@ -418,17 +419,17 @@
             // tbVisEmail
             // 
             this.tbVisEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbVisEmail.Location = new System.Drawing.Point(127, 143);
+            this.tbVisEmail.Location = new System.Drawing.Point(127, 162);
             this.tbVisEmail.MaxLength = 50;
             this.tbVisEmail.Name = "tbVisEmail";
             this.tbVisEmail.Size = new System.Drawing.Size(162, 22);
-            this.tbVisEmail.TabIndex = 19;
+            this.tbVisEmail.TabIndex = 10;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(6, 146);
+            this.label9.Location = new System.Drawing.Point(9, 165);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(45, 16);
             this.label9.TabIndex = 18;
@@ -437,26 +438,26 @@
             // tbVisAchternaam
             // 
             this.tbVisAchternaam.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbVisAchternaam.Location = new System.Drawing.Point(127, 115);
+            this.tbVisAchternaam.Location = new System.Drawing.Point(127, 134);
             this.tbVisAchternaam.MaxLength = 50;
             this.tbVisAchternaam.Name = "tbVisAchternaam";
             this.tbVisAchternaam.Size = new System.Drawing.Size(162, 22);
-            this.tbVisAchternaam.TabIndex = 17;
+            this.tbVisAchternaam.TabIndex = 9;
             // 
             // tbVisVoornaam
             // 
             this.tbVisVoornaam.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbVisVoornaam.Location = new System.Drawing.Point(127, 89);
+            this.tbVisVoornaam.Location = new System.Drawing.Point(127, 105);
             this.tbVisVoornaam.MaxLength = 50;
             this.tbVisVoornaam.Name = "tbVisVoornaam";
             this.tbVisVoornaam.Size = new System.Drawing.Size(162, 22);
-            this.tbVisVoornaam.TabIndex = 16;
+            this.tbVisVoornaam.TabIndex = 8;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(6, 118);
+            this.label7.Location = new System.Drawing.Point(9, 137);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(83, 16);
             this.label7.TabIndex = 15;
@@ -466,7 +467,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 92);
+            this.label8.Location = new System.Drawing.Point(6, 108);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(74, 16);
             this.label8.TabIndex = 14;
@@ -479,11 +480,12 @@
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(305, 71);
+            this.textBox2.Size = new System.Drawing.Size(305, 93);
             this.textBox2.TabIndex = 13;
             this.textBox2.TabStop = false;
-            this.textBox2.Text = "Vul hieronder de gegevens van een deelnemer in en klik op toevoegen!\r\nWilt u een " +
-    "deelnemer verwijderen druk dan op verwijderen.";
+            this.textBox2.Text = "Vul hieronder de gegevens van een deelnemer in en klik op toevoegen! Wilt u een d" +
+    "eelnemer verwijderen druk dan op verwijderen.\r\nDe reserveerder hoeft niet nogmaa" +
+    "l worden toegevoegd.";
             // 
             // tabPageKampeerplaats
             // 
@@ -601,7 +603,7 @@
             this.btKampToMat.Location = new System.Drawing.Point(549, 274);
             this.btKampToMat.Name = "btKampToMat";
             this.btKampToMat.Size = new System.Drawing.Size(28, 25);
-            this.btKampToMat.TabIndex = 27;
+            this.btKampToMat.TabIndex = 15;
             this.btKampToMat.Text = ">";
             this.btKampToMat.UseVisualStyleBackColor = true;
             this.btKampToMat.Click += new System.EventHandler(this.btKampToMat_Click);
@@ -662,7 +664,7 @@
             this.btKampToDel.Location = new System.Drawing.Point(515, 274);
             this.btKampToDel.Name = "btKampToDel";
             this.btKampToDel.Size = new System.Drawing.Size(28, 25);
-            this.btKampToDel.TabIndex = 25;
+            this.btKampToDel.TabIndex = 16;
             this.btKampToDel.Text = "<";
             this.btKampToDel.UseVisualStyleBackColor = true;
             this.btKampToDel.Click += new System.EventHandler(this.btKampToDel_Click);
@@ -769,7 +771,7 @@
             this.btMatToKamp.Location = new System.Drawing.Point(515, 274);
             this.btMatToKamp.Name = "btMatToKamp";
             this.btMatToKamp.Size = new System.Drawing.Size(28, 25);
-            this.btMatToKamp.TabIndex = 25;
+            this.btMatToKamp.TabIndex = 18;
             this.btMatToKamp.Text = "<";
             this.btMatToKamp.UseVisualStyleBackColor = true;
             this.btMatToKamp.Click += new System.EventHandler(this.btMatToKamp_Click);
@@ -782,7 +784,7 @@
             this.btMatToOver.Location = new System.Drawing.Point(549, 274);
             this.btMatToOver.Name = "btMatToOver";
             this.btMatToOver.Size = new System.Drawing.Size(28, 25);
-            this.btMatToOver.TabIndex = 24;
+            this.btMatToOver.TabIndex = 17;
             this.btMatToOver.Text = ">";
             this.btMatToOver.UseVisualStyleBackColor = true;
             this.btMatToOver.Click += new System.EventHandler(this.btMatToOver_Click);
@@ -981,7 +983,7 @@
             this.btOverToMat.Location = new System.Drawing.Point(549, 274);
             this.btOverToMat.Name = "btOverToMat";
             this.btOverToMat.Size = new System.Drawing.Size(28, 25);
-            this.btOverToMat.TabIndex = 26;
+            this.btOverToMat.TabIndex = 20;
             this.btOverToMat.Text = "<";
             this.btOverToMat.UseVisualStyleBackColor = true;
             this.btOverToMat.Click += new System.EventHandler(this.btOverToMat_Click);
@@ -994,7 +996,7 @@
             this.btBevestigen.Location = new System.Drawing.Point(9, 249);
             this.btBevestigen.Name = "btBevestigen";
             this.btBevestigen.Size = new System.Drawing.Size(140, 46);
-            this.btBevestigen.TabIndex = 21;
+            this.btBevestigen.TabIndex = 19;
             this.btBevestigen.Text = "Bevestigen";
             this.btBevestigen.UseVisualStyleBackColor = true;
             this.btBevestigen.Click += new System.EventHandler(this.btBevestigen_Click);

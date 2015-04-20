@@ -1,0 +1,4 @@
+- Tab index		<FIXED>
+- Booker toevoegen aan deelnemers lijst
+- Decimals bij prijzen	<FIXED>
+- Maximaal 

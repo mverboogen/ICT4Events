@@ -77,7 +77,7 @@ namespace ReserveringSysteem
                 || string.IsNullOrWhiteSpace(tbVisAchternaam.Text)
                 || string.IsNullOrWhiteSpace(tbVisEmail.Text))
             {
-                MessageBox.Show("Niet alle velden zijn correct ingevuld");
+                MessageBox.Show("Niet alle informatie is correct ingevuld");
             }
             else
             {
@@ -119,27 +119,29 @@ namespace ReserveringSysteem
             }
             else
             {
-                MessageBox.Show("Het aantal deelnemers is groter dan het totaal aantal kampeerplaatsen");
+                MessageBox.Show("Het aantal deelnemers is groter dan het totaal aantal kampeerplaatsen. Zorg dat het aantal kampeerplaatsen groter of gelijk is aan het aantal deelnemers");
             }
         }
 
         private void btMatToOver_Click(object sender, EventArgs e)
         {
-            int campPrice = 0;
-            int matPrice = 0;
-            int totalCampPrice = 0;
-            int totalMatPrice = 0;
-            int totalPrice = 0;
+            decimal campPrice = 0;
+            decimal matPrice = 0;
+            decimal totalCampPrice = 0;
+            decimal totalMatPrice = 0;
+            decimal totalPrice = 0;
+
+            
 
             foreach (DataGridViewRow row in dgvReservedCampsite.Rows)
             {
-                campPrice = Convert.ToInt32(row.Cells["dataGridViewTextBoxColumn9"].Value);
+                campPrice = Convert.ToDecimal(row.Cells["dataGridViewTextBoxColumn9"].Value);
                 totalCampPrice = totalCampPrice + campPrice;
             }
 
             foreach(DataGridViewRow row in dgvReservedMat.Rows)
             {
-                matPrice = Convert.ToInt32(row.Cells["dataGridViewTextBoxColumn11"].Value);
+                matPrice = Convert.ToDecimal(row.Cells["dataGridViewTextBoxColumn11"].Value);
                 totalMatPrice = totalMatPrice + matPrice;
             }
 
@@ -195,8 +197,9 @@ namespace ReserveringSysteem
                 || string.IsNullOrWhiteSpace(tbBookPostcode.Text)
                 || string.IsNullOrWhiteSpace(tbBookWoonplaats.Text)
                 || string.IsNullOrWhiteSpace(tbBookEmail.Text))
+                
             {
-                MessageBox.Show("Ongeldige informatie van deelnemer");
+                MessageBox.Show("Ongeldige informatie van de reserveerder. Is alle informatie correct ingevuld?");
             }
             else
             {
@@ -232,6 +235,16 @@ namespace ReserveringSysteem
                 {
                     databaseManager.AddVisitor(v.Name, v.Lastname, v.Email);
                 }
+
+                string username = bookerName + bookerLastname;
+
+                databaseManager.AddUser(username);
+
+                foreach(Visitor v in manager.Visitors)
+                {
+                    username = v.Name + v.Lastname;
+                    databaseManager.AddUser(username);
+                }
                 
                 MessageBox.Show("RESERVERING BEVESTIGD");
                 
@@ -261,11 +274,11 @@ namespace ReserveringSysteem
         {
             int campID = 0;
             int maxCamp = 0;
-            int campPrijs = 0;
+            decimal campPrijs = 0;
 
             campID = Convert.ToInt32(dgvKampeerplaats.CurrentRow.Cells[0].Value);
             maxCamp = Convert.ToInt32(dgvKampeerplaats.CurrentRow.Cells[1].Value);
-            campPrijs = Convert.ToInt32(dgvKampeerplaats.CurrentRow.Cells[2].Value);
+            campPrijs = Convert.ToDecimal(dgvKampeerplaats.CurrentRow.Cells[2].Value);
 
             Campsite campsite = new Campsite(campID, campPrijs, maxCamp);
             manager.AddCampsite(campsite);
@@ -276,11 +289,11 @@ namespace ReserveringSysteem
         private void dgvMateriaal_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int matID = 0;
-            int matPrijs = 0;
+            decimal matPrijs = 0;
             string matNaam = "";
 
             matID = Convert.ToInt32(dgvMateriaal.CurrentRow.Cells[2].Value);
-            matPrijs = Convert.ToInt32(dgvMateriaal.CurrentRow.Cells[1].Value);
+            matPrijs = Convert.ToDecimal(dgvMateriaal.CurrentRow.Cells[1].Value);
             matNaam = dgvMateriaal.CurrentRow.Cells[0].Value.ToString();
 
             Item item = new Item(matID, matNaam, matPrijs);

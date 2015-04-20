@@ -549,5 +549,51 @@ namespace ReserveringSysteem
                 MessageBox.Show(e.ToString());
             }
         }
+
+        public void AddUser(string gebruikersnaam)
+        {
+            int bezoekerID = 0;
+
+            ReadData("SELECT MAX(GEBRUIKERID) +1 FROM GEBRUIKER");
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        bezoekerID = dr.GetInt32(0);
+                    }
+                }
+            }
+            catch (InvalidCastException ICE)
+            {
+                MessageBox.Show(ICE.ToString());
+            }
+
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO GEBRUIKER (GebruikerID, EventID, Naam) VALUES (:UserID, :EventID, :Name)";
+                cmd.Parameters.Add("UserID", OracleDbType.Int32).Value = bezoekerID;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = eventID;
+                cmd.Parameters.Add("EventID", OracleDbType.Varchar2).Value = gebruikersnaam;
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                //MessageBox.Show("ADD USER SUCCES");
+
+            }
+            catch (OracleException OE)
+            {
+                MessageBox.Show(OE.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+        }
     }
 }
