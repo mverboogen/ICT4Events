@@ -27,11 +27,17 @@ namespace EventBeheerSysteem
 
         public void Connect()
         {
-            con = new OracleConnection();
-            con.ConnectionString = "User Id=system;Password=polpleitiir;Data Source=localhost";
-            con.Open();
-            Console.WriteLine("CONNECTION SUCCESFULL");
-
+            try
+            {
+                con = new OracleConnection();
+                con.ConnectionString = "User Id=system;Password=password;Data Source=localhost";
+                con.Open();
+                Console.WriteLine("CONNECTION SUCCESFULL");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public void ReadData(string sql)
