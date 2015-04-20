@@ -27,6 +27,3 @@ E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSys
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.AddItemToReservation.resources
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.AddMember.resources
 E:\Git\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.AddRFID.resources
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\bin\Debug\EventBeheerSysteem.exe.config
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.exe
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\EventBeheerSysteem\EventBeheerSysteem\obj\Debug\EventBeheerSysteem.pdb

@@ -18,14 +18,3 @@ C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSystee
 C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.csproj.GenerateResource.Cache
 C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.EnlargedPlattegrond.resources
 C:\Users\wesley\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\bin\Debug\Oracle.DataAccess.dll
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\bin\Debug\ReserveringSysteem.exe.config
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.exe
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.pdb
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\bin\Debug\ReserveringSysteem.exe
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\bin\Debug\ReserveringSysteem.pdb
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\bin\Debug\Oracle.DataAccess.dll
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.csprojResolveAssemblyReference.cache
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.EnlargedPlattegrond.resources
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.ReserveringSysteem.resources
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.Properties.Resources.resources
-C:\Users\jaspe_000\Documents\GitHub\ICT4Events\ReserveringSysteem\ReserveringSysteem\obj\Debug\ReserveringSysteem.csproj.GenerateResource.Cache

@@ -176,12 +176,7 @@ namespace MediaSharingSystem
                 AVPhotoData photo = (AVPhotoData)media;
                 PictureBox picturebox = new PictureBox();
                 picturebox.SizeMode = PictureBoxSizeMode.Zoom;
-                // Temporary solution due to no working connection with a server
-                string filepath = Environment.CurrentDirectory + @"\Uploads\";
-                string extension = photo.Filepath.Substring(photo.Filepath.LastIndexOf('.'));
-                string destination = filepath + (media.Title + extension);
-                picturebox.ImageLocation = destination;
-                //picturebox.ImageLocation = photo.Filepath;
+                picturebox.ImageLocation = photo.Filepath;
                 picturebox.Width = contentcontainer.Width;
                 picturebox.Height = contentcontainer.Height;
 
@@ -204,9 +199,7 @@ namespace MediaSharingSystem
                     contentcontainer.Controls.Add(mediaPlayer);
                     ((System.ComponentModel.ISupportInitialize)(mediaPlayer)).EndInit();
                     mediaPlayer.uiMode = "mini";
-                    // Temporary solution due to no working connection with a server
-                    mediaPlayer.URL = Environment.CurrentDirectory + @"\Uploads\";
-                    //mediaPlayer.URL = video.Filepath;
+                    mediaPlayer.URL = video.Filepath;
                     mediaPlayer.Ctlcontrols.stop();
 
                 }

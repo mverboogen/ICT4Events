@@ -484,7 +484,7 @@ namespace MediaSharingSystem
             {
                 MessageBox.Show(ex.ToString());
             }
-            return 1;
+            return -1;
         }
 
         public void uploadMedia(MediaData media)
