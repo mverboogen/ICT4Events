@@ -93,7 +93,7 @@ namespace MediaSharingSystem
                     // Loop through all media and create a view for the media
                     foreach (MediaData media in source)
                     {
-                        MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, (int)TimelineDimensions.PostHeight);
+                        MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, media is MessageData ? (int)TimelineDimensions.TextMessageHeight : (int)TimelineDimensions.PostHeight);
                         Point postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (pnlWindowContent.Controls.Count * ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
                         post.Location = postlocation;
                         post.BorderStyle = BorderStyle.FixedSingle;
@@ -194,7 +194,7 @@ namespace MediaSharingSystem
                         MessageData message = media as MessageData;
                         if (message != null)
                         {
-                            MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, (int)TimelineDimensions.PostHeight);
+                            MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, (int)TimelineDimensions.TextMessageHeight);
                             Point postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (pnlWindowContent.Controls.Count * ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
                             post.Location = postlocation;
                             post.BorderStyle = BorderStyle.FixedSingle;
@@ -264,27 +264,28 @@ namespace MediaSharingSystem
         {
             using (UploadForm form = new UploadForm())
             {
-                if (form.DialogResult == DialogResult.OK)
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
                 {
                     string title = form.Title;
                     string summary = form.Summary;
-                    string filepath = form.FilePath;
-                    //string filetype = form.Filetype.ToString();
-                    /*switch (filetype)
+                    string filetype = form.FileType;
+                    if (form.FileType == "Photo" || form.FileType == "Video")
                     {
-                        case "Photo":
-                            // upload file.. how to copy uploaded file to server? 
-                            // filepath should direct to the serverlocation not the local location
-                            break;
-                        case "Video":
+                        string filepath = form.FilePath;
+                        string extension = filepath.Substring(filepath.LastIndexOf('.'));
+                        string destination = form.destination + (title + extension);
+                        File.Copy(filepath, destination);
+                        mediaManager.uploadAVMedia(filetype, title, summary, destination);
+                    }
+                    else
+                    {
+                        mediaManager.uploadMessageMedia(filetype, title, summary);
+                    }
 
-                            break;
-                        case "Message":
-
-                            break;
-                    }*/
                 }
             }
+            updateViews(activeWindow, mediaManager.Medialist);
         }
 
         private void btnNavAdmins_Click(object sender, EventArgs e)

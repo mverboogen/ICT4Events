@@ -13,3 +13,4 @@ C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSy
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csproj.GenerateResource.Cache
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.exe
 C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.pdb
+C:\Users\jaspe_000\Documents\GitHub\ICT4Events\MediaSharingSystem\MediaSharingSystem\MediaSharingSystem\obj\Debug\MediaSharingSystem.csprojResolveAssemblyReference.cache

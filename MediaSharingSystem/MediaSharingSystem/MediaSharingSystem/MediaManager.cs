@@ -86,24 +86,7 @@ namespace MediaSharingSystem
             mediaList.Clear();
             addMediaRange(medialist);
 
-            // Downloads all likes
-            List<LikeData> likelist = dbmanager.getAllLikes();
-            foreach (LikeData like in likelist)
-            {
-                foreach (MediaData media in medialist)
-                {
-                    if (like.MediaID == media.ID)
-                    {
-                        foreach (UserData user in userList)
-                        {
-                            if (user.ID == like.UserID)
-                            {
-                                media.Like(user);
-                            }
-                        }
-                    }
-                }
-            }
+            
 
             // Download all reports
             List<ReportData> reportlist = dbmanager.getAllReports();
@@ -133,6 +116,38 @@ namespace MediaSharingSystem
                     if (comment.MediaID == media.ID)
                     {
                         media.addComment(comment);
+                    }
+                }
+            }
+
+            // Downloads all likes
+            List<LikeData> likelist = dbmanager.getAllLikes();
+            foreach (LikeData like in likelist)
+            {
+                foreach (MediaData media in medialist)
+                {
+                    if (like.MediaID == media.ID)
+                    {
+                        foreach (UserData user in userList)
+                        {
+                            if (user.ID == like.UserID)
+                            {
+                                media.Like(user);
+                            }
+                        }
+                    }
+                }
+                foreach (CommentData comment in commentlist)
+                {
+                    if (like.CommentID == comment.ID)
+                    {
+                        foreach (UserData user in userList)
+                        {
+                            if (user.ID == like.UserID)
+                            {
+                                comment.Like(user);
+                            }
+                        }
                     }
                 }
             }
@@ -271,10 +286,35 @@ namespace MediaSharingSystem
             dbmanager.dereportPost(media, currentUser);
         }
 
-
-        public void uploadMedia(MediaData media)
+        public void addCommentToMedia(MediaData media, string content)
         {
-            dbmanager.uploadMedia(media);
+            CommentData comment = new CommentData(dbmanager.getNextID("CommentID", "Mediacomment"), currentUser.ID, media.ID, content);
+            media.addComment(comment);
+            dbmanager.addCommentToMedia(media, comment);
+        }
+
+        public void uploadAVMedia(string filetype, string title, string summary, string destination)
+        {
+            switch (filetype)
+            {
+                case "Photo":
+                    AVPhotoData photo = new AVPhotoData(dbmanager.getNextID("MediaID", "Media"), title, currentUser.ID, destination, DateTime.Today, 0, 0);
+                    addPhoto(photo);
+                    dbmanager.uploadMedia(photo);
+                    break;
+                case "Video":
+                    AVVideoData video = new AVVideoData(dbmanager.getNextID("MediaID", "Media"), title, currentUser.ID, destination, DateTime.Today, 0, 0, 0);
+                    addVideo(video);
+                    dbmanager.uploadMedia(video);
+                    break;
+            }
+        }
+
+        public void uploadMessageMedia(string filetype, string title, string summary)
+        {
+            MessageData message = new MessageData(dbmanager.getNextID("MediaID", "Media"), title, currentUser.ID, DateTime.Today, summary);
+            addMessage(message);
+            dbmanager.uploadMedia(message);
         }
         
     }

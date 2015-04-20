@@ -27,7 +27,8 @@ namespace MediaSharingSystem
         public void Connect()
         {
             con = new OracleConnection();
-            con.ConnectionString = "User Id=system; Password=Drowssap;Data Source=localhost/xe";
+            con.ConnectionString = "User ID=dbi317913; Password=I8zOKDgbJd; Data Source=192.168.15.50:1521/fhictora;";
+            //con.ConnectionString = "User Id=system; Password=Drowssap;Data Source=localhost/xe";
             con.Open();
             Console.WriteLine("CONNECTION SUCCESFULL");
 
@@ -257,22 +258,25 @@ namespace MediaSharingSystem
 
             try
             {
-                while (dr.Read())
+                if (dr != null)
                 {
-                    int userid;
-                    String username;
-                    String password;
-                    bool isadmin;
+                    while (dr.Read())
+                    {
+                        int userid;
+                        String username;
+                        String password;
+                        bool isadmin;
 
-                    userid = dr.GetInt32(0);
-                    username = dr.GetString(1);
-                    password = dr.GetString(2);
-                    isadmin = dr.GetInt32(3) == 1 ? true : false;
+                        userid = dr.GetInt32(0);
+                        username = dr.GetString(1);
+                        password = dr.GetString(2);
+                        isadmin = dr.GetInt32(3) == 1 ? true : false;
 
 
-                    UserData media = new UserData(userid, username, password, isadmin);
+                        UserData media = new UserData(userid, username, password, isadmin);
 
-                    userlist.Add(media);
+                        userlist.Add(media);
+                    }
                 }
 
                 return userlist;
@@ -408,23 +412,8 @@ namespace MediaSharingSystem
         public void likePost(MediaData media, UserData user)
         {
             WriteData("UPDATE MEDIA SET LIKES = " + media.Likes + " WHERE MediaID = " + media.ID);
-            
-            ReadData("SELECT MAX(likeid) FROM LIKES");
-            int nextid = 1;
-            try
-            {
-                while(dr.Read()){
-                    if (!dr.IsDBNull(0))
-                    {
-                        nextid = dr.GetInt32(0) + 1;
-                    }
-                }
 
-            }
-            catch(InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            int nextid = getNextID("LikeID", "Likes");
 
             WriteData("INSERT INTO LIKES(likeID, mediaID, commentID, gebruikerID) VALUES (" + nextid + "," + media.ID + ", null ," + user.ID + ")");
         }
@@ -439,23 +428,7 @@ namespace MediaSharingSystem
         {
             WriteData("UPDATE MEDIACOMMENT SET LIKES = " + comment.Likes + " WHERE CommentID = " + comment.ID);
 
-            ReadData("SELECT MAX(likeid) FROM LIKES");
-            int nextid = 1;
-            try
-            {
-                while (dr.Read())
-                {
-                    if (!dr.IsDBNull(0))
-                    {
-                        nextid = dr.GetInt32(0) + 1;
-                    }
-                }
-
-            }
-            catch (InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            int nextid = getNextID("LikeID", "Likes");
 
             WriteData("INSERT INTO LIKES(likeID, mediaID, commentID, gebruikerID) VALUES (" + nextid + ", null ,"+ comment.ID +"," + user.ID + ")");
         }
@@ -469,23 +442,7 @@ namespace MediaSharingSystem
         public void reportPost(MediaData media, UserData user)
         {
 
-            ReadData("SELECT MAX(reportid) FROM Reports");
-            int nextid = 1;
-            try
-            {
-                while (dr.Read())
-                {
-                    if (!dr.IsDBNull(0))
-                    {
-                        nextid = dr.GetInt32(0) + 1;
-                    }
-                }
-
-            }
-            catch (InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            int nextid = getNextID("reportID", "Reports");
 
             WriteData("INSERT INTO Reports(reportID, mediaID, gebruikerID) VALUES (" + nextid + "," + media.ID + "," + user.ID + ")");
         }
@@ -495,9 +452,92 @@ namespace MediaSharingSystem
             WriteData("DELETE FROM Reports WHERE gebruikerID = " + user.ID + "AND mediaID = " + media.ID);
         }
 
-        public void uploadMedia(MediaData media)
+        public void addCommentToMedia(MediaData media, CommentData comment)
         {
 
+            int nextid = getNextID("CommentID","MediaComment");
+         
+            WriteData("INSERT INTO MEDIACOMMENT(CommentID, MediaID, GebruikerID, Inhoud, Likes) VALUES ("+nextid+","+media.ID+","+comment.UserID+",'"+comment.Content+"', 0)");
+        }
+
+        /// <summary>
+        /// Returns the next id in the given table
+        /// </summary>
+        /// <param name="table">The table you want the next id from</param>
+        /// <returns></returns>
+        public int getNextID(string idcolumn, string table)
+        {
+            ReadData("SELECT MAX(" + idcolumn + ") FROM " + table);
+            int nextid = 1;
+            try
+            {
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        nextid = dr.GetInt32(0) + 1;
+                        return nextid;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            return -1;
+        }
+
+        public void uploadMedia(MediaData media)
+        {
+            if (media is AVPhotoData)
+            {
+                AVPhotoData photo = (AVPhotoData)media;
+
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO MEDIA (MediaID, GebruikerID, Title, PostDate, Likes) VALUES (:MediaID, :GebruikerID, :Title, :PostDate, :Likes)";
+                cmd.Parameters.Add("MediaID", OracleDbType.Int32).Value = media.ID;
+                cmd.Parameters.Add("GebruikerID", OracleDbType.Int32).Value = media.UserID;
+                cmd.Parameters.Add("Title", OracleDbType.Varchar2).Value = media.Title;
+                cmd.Parameters.Add("PostDate", OracleDbType.Date).Value = media.Postdate.Date;
+                cmd.Parameters.Add("Likes", OracleDbType.Int32).Value = media.Likes;
+                cmd.ExecuteNonQuery();
+
+                WriteData("INSERT INTO PHOTO (MediaID, FilePath, Width, Height) VALUES (" + media.ID + ",'" + photo.Filepath + "'," + photo.Width + "," + photo.Height+")");
+            }
+            else if (media is AVVideoData)
+            {
+                AVVideoData video = (AVVideoData)media;
+
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO MEDIA (MediaID, GebruikerID, Title, PostDate, Likes) VALUES (:MediaID, :GebruikerID, :Title, :PostDate, :Likes)";
+                cmd.Parameters.Add("MediaID", OracleDbType.Int32).Value = media.ID;
+                cmd.Parameters.Add("GebruikerID", OracleDbType.Int32).Value = media.UserID;
+                cmd.Parameters.Add("Title", OracleDbType.Varchar2).Value = media.Title;
+                cmd.Parameters.Add("PostDate", OracleDbType.Date).Value = media.Postdate;
+                cmd.Parameters.Add("Likes", OracleDbType.Int32).Value = media.Likes;
+                cmd.ExecuteNonQuery();
+
+
+                WriteData("INSERT INTO VIDEO (MediaID, FilePath, MovieLength, Width, Height) VALUES (" + media.ID + ",'" + video.Filepath + "',"+video.Duration+","+ video.Width + "," + video.Height + ")");
+            }
+            else if (media is MessageData)
+            {
+                MessageData message = (MessageData)media;
+
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO MEDIA (MediaID, GebruikerID, Title, PostDate, Likes) VALUES (:MediaID, :GebruikerID, :Title, :PostDate, :Likes)";
+                cmd.Parameters.Add("MediaID", OracleDbType.Int32).Value = media.ID;
+                cmd.Parameters.Add("GebruikerID", OracleDbType.Int32).Value = media.UserID;
+                cmd.Parameters.Add("Title", OracleDbType.Varchar2).Value = media.Title;
+                cmd.Parameters.Add("PostDate", OracleDbType.Date).Value = media.Postdate;
+                cmd.Parameters.Add("Likes", OracleDbType.Int32).Value = media.Likes;
+                cmd.ExecuteNonQuery();
+
+                WriteData("INSERT INTO MESSAGE (MediaID, MessageText) VALUES (" + media.ID + ",'" + message.Content + "')");
+            }
         }
 
     }

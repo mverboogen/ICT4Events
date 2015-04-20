@@ -32,6 +32,7 @@ namespace MediaSharingSystem
         
         // Comment controls
         Panel commentPanel;
+        TextBox writeCommentTb;
 
 
         
@@ -245,6 +246,37 @@ namespace MediaSharingSystem
             }
         }
 
+        public void updateCommentPanel()
+        {
+            Control[] collection = commentPanel.Controls.Find("pnlContentContainer", false);
+            Panel contentcontainer = (Panel)collection[0];
+            contentcontainer.Controls.Clear();
+            if (media.Comments.Count > 0)
+            {
+                foreach (CommentData comment in media.Comments)
+                {
+                    int width = this.Width - ((int)PostDimensions.DefaultMargin * 2);
+                    int height = (int)PostDimensions.CommentHeight;
+                    CommentView commentview = new CommentView(manager, comment, width, height);
+                    Point commentviewlocation = new Point((contentcontainer.Width - commentview.Width) / 2, contentcontainer.Controls.Count * (commentview.Height + (int)PostDimensions.DefaultMargin));
+                    commentview.Location = commentviewlocation;
+                    commentview.BackColor = Color.LightGray;
+
+                    contentcontainer.Controls.Add(commentview);
+                }
+            }
+            else
+            {
+                Label nocomments = new Label();
+                nocomments.Width = contentcontainer.Width;
+                nocomments.Height = contentcontainer.Height;
+                nocomments.TextAlign = ContentAlignment.MiddleCenter;
+                nocomments.Text = "This post has no comments";
+                nocomments.Font = new Font("Century Gothic", 20, FontStyle.Bold);
+                contentcontainer.Controls.Add(nocomments);
+            }
+        }
+
         private void moreButton_Clicked(Button button, MediaData sender)
         {
             commentPanel = new Panel();
@@ -286,7 +318,15 @@ namespace MediaSharingSystem
             buttoncontainer.Controls.Add(closebutton);
             buttoncontainer.Controls.Add(commentbutton);
 
+            writeCommentTb = new TextBox();
+            writeCommentTb.Width = buttoncontainer.Width - closebutton.Width - commentbutton.Width - ((int)PostDimensions.DefaultMargin * 2);
+            Point tbcommentlocation = new Point((int)PostDimensions.DefaultMargin, (buttoncontainer.Height - writeCommentTb.Height) / 2);
+            writeCommentTb.Location = tbcommentlocation;
+
+            buttoncontainer.Controls.Add(writeCommentTb);
+
             Panel contentcontainer = new Panel();
+            contentcontainer.Name = "pnlContentContainer";
             contentcontainer.Width = commentPanel.Width;
             contentcontainer.Height = commentPanel.Height - buttoncontainer.Height;
             // Enable this panel to scroll when the content doesn't fit the screen
@@ -361,7 +401,8 @@ namespace MediaSharingSystem
 
         private void commentButton_Clicked(object sender, EventArgs args)
         {
-
+            manager.addCommentToMedia(media, writeCommentTb.Text);
+            updateCommentPanel();
         }
 
     }

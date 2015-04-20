@@ -29,6 +29,11 @@ namespace MediaSharingSystem
             get { return this.commentID; }
         }
 
+        public int UserID
+        {
+            get { return this.userID; }
+        }
+
         public int MediaID
         {
             get { return mediaID; }

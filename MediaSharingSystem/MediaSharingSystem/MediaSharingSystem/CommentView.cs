@@ -61,40 +61,43 @@ namespace MediaSharingSystem
                 {
                     if (likedby.ID == manager.CurrentUser.ID)
                     {
-                        likeButton.Text = "Dislike";
+                        likeButton.Text = "Dislike " + "(" + Comment.Likes + ")";
                         likeButton.Click += new EventHandler(dislikeButton_Clicked);
                     }
                     else
                     {
-                        likeButton.Text = "Like";
+                        likeButton.Text = "Like "+"("+Comment.Likes+")";
                         likeButton.Click += new EventHandler(likeButton_Clicked);
                     }
                 }
             }
             else
             {
-                likeButton.Text = "Like";
+                likeButton.Text = "Like " + "(" + Comment.Likes + ")";
                 likeButton.Click += new EventHandler(likeButton_Clicked);
             }
 
+
             buttoncontainer.Controls.Add(likeButton);
 
-            TextBox content = new TextBox();
+            Label content = new Label();
             content.Width = this.Width;
             content.Height = this.Height - buttoncontainer.Height;
             content.Text = Comment.Content;
+            content.BackColor = Color.White;
             this.Controls.Add(content);
         }
 
         public void updateView()
         {
+
             if (Comment.LikedBy.Contains(manager.CurrentUser))
             {
-                likeButton.Text = "Dislike";
+                likeButton.Text = "Dislike " + "(" + Comment.Likes + ")";
             }
             else
             {
-                likeButton.Text = "Like";
+                likeButton.Text = "Like " + "(" + Comment.Likes + ")";
             }
         }
 

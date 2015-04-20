@@ -16,11 +16,14 @@ namespace MediaSharingSystem
 {
     public partial class UploadForm : Form
     {
-        public enum FileType { Photo, Video, Message };
-        public FileType Filetype;
         public string Title;
         public string Summary;
         public string FilePath;
+        public string FileName;
+        public string FileType;
+
+        public string destination = @"\\S29-SERVERMEDIA\Media\Files\";
+        //public string destination = @"C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\Server\Uploads\";
 
         public UploadForm()
         {
@@ -34,19 +37,19 @@ namespace MediaSharingSystem
         {
             if (cbMediaType.SelectedItem.ToString() == "Foto")
             {
-                Filetype = FileType.Photo;
+                FileType = "Photo";
                 btnSelectFile.Enabled = true;
                 this.Size = new Size(this.Size.Width, 685);
             }
-            else if (cbMediaType.SelectedItem.ToString() == "Video")
+            else if(cbMediaType.SelectedItem.ToString() == "Video")
             {
-                Filetype = FileType.Video;
+                FileType = "Video";
                 btnSelectFile.Enabled = true;
                 this.Size = new Size(this.Size.Width, 290);
             }
             else
             {
-                Filetype = FileType.Message;
+                FileType = "Message";
                 btnSelectFile.Enabled = false;
                 this.Size = new Size(this.Size.Width, 290);
             }
@@ -54,7 +57,7 @@ namespace MediaSharingSystem
 
         private void btnSelectFile_Click(object sender, EventArgs e)
         {
-            if (cbMediaType.SelectedItem.ToString() == "Foto")
+            if(cbMediaType.SelectedItem.ToString() == "Foto")
             {
                 //Set the file dialog filter to image only
                 OpenFileDialog.Filter = "Foto|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff;*.gif";
@@ -71,11 +74,11 @@ namespace MediaSharingSystem
 
             tbSelectFile.Text = OpenFileDialog.FileName;
 
-            if (cbMediaType.SelectedItem.ToString() == "Foto")
+            if(cbMediaType.SelectedItem.ToString() == "Foto")
             {
                 pbImage.ImageLocation = tbSelectFile.Text;
             }
-            if (cbMediaType.SelectedItem.ToString() == "Video")
+            if(cbMediaType.SelectedItem.ToString() == "Video")
             {
 
             }
@@ -87,7 +90,7 @@ namespace MediaSharingSystem
 
             bool failed = false;
 
-            if (cbMediaType.SelectedItem.ToString() != "Bericht")
+            if(cbMediaType.SelectedItem.ToString() != "Bericht")
             {
                 FilePath = tbSelectFile.Text;
 
@@ -104,21 +107,29 @@ namespace MediaSharingSystem
             }
 
             Title = tbTitle.Text;
-            if (Title == String.Empty)
+            if(Title == String.Empty)
             {
                 failed = true;
                 MessageBox.Show("Vul een titel in");
             }
 
             Summary = textBox2.Text;
-            if (Summary == String.Empty)
+            if(Summary == String.Empty)
             {
                 failed = true;
                 MessageBox.Show("Vul een beschrijving in");
             }
 
-            if (!failed)
+            if(!failed)
             {
+                if (FileType == "Photo" || FileType == "Video")
+                {
+                    int index  = FilePath.LastIndexOf(@"\");
+                    FileName = FilePath.Substring(index + 1);
+                }
+
+
+
                 this.DialogResult = DialogResult.OK;
             }
 
