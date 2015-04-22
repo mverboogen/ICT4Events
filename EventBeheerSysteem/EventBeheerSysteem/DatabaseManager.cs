@@ -30,7 +30,7 @@ namespace EventBeheerSysteem
             try
             {
                 con = new OracleConnection();
-                con.ConnectionString = "User Id=system;Password=password;Data Source=localhost";
+                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=192.168.15.50/fhictora";
                 con.Open();
                 Console.WriteLine("CONNECTION SUCCESFULL");
             }
@@ -352,7 +352,15 @@ namespace EventBeheerSysteem
                     
 
                     id = dr.GetInt32(0);
-                    reservationDate = dr.GetDateTime(4);
+                    if(!dr.IsDBNull(4))
+                    {
+                        reservationDate = dr.GetDateTime(4);
+                    }
+                    else
+                    {
+                        reservationDate = DateTime.MinValue;
+                    }
+                    
 
                     Reservation newReservation = new Reservation(id, reservationDate);
 
