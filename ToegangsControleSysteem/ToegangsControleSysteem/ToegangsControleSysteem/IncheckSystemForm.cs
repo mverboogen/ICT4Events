@@ -377,26 +377,18 @@ namespace ToegangsControleSysteem
 
         private void btnPayed_Click(object sender, EventArgs e)
         {
-
-            if (!selectedVisitor.VisitorReservation.CheckinDate.HasValue || selectedVisitor.VisitorReservation != null)
+            if (!selectedVisitor.VisitorReservation.Payed)
             {
-                MessageBox.Show("Reservering is al ingechecked");
+                selectedVisitor.VisitorReservation.Payed = !cboxVisitorPayed.Checked;
+                databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, !cboxVisitorPayed.Checked);
             }
             else
             {
-                if (!selectedVisitor.VisitorReservation.Payed)
-                {
-                    selectedVisitor.VisitorReservation.Payed = !cboxVisitorPayed.Checked;
-                    databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, !cboxVisitorPayed.Checked);
-                }
-                else
-                {
-                    selectedVisitor.VisitorReservation.Payed = !cboxVisitorPayed.Checked;
-                    databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, !cboxVisitorPayed.Checked);
-                }
-
-                RefreshUI();
+                selectedVisitor.VisitorReservation.Payed = !cboxVisitorPayed.Checked;
+                databaseHandler.SetReservationPayement(eventID, selectedVisitor.VisitorReservation.ID, !cboxVisitorPayed.Checked);
             }
+
+            RefreshUI();
         }
 
         private void btnScanRFID_Click(object sender, EventArgs e)
