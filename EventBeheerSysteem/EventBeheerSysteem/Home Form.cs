@@ -486,11 +486,12 @@ namespace EventBeheerSysteem
                     for(int i = 0; i < form.amount; i++)
                     {
                         int id = eventManager.databaseHandler.GetnewItemID();
+
                         try
                         {
                             Item newItem = new Item(id, form.name, form.rentPrice, form.price);
                             selectedEvent.itemManager.AddItem(newItem);
-                            eventManager.databaseHandler.AddItem(selectedEvent.ID, form.name, form.rentPrice, form.price);
+                            eventManager.databaseHandler.AddItem(selectedEvent.ID, id, form.name, form.rentPrice, form.price);
                             FillMaterialsTab();
                             ClearMaterialsDetailsTab();
                         }
@@ -554,7 +555,10 @@ namespace EventBeheerSysteem
         {
             if(lboxEventMaterialList.SelectedIndex != -1)
             {
-                using (var form = new AddItemToReservation(eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name), selectedEvent.reservationManager.reservationList))
+                int availible = eventManager.databaseHandler.GetItemAmount(selectedEvent.ID, selectedItem.Name);
+                int used = eventManager.databaseHandler.GetAviableItemAmount(selectedEvent.ID, selectedItem.Name);
+
+                using (var form = new AddItemToReservation((availible - used), selectedEvent.reservationManager.reservationList))
                 {
 
                     var result = form.ShowDialog();
@@ -562,7 +566,7 @@ namespace EventBeheerSysteem
                     {
                         for(int i = 0; i < form.amount; i++)
                         {
-                            if(form.selectedReservation.ReservedItemID == 0)
+                            if(form.selectedReservation.ReservedItemID == -1)
                             {
                                 form.selectedReservation.ReservedItemID = eventManager.databaseHandler.GetNewItemReservationID(selectedEvent.ID);
                                 eventManager.databaseHandler.AddItemReservationID(selectedEvent.ID, form.selectedReservation.ID, form.selectedReservation.ReservedItemID);

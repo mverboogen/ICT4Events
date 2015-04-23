@@ -76,7 +76,7 @@ namespace EventBeheerSysteem
         {
             if(lboxReservations.SelectedIndex != -1)
             {
-                if (amount > numAmount.Value)
+                if (amount >= numAmount.Value)
                 {
                     amount = Convert.ToInt32(numAmount.Value);
                     this.DialogResult = DialogResult.OK;

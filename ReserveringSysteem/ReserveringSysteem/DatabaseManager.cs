@@ -43,7 +43,11 @@ namespace ReserveringSysteem
             try
             {
                 con = new OracleConnection();
+<<<<<<< HEAD
                 con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=fhictora01.fhict.local/fhictora";
+=======
+                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=192.168.15.50/fhictora";
+>>>>>>> origin/master
                 con.Open();
 
                 //MessageBox.Show("DATABASE VERBINDING GELUKT");

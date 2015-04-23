@@ -115,6 +115,31 @@ namespace MateriaalBeheerSysteem
             }
         }
 
+        private void FillDetailsTab()
+        {
+            tbName.Text = selectedItem.Name;
+            tbDailyRent.Text = selectedItem.Price.ToString("N2");
+            tbPrice.Text = selectedItem.NewPrice.ToString("N2");
+
+            int availible = databaseHandler.GetItemAmount(eventID, selectedItem.Name);
+            int used = databaseHandler.GetAviableItemAmount(eventID, selectedItem.Name);
+
+            tbAvailible.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
+
+            lboxMaterialRenters.Items.Clear();
+
+            foreach (Item item in itemManager.itemList)
+            {
+                if (item.Name == selectedItem.Name)
+                {
+                    if (item.itemReservation != null)
+                    {
+                        lboxMaterialRenters.Items.Add(item.itemReservation);
+                    }
+                }
+            }
+        }
+
         private void lboxMaterials_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lboxMaterials.SelectedIndex != -1)
@@ -123,25 +148,7 @@ namespace MateriaalBeheerSysteem
                 selectedItem = lboxMaterials.SelectedItem as Item;
                 if (selectedItem != null)
                 {
-                    tbName.Text = selectedItem.Name;
-                    tbDailyRent.Text = selectedItem.Price.ToString("N2");
-                    tbPrice.Text = selectedItem.NewPrice.ToString("N2");
-
-                    int availible = databaseHandler.GetItemAmount(eventID, selectedItem.Name);
-                    int used = databaseHandler.GetAviableItemAmount(eventID, selectedItem.Name);
-
-                    tbAvailible.Text = Convert.ToString(availible - used) + " / " + availible.ToString();
-
-                    foreach (Item item in itemManager.itemList)
-                    {
-                        if (item.Name == selectedItem.Name)
-                        {
-                            if (item.itemReservation != null)
-                            {
-                                lboxMaterialRenters.Items.Add(item.itemReservation);
-                            }
-                        }
-                    }
+                    FillDetailsTab();
                 }
             }
         }
@@ -159,7 +166,7 @@ namespace MateriaalBeheerSysteem
 
                         Item newItem = new Item(id, form.name, form.rentPrice, form.price);
                         itemManager.AddItem(newItem);
-                        databaseHandler.AddItem(eventID, form.name, form.rentPrice, form.price);
+                        databaseHandler.AddItem(eventID, id, form.name, form.rentPrice, form.price);
                         FillData();
                         ClearDetails();
                     }
@@ -217,7 +224,11 @@ namespace MateriaalBeheerSysteem
         {
             if (lboxMaterials.SelectedIndex != -1)
             {
-                using (var form = new AddItemToReservation(databaseHandler.GetItemAmount(eventID, selectedItem.Name), reservationManager.reservationList))
+
+                int availible = databaseHandler.GetItemAmount(eventID, selectedItem.Name);
+                int used = databaseHandler.GetAviableItemAmount(eventID, selectedItem.Name);
+
+                using (var form = new AddItemToReservation((availible - used), reservationManager.reservationList))
                 {
 
                     var result = form.ShowDialog();
@@ -225,14 +236,19 @@ namespace MateriaalBeheerSysteem
                     {
                         for (int i = 0; i < form.amount; i++)
                         {
-                            if (form.selectedReservation.ReservedItemID == 0)
+                            if (form.selectedReservation.ReservedItemID == -1)
                             {
                                 form.selectedReservation.ReservedItemID = databaseHandler.GetNewItemReservationID(eventID);
                                 databaseHandler.AddItemReservationID(eventID, form.selectedReservation.ID, form.selectedReservation.ReservedItemID);
                             }
 
-                            databaseHandler.AddItemToReservation(eventID, form.selectedReservation.ReservedItemID, selectedItem.Name);
+                            int itemID = databaseHandler.AddItemToReservation(eventID, form.selectedReservation.ReservedItemID, selectedItem.Name);
+                            Item item = itemManager.GetItem(itemID);
+                            form.selectedReservation.ItemList.Add(item);
+                            item.itemReservation = form.selectedReservation;
                         }
+
+                        FillDetailsTab();
                     }
                 }
             }

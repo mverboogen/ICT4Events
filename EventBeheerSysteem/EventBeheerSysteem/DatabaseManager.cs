@@ -30,7 +30,7 @@ namespace EventBeheerSysteem
             try
             {
                 con = new OracleConnection();
-                con.ConnectionString = "User Id=system;Password=password;Data Source=localhost";
+                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=192.168.15.50/fhictora";
                 con.Open();
                 Console.WriteLine("CONNECTION SUCCESFULL");
             }
@@ -145,7 +145,7 @@ namespace EventBeheerSysteem
                     int type;
                     int size;
                     int maxOccupation;
-                    int reservationID;
+                    int reservationID = -1;
 
                     id = dr.GetInt32(0);
                     name = Convert.ToString(dr.GetInt32(0));
@@ -158,9 +158,9 @@ namespace EventBeheerSysteem
                     if (!dr.IsDBNull(6))
                     {
                         reservationID = dr.GetInt32(6);
-                        newCampSite.ReservationID = reservationID;
                     }
-                    
+
+                    newCampSite.ReservationID = reservationID;
                     campSiteList.Add(newCampSite);
                 }
 
@@ -249,8 +249,8 @@ namespace EventBeheerSysteem
                     string lastname = "";
                     string email = "";
                     string rfid = "";
-                    int bookerID = 0;
-                    int reservationID = 0;
+                    int bookerID = -1;
+                    int reservationID = -1;
                     
                     if(!dr.IsDBNull(0))
                     {
@@ -359,6 +359,10 @@ namespace EventBeheerSysteem
                     if (!dr.IsDBNull(2))
                     {
                         newReservation.ReservedItemID = dr.GetInt32(2);
+                    }
+                    else
+                    {
+                        newReservation.ReservedItemID = -1;
                     }
 
                     if(!dr.IsDBNull(5))
@@ -893,11 +897,9 @@ namespace EventBeheerSysteem
         /// <summary>
         /// Adds a new Item to the database
         /// </summary>
-        public void AddItem(int eventID, string name, decimal price, decimal newPrice)
+        public void AddItem(int eventID, int materialID, string name, decimal price, decimal newPrice)
         {
             Connect();
-
-            int materialID = 0;
 
             ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal");
 

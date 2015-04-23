@@ -27,11 +27,17 @@ namespace ToegangsControleSysteem
 
         public void Connect()
         {
-            con = new OracleConnection();
-            con.ConnectionString = "User Id=system;Password=polpleitiir;Data Source=localhost";
-            con.Open();
-            Console.WriteLine("CONNECTION SUCCESFULL");
-
+            try
+            {
+                con = new OracleConnection();
+                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=192.168.15.50/fhictora";
+                con.Open();
+                Console.WriteLine("CONNECTION SUCCESFULL");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public void ReadData(string sql)
@@ -44,7 +50,7 @@ namespace ToegangsControleSysteem
                 cmd.CommandType = CommandType.Text;
                 dr = cmd.ExecuteReader();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 MessageBox.Show(e.Message);
             }
@@ -93,7 +99,7 @@ namespace ToegangsControleSysteem
                     int type;
                     int size;
                     int maxOccupation;
-                    int reservationID;
+                    int reservationID = -1;
 
                     id = dr.GetInt32(0);
                     name = Convert.ToString(dr.GetInt32(0));
@@ -106,9 +112,9 @@ namespace ToegangsControleSysteem
                     if (!dr.IsDBNull(6))
                     {
                         reservationID = dr.GetInt32(6);
-                        newCampSite.ReservationID = reservationID;
                     }
 
+                    newCampSite.ReservationID = reservationID;
                     campSiteList.Add(newCampSite);
                 }
 
@@ -116,7 +122,7 @@ namespace ToegangsControleSysteem
 
                 return campSiteList;
             }
-            catch (InvalidCastException ex)
+            catch(InvalidCastException ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -163,9 +169,9 @@ namespace ToegangsControleSysteem
                 itemList.Sort();
 
                 return itemList;
-
+                
             }
-            catch (InvalidCastException ex)
+            catch(InvalidCastException ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -190,17 +196,17 @@ namespace ToegangsControleSysteem
 
             try
             {
-                while (dr.Read())
+                while(dr.Read())
                 {
                     int id = 0;
                     string surname = "";
                     string lastname = "";
                     string email = "";
                     string rfid = "";
-                    int bookerID = 0;
-                    int reservationID = 0;
-
-                    if (!dr.IsDBNull(0))
+                    int bookerID = -1;
+                    int reservationID = -1;
+                    
+                    if(!dr.IsDBNull(0))
                     {
                         id = dr.GetInt32(0);
                     }
@@ -267,7 +273,7 @@ namespace ToegangsControleSysteem
 
                 return visitorList;
             }
-            catch (InvalidCastException ex)
+            catch(InvalidCastException ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -275,7 +281,7 @@ namespace ToegangsControleSysteem
             Disconnect();
 
             return null;
-
+            
         }
 
         /// <summary>
@@ -293,11 +299,11 @@ namespace ToegangsControleSysteem
 
             try
             {
-                while (dr.Read())
+                while(dr.Read())
                 {
                     int id;
                     DateTime reservationDate;
-
+                    
 
                     id = dr.GetInt32(0);
                     reservationDate = dr.GetDateTime(4);
@@ -308,8 +314,12 @@ namespace ToegangsControleSysteem
                     {
                         newReservation.ReservedItemID = dr.GetInt32(2);
                     }
+                    else
+                    {
+                        newReservation.ReservedItemID = -1;
+                    }
 
-                    if (!dr.IsDBNull(5))
+                    if(!dr.IsDBNull(5))
                     {
                         newReservation.CheckinDate = dr.GetDateTime(5);
                     }
@@ -319,7 +329,7 @@ namespace ToegangsControleSysteem
                         newReservation.DepartDate = dr.GetDateTime(6);
                     }
 
-                    if (dr.GetInt32(7) == 1)
+                    if(dr.GetInt32(7) == 1)
                     {
                         newReservation.Payed = true;
                     }
@@ -330,7 +340,7 @@ namespace ToegangsControleSysteem
 
                     reservationList.Add(newReservation);
 
-
+                    
                 }
 
                 reservationList.Sort();
@@ -379,7 +389,7 @@ namespace ToegangsControleSysteem
                     email = Convert.ToString(dr.GetValue(5));
                     bookerID = dr.GetInt32(7);
                     reservationID = dr.GetInt32(1);
-                    if (!dr.IsDBNull(6))
+                    if(!dr.IsDBNull(6))
                     {
                         rfid = dr.GetString(6);
                     }
@@ -390,7 +400,7 @@ namespace ToegangsControleSysteem
                     Booker newBooker = new Booker(id, surname, lastname, email, bookerID, reservationID, rfid, address, zipcode, city);
                     return newBooker;
                 }
-
+                
             }
             catch (InvalidCastException ex)
             {
@@ -419,7 +429,7 @@ namespace ToegangsControleSysteem
             {
                 int id;
 
-                while (dr.Read())
+                while(dr.Read())
                 {
                     id = dr.GetInt32(0);
                     intList.Add(id);
@@ -452,12 +462,12 @@ namespace ToegangsControleSysteem
 
             try
             {
-                while (dr.Read())
+                while(dr.Read())
                 {
                     visitorAmount = dr.GetInt32(0);
                 }
             }
-            catch (InvalidCastException ICE)
+            catch(InvalidCastException ICE)
             {
                 MessageBox.Show(ICE.ToString());
             }
@@ -471,7 +481,7 @@ namespace ToegangsControleSysteem
         {
 
             Connect();
-
+            
             int newID = 0;
 
             ReadData("SELECT MAX(BezoekerID) + 1 FROM Bezoeker WHERE EventID = " + eventID.ToString());
@@ -511,7 +521,7 @@ namespace ToegangsControleSysteem
             {
                 while (dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         reservationState = dr.GetInt32(0);
                     }
@@ -522,7 +532,7 @@ namespace ToegangsControleSysteem
                 MessageBox.Show(ICE.ToString());
             }
 
-            if (reservationState == 1)
+            if(reservationState == 1)
             {
                 state = true;
             }
@@ -579,7 +589,7 @@ namespace ToegangsControleSysteem
             {
                 while (dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         newID = dr.GetInt32(0);
                     }
@@ -608,7 +618,7 @@ namespace ToegangsControleSysteem
 
             int availibleItemAmount = 0;
 
-            ReadData("SELECT COUNT(*) FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName + "' AND MateriaalID IN (SELECT MateriaalID FROM Materiaal_GerMateriaal)");
+            ReadData("SELECT COUNT(*) FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '"+ itemName +"' AND MateriaalID IN (SELECT MateriaalID FROM Materiaal_GerMateriaal)");
 
             try
             {
@@ -644,7 +654,7 @@ namespace ToegangsControleSysteem
             {
                 while (dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         newID = dr.GetInt32(0);
                     }
@@ -687,7 +697,7 @@ namespace ToegangsControleSysteem
 
             Disconnect();
 
-            return newID;
+            return newID; 
         }
 
         /// <summary>
@@ -706,7 +716,7 @@ namespace ToegangsControleSysteem
             {
                 while (dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         eventID = dr.GetInt32(0);
                     }
@@ -800,7 +810,7 @@ namespace ToegangsControleSysteem
             {
                 while (dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         campSiteID = dr.GetInt32(0);
                     }
@@ -841,11 +851,9 @@ namespace ToegangsControleSysteem
         /// <summary>
         /// Adds a new Item to the database
         /// </summary>
-        public void AddItem(int eventID, string name, decimal price, decimal newPrice)
+        public void AddItem(int eventID, int materialID, string name, decimal price, decimal newPrice)
         {
             Connect();
-
-            int materialID = 0;
 
             ReadData("SELECT MAX(MateriaalID) + 1 FROM Materiaal");
 
@@ -853,7 +861,7 @@ namespace ToegangsControleSysteem
             {
                 while (dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         materialID = dr.GetInt32(0);
                     }
@@ -946,16 +954,16 @@ namespace ToegangsControleSysteem
             {
                 ReadData("SELECT MateriaalID FROM Materiaal WHERE EventID = " + eventID.ToString() + " AND Naam = '" + itemName + "' AND MateriaalID NOT IN (SELECT MateriaalID FROM Materiaal_GerMateriaal)");
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 MessageBox.Show(e.Message);
             }
 
             try
             {
-                while (dr.Read())
+                while(dr.Read())
                 {
-                    if (!dr.IsDBNull(0))
+                    if(!dr.IsDBNull(0))
                     {
                         itemID = dr.GetInt32(0);
                     }
@@ -1091,7 +1099,7 @@ namespace ToegangsControleSysteem
 
             int state = 0;
 
-            if (newReservationState)
+            if(newReservationState)
             {
                 state = 1;
             }
@@ -1216,7 +1224,7 @@ namespace ToegangsControleSysteem
 
             Connect();
 
-            int paymentValue = payment == true ? 1 : 0;
+            int paymentValue = payment == true ? 1:0;
 
             try
             {
@@ -1417,6 +1425,6 @@ namespace ToegangsControleSysteem
 
             Disconnect();
 
-        }
+        }        
     }
 }
