@@ -57,10 +57,12 @@ namespace MediaSharingSystem
 
             // Create a titlelabel
             titleLabel = new Label();
-            titleLabel.Text = media.Title;
+            titleLabel.Text = (media.Title + " - " + media.User.Username);
             titleLabel.Font = new Font("Century Gothic", 12, FontStyle.Bold);
             Point titlelocation = new Point((int)PostDimensions.DefaultMargin, (titlecontainer.Height - titleLabel.Height) / 2);
             titleLabel.Location = titlelocation;
+            titleLabel.AutoSize = true;
+            //titleLabel.AutoEllipsis = true;
 
             // Add the title to the container
             titlecontainer.Controls.Add(titleLabel);
@@ -231,7 +233,7 @@ namespace MediaSharingSystem
 
         public void updateView()
         {
-            titleLabel.Text = media.Title;
+            titleLabel.Text = (media.Title + " - " + media.User.Username);
             likeLabel.Text = "This post has " + media.Likes + " likes";
 
             if (media.LikedBy.Contains(manager.CurrentUser))
@@ -409,6 +411,7 @@ namespace MediaSharingSystem
         private void commentButton_Clicked(object sender, EventArgs args)
         {
             manager.addCommentToMedia(media, writeCommentTb.Text);
+            writeCommentTb.Clear();
             updateCommentPanel();
         }
 

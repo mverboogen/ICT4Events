@@ -86,6 +86,7 @@ namespace MediaSharingSystem
             this.title = title;
             this.mediaOwner = owner;
             this.postDate = postdate;
+            this.userID = owner.ID;
 
             likedByList = new List<UserData>();
             reportedByList = new List<UserData>();

@@ -44,11 +44,14 @@ namespace MediaSharingSystem
             get { return activeWindow; }
         }
 
-        public WindowManager()
+        public WindowManager(UserData user)
         {
             InitializeComponent();
 
             mediaManager = new MediaManager("Social Media Event");
+            mediaManager.CurrentUser = user;
+
+            this.Text += " - " + mediaManager.CurrentUser.Username;
 
             // Sets the default option for the Search Filter
             cbNavSearchFilter.SelectedIndex = 0;
@@ -64,6 +67,7 @@ namespace MediaSharingSystem
             {
                 btnNavAdmins.Visible = false;
             }
+
         }
 
         

@@ -23,7 +23,6 @@ namespace MediaSharingSystem
         public string FileType;
 
         //public string destination = @"\\S29-SERVERMEDIA\Media\Files\";
-        //public string destination = @"C:\Users\jaspe_000\Dropbox\Fontys\Semester 2\Proftaak(PTS2)\PTS2 Shared\Project\Media Sharing System\Server\Uploads\";
         public string destination = Environment.CurrentDirectory+@"\Uploads\";
 
         public UploadForm()

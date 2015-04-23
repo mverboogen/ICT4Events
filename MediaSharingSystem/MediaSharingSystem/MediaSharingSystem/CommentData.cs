@@ -57,6 +57,7 @@ namespace MediaSharingSystem
             commentOwner = owner;
             this.content = content;
             mediaID = mediaid;
+            this.userID = owner.ID;
 
             likedByList = new List<UserData>();
             reportedByList = new List<UserData>();

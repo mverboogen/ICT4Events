@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaSharingSystem
 {
-    class UserData
+    public class UserData
     {
         private readonly int userID;
         private String userName;

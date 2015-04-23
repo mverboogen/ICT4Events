@@ -16,7 +16,7 @@ namespace MediaSharingSystem
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WindowManager());
+            Application.Run(new LoginForm());
         }
     }
 }

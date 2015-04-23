@@ -35,15 +35,12 @@ namespace MediaSharingSystem
         public UserData CurrentUser
         {
             get { return currentUser; }
+            set { currentUser = value; }
         }
 
         public MediaManager(String eventname)
         {
             
-            // THIS IS A DUMMY USER ONLY.. 
-            currentUser = new UserData(1, "JasperRouwhorst", "Drowssap", true);
-
-
             userList = new List<UserData>();
             mediaList = new List<MediaData>();
             eventName = eventname;
@@ -63,6 +60,8 @@ namespace MediaSharingSystem
             // Downloads all media
             List<MediaData> medialist = new List<MediaData>();
             medialist = dbmanager.getAllMedia();
+
+            
 
             // Downloads all photos and links them with the right parent object
             List<AVPhotoData> photolist = new List<AVPhotoData>();
@@ -85,6 +84,18 @@ namespace MediaSharingSystem
             // Adds the complete medialist to the mediamanager so it's available for use now
             mediaList.Clear();
             addMediaRange(medialist);
+
+            foreach (MediaData media in mediaList)
+            {
+                foreach (UserData user in userList)
+                {
+                    if (media.UserID == user.ID)
+                    {
+                        media.User = user;
+                        break;
+                    }
+                }
+            }
 
             
 
@@ -116,6 +127,18 @@ namespace MediaSharingSystem
                     if (comment.MediaID == media.ID)
                     {
                         media.addComment(comment);
+                    }
+                }
+            }
+
+            foreach (CommentData comment in commentlist)
+            {
+                foreach (UserData user in userList)
+                {
+                    if (comment.UserID == user.ID)
+                    {
+                        comment.CommentOwner = user;
+                        break;
                     }
                 }
             }
@@ -273,6 +296,7 @@ namespace MediaSharingSystem
         /// <param name="media">The media you want to report</param>
         public void reportMedia(MediaData media)
         {
+            media.Report(currentUser);
             dbmanager.reportPost(media, currentUser);
         }
 
@@ -283,12 +307,13 @@ namespace MediaSharingSystem
         /// <param name="media">The media you want to dereport</param>
         public void dereportMedia(MediaData media)
         {
+            media.UndoReport(currentUser);
             dbmanager.dereportPost(media, currentUser);
         }
 
         public void addCommentToMedia(MediaData media, string content)
         {
-            CommentData comment = new CommentData(dbmanager.getNextID("CommentID", "Mediacomment"), currentUser.ID, media.ID, content);
+            CommentData comment = new CommentData(dbmanager.getNextID("CommentID", "Mediacomment"), currentUser, media.ID, content);
             media.addComment(comment);
             dbmanager.addCommentToMedia(media, comment);
         }
@@ -298,12 +323,12 @@ namespace MediaSharingSystem
             switch (filetype)
             {
                 case "Photo":
-                    AVPhotoData photo = new AVPhotoData(dbmanager.getNextID("MediaID", "Media"), title, currentUser.ID, destination, DateTime.Today, 0, 0);
+                    AVPhotoData photo = new AVPhotoData(dbmanager.getNextID("MediaID", "Media"), title, currentUser, destination, DateTime.Today, 0, 0);
                     addPhoto(photo);
                     dbmanager.uploadMedia(photo);
                     break;
                 case "Video":
-                    AVVideoData video = new AVVideoData(dbmanager.getNextID("MediaID", "Media"), title, currentUser.ID, destination, DateTime.Today, 0, 0, 0);
+                    AVVideoData video = new AVVideoData(dbmanager.getNextID("MediaID", "Media"), title, currentUser, destination, DateTime.Today, 0, 0, 0);
                     addVideo(video);
                     dbmanager.uploadMedia(video);
                     break;
@@ -312,7 +337,7 @@ namespace MediaSharingSystem
 
         public void uploadMessageMedia(string filetype, string title, string summary)
         {
-            MessageData message = new MessageData(dbmanager.getNextID("MediaID", "Media"), title, currentUser.ID, DateTime.Today, summary);
+            MessageData message = new MessageData(dbmanager.getNextID("MediaID", "Media"), title, currentUser, DateTime.Today, summary);
             addMessage(message);
             dbmanager.uploadMedia(message);
         }

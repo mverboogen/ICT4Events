@@ -80,10 +80,16 @@ namespace MediaSharingSystem
 
             buttoncontainer.Controls.Add(likeButton);
 
+            Label commentowner = new Label();
+            commentowner.Text = Comment.CommentOwner.Username;
+
+            buttoncontainer.Controls.Add(commentowner);
+
             Label content = new Label();
             content.Width = this.Width;
             content.Height = this.Height - buttoncontainer.Height;
             content.Text = Comment.Content;
+            content.TextAlign = ContentAlignment.MiddleCenter;
             content.BackColor = Color.White;
             this.Controls.Add(content);
         }
