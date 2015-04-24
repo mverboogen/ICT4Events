@@ -39,6 +39,9 @@ namespace MediaSharingSystem
         
         private MainView activeWindow;
 
+        // Keeps track of the last y position of a post.
+        private int lastPostYPos;
+
         public MainView ActiveWindow
         {
             get { return activeWindow; }
@@ -67,7 +70,6 @@ namespace MediaSharingSystem
             {
                 btnNavAdmins.Visible = false;
             }
-
         }
 
         
@@ -98,10 +100,27 @@ namespace MediaSharingSystem
                     foreach (MediaData media in source)
                     {
                         MediaView post = new MediaView(mediaManager, media, (int)TimelineDimensions.PostWidth, media is MessageData ? (int)TimelineDimensions.TextMessageHeight : (int)TimelineDimensions.PostHeight);
-                        Point postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (pnlWindowContent.Controls.Count * ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
+                        Point postlocation = new Point();
+                        // Check if last post is a message.. if so.. the Y position of the next post will be compensated with the different post height of a message
+                        if (source.IndexOf(media) != 0)
+                        {
+                            if (source[(source.IndexOf(media) - 1)] is MessageData)
+                            {
+                                postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (lastPostYPos += ((int)TimelineDimensions.TextMessageHeight + (int)TimelineDimensions.PostBottomMargin)));
+                            }
+                            else
+                            {
+                                postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (lastPostYPos += ((int)TimelineDimensions.PostHeight + (int)TimelineDimensions.PostBottomMargin)));
+                            }
+                        }
+                        else
+                        {
+                            postlocation = new Point((pnlWindowContent.Width - post.Width) / 2, (lastPostYPos += (int)TimelineDimensions.PostBottomMargin));
+                        }
                         post.Location = postlocation;
                         post.BorderStyle = BorderStyle.FixedSingle;
                         post.BackColor = Color.LightGray;
+                        post.RemoveMedia += new MediaView.RemoveMediaHandler(RemoveMedia_Clicked);
 
                         // Add post to panel
                         pnlWindowContent.Controls.Add(post);
@@ -421,6 +440,12 @@ namespace MediaSharingSystem
         private void fullscreenphoto_Clicked(object sender, EventArgs args)
         {
             pnlWindowContent.Controls.Remove((PictureBox)sender);
+        }
+
+        private void RemoveMedia_Clicked(MediaData media)
+        {
+            mediaManager.removeMedia(media);
+            updateViews(activeWindow, mediaManager.Medialist);
         }
 
         

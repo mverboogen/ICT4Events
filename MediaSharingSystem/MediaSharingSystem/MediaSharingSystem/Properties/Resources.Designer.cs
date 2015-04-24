@@ -63,6 +63,16 @@ namespace MediaSharingSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Generic {
+            get {
+                object obj = ResourceManager.GetObject("Generic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap video_call {
             get {
                 object obj = ResourceManager.GetObject("video_call", resourceCulture);

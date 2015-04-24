@@ -487,6 +487,27 @@ namespace MediaSharingSystem
             return -1;
         }
 
+        public void removeMedia(MediaData media)
+        {
+            WriteData("DELETE FROM MEDIA WHERE MediaId = " + media.ID);
+            AVPhotoData photo = media as AVPhotoData;
+            AVVideoData video = media as AVVideoData;
+            MessageData message = media as MessageData;
+            if (photo != null)
+            {
+                WriteData("DELETE FROM Photo WHERE MediaId = " + media.ID);
+            }
+            else if (video != null)
+            {
+                WriteData("DELETE FROM Video WHERE MediaId = " + media.ID);
+            }
+            else if (message != null)
+            {
+                WriteData("DELETE FROM Message WHERE MediaId = " + media.ID);
+            }
+            
+        }
+
         public void uploadMedia(MediaData media)
         {
             if (media is AVPhotoData)

@@ -22,6 +22,9 @@ namespace MediaSharingSystem
 
         private MediaData media;
         private MediaManager manager;
+
+        public delegate void RemoveMediaHandler(MediaData media);
+        public event RemoveMediaHandler RemoveMedia;
         
         // Post controls
         Label titleLabel;
@@ -51,7 +54,6 @@ namespace MediaSharingSystem
             Panel titlecontainer = new Panel();
             titlecontainer.Width = this.Width;
             titlecontainer.Height = (this.Height / 20) + ((int)PostDimensions.DefaultMargin * 2);
-
             // Add the titlecontainerpanel to the parent container
             this.Controls.Add(titlecontainer);
 
@@ -66,6 +68,21 @@ namespace MediaSharingSystem
 
             // Add the title to the container
             titlecontainer.Controls.Add(titleLabel);
+
+            if (media.UserID == manager.CurrentUser.ID || manager.CurrentUser.IsAdmin == true)
+            {
+                Button removebutton = new Button();
+                removebutton.Width = 25;
+                removebutton.Height = 25;
+                removebutton.Text = "X";
+                Point removelocation = new Point(titlecontainer.Width - (removebutton.Width + 10), (titlecontainer.Height - removebutton.Height) / 2);
+                removebutton.Location = removelocation;
+                removebutton.Click += new EventHandler(RemoveButton_Clicked);
+
+                // Add the remove button to the container
+                titlecontainer.Controls.Add(removebutton);
+            }
+
 
             // Create a container for the buttons
             Panel buttoncontainer = new Panel();
@@ -406,6 +423,11 @@ namespace MediaSharingSystem
             manager.addCommentToMedia(media, writeCommentTb.Text);
             writeCommentTb.Clear();
             updateCommentPanel();
+        }
+
+        private void RemoveButton_Clicked(object sender, EventArgs args)
+        {
+            RemoveMedia(media);
         }
 
     }

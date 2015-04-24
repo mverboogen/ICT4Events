@@ -210,6 +210,7 @@ namespace MediaSharingSystem
         public bool removeMedia(MediaData media)
         {
             mediaList.Remove(media);
+            dbmanager.removeMedia(media);
             return true;
         }
 
