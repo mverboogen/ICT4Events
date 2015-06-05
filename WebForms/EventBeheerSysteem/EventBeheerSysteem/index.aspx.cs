@@ -11,6 +11,7 @@ namespace EventBeheerSysteem
     public partial class Index : System.Web.UI.Page
     {
         DatabaseHandler dbHandler = new DatabaseHandler();
+        public int EventID = 1;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,13 +25,15 @@ namespace EventBeheerSysteem
             dt.Columns.Add(new DataColumn("EventEndDate", typeof(string)));
             dt.Columns.Add(new DataColumn("EventOpen", typeof(string)));
 
-            for(int i = 0; i < dbHandler.GetEvents() + 1; i++)
+            List<Event> eventList = dbHandler.GetAllEvents();
+
+            foreach(Event ev in eventList)
             {
                 dr = dt.NewRow();
-                dr["RowNumber"] = i.ToString();
-                dr["EventName"] = "Event: " + i.ToString();
-                dr["EventStartDate"] = "23-07-1992";
-                dr["EventEndDate"] = "15-08-2078";
+                dr["RowNumber"] = ev.ID;
+                dr["EventName"] = ev.Name;
+                dr["EventStartDate"] = ev.StartDate.ToShortDateString();
+                dr["EventEndDate"] = ev.EndDate.ToShortDateString();
                 dr["EventOpen"] = "Gesloten";
                 dt.Rows.Add(dr);
             }
