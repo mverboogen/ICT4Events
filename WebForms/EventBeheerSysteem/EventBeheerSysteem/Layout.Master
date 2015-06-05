@@ -1,0 +1,27 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="EventBeheerSysteem.Layout" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="style/stylesheet.css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="header">
+            <h1>Event Beheer Systeem</h1>
+            <ul id="headerMenu">
+                <a href="index.aspx"><li>Events</li></a>
+                <a><li>Details</li></a>
+                <a><li>Deelnemers</li></a>
+                <a><li>Materialen</li></a>
+                <a><li>Kampeerplaatsen</li></a>
+            </ul>
+        </div>
+        <asp:ContentPlaceHolder ID="contentPH" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>

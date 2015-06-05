@@ -1,0 +1,49 @@
+﻿body 
+{
+    width: 960px;
+    margin: auto;
+}
+
+#header
+{
+    width: 100%;
+}
+
+#content
+{
+    width: 100%;
+}
+
+#headerMenu
+{
+    width: 100%;
+    float: left;
+    margin: 0 0 1px 0;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+    background: #000;
+}
+
+#headerMenu ul
+{
+    width: 960px;
+    margin: auto;
+    padding: 0;
+}
+
+#headerMenu li
+{
+    float: left;
+    display: block;
+    padding: 8px 30px;
+    text-decoration: none;
+    list-style-type: none;
+    border-right: 1px solid #ccc;
+    color: #FFF;
+}
+
+#content #contentPH_eventGridView
+{
+    float: left;
+}

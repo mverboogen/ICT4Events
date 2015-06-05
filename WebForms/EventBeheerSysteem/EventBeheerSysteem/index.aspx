@@ -1,16 +1,16 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="EventBeheerSysteem.index" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="EventBeheerSysteem.Index" %>
+<asp:Content ID="contentID" ContentPlaceHolderID="contentPH" runat="server">
+    <div id="content">
 
-<!DOCTYPE html>
+        <asp:GridView ID="eventGridView" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black" GridLines="Horizontal" AutoGenerateColumns="False" Width="960px">
+            <Columns>
+                <asp:BoundField DataField="RowNumber" HeaderText="Row Number" />
+                <asp:HyperLinkField HeaderText="Event Name" NavigateUrl="http://www.google.nl" DataTextField="EventName" />
+                <asp:BoundField DataField="EventEndDate" HeaderText="Eind Datum" />
+                <asp:BoundField DataField="EventOpen" HeaderText="Open" />
+                
+            </Columns>
+        </asp:GridView>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div>
-            <h1>Index</h1>
-        </div>
-    </form>
-</body>
-</html>
+    </div>
+</asp:Content>
