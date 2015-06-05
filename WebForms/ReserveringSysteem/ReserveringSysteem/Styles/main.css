@@ -1,0 +1,27 @@
+﻿body
+{
+    width: 960px;
+    margin: auto;
+
+}
+
+.Header
+{
+ 
+}
+
+li
+{
+    display: inline;
+}
+
+a
+{   
+    text-decoration: none;
+    color: red;
+}
+
+.Content
+{
+
+}
