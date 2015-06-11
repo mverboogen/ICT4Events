@@ -39,7 +39,17 @@ namespace EventBeheerSysteem
 
         public string LocationStreet
         {
-            get { return locationStreet; }
+            get
+            {
+                if (locationStreet == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return locationStreet;
+                }
+            }
             set { locationStreet = value; }
         }
 
@@ -51,13 +61,33 @@ namespace EventBeheerSysteem
 
         public string LocationZipCode
         {
-            get { return locationZipCode; }
+            get
+            {
+                if (locationZipCode == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return locationZipCode;
+                }
+            }
             set { locationZipCode = value; }
         }
 
         public string LocationCity
         {
-            get { return locationCity; }
+            get
+            {
+                if (locationCity == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return locationCity;
+                }
+            }
             set { locationCity = value; }
         }
 

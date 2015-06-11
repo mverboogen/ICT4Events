@@ -10,12 +10,23 @@ namespace EventBeheerSysteem
 {
     public partial class Index : System.Web.UI.Page
     {
-        DatabaseHandler dbHandler = new DatabaseHandler();
+        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         public int EventID = 1;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            FillData();
+        }
 
+        private void FillData()
+        {
+            FillTable();
+
+            title.InnerText = "Events";
+        }
+
+        private void FillTable()
+        {
             DataTable dt = new DataTable();
             DataRow dr = null;
 
@@ -27,20 +38,32 @@ namespace EventBeheerSysteem
 
             List<Event> eventList = dbHandler.GetAllEvents();
 
-            foreach(Event ev in eventList)
+            foreach (Event ev in eventList)
             {
                 dr = dt.NewRow();
                 dr["RowNumber"] = ev.ID;
                 dr["EventName"] = ev.Name;
                 dr["EventStartDate"] = ev.StartDate.ToShortDateString();
                 dr["EventEndDate"] = ev.EndDate.ToShortDateString();
-                dr["EventOpen"] = "Gesloten";
                 dt.Rows.Add(dr);
             }
 
             eventGridView.DataSource = dt;
             eventGridView.DataBind();
 
+            //RowNumber Style [0]
+            eventGridView.Columns[0].ItemStyle.Width = 50;
+            eventGridView.Columns[0].ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+
+            //EventStartDate Style [1]
+
+            //EventStartDate Style [2]
+            eventGridView.Columns[2].ItemStyle.Width = 90;
+            eventGridView.Columns[2].ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+
+            //EventEndDate Style [3]
+            eventGridView.Columns[3].ItemStyle.Width = 90;
+            eventGridView.Columns[3].ItemStyle.HorizontalAlign = HorizontalAlign.Center;
         }
     }
 }

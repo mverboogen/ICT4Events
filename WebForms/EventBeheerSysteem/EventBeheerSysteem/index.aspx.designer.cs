@@ -13,6 +13,24 @@ namespace EventBeheerSysteem {
     public partial class Index {
         
         /// <summary>
+        /// titleContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl titleContainer;
+        
+        /// <summary>
+        /// title control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl title;
+        
+        /// <summary>
         /// eventGridView control.
         /// </summary>
         /// <remarks>

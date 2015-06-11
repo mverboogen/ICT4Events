@@ -58,6 +58,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EventReservations.aspx" />
     <Content Include="Layout.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseHandler.cs" />
+    <Compile Include="DataChecker.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventDetails.aspx.cs">
       <DependentUpon>EventDetails.aspx</DependentUpon>
@@ -81,6 +83,13 @@
     </Compile>
     <Compile Include="EventDetails.aspx.designer.cs">
       <DependentUpon>EventDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventReservations.aspx.cs">
+      <DependentUpon>EventReservations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventReservations.aspx.designer.cs">
+      <DependentUpon>EventReservations.aspx</DependentUpon>
     </Compile>
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>

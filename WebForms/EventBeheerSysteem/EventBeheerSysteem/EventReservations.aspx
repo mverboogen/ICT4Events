@@ -1,11 +1,11 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="EventDetails.aspx.cs" Inherits="EventBeheerSysteem.EventDetails" %>
-<asp:Content ID="content" ContentPlaceHolderID="contentPH" runat="server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="EventReservations.aspx.cs" Inherits="EventBeheerSysteem.EventReservations" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="contentPH" runat="server">
     <div id="titleContainer" runat="server">
         <h1 id="title" runat="server"></h1>
     </div>
     <div id="container" runat="server">
         <div id="item" runat="server">
-
+            <asp:ListBox ID="reservationLb" runat="server" AutoPostBack="true" OnSelectedIndexChanged="reservationLb_IndexChanged"></asp:ListBox>
         </div>
         <div id="detail" runat="server">
             <div id="detailLabel" runat="server">

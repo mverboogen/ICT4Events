@@ -17,10 +17,21 @@ namespace EventBeheerSysteem
         private OracleCommand cmd;
         private OracleDataReader dr;
 
-        public DatabaseHandler()
+        private static DatabaseHandler self;
+
+        private DatabaseHandler()
         {
-            Connect();
-            Disconnect();
+            self = this;
+        }
+
+        public static DatabaseHandler GetInstance()
+        {
+            if(self == null)
+            {
+                self = new DatabaseHandler();
+            }
+
+            return self;
         }
 
         private void Connect()
@@ -67,7 +78,7 @@ namespace EventBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L");
+            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id");
 
             List<Event> eventList = new List<Event>();
 
@@ -88,7 +99,7 @@ namespace EventBeheerSysteem
                         }
                         if (!dr.IsDBNull(4))
                         {
-                            newEvent.LocationNumber = dr.GetInt32(4);
+                            newEvent.LocationNumber = Convert.ToInt32(dr.GetValue(4));
                         }
                         if (!dr.IsDBNull(5))
                         {
@@ -108,7 +119,7 @@ namespace EventBeheerSysteem
                         }
                         if (!dr.IsDBNull(9))
                         {
-                            newEvent.MaxVisitors = dr.GetInt32(9);
+                            newEvent.MaxVisitors = Convert.ToInt32(dr.GetValue(9));
                         }
 
                         eventList.Add(newEvent);
@@ -134,7 +145,7 @@ namespace EventBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.id = " + id.ToString());
+            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " + id.ToString());
 
             Event selEvent = new Event();
 
@@ -155,7 +166,7 @@ namespace EventBeheerSysteem
                         }
                         if (!dr.IsDBNull(4))
                         {
-                            selEvent.LocationNumber = dr.GetInt32(4);
+                            selEvent.LocationNumber = Convert.ToInt32(dr.GetValue(4));
                         }
                         if (!dr.IsDBNull(5))
                         {
@@ -175,7 +186,7 @@ namespace EventBeheerSysteem
                         }
                         if (!dr.IsDBNull(9))
                         {
-                            selEvent.MaxVisitors = dr.GetInt32(9);
+                            selEvent.MaxVisitors = Convert.ToInt32(dr.GetValue(9));
                         }
                     }
                 }

@@ -13,8 +13,8 @@
             <h1>Event Beheer Systeem</h1>
             <ul id="headerMenu">
                 <a href="index.aspx"><li>Events</li></a>
-                <a><li>Details</li></a>
-                <a><li>Deelnemers</li></a>
+                <a href="EventDetails.aspx?EventID=1"><li>Details</li></a>
+                <a><li>Reserveringen</li></a>
                 <a><li>Materialen</li></a>
                 <a><li>Kampeerplaatsen</li></a>
             </ul>
