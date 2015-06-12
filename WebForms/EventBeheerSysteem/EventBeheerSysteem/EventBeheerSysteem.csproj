@@ -58,7 +58,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="404.aspx" />
+    <Content Include="EventCampsite.aspx" />
+    <Content Include="EventMaterials.aspx" />
     <Content Include="EventReservations.aspx" />
+    <Content Include="Index.aspx" />
     <Content Include="Layout.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -69,20 +73,41 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="EventDetails.aspx" />
-    <Content Include="Index.aspx" />
     <Content Include="style\stylesheet.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="404.aspx.cs">
+      <DependentUpon>404.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="404.aspx.designer.cs">
+      <DependentUpon>404.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Booker.cs" />
     <Compile Include="DatabaseHandler.cs" />
     <Compile Include="DataChecker.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="EventCampsite.aspx.cs">
+      <DependentUpon>EventCampsite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventCampsite.aspx.designer.cs">
+      <DependentUpon>EventCampsite.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EventDetails.aspx.cs">
       <DependentUpon>EventDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EventDetails.aspx.designer.cs">
       <DependentUpon>EventDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventMaterials.aspx.cs">
+      <DependentUpon>EventMaterials.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventMaterials.aspx.designer.cs">
+      <DependentUpon>EventMaterials.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventReservations.aspx.cs">
       <DependentUpon>EventReservations.aspx</DependentUpon>
@@ -106,6 +131,7 @@
       <DependentUpon>Layout.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reservation.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="stdole">

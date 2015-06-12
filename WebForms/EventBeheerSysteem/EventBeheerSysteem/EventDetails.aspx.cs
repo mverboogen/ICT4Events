@@ -17,16 +17,22 @@ namespace EventBeheerSysteem
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            selEvent = dbHandler.GetEventByID(Convert.ToInt32(Request.QueryString["EventID"]));
-
-            if(selEvent != null)
+            if (Request.QueryString["EventID"] != null)
             {
-                if(!IsPostBack)
+                selEvent = dbHandler.GetEventByID(Convert.ToInt32(Request.QueryString["EventID"]));
+
+                if (selEvent != null)
                 {
-                    FillData();
+                    if (!IsPostBack)
+                    {
+                        FillData();
+                    }
+
                 }
-                
+            }
+            else
+            {
+                Response.Redirect("404.aspx");
             }
         }
 
@@ -58,7 +64,7 @@ namespace EventBeheerSysteem
 
         private void FillData()
         {
-            title.InnerText = selEvent.Name;
+            title.InnerText = selEvent.Name + " - Details";
 
             eventNameTb.Text = selEvent.Name;
             eventStartDateTb.Text = selEvent.StartDate.ToShortDateString();

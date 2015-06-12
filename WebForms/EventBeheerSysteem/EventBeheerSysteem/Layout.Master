@@ -12,11 +12,11 @@
         <div id="header">
             <h1>Event Beheer Systeem</h1>
             <ul id="headerMenu">
-                <a href="index.aspx"><li>Events</li></a>
-                <a href="EventDetails.aspx?EventID=1"><li>Details</li></a>
-                <a><li>Reserveringen</li></a>
-                <a><li>Materialen</li></a>
-                <a><li>Kampeerplaatsen</li></a>
+                <a href="Index.aspx" runat="server"><li>Events</li></a>
+                <a id="detailRef" runat="server"><li>Details</li></a>
+                <a id="ReservationRef" runat="server"><li>Reserveringen</li></a>
+                <a id="materialRef" runat="server"><li>Materialen</li></a>
+                <a id="campsiteRef" runat="server"><li>Kampeerplaatsen</li></a>
             </ul>
         </div>
         <asp:ContentPlaceHolder ID="contentPH" runat="server">

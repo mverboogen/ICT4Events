@@ -10,7 +10,7 @@
 namespace EventBeheerSysteem {
     
     
-    public partial class EventReservations {
+    public partial class EventCampsite {
         
         /// <summary>
         /// titleContainer control.
@@ -76,76 +76,85 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailLabel;
         
         /// <summary>
-        /// reservationStartDateLbl control.
+        /// eventNameLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationStartDateLbl;
+        protected global::System.Web.UI.WebControls.Label eventNameLbl;
         
         /// <summary>
-        /// reservationEndDateLbl control.
+        /// eventStartDateLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationEndDateLbl;
+        protected global::System.Web.UI.WebControls.Label eventStartDateLbl;
         
         /// <summary>
-        /// reservationPayed control.
+        /// eventEndDateLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationPayed;
+        protected global::System.Web.UI.WebControls.Label eventEndDateLbl;
         
         /// <summary>
-        /// reservationNameLbl control.
+        /// eventMaxVisitorsLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationNameLbl;
+        protected global::System.Web.UI.WebControls.Label eventMaxVisitorsLbl;
         
         /// <summary>
-        /// reservationStreetLbl control.
+        /// eventLocationLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationStreetLbl;
+        protected global::System.Web.UI.WebControls.Label eventLocationLbl;
         
         /// <summary>
-        /// reservationNumberLbl control.
+        /// eventCityLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationNumberLbl;
+        protected global::System.Web.UI.WebControls.Label eventCityLbl;
         
         /// <summary>
-        /// reservationCityLbl control.
+        /// eventStreetLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationCityLbl;
+        protected global::System.Web.UI.WebControls.Label eventStreetLbl;
         
         /// <summary>
-        /// reservationBankLbl control.
+        /// eventNumberLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationBankLbl;
+        protected global::System.Web.UI.WebControls.Label eventNumberLbl;
+        
+        /// <summary>
+        /// eventZipcodeLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label eventZipcodeLbl;
         
         /// <summary>
         /// detailInput control.
@@ -157,75 +166,93 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailInput;
         
         /// <summary>
-        /// reservationStartDateTb control.
+        /// eventNameTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationStartDateTb;
+        protected global::System.Web.UI.WebControls.TextBox eventNameTb;
         
         /// <summary>
-        /// reservationEndDateTb control.
+        /// eventStartDateTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationEndDateTb;
+        protected global::System.Web.UI.WebControls.TextBox eventStartDateTb;
         
         /// <summary>
-        /// reservationPayedCb control.
+        /// eventEndDateTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox reservationPayedCb;
+        protected global::System.Web.UI.WebControls.TextBox eventEndDateTb;
         
         /// <summary>
-        /// reservationNameTb control.
+        /// eventMaxVisitorTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationNameTb;
+        protected global::System.Web.UI.WebControls.TextBox eventMaxVisitorTb;
         
         /// <summary>
-        /// reservationStreetTb control.
+        /// eventLocationTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationStreetTb;
+        protected global::System.Web.UI.WebControls.TextBox eventLocationTb;
         
         /// <summary>
-        /// reservationNUmberTb control.
+        /// eventCityTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationNUmberTb;
+        protected global::System.Web.UI.WebControls.TextBox eventCityTb;
         
         /// <summary>
-        /// reservationCityTb control.
+        /// eventStreetTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationCityTb;
+        protected global::System.Web.UI.WebControls.TextBox eventStreetTb;
         
         /// <summary>
-        /// reservationBankTb control.
+        /// eventNumberTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationBankTb;
+        protected global::System.Web.UI.WebControls.TextBox eventNumberTb;
+        
+        /// <summary>
+        /// eventZipcodeTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox eventZipcodeTb;
+        
+        /// <summary>
+        /// saveBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button saveBtn;
     }
 }

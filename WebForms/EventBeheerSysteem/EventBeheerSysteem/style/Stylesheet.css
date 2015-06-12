@@ -102,7 +102,7 @@
     float: right;
 }
 
-#contentPH_container #contentPH_reservationLb
+#contentPH_container .listBox
 {
     margin-left: 5%;
     width: 90%;

@@ -1,0 +1,91 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace EventBeheerSysteem
+{
+    public class Reservation
+    {
+        private int id;
+        private DateTime startDate;
+        private DateTime endDate;
+        private bool payed;
+        private int bookerID;
+        private Booker reservationBooker;
+
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+            set { startDate = value; }
+        }
+
+        public DateTime EndDate
+        {
+            get { return endDate; }
+            set { endDate = value; }
+        }
+
+        public bool Payed
+        {
+            get { return payed; }
+            set { payed = value; }
+        }
+
+        public int BookerID
+        {
+            get { return bookerID; }
+            set { bookerID = value; }
+        }
+
+        public Booker ReservationBooker
+        {
+            get { return reservationBooker; }
+            set { reservationBooker = value; }
+        }
+
+        public Reservation()
+        {
+
+        }
+
+        public Reservation(int id, DateTime startDate, DateTime endDate)
+        {
+            ID = id;
+            StartDate = startDate;
+            EndDate = endDate;
+        }
+
+        public Reservation(int id, DateTime startDate, DateTime endDate, bool payed)
+        {
+            ID = id;
+            StartDate = startDate;
+            EndDate = endDate;
+            Payed = payed;
+        }
+
+        public Reservation(int id, DateTime startDate, DateTime endDate, bool payed, int bookerID)
+        {
+            ID = id;
+            StartDate = startDate;
+            EndDate = endDate;
+            Payed = payed;
+            BookerID = bookerID;
+        }
+
+        public Reservation(int id, DateTime startDate, DateTime endDate, bool payed, Booker reservationBooker)
+        {
+            ID = id;
+            StartDate = startDate;
+            EndDate = endDate;
+            Payed = payed;
+            ReservationBooker = reservationBooker;
+        }
+    }
+}

@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class Index : System.Web.UI.Page
+    public partial class Index1 : System.Web.UI.Page
     {
         DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         public int EventID = 1;
