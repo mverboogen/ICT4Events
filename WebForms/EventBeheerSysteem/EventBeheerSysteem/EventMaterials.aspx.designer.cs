@@ -49,13 +49,13 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl item;
         
         /// <summary>
-        /// reservationLb control.
+        /// materialsLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox reservationLb;
+        protected global::System.Web.UI.WebControls.ListBox materialsLb;
         
         /// <summary>
         /// detail control.
@@ -76,85 +76,49 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailLabel;
         
         /// <summary>
-        /// eventNameLbl control.
+        /// materialBrandLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventNameLbl;
+        protected global::System.Web.UI.WebControls.Label materialBrandLbl;
         
         /// <summary>
-        /// eventStartDateLbl control.
+        /// materialSerieLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventStartDateLbl;
+        protected global::System.Web.UI.WebControls.Label materialSerieLbl;
         
         /// <summary>
-        /// eventEndDateLbl control.
+        /// materialTypeNumberLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventEndDateLbl;
+        protected global::System.Web.UI.WebControls.Label materialTypeNumberLbl;
         
         /// <summary>
-        /// eventMaxVisitorsLbl control.
+        /// materialPriceLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventMaxVisitorsLbl;
+        protected global::System.Web.UI.WebControls.Label materialPriceLbl;
         
         /// <summary>
-        /// eventLocationLbl control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventLocationLbl;
-        
-        /// <summary>
-        /// eventCityLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventCityLbl;
-        
-        /// <summary>
-        /// eventStreetLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventStreetLbl;
-        
-        /// <summary>
-        /// eventNumberLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventNumberLbl;
-        
-        /// <summary>
-        /// eventZipcodeLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventZipcodeLbl;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
         /// detailInput control.
@@ -166,85 +130,40 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailInput;
         
         /// <summary>
-        /// eventNameTb control.
+        /// materialBrandTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventNameTb;
+        protected global::System.Web.UI.WebControls.TextBox materialBrandTb;
         
         /// <summary>
-        /// eventStartDateTb control.
+        /// materialSerieTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventStartDateTb;
+        protected global::System.Web.UI.WebControls.TextBox materialSerieTb;
         
         /// <summary>
-        /// eventEndDateTb control.
+        /// materialTypeNumberTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventEndDateTb;
+        protected global::System.Web.UI.WebControls.TextBox materialTypeNumberTb;
         
         /// <summary>
-        /// eventMaxVisitorTb control.
+        /// materialPriceTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventMaxVisitorTb;
-        
-        /// <summary>
-        /// eventLocationTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventLocationTb;
-        
-        /// <summary>
-        /// eventCityTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventCityTb;
-        
-        /// <summary>
-        /// eventStreetTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventStreetTb;
-        
-        /// <summary>
-        /// eventNumberTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventNumberTb;
-        
-        /// <summary>
-        /// eventZipcodeTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventZipcodeTb;
+        protected global::System.Web.UI.WebControls.TextBox materialPriceTb;
         
         /// <summary>
         /// saveBtn control.
@@ -254,5 +173,14 @@ namespace EventBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button saveBtn;
+        
+        /// <summary>
+        /// ListBox1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox ListBox1;
     }
 }

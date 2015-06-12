@@ -9,6 +9,24 @@ using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
 using Oracle.DataAccess.Types;
 
+
+/*
+Connect();
+
+try
+{
+
+}
+catch(Exception ex)
+{
+    Debug.WriteLine(ex.Message);
+}
+finally
+{
+    Disconnect();
+}
+ */
+
 namespace EventBeheerSysteem
 {
     public class DatabaseHandler
@@ -233,17 +251,10 @@ namespace EventBeheerSysteem
                     }
                     r.Payed = Convert.ToInt32(dr.GetValue(4)) == 1 ? true : false;
 
-                    //Booker
-                    b.Firstname = dr.IsDBNull(5) == false ? dr.GetString(5) : null;
-                    b.Inlas = dr.IsDBNull(6) == false ? dr.GetString(6) : null;
-                    b.Surname = dr.IsDBNull(7) == false ? dr.GetString(7) : null;
-                    b.Street = dr.IsDBNull(8) == false ? dr.GetString(8) : null;
-                    b.Number = dr.IsDBNull(9) == false ? Convert.ToInt32(dr.GetValue(9)) : 0;
-                    b.City = dr.IsDBNull(10) == false ? dr.GetString(10) : null;
-                    b.BankAccount = dr.IsDBNull(11) == false ? dr.GetString(11) : null;
+                    b = SetBookerData(b);
 
                     r.ReservationBooker = b;
-
+                    
                     reservationList.Add(r);
                 }
             }
@@ -257,6 +268,131 @@ namespace EventBeheerSysteem
             }
 
             return reservationList;
+        }
+
+        public List<Item> GetAllItems(int id)
+        {
+            List<Item> itemList = new List<Item>();
+
+            Connect();
+
+            try
+            {
+                ReadData("SELECT P.ID, P.ProductCat_ID, P.Merk, P.Serie, P.TypeNummer, P.Prijs FROM Product P");
+
+                while(dr.Read())
+                {
+                    Item item = new Item();
+                    item.ID = Convert.ToInt32(dr.GetValue(0));
+                    item.MainCatID = Convert.ToInt32(dr.GetValue(1));
+                    item.Brand = dr.IsDBNull(2) != true ? dr.GetString(2) : null;
+                    item.Serie = dr.IsDBNull(3) != true ? dr.GetString(3) : null;
+                    item.TypeNumber = Convert.ToInt32(dr.GetValue(4));
+                    item.Price = Convert.ToDecimal(dr.GetValue(5));
+
+                    itemList.Add(item);
+                }
+
+                foreach(Item item in itemList)
+                {
+                    bool end = false;
+                    int catID = item.MainCatID;
+                    while (!end)
+                    {
+                        ReadData("SELECT Naam, ProductCat_ID FROM ProductCat WHERE ID = " + catID.ToString());
+
+                        int oldID = catID;
+
+                        while (dr.Read())
+                        {
+                            string name = dr.GetString(0);
+                            item.Categorie.Add(name);
+                            if(!dr.IsDBNull(1))
+                            {
+                                catID = Convert.ToInt32(dr.GetValue(1));
+                            }
+                        }
+
+                        if (catID == oldID)
+                        {
+                            end = true;
+                        }
+                    }
+                }
+
+                return itemList;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return null;
+        }
+
+        public Reservation GetReservation(int id)
+        {
+            Reservation r;
+
+            Connect();
+
+            try
+            {
+                ReadData("SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND R.ID = " + id.ToString());
+
+                r = new Reservation();
+                Booker b = new Booker();
+
+                while(dr.Read())
+                {
+                    //Reservation
+                    r.ID = dr.IsDBNull(0) == false ? Convert.ToInt32(dr.GetValue(0)) : 0;
+                    r.BookerID = dr.IsDBNull(1) == false ? Convert.ToInt32(dr.GetValue(1)) : 0;
+                    if (!dr.IsDBNull(2))
+                    {
+                        r.StartDate = dr.GetDateTime(2);
+                    }
+                    if (!dr.IsDBNull(3))
+                    {
+                        r.EndDate = dr.GetDateTime(3);
+                    }
+                    r.Payed = Convert.ToInt32(dr.GetValue(4)) == 1 ? true : false;
+
+                    b = SetBookerData(b);
+
+                    r.ReservationBooker = b;
+                }
+
+                return r;
+                
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return null;
+        }
+
+        private Booker SetBookerData(Booker b)
+        {
+            b.Firstname = dr.IsDBNull(5) == false ? dr.GetString(5) : null;
+            b.Inlas = dr.IsDBNull(6) == false ? dr.GetString(6) : null;
+            b.Surname = dr.IsDBNull(7) == false ? dr.GetString(7) : null;
+            b.Street = dr.IsDBNull(8) == false ? dr.GetString(8) : null;
+            b.Number = dr.IsDBNull(9) == false ? Convert.ToInt32(dr.GetValue(9)) : 0;
+            b.City = dr.IsDBNull(10) == false ? dr.GetString(10) : null;
+            b.BankAccount = dr.IsDBNull(11) == false ? dr.GetString(11) : null;
+
+            return b;
         }
     }
 }

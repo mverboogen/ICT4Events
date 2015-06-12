@@ -14,6 +14,10 @@ namespace EventBeheerSysteem
         DataChecker checker = DataChecker.GetInstance();
 
         private Event selEvent;
+        private Item selItem;
+        private List<Item> itemList;
+
+        private int selectedIndex;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,10 +25,26 @@ namespace EventBeheerSysteem
 
             if (selEvent != null)
             {
-                if (!IsPostBack)
+                itemList = dbHandler.GetAllItems(selEvent.ID);
+
+                if (!IsPostBack && itemList != null)
                 {
                     FillData();
                 }
+                else
+                {
+                    selectedIndex = materialsLb.SelectedIndex;
+                    selItem = itemList[selectedIndex];
+
+                    if(selItem != null)
+                    {
+                        FillDetails();
+                    }
+                }
+            }
+            else
+            {
+                Response.Redirect("404.aspx");
             }
         }
 
@@ -32,16 +52,20 @@ namespace EventBeheerSysteem
         {
             title.InnerText = selEvent.Name + " - Materialen";
 
-            //FILLER DATA
-            for (int i = 0; i < 50; i++)
+            foreach(Item item in itemList)
             {
-                reservationLb.Items.Add("Materiaal " + i.ToString());
+                materialsLb.Items.Add(item.Name);
             }
         }
 
-        protected void reservationLb_IndexChanged(object sender, EventArgs e)
+        private void FillDetails()
         {
-            eventNameTb.Text = reservationLb.SelectedValue.ToString();
+            Item i = selItem;
+
+            materialBrandTb.Text = i.Brand;
+            materialSerieTb.Text = i.Serie;
+            materialTypeNumberTb.Text = i.TypeNumber.ToString();
+            materialPriceTb.Text = i.Price.ToString();
         }
 
         protected void saveBtn_OnClick(object sender, EventArgs e)

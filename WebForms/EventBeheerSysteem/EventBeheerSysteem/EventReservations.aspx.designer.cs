@@ -94,13 +94,13 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.Label reservationEndDateLbl;
         
         /// <summary>
-        /// reservationPayed control.
+        /// reservationPayedLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label reservationPayed;
+        protected global::System.Web.UI.WebControls.Label reservationPayedLbl;
         
         /// <summary>
         /// reservationNameLbl control.
@@ -146,6 +146,15 @@ namespace EventBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label reservationBankLbl;
+        
+        /// <summary>
+        /// reservationMembersLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label reservationMembersLbl;
         
         /// <summary>
         /// detailInput control.
@@ -202,13 +211,13 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.TextBox reservationStreetTb;
         
         /// <summary>
-        /// reservationNUmberTb control.
+        /// reservationNumberTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox reservationNUmberTb;
+        protected global::System.Web.UI.WebControls.TextBox reservationNumberTb;
         
         /// <summary>
         /// reservationCityTb control.
@@ -227,5 +236,23 @@ namespace EventBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox reservationBankTb;
+        
+        /// <summary>
+        /// saveBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button saveBtn;
+        
+        /// <summary>
+        /// reservationMembersLb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox reservationMembersLb;
     }
 }

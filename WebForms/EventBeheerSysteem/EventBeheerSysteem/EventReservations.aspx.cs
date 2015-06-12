@@ -15,6 +15,7 @@ namespace EventBeheerSysteem
 
         private Event selEvent;
         private List<Reservation> reservationList;
+        private Reservation selReservation;
         private int selReservationID;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,8 +31,13 @@ namespace EventBeheerSysteem
                 else
                 {
                     selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
-                }
+                    selReservation = dbHandler.GetReservation(selReservationID);
 
+                    if(selReservationID != -1 && selReservation != null)
+                    {
+                        FillDetails();
+                    }
+                }
             }
         }
 
@@ -52,9 +58,30 @@ namespace EventBeheerSysteem
             }
         }
 
-        protected void reservationLb_IndexChanged(object sender, EventArgs e)
+        private void FillDetails()
         {
-            reservationNameTb.Text = reservationLb.SelectedValue.ToString();
+            Reservation r = selReservation;
+            Booker b = r.ReservationBooker;
+
+            //Reservation Data
+            reservationStartDateTb.Text = r.StartDate != null ? r.StartDate.ToShortDateString() : "NO DATE";
+            reservationEndDateTb.Text = r.EndDate != null ? r.EndDate.ToShortDateString() : "NO DATE";
+            reservationPayedCb.Checked = r.Payed;
+
+            if(b != null)
+            {
+                //Booker Data
+                reservationNameTb.Text = b.Inlas != "" ? b.Inlas + " " : "" + b.Surname + ", " + b.Firstname;
+                reservationStreetTb.Text = b.Street;
+                reservationNumberTb.Text = b.Number != 0 ? b.Number.ToString() : "";
+                reservationCityTb.Text = b.City;
+                reservationBankTb.Text = b.BankAccount;
+            }
+
+            for(int i = 0; i < 5; i++)
+            {
+                reservationMembersLb.Items.Add("MEMBER: " + i.ToString());
+            }
         }
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
