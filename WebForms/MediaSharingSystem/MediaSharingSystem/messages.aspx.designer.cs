@@ -10,7 +10,7 @@
 namespace MediaSharingSystem {
     
     
-    public partial class photos {
+    public partial class mesages {
         
         /// <summary>
         /// postWrapper control.

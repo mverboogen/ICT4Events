@@ -14,8 +14,9 @@ namespace MediaSharingSystem
             if (Session["User"] == null)
             {
                 string name = HttpContext.Current.User.Identity.Name;
+                User user = DatabaseHandler.GetInstance().DownloadUserByName(name);
 
-                Session["User"] = name;
+                Session["User"] = user;
 
             }
         }

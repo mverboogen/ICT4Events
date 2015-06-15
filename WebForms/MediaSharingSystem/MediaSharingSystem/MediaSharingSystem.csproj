@@ -63,7 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.aspx" />
-    <Content Include="Login.aspx" />
+    <Content Include="login.aspx" />
+    <Content Include="messages.aspx" />
     <Content Include="MSS.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -73,12 +74,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="photos.aspx" />
     <Content Include="Resources\Styles\index-style.css" />
     <Content Include="Resources\Styles\mainstyle.css" />
     <Content Include="Resources\Images\home.png" />
     <Content Include="Resources\Images\message.png" />
     <Content Include="Resources\Images\photo.png" />
     <Content Include="Resources\Images\video.png" />
+    <Content Include="Resources\Styles\messages-style.css" />
+    <Content Include="Resources\Styles\photos-style.css" />
+    <Content Include="Resources\Styles\videos-style.css" />
+    <Content Include="videos.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -98,12 +104,19 @@
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Classes\Media.cs" />
-    <Compile Include="Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
+    <Compile Include="login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
+    <Compile Include="login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="messages.aspx.cs">
+      <DependentUpon>messages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="messages.aspx.designer.cs">
+      <DependentUpon>messages.aspx</DependentUpon>
     </Compile>
     <Compile Include="MSS.Master.cs">
       <DependentUpon>MSS.Master</DependentUpon>
@@ -112,7 +125,21 @@
     <Compile Include="MSS.Master.designer.cs">
       <DependentUpon>MSS.Master</DependentUpon>
     </Compile>
+    <Compile Include="photos.aspx.cs">
+      <DependentUpon>photos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="photos.aspx.designer.cs">
+      <DependentUpon>photos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="videos.aspx.cs">
+      <DependentUpon>videos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="videos.aspx.designer.cs">
+      <DependentUpon>videos.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

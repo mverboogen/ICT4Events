@@ -18,10 +18,10 @@
         <div id="header-container">
             <div id="header-wrapper">
                 <div id="nav-button-wrapper">
-                    <a href="index.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/home.png" runat="server" /></a>
-                    <a href="photos.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/photo.png" runat="server" /></a>
-                    <a href="videos.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/video.png" runat="server" /></a>
-                    <a href="messages.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/message.png" runat="server" /></a>
+                    <a href="index.aspx"><img src="../Resources/Images/home.png" class="nav-button" /></a>
+                    <a href="photos.aspx"><img src="../Resources/Images/photo.png" class="nav-button" /></a>
+                    <a href="videos.aspx"><img src="../Resources/Images/video.png" class="nav-button" /></a>
+                    <a href="messages.aspx"><img src="../Resources/Images/message.png" class="nav-button" /></a>
                 </div>
                 <div id="nav-search-wrapper">
                     <asp:Button class="nav-searchbutton" Text="Search" runat="server" />

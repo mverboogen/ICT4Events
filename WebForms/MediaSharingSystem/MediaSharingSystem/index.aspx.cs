@@ -10,11 +10,11 @@ namespace MediaSharingSystem
     public partial class index : System.Web.UI.Page
     {
 
-        GuiHandler guiHandler = GuiHandler.GetInstance();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             List<Media> medialist = DatabaseHandler.GetInstance().DownloadMedia(0);
+            GuiHandler guiHandler = GuiHandler.GetInstance();
 
             foreach (Media media in medialist)
             {

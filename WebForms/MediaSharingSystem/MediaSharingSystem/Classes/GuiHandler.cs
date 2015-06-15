@@ -59,7 +59,7 @@ namespace MediaSharingSystem
                             containerDiv.Attributes["class"] += " small";
 
                             HtmlGenericControl musicplayer = new HtmlGenericControl("audio controls");
-                            musicplayer.Attributes["class"] = "post-musicplayer";
+                            musicplayer.Attributes["class"] = "post-content";
                             musicplayer.Attributes.Add("src", mediafile.FilePath);
                             musicplayer.Attributes.Add("preload", "auto");
                             contentwrapper.Controls.Add(musicplayer);
@@ -67,10 +67,21 @@ namespace MediaSharingSystem
                             break;
                         case ".jpg":
                             HtmlGenericControl image = new HtmlGenericControl("img");
-                            image.Attributes["class"] = "post-image";
+                            image.Attributes["class"] = "post-content";
                             image.Attributes.Add("src", mediafile.FilePath);
+
                             contentwrapper.Controls.Add(image);
 
+                            break;
+                        case ".mp4":
+                            HtmlGenericControl videoplayer = new HtmlGenericControl("video controls");
+                            videoplayer.Attributes["class"] = "post-content";
+                            // mp4 file
+                            videoplayer.InnerHtml += "<source src=" + mediafile.FilePath + " type=\"video/mp4\">";
+                            // ogg file
+                            videoplayer.InnerHtml += "<source src=" + mediafile.FilePath + " type=\"video/ogg\">";
+
+                            contentwrapper.Controls.Add(videoplayer);
                             break;
                     }
                     containerDiv.Controls.Add(contentwrapper);

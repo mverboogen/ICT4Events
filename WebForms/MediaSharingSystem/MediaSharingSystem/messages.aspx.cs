@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace MediaSharingSystem
 {
-    public partial class photos : System.Web.UI.Page
+    public partial class mesages : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<Media> medialist = DatabaseHandler.GetInstance().DownloadPhotos(0);
+            List<Media> medialist = DatabaseHandler.GetInstance().DownloadMessages(0);
             GuiHandler guiHandler = GuiHandler.GetInstance();
 
             foreach (Media media in medialist)

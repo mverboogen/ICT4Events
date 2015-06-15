@@ -200,6 +200,208 @@ namespace MediaSharingSystem
             return null;
         }
 
+        public List<Media> DownloadPhotos(int amount = 10)
+        {
+            Connect();
+
+            List<Bijdrage> bijdragelist = new List<Bijdrage>();
+            List<Media> medialist = new List<Media>();
+
+            if (amount == 0)
+            {
+                ReadData("SELECT * FROM BIJDRAGE WHERE SOORT = 'bestand'");
+            }
+            else
+            {
+                ReadData("SELECT * FROM BIJDRAGE WHERE ROWNUM <= " + amount + " SOORT = 'bestand'");
+            }
+
+            try
+            {
+                while (dr.Read())
+                {
+                    int id = dr.GetInt32(0);
+                    int accountid = dr.GetInt32(1);
+                    DateTime date = dr.GetDateTime(2);
+                    string soort = dr.GetString(3);
+
+                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                }
+
+                foreach (Bijdrage bijdrage in bijdragelist)
+                {
+                    User user = DownloadUserByID(bijdrage.UserID);
+                    Connect();
+                    ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = " + bijdrage.ID);
+
+                    try
+                    {
+                        while (dr.Read())
+                        {
+                            int bijdrageid = dr.GetInt32(0);
+                            int categorieid = dr.GetInt32(1);
+                            string title = dr.GetString(2);
+                            string filepath = "Resources/Uploads/" + title;
+                            int filesize = dr.GetInt32(3);
+
+                            string extension = title.Substring(title.LastIndexOf('.'), title.Length - title.LastIndexOf('.'));
+                            // Filter only the image extensions
+                            if(extension == ".jpg" || extension == ".png"){
+                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, title, filepath));
+                            }
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.ToString());
+                    }
+                }
+
+                Disconnect();
+                return medialist;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+            Disconnect();
+            return null;
+        }
+
+        public List<Media> DownloadVideos(int amount = 10)
+        {
+            Connect();
+
+            List<Bijdrage> bijdragelist = new List<Bijdrage>();
+            List<Media> medialist = new List<Media>();
+
+            if (amount == 0)
+            {
+                ReadData("SELECT * FROM BIJDRAGE WHERE SOORT = 'bestand'");
+            }
+            else
+            {
+                ReadData("SELECT * FROM BIJDRAGE WHERE ROWNUM <= " + amount + " SOORT = 'bestand'");
+            }
+
+            try
+            {
+                while (dr.Read())
+                {
+                    int id = dr.GetInt32(0);
+                    int accountid = dr.GetInt32(1);
+                    DateTime date = dr.GetDateTime(2);
+                    string soort = dr.GetString(3);
+
+                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                }
+
+                foreach (Bijdrage bijdrage in bijdragelist)
+                {
+                    User user = DownloadUserByID(bijdrage.UserID);
+                    Connect();
+                    ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = " + bijdrage.ID);
+
+                    try
+                    {
+                        while (dr.Read())
+                        {
+                            int bijdrageid = dr.GetInt32(0);
+                            int categorieid = dr.GetInt32(1);
+                            string title = dr.GetString(2);
+                            string filepath = "Resources/Uploads/" + title;
+                            int filesize = dr.GetInt32(3);
+
+                            string extension = title.Substring(title.LastIndexOf('.'), title.Length - title.LastIndexOf('.'));
+                            // Filter only the image extensions
+                            if (extension == ".mp4" || extension == ".ogg")
+                            {
+                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, title, filepath));
+                            }
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.ToString());
+                    }
+                }
+
+                Disconnect();
+                return medialist;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+            Disconnect();
+            return null;
+        }
+
+        public List<Media> DownloadMessages(int amount = 10)
+        {
+            Connect();
+
+            List<Bijdrage> bijdragelist = new List<Bijdrage>();
+            List<Media> medialist = new List<Media>();
+
+            if (amount == 0)
+            {
+                ReadData("SELECT * FROM BIJDRAGE WHERE SOORT = 'bericht'");
+            }
+            else
+            {
+                ReadData("SELECT * FROM BIJDRAGE WHERE ROWNUM <= " + amount + " SOORT = 'bericht'");
+            }
+
+            try
+            {
+                while (dr.Read())
+                {
+                    int id = dr.GetInt32(0);
+                    int accountid = dr.GetInt32(1);
+                    DateTime date = dr.GetDateTime(2);
+                    string soort = dr.GetString(3);
+
+                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                }
+
+                foreach (Bijdrage bijdrage in bijdragelist)
+                {
+                    User user = DownloadUserByID(bijdrage.UserID);
+                    Connect();
+                    ReadData("SELECT * FROM BERICHT WHERE TITEL IS NOT NULL AND BIJDRAGE_ID = " + bijdrage.ID);
+
+                    try
+                    {
+                        while (dr.Read())
+                        {
+                            int bijdrageid = dr.GetInt32(0);
+                            string title = dr.GetString(1);
+                            string content = dr.GetString(2);
+                            
+                            medialist.Add(new TextMessage(bijdrageid, user, title, content));
+
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.ToString());
+                    }
+                }
+
+                Disconnect();
+                return medialist;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+            Disconnect();
+            return null;
+        }
+
         /// <summary>
         /// Downloads the user by identifier.
         /// </summary>
@@ -210,6 +412,32 @@ namespace MediaSharingSystem
             Connect();
 
             ReadData("SELECT * FROM ACCOUNT WHERE ID = " + userid);
+
+            try
+            {
+                while (dr.Read())
+                {
+                    int id = dr.GetInt32(0);
+                    string username = dr.GetString(1);
+                    string mail = dr.GetString(2);
+
+                    Disconnect();
+                    return new User(id, username, mail);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+            Disconnect();
+            return null;
+        }
+
+        public User DownloadUserByName(string name)
+        {
+            Connect();
+
+            ReadData("SELECT * FROM ACCOUNT WHERE GEBRUIKERSNAAM = " + name);
 
             try
             {
