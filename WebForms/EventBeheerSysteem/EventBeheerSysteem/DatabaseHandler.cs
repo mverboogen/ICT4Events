@@ -91,6 +91,29 @@ namespace EventBeheerSysteem
             }
         }
         
+        private int GetNextID(string table)
+        {
+            int id = 1;
+
+            try
+            {
+                ReadData("SELECT MAX(ID) + 1 FROM " + table);
+                while(dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        id = Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            return id;
+        }
+
         public bool AddCategorie(Categorie c)
         {
             Connect();
@@ -99,11 +122,7 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT MAX(ID) + 1 FROM ProductCat");
-                while(dr.Read())
-                {
-                    c.ID = Convert.ToInt32(dr.GetValue(0));
-                }
+                c.ID = GetNextID("ProductCat");
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
@@ -141,6 +160,88 @@ namespace EventBeheerSysteem
             }
 
             return false;
+        }
+
+        public bool AddMaterial(Item item, int amount)
+        {
+            Connect();
+
+            int nextID = GetNextID("Product");
+            string nextTypeNumber = "";
+            int updatedRows = 0;
+
+            try
+            {
+                ReadData("SELECT MAX(TypeNummer) FROM PRODUCT");
+                while(dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        nextTypeNumber = dr.GetString(0);
+                        nextTypeNumber = Convert.ToString((Convert.ToInt32(nextTypeNumber) + 1)); 
+                    }
+                }
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Product (ID, ProductCat_ID, Merk, Serie, TypeNummer, Prijs) VALUES (:NewID, :NewProductCat, :NewBrand, :NewSerie, :NewNumber, :NewPrice)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
+                cmd.Parameters.Add("NewProductCat", OracleDbType.Int32).Value = item.MainCatID;
+                cmd.Parameters.Add("NewBrand", OracleDbType.Varchar2).Value = item.Brand;
+                cmd.Parameters.Add("NewSerie", OracleDbType.Varchar2).Value = item.Serie;
+                cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextTypeNumber;
+                cmd.Parameters.Add("NewPrice", OracleDbType.Decimal).Value = item.Price;
+
+                updatedRows = cmd.ExecuteNonQuery();
+
+                AddItemAmount(nextID, Convert.ToInt32(nextTypeNumber), amount);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public void AddItemAmount(int itemID, int typeNumber, int amount)
+        {
+            int updatedRows = 0;
+            int nextNumber = 1;
+            int barcodeBase = 0;
+            int nextID;
+
+            ReadData("SELECT MAX(Volgnummer) + 1 FROM ProductExemplaar WHERE Product_ID = " + itemID);
+            while(dr.Read())
+            {
+                if(!dr.IsDBNull(0))
+                {
+                    nextNumber = Convert.ToInt32(dr.GetValue(0));
+                }
+            }
+
+            nextID = GetNextID("ProductExemplaar");
+
+            for (int i = 0; i < amount; i++)
+            {
+                string barcode = typeNumber + "." + (i + 1).ToString().PadLeft(3, '0');
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO ProductExemplaar (ID, Product_ID, Volgnummer, Barcode) VALUES (:NewID, :NewProductID, :NewNumber, :NewBarcode)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID + i;
+                cmd.Parameters.Add("NewProductID", OracleDbType.Int32).Value = itemID;
+                cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextNumber + i;
+                cmd.Parameters.Add("NewBarcode", OracleDbType.Varchar2).Value = barcode;
+
+                updatedRows = cmd.ExecuteNonQuery();
+            }
         }
 
         public List<Event> GetAllEvents()

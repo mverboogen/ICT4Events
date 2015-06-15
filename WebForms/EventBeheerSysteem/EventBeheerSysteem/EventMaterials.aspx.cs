@@ -82,6 +82,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        protected void addMaterial_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("addMaterial.aspx?EventID=" + selEvent.ID);
+        }
+
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
 

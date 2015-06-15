@@ -13,13 +13,30 @@ namespace EventBeheerSysteem
 
         DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
 
+        private Event selEvent;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            categorieList = dbHandler.GetAllCategories();
-            if (!IsPostBack)
+
+            if (Request.QueryString["EventID"] != null)
             {
-                FillData();
+                selEvent = dbHandler.GetEventByID(Convert.ToInt32(Request.QueryString["EventID"]));
+
+                if (selEvent != null)
+                {
+                    categorieList = dbHandler.GetAllCategories();
+
+                    if (!IsPostBack)
+                    {
+                        FillData();
+                    }
+                }
             }
+            else
+            {
+                Response.Redirect("404.aspx");
+            }
+            
         }
         
         private void FillData()
@@ -49,7 +66,10 @@ namespace EventBeheerSysteem
                 cat.SubID = Convert.ToInt32(categorieSubCategorieDDL.Items[categorieSubCategorieDDL.SelectedIndex].Value);
             }
 
-            dbHandler.AddCategorie(cat);
+            if(dbHandler.AddCategorie(cat))
+            {
+                Response.Redirect("AddMaterial.aspx");
+            }
         }
     }
 }

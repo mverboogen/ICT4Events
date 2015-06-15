@@ -108,5 +108,13 @@ namespace EventBeheerSysteem
         {
 
         }
+
+        public Item(string brand, string serie, decimal price, int catID)
+        {
+            Brand = brand;
+            Serie = serie;
+            Price = price;
+            mainCatID = catID;
+        }
     }
 }
