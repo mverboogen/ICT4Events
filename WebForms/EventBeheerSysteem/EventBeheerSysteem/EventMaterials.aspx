@@ -13,7 +13,9 @@
                 <p><asp:Label ID="materialSerieLbl" runat="server" Text="Serie:"></asp:Label></p>
                 <p><asp:Label ID="materialTypeNumberLbl" runat="server" Text="Type Nummer:"></asp:Label></p>
                 <p><asp:Label ID="materialPriceLbl" runat="server" Text="Prijs:"></asp:Label></p>
-                <p><asp:Label ID="Label1" runat="server" Text="Label"></asp:Label></p>
+                <p></p>
+                <p><asp:Label ID="materialItemCountLbl" runat="server" Text="Beschikbaar:"></asp:Label></p>
+                <p><asp:Label ID="materailRenterLbl" runat="server" Text="Huurders:"></asp:Label></p>
             </div>
             <div id="detailInput" runat="server">
                 <p><asp:TextBox ID="materialBrandTb" runat="server" style="width: 80%;"></asp:TextBox></p>
@@ -21,7 +23,8 @@
                 <p><asp:TextBox ID="materialTypeNumberTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:TextBox ID="materialPriceTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:Button ID="saveBtn" runat="server" Text="Save" OnClick="saveBtn_OnClick" style="margin-left: 55%; width: 100px;"/></p>
-                <p><asp:ListBox ID="ListBox1" runat="server" style="width: 80%; height: 180px;"></asp:ListBox></p>
+                <p><asp:TextBox ID="materialItemCountTb" runat="server" style="width: 80%;"></asp:TextBox></p>
+                <p><asp:ListBox ID="materialRenterLb" runat="server" style="width: 80%; height: 180px;"></asp:ListBox></p>
             </div>
         </div>
     </div>

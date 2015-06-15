@@ -148,6 +148,15 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.Label reservationBankLbl;
         
         /// <summary>
+        /// reservationCampsiteLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label reservationCampsiteLbl;
+        
+        /// <summary>
         /// reservationMembersLbl control.
         /// </summary>
         /// <remarks>
@@ -245,6 +254,15 @@ namespace EventBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button saveBtn;
+        
+        /// <summary>
+        /// reservationCampsiteTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox reservationCampsiteTb;
         
         /// <summary>
         /// reservationMembersLb control.

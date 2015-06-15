@@ -60,6 +60,8 @@ namespace EventBeheerSysteem
 
         private void FillDetails()
         {
+            reservationMembersLb.Items.Clear();
+
             Reservation r = selReservation;
             Booker b = r.ReservationBooker;
 
@@ -81,6 +83,11 @@ namespace EventBeheerSysteem
             foreach(Account a in r.AccountList)
             {
                 reservationMembersLb.Items.Add(a.Gebruikersnaam + " - " + a.Barcode);
+            }
+
+            foreach(int number in r.CampsiteNumberList)
+            {
+                reservationCampsiteTb.Text = reservationCampsiteTb.Text == "" ? number.ToString() : reservationCampsiteTb.Text + " - " + number.ToString(); 
             }
         }
 

@@ -17,6 +17,9 @@
                 <p><asp:Label ID="reservationNumberLbl" runat="server" Text="Nummer:"></asp:Label></p>
                 <p><asp:Label ID="reservationCityLbl" runat="server" Text="Woonplaats:"></asp:Label></p>
                 <p><asp:Label ID="reservationBankLbl" runat="server" Text="Bank:"></asp:Label></p>
+                <p></p>
+                <p></p>
+                <p><asp:Label ID="reservationCampsiteLbl" runat="server" Text="Kampeerplaats    :"></asp:Label></p>
                 <p><asp:Label ID="reservationMembersLbl" runat="server" Text="Leden:"></asp:Label></p>
             </div>
             <div id="detailInput" runat="server">
@@ -29,6 +32,8 @@
                 <p><asp:TextBox ID="reservationCityTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:TextBox ID="reservationBankTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:Button ID="saveBtn" runat="server" Text="save" OnClick="saveBtn_OnClick" /></p>
+                <p>Reservering Details</p>
+                <p><asp:TextBox ID="reservationCampsiteTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:ListBox ID="reservationMembersLb" runat="server" style="width: 80%; height: 180px;"></asp:ListBox></p>
             </div>
         </div>

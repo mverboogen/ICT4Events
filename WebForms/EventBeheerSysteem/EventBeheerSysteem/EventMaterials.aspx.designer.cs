@@ -112,13 +112,22 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.Label materialPriceLbl;
         
         /// <summary>
-        /// Label1 control.
+        /// materialItemCountLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label materialItemCountLbl;
+        
+        /// <summary>
+        /// materailRenterLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label materailRenterLbl;
         
         /// <summary>
         /// detailInput control.
@@ -175,12 +184,21 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.Button saveBtn;
         
         /// <summary>
-        /// ListBox1 control.
+        /// materialItemCountTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox ListBox1;
+        protected global::System.Web.UI.WebControls.TextBox materialItemCountTb;
+        
+        /// <summary>
+        /// materialRenterLb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox materialRenterLb;
     }
 }

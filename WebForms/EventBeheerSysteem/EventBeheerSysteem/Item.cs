@@ -15,6 +15,9 @@ namespace EventBeheerSysteem
         private int typeNumber;
         private decimal price;
         private string barcode;
+        private int amount;
+        private int available;
+        private List<Booker> renterList = new List<Booker>();
 
         public int ID
         {
@@ -74,6 +77,31 @@ namespace EventBeheerSysteem
         {
             get { return barcode; }
             set { barcode = value; }
+        }
+
+        public int Amount
+        {
+            get { return amount; }
+            set { amount = value; }
+        }
+        
+        public int Available
+        {
+            get { return available; }
+            set { available = value; }
+        }
+
+        public List<Booker> RenterList
+        {
+            get { return renterList; }
+            set
+            {
+                if(renterList == null && value == null)
+                {
+                    renterList = new List<Booker>();
+                }
+                renterList = value;
+            }
         }
 
         public Item()

@@ -14,6 +14,8 @@ namespace EventBeheerSysteem
         private int bookerID;
         private Booker reservationBooker;
         private List<Account> accountList;
+        private List<Campsite> campsiteList;
+        private List<int> campsiteNumberList;
 
         public int ID
         {
@@ -56,11 +58,36 @@ namespace EventBeheerSysteem
             get { return accountList; }
             set 
             { 
-                if(accountList == null)
+                if(accountList == null && value == null)
                 {
                     accountList = new List<Account>();
                 }
                 accountList = value;
+            }
+        }
+
+        public List<Campsite> CampsiteList
+        {
+            get { return campsiteList; }
+            set 
+            { 
+                if(campsiteList == null && value == null)
+                {
+                    campsiteList = new List<Campsite>();
+                }
+            }
+        }
+
+        public List<int> CampsiteNumberList
+        {
+            get { return campsiteNumberList; }
+            set
+            {
+                if(campsiteNumberList == null && value == null)
+                {
+                    campsiteNumberList = new List<int>();
+                }
+                campsiteNumberList = value;
             }
         }
 

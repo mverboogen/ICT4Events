@@ -33,12 +33,15 @@ namespace EventBeheerSysteem
                 }
                 else
                 {
-                    selectedIndex = materialsLb.SelectedIndex;
-                    selItem = itemList[selectedIndex];
-
-                    if(selItem != null)
+                    if(IsPostBack)
                     {
-                        FillDetails();
+                        selectedIndex = materialsLb.SelectedIndex;
+                        selItem = itemList[selectedIndex];
+
+                        if (selItem != null)
+                        {
+                            FillDetails();
+                        }
                     }
                 }
             }
@@ -60,12 +63,20 @@ namespace EventBeheerSysteem
 
         private void FillDetails()
         {
+            materialRenterLb.Items.Clear();
+
             Item i = selItem;
 
             materialBrandTb.Text = i.Brand;
             materialSerieTb.Text = i.Serie;
             materialTypeNumberTb.Text = i.TypeNumber.ToString();
             materialPriceTb.Text = i.Price.ToString();
+            materialItemCountTb.Text = i.Available + " / " + i.Amount;
+
+            foreach(Booker b in i.RenterList)
+            {
+                materialRenterLb.Items.Add(b.Name);
+            }
         }
 
         protected void saveBtn_OnClick(object sender, EventArgs e)

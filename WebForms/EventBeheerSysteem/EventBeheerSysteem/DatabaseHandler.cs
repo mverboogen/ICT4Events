@@ -318,6 +318,36 @@ namespace EventBeheerSysteem
                             end = true;
                         }
                     }
+
+                    ReadData("SELECT Pe.ID, Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Reservering_Polsbandje RP, Verhuur V, ProductExemplaar Pex, Product P, Reservering R WHERE P.ID = Pex.Product_ID AND Pex.ID = V.ProductExemplaar_ID AND RP.ID = V.Res_Pb_ID AND RP.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND P.ID = " + item.ID.ToString());
+
+                    List<Booker> renterList = new List<Booker>();
+
+                    while(dr.Read())
+                    {
+                        Booker b = new Booker();
+                        b.ID = Convert.ToInt32(dr.GetValue(0));
+                        b.Firstname = dr.IsDBNull(1) != true ? dr.GetString(1) : null;
+                        b.Inlas = dr.IsDBNull(2) != true ? dr.GetString(2) : null;
+                        b.Surname = dr.IsDBNull(3) != true ? dr.GetString(3) : null;
+
+                        renterList.Add(b);
+                    }
+
+                    ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " + item.ID.ToString());
+
+                    while(dr.Read())
+                    {
+                        item.Amount = Convert.ToInt32(dr.GetValue(0));
+                    }
+
+                    ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " + item.ID.ToString());
+
+                    while(dr.Read())
+                    {
+                        item.Available = item.Amount - Convert.ToInt32(dr.GetValue(0));
+                    }
+                    item.RenterList = renterList;
                 }
 
                 return itemList;
@@ -414,6 +444,17 @@ namespace EventBeheerSysteem
                 }
 
                 r.AccountList = accountList;
+
+                ReadData("SELECT P.Nummer FROM Plek P, Plek_Reservering PK, Reservering R WHERE P.ID = PK.Plek_ID AND PK.Reservering_ID = R.ID AND R.ID = " + r.ID);
+
+                List<int> campsiteNumberList = new List<int>();
+
+                while(dr.Read())
+                {
+                    campsiteNumberList.Add(Convert.ToInt32(dr.GetValue(0)));
+                }
+
+                r.CampsiteNumberList = campsiteNumberList;
 
                 return r;
                 
