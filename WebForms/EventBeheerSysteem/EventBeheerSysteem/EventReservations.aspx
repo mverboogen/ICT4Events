@@ -12,7 +12,7 @@
                 <p><asp:Label ID="reservationStartDateLbl" runat="server" Text="Start Datum:"></asp:Label></p>
                 <p><asp:Label ID="reservationEndDateLbl" runat="server" Text="Eind Datum:"></asp:Label></p>
                 <p><asp:Label ID="reservationPayedLbl" runat="server" Text="Betaald:"></asp:Label></p>
-                <p><asp:Label ID="reservationNameLbl" runat="server" Text="Voornaam:"></asp:Label></p>
+                <p><asp:Label ID="reservationNameLbl" runat="server" Text="Naam:"></asp:Label></p>
                 <p><asp:Label ID="reservationStreetLbl" runat="server" Text="Straat:"></asp:Label></p>
                 <p><asp:Label ID="reservationNumberLbl" runat="server" Text="Nummer:"></asp:Label></p>
                 <p><asp:Label ID="reservationCityLbl" runat="server" Text="Woonplaats:"></asp:Label></p>

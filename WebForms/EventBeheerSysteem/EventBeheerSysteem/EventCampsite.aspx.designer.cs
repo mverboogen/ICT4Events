@@ -49,13 +49,13 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl item;
         
         /// <summary>
-        /// reservationLb control.
+        /// campsiteLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox reservationLb;
+        protected global::System.Web.UI.WebControls.ListBox campsiteLb;
         
         /// <summary>
         /// detail control.
@@ -76,85 +76,85 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailLabel;
         
         /// <summary>
-        /// eventNameLbl control.
+        /// campSiteNumberLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventNameLbl;
+        protected global::System.Web.UI.WebControls.Label campSiteNumberLbl;
         
         /// <summary>
-        /// eventStartDateLbl control.
+        /// campsiteCapacityLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventStartDateLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteCapacityLbl;
         
         /// <summary>
-        /// eventEndDateLbl control.
+        /// campsiteSizeLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventEndDateLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteSizeLbl;
         
         /// <summary>
-        /// eventMaxVisitorsLbl control.
+        /// campsitePriceLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventMaxVisitorsLbl;
+        protected global::System.Web.UI.WebControls.Label campsitePriceLbl;
         
         /// <summary>
-        /// eventLocationLbl control.
+        /// campsiteComfortLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventLocationLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteComfortLbl;
         
         /// <summary>
-        /// eventCityLbl control.
+        /// campsiteCraneLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventCityLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteCraneLbl;
         
         /// <summary>
-        /// eventStreetLbl control.
+        /// campsiteHandicapLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventStreetLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteHandicapLbl;
         
         /// <summary>
-        /// eventNumberLbl control.
+        /// campsiteXCorLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventNumberLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteXCorLbl;
         
         /// <summary>
-        /// eventZipcodeLbl control.
+        /// campsiteYCorLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label eventZipcodeLbl;
+        protected global::System.Web.UI.WebControls.Label campsiteYCorLbl;
         
         /// <summary>
         /// detailInput control.
@@ -166,85 +166,85 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailInput;
         
         /// <summary>
-        /// eventNameTb control.
+        /// campsiteNumberTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventNameTb;
+        protected global::System.Web.UI.WebControls.TextBox campsiteNumberTb;
         
         /// <summary>
-        /// eventStartDateTb control.
+        /// campsiteCapacityTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventStartDateTb;
+        protected global::System.Web.UI.WebControls.TextBox campsiteCapacityTb;
         
         /// <summary>
-        /// eventEndDateTb control.
+        /// campsiteSizeTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventEndDateTb;
+        protected global::System.Web.UI.WebControls.TextBox campsiteSizeTb;
         
         /// <summary>
-        /// eventMaxVisitorTb control.
+        /// campsitePriceTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventMaxVisitorTb;
+        protected global::System.Web.UI.WebControls.TextBox campsitePriceTb;
         
         /// <summary>
-        /// eventLocationTb control.
+        /// campsiteComfortCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventLocationTb;
+        protected global::System.Web.UI.WebControls.CheckBox campsiteComfortCb;
         
         /// <summary>
-        /// eventCityTb control.
+        /// campsiteCraneCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventCityTb;
+        protected global::System.Web.UI.WebControls.CheckBox campsiteCraneCb;
         
         /// <summary>
-        /// eventStreetTb control.
+        /// campsiteHandicapCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventStreetTb;
+        protected global::System.Web.UI.WebControls.CheckBox campsiteHandicapCb;
         
         /// <summary>
-        /// eventNumberTb control.
+        /// campsiteXCorTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventNumberTb;
+        protected global::System.Web.UI.WebControls.TextBox campsiteXCorTb;
         
         /// <summary>
-        /// eventZipcodeTb control.
+        /// campsiteYCorTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox eventZipcodeTb;
+        protected global::System.Web.UI.WebControls.TextBox campsiteYCorTb;
         
         /// <summary>
         /// saveBtn control.

@@ -14,6 +14,10 @@ namespace EventBeheerSysteem
         DataChecker checker = DataChecker.GetInstance();
 
         private Event selEvent;
+        private Campsite selItem;
+        private List<Campsite> itemList;
+
+        private int selID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,10 +25,27 @@ namespace EventBeheerSysteem
 
             if (selEvent != null)
             {
-                if (!IsPostBack)
+                itemList = dbHandler.GetAllCampsites(selEvent.ID);
+
+                if (!IsPostBack && itemList != null)
                 {
                     FillData();
                 }
+                else
+                {
+                    selID = Convert.ToInt32(campsiteLb.Items[campsiteLb.SelectedIndex].Value);
+
+                    selItem = dbHandler.GetCampsite(selID);
+
+                    if (selItem != null)
+                    {
+                        FillDetails();
+                    }
+                }
+            }
+            else
+            {
+                Response.Redirect("404.aspx");
             }
         }
 
@@ -32,16 +53,37 @@ namespace EventBeheerSysteem
         {
             title.InnerText = selEvent.Name + " - Kampeerplaatsen";
 
+            itemList = dbHandler.GetAllCampsites(selEvent.ID);
+            int i = 0;
+
             //FILLER DATA
-            for (int i = 0; i < 50; i++)
+            foreach(Campsite campsite in itemList)
             {
-                reservationLb.Items.Add("Kampeerplaats " + i.ToString());
+                campsiteLb.Items.Add(campsite.Number.ToString());
+                campsiteLb.Items[i].Value = campsite.ID.ToString();
+
+                i++;
             }
         }
 
-        protected void reservationLb_IndexChanged(object sender, EventArgs e)
+        private void FillDetails()
         {
-            eventNameTb.Text = reservationLb.SelectedValue.ToString();
+            Campsite c = selItem;
+
+            campsiteNumberTb.Text = c.Number.ToString();
+            campsiteCapacityTb.Text = c.Capacity.ToString();
+            campsiteSizeTb.Text = c.Capacity.ToString();
+            campsitePriceTb.Text = c.Price.ToString();
+            campsiteComfortCb.Checked = c.Comfort;
+            campsiteCraneCb.Checked = c.Crane;
+            campsiteHandicapCb.Checked = c.Handicap;
+            campsiteXCorTb.Text = c.XCor.ToString();
+            campsiteYCorTb.Text = c.YCor.ToString();
+        }
+
+        protected void campsiteLb_IndexChanged(object sender, EventArgs e)
+        {
+            campsiteNumberTb.Text = campsiteLb.SelectedValue.ToString();
         }
 
         protected void saveBtn_OnClick(object sender, EventArgs e)

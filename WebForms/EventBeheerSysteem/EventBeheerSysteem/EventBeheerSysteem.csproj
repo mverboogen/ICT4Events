@@ -84,7 +84,9 @@
     <Compile Include="404.aspx.designer.cs">
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Account.cs" />
     <Compile Include="Booker.cs" />
+    <Compile Include="Campsite.cs" />
     <Compile Include="DatabaseHandler.cs" />
     <Compile Include="DataChecker.cs" />
     <Compile Include="Event.cs" />

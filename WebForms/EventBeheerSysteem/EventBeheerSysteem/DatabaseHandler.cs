@@ -334,6 +334,36 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        public List<Campsite> GetAllCampsites(int id)
+        {
+            Connect();
+
+            List<Campsite> campsiteList = new List<Campsite>();
+
+            try
+            {
+                ReadData("SELECT P.ID, P.NUMMER FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND E.ID = " + id.ToString());
+                while(dr.Read())
+                {
+                    Campsite campsite = new Campsite();
+                    campsite.ID = dr.IsDBNull(0) != true ? Convert.ToInt32(dr.GetValue(0)) : 0;
+                    campsite.Number = dr.IsDBNull(1) != true ? Convert.ToInt32(dr.GetValue(1)) : 0;
+
+                    campsiteList.Add(campsite);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return campsiteList;
+        }
+
         public Reservation GetReservation(int id)
         {
             Reservation r;
@@ -367,6 +397,24 @@ namespace EventBeheerSysteem
                     r.ReservationBooker = b;
                 }
 
+                ReadData("SELECT A.ID, A.Gebruikersnaam, A.Email, P.ID, P.Barcode FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P, Account A WHERE R.ID = RP.Reservering_ID AND P.ID = RP.Polsbandje_ID AND A.ID = RP.Account_ID AND R.ID = " + id.ToString());
+
+                List<Account> accountList = new List<Account>();
+
+                while(dr.Read())
+                {
+                    Account a = new Account();
+                    a.ID = Convert.ToInt32(dr.GetValue(0));
+                    a.Gebruikersnaam = dr.GetString(1);
+                    a.Email = dr.GetString(2);
+                    a.BarcodeID = Convert.ToInt32(dr.GetValue(3));
+                    a.Barcode = dr.GetString(4);
+
+                    accountList.Add(a);
+                }
+
+                r.AccountList = accountList;
+
                 return r;
                 
             }
@@ -380,6 +428,74 @@ namespace EventBeheerSysteem
             }
 
             return null;
+        }
+
+        public Campsite GetCampsite(int id)
+        {
+            Connect();
+
+            Campsite campsite = new Campsite();
+            Booker booker = new Booker();
+
+            try
+            {
+                ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P WHERE P.ID = " + id.ToString());
+
+                while(dr.Read())
+                {
+                    campsite.ID = Convert.ToInt32(dr.GetValue(0));
+                    campsite.Number = Convert.ToInt32(dr.GetValue(1));
+                    campsite.Capacity = Convert.ToInt32(dr.GetValue(2));
+                    /*
+                    booker.Firstname = dr.IsDBNull(3) != true ? dr.GetString(3) : null;
+                    booker.Inlas = dr.IsDBNull(4) != true ? dr.GetString(4) : null;
+                    booker.Surname = dr.IsDBNull(5) != true ? dr.GetString(5) : null;
+                    */
+                }
+
+                ReadData("SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " + id.ToString());
+                   
+                
+
+                while(dr.Read())
+                {
+                    int specID = Convert.ToInt32(dr.GetValue(0));
+
+                    switch (specID)
+                    {
+                        case 2:
+                            campsite.Comfort = dr.GetString(1) == "JA" ? true : false;
+                            break;
+                        case 3:
+                            campsite.Handicap = dr.GetString(1) == "JA" ? true : false;
+                            break;
+                        case 4:
+                            campsite.Size = Convert.ToInt32(dr.GetValue(1));
+                            break;
+                        case 5:
+                            campsite.Crane = dr.GetString(1) == "JA" ? true : false;
+                            break;
+                        case 6:
+                            campsite.XCor = Convert.ToInt32(dr.GetValue(1));
+                            break;
+                        case 7:
+                            campsite.YCor = Convert.ToInt32(dr.GetValue(1));
+                            break;
+                    }
+
+                    specID++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return campsite;
         }
 
         private Booker SetBookerData(Booker b)

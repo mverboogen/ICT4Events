@@ -13,6 +13,7 @@ namespace EventBeheerSysteem
         private bool payed;
         private int bookerID;
         private Booker reservationBooker;
+        private List<Account> accountList;
 
         public int ID
         {
@@ -48,6 +49,19 @@ namespace EventBeheerSysteem
         {
             get { return reservationBooker; }
             set { reservationBooker = value; }
+        }
+
+        public List<Account> AccountList
+        {
+            get { return accountList; }
+            set 
+            { 
+                if(accountList == null)
+                {
+                    accountList = new List<Account>();
+                }
+                accountList = value;
+            }
         }
 
         public Reservation()

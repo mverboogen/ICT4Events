@@ -40,6 +40,11 @@ namespace EventBeheerSysteem
             set { surname = value; }
         }
 
+        public string Name
+        {
+            get { return inlas != null ? inlas + " " : "" + surname + ", " + firstname.Substring(0, 1); }
+        }
+
         public string Street
         {
             get { return street; }

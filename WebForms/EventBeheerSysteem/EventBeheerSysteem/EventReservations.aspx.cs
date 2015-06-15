@@ -53,7 +53,7 @@ namespace EventBeheerSysteem
                 Reservation r = reservationList[i];
                 Booker b = r.ReservationBooker;
 
-                reservationLb.Items.Add(b.Inlas + " " + b.Surname + ", " + b.Firstname.Substring(0, 1));
+                reservationLb.Items.Add(b.Name);
                 reservationLb.Items[i].Value = r.ID.ToString();
             }
         }
@@ -71,16 +71,16 @@ namespace EventBeheerSysteem
             if(b != null)
             {
                 //Booker Data
-                reservationNameTb.Text = b.Inlas != "" ? b.Inlas + " " : "" + b.Surname + ", " + b.Firstname;
+                reservationNameTb.Text = b.Name;
                 reservationStreetTb.Text = b.Street;
                 reservationNumberTb.Text = b.Number != 0 ? b.Number.ToString() : "";
                 reservationCityTb.Text = b.City;
                 reservationBankTb.Text = b.BankAccount;
             }
 
-            for(int i = 0; i < 5; i++)
+            foreach(Account a in r.AccountList)
             {
-                reservationMembersLb.Items.Add("MEMBER: " + i.ToString());
+                reservationMembersLb.Items.Add(a.Gebruikersnaam + " - " + a.Barcode);
             }
         }
 
