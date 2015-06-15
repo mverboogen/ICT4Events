@@ -15,8 +15,8 @@ namespace MediaSharingSystem
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public MediaFile(int id, int categorieid, User author, string filepath)
-            : base(id, author)
+        public MediaFile(int id, int categorieid, User author, string title, string filepath)
+            : base(id, author, title)
         {
             FilePath = filepath;
             CategoryID = categorieid;

@@ -155,10 +155,11 @@ namespace MediaSharingSystem
                             {
                                 int bijdrageid = dr.GetInt32(0);
                                 int categorieid = dr.GetInt32(1);
-                                string filepath = dr.GetString(2);
+                                string title = dr.GetString(2);
+                                string filepath = "Resources/Uploads/"+title;
                                 int filesize = dr.GetInt32(3);
 
-                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, filepath));
+                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, title, filepath));
                             }
                         }
                         catch(Exception e)
@@ -230,5 +231,13 @@ namespace MediaSharingSystem
             return null;
         }
 
+
+
+
+
+        public void LikePost(int id)
+        {
+
+        }
     }
 }

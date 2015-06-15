@@ -7,6 +7,10 @@
     <title>Finstatter</title>
 
     <link href="../Resources/Styles/mainstyle.css" type="text/css" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="HeadPlaceHolder" runat="server">
+        <!-- Dynamic content -->
+    </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -14,10 +18,10 @@
         <div id="header-container">
             <div id="header-wrapper">
                 <div id="nav-button-wrapper">
-                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/home.png" runat="server" />
-                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/photo.png" runat="server" />
-                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/video.png" runat="server" />
-                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/message.png" runat="server" />
+                    <a href="index.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/home.png" runat="server" /></a>
+                    <a href="photos.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/photo.png" runat="server" /></a>
+                    <a href="videos.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/video.png" runat="server" /></a>
+                    <a href="messages.aspx"><asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/message.png" runat="server" /></a>
                 </div>
                 <div id="nav-search-wrapper">
                     <asp:Button class="nav-searchbutton" Text="Search" runat="server" />

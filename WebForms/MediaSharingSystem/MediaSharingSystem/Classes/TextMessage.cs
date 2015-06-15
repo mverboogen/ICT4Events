@@ -8,13 +8,11 @@ namespace MediaSharingSystem
     public class TextMessage : Media
     {
 
-        public string Title { get; set; }
         public string Content { get; set; }
 
         public TextMessage(int id, User author, string title, string content)
-            : base(id, author)
+            : base(id, author, title)
         {
-            Title = title;
             Content = content;
         }
     }

@@ -7,17 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace MediaSharingSystem
 {
-    public partial class MSS : System.Web.UI.MasterPage
+    public partial class photos : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["User"] == null)
-            {
-                string name = HttpContext.Current.User.Identity.Name;
 
-                Session["User"] = name;
-
-            }
         }
     }
 }

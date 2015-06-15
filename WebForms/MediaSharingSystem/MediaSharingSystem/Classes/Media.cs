@@ -14,10 +14,13 @@ namespace MediaSharingSystem
         public int LikeCount { get; set; }
         public int ReportCount { get; set; }
 
-        public Media(int id, User author)
+        public string Title { get; set; }
+
+        public Media(int id, User author, string title)
         {
             ID = id;
             Author = author;
+            Title = title;
         }
 
         public List<Comment> GetComments()
