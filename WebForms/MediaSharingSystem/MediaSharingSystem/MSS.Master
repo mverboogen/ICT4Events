@@ -1,0 +1,35 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MSS.master.cs" Inherits="MediaSharingSystem.MSS" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Finstatter</title>
+
+    <link href="../Resources/Styles/mainstyle.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="main-container">
+        <div id="header-container">
+            <div id="header-wrapper">
+                <div id="nav-button-wrapper">
+                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/home.png" runat="server" />
+                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/photo.png" runat="server" />
+                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/video.png" runat="server" />
+                    <asp:ImageButton CssClass="nav-button" ImageUrl="../Resources/Images/message.png" runat="server" />
+                </div>
+                <div id="nav-search-wrapper">
+                    <asp:Button class="nav-searchbutton" Text="Search" runat="server" />
+                    <asp:TextBox class="nav-searchbar" runat="server" />
+                </div>
+            </div>
+
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server">
+
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

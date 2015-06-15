@@ -1,0 +1,59 @@
+﻿#IndexContent{
+
+}
+
+#postWrapper{
+    width: 100%;
+}
+
+.list-item-container{
+    width: 100%;
+    height: 500px;
+}
+
+.post-image-wrapper{
+    width: 100%;
+    height: 450px;
+}
+
+.post-image{
+    width: 650px;
+    height: 450px;
+    margin: 0 auto;
+}
+
+.post-title-wrapper{
+    width: 100%;
+    height: 50px;
+}
+
+.post-title{
+
+}
+
+.post-content-wrapper{
+    width: 100%;
+    height: 430px;
+    padding: 10px 0;
+}
+
+.post-content{
+    width: 100%;
+    height: 430px;
+}
+
+.post-controls-wrapper{
+    width: 100%;
+    height: 50px;
+}
+
+.post-like-button{
+
+}
+
+.post-likeamount{
+
+}
+
+
+

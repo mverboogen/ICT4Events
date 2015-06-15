@@ -1,0 +1,62 @@
+﻿body {
+
+}
+
+#main-container{
+    width: 100%;
+    height: 100%;
+}
+
+#header-container{
+    width: 100%;
+    height: 50px;
+}
+
+#header-wrapper{
+    width: 960px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#nav-button-wrapper{
+    /* Width = (4 * buttonwidth(50px)) + (5 * buttonmargin(5px)) */
+    width: 225px;
+    height: 100%;
+    float: left;
+    padding: 5px 0;
+}
+
+#nav-search-wrapper{
+    height: 100%;
+    float: right;
+    padding-top: 20px;
+}
+
+.nav-button{
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-right: 5px;
+}
+
+.last{
+    margin-right: 0;
+}
+
+.nav-searchbar{
+    width: 200px;
+
+}
+
+.nav-searchbutton{
+    float: right;
+}
+
+#content-container{
+    width: 100%;
+}
+
+#content-container .content-wrapper{
+    width: 960px;
+    margin: 0 auto;
+}
