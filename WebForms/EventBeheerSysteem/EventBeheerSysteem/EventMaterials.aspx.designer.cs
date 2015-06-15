@@ -58,6 +58,24 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.ListBox materialsLb;
         
         /// <summary>
+        /// addButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button addButton;
+        
+        /// <summary>
+        /// removeButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button removeButton;
+        
+        /// <summary>
         /// detail control.
         /// </summary>
         /// <remarks>

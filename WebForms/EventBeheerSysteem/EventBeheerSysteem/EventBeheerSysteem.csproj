@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.aspx" />
+    <Content Include="AddCategorie.aspx" />
+    <Content Include="AddMaterial.aspx" />
     <Content Include="EventCampsite.aspx" />
     <Content Include="EventMaterials.aspx" />
     <Content Include="EventReservations.aspx" />
@@ -85,8 +87,23 @@
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account.cs" />
+    <Compile Include="AddCategorie.aspx.cs">
+      <DependentUpon>AddCategorie.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddCategorie.aspx.designer.cs">
+      <DependentUpon>AddCategorie.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddMaterial.aspx.cs">
+      <DependentUpon>AddMaterial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddMaterial.aspx.designer.cs">
+      <DependentUpon>AddMaterial.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Booker.cs" />
     <Compile Include="Campsite.cs" />
+    <Compile Include="Categorie.cs" />
     <Compile Include="DatabaseHandler.cs" />
     <Compile Include="DataChecker.cs" />
     <Compile Include="Event.cs" />

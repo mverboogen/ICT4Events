@@ -20,7 +20,6 @@
                 <asp:HyperLinkField HeaderText="Event Name" DataTextField="EventName" DataNavigateUrlFields="RowNumber" DataNavigateUrlFormatString="EventDetails.aspx?EventID={0}" />
                 <asp:BoundField DataField="EventStartDate" HeaderText="Start Datum" />
                 <asp:BoundField DataField="EventEndDate" HeaderText="Eind Datum" />
-                
             </Columns>
             <FooterStyle BackColor="#CCCCCC" />
             <HeaderStyle BackColor="Black" Font-Bold="True" ForeColor="White" />

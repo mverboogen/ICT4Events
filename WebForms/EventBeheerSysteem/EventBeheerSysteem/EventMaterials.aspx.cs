@@ -36,11 +36,14 @@ namespace EventBeheerSysteem
                     if(IsPostBack)
                     {
                         selectedIndex = materialsLb.SelectedIndex;
-                        selItem = itemList[selectedIndex];
-
-                        if (selItem != null)
+                        if(selectedIndex != -1)
                         {
-                            FillDetails();
+                            selItem = itemList[selectedIndex];
+
+                            if (selItem != null)
+                            {
+                                FillDetails();
+                            }
                         }
                     }
                 }

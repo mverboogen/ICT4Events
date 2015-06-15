@@ -27,19 +27,26 @@ namespace EventBeheerSysteem
             {
                 itemList = dbHandler.GetAllCampsites(selEvent.ID);
 
-                if (!IsPostBack && itemList != null)
+                if (!IsPostBack)
                 {
-                    FillData();
+                    if(itemList != null)
+                    {
+                        FillData();
+                    }
                 }
                 else
                 {
-                    selID = Convert.ToInt32(campsiteLb.Items[campsiteLb.SelectedIndex].Value);
-
-                    selItem = dbHandler.GetCampsite(selID);
-
-                    if (selItem != null)
+                    if(campsiteLb.SelectedIndex != -1)
                     {
-                        FillDetails();
+                        selID = Convert.ToInt32(campsiteLb.Items[campsiteLb.SelectedIndex].Value);
+
+                        selItem = dbHandler.GetCampsite(selID);
+
+                        if (selItem != null)
+                        {
+                            ClearData();
+                            FillDetails();
+                        }
                     }
                 }
             }
@@ -54,9 +61,9 @@ namespace EventBeheerSysteem
             title.InnerText = selEvent.Name + " - Kampeerplaatsen";
 
             itemList = dbHandler.GetAllCampsites(selEvent.ID);
+
             int i = 0;
 
-            //FILLER DATA
             foreach(Campsite campsite in itemList)
             {
                 campsiteLb.Items.Add(campsite.Number.ToString());
@@ -64,6 +71,20 @@ namespace EventBeheerSysteem
 
                 i++;
             }
+        }
+
+        private void ClearData()
+        {
+            campsiteNumberTb.Text = "";
+            campsiteCapacityTb.Text = "";
+            campsiteSizeTb.Text = "";
+            campsitePriceTb.Text = "";
+            campsiteComfortCb.Checked = false;
+            campsiteCraneCb.Checked = false;
+            campsiteHandicapCb.Checked = false;
+            campsiteXCorTb.Text = "";
+            campsiteYCorTb.Text = "";
+            campsiteRenterTb.Text = "";
         }
 
         private void FillDetails()
@@ -79,6 +100,10 @@ namespace EventBeheerSysteem
             campsiteHandicapCb.Checked = c.Handicap;
             campsiteXCorTb.Text = c.XCor.ToString();
             campsiteYCorTb.Text = c.YCor.ToString();
+            if(c.CampsiteBooker != null)
+            {
+                campsiteRenterTb.Text = c.CampsiteBooker.Name;
+            }
         }
 
         protected void campsiteLb_IndexChanged(object sender, EventArgs e)

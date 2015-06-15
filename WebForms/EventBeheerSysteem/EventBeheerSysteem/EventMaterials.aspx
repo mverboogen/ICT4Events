@@ -6,6 +6,8 @@
     <div id="container" runat="server">
         <div id="item" runat="server">
             <asp:ListBox ID="materialsLb" runat="server" AutoPostBack="true" CssClass="listBox"></asp:ListBox>
+            <p><asp:Button ID="addButton" runat="server" Text="Toevoegen" CssClass="Button" /></p>
+            <p><asp:Button ID="removeButton" runat="server" Text="Verwijderen" CssClass="Button" /></p>
         </div>
         <div id="detail" runat="server">
             <div id="detailLabel" runat="server">

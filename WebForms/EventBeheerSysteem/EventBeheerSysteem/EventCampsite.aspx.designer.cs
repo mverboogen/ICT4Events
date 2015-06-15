@@ -58,6 +58,24 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.ListBox campsiteLb;
         
         /// <summary>
+        /// addButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button addButton;
+        
+        /// <summary>
+        /// removeButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button removeButton;
+        
+        /// <summary>
         /// detail control.
         /// </summary>
         /// <remarks>
@@ -157,6 +175,15 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.Label campsiteYCorLbl;
         
         /// <summary>
+        /// campsiteRenterLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label campsiteRenterLbl;
+        
+        /// <summary>
         /// detailInput control.
         /// </summary>
         /// <remarks>
@@ -245,6 +272,15 @@ namespace EventBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox campsiteYCorTb;
+        
+        /// <summary>
+        /// campsiteRenterTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox campsiteRenterTb;
         
         /// <summary>
         /// saveBtn control.

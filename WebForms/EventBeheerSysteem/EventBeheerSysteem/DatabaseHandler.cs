@@ -91,6 +91,58 @@ namespace EventBeheerSysteem
             }
         }
         
+        public bool AddCategorie(Categorie c)
+        {
+            Connect();
+
+            int updatedRows = 0;
+
+            try
+            {
+                ReadData("SELECT MAX(ID) + 1 FROM ProductCat");
+                while(dr.Read())
+                {
+                    c.ID = Convert.ToInt32(dr.GetValue(0));
+                }
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO ProductCat (ID, Naam) VALUES (:NewID, :Name)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = c.ID;
+                cmd.Parameters.Add("Name", OracleDbType.Varchar2).Value = c.Name;
+
+                updatedRows = cmd.ExecuteNonQuery();
+
+                if(c.SubID != null && c.SubID != 0)
+                {
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "UPDATE ProductCat SET ProductCat_ID = :SubID WHERE ID = :ID";
+                    cmd.Parameters.Add("SubID", OracleDbType.Int32).Value = c.SubID;
+                    cmd.Parameters.Add("ID", OracleDbType.Varchar2).Value = c.ID;
+
+                    updatedRows += cmd.ExecuteNonQuery();
+                }
+
+                
+
+                if (updatedRows > 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
         public List<Event> GetAllEvents()
         {
             Connect();
@@ -208,6 +260,7 @@ namespace EventBeheerSysteem
                             selEvent.MaxVisitors = Convert.ToInt32(dr.GetValue(9));
                         }
                     }
+                    return selEvent;
                 }
             }
             catch (Exception ex)
@@ -220,7 +273,7 @@ namespace EventBeheerSysteem
                 Disconnect();
             }
 
-            return selEvent;
+            return null;
         }
 
         public List<Reservation> GetAllReservations(int id)
@@ -394,6 +447,57 @@ namespace EventBeheerSysteem
             return campsiteList;
         }
 
+        public List<Categorie> GetAllCategories()
+        {
+            Connect();
+
+            List<Categorie> categorieList = new List<Categorie>();
+
+            try
+            {
+                ReadData("SELECT ID, Naam, ProductCat_ID FROM ProductCat");
+
+                while(dr.Read())
+                {
+                    Categorie cat = new Categorie();
+                    cat.ID = Convert.ToInt32(dr.GetValue(0));
+                    cat.Name = dr.GetString(1);
+                    if(!dr.IsDBNull(2))
+                    {
+                        cat.SubID = Convert.ToInt32(dr.GetValue(0));
+                    }
+
+                    categorieList.Add(cat);
+                }
+
+                foreach(Categorie c in categorieList)
+                {
+                    if(c.SubID != null)
+                    {
+                        foreach(Categorie subC in categorieList)
+                        {
+                            if(subC.ID == c.SubID)
+                            {
+                                c.SubCategorie = subC;
+                            }
+                        }
+                    }
+                }
+
+                return categorieList;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return null;
+        }
+
         public Reservation GetReservation(int id)
         {
             Reservation r;
@@ -495,8 +599,6 @@ namespace EventBeheerSysteem
                 }
 
                 ReadData("SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " + id.ToString());
-                   
-                
 
                 while(dr.Read())
                 {
@@ -525,6 +627,17 @@ namespace EventBeheerSysteem
                     }
 
                     specID++;
+                }
+
+                ReadData("SELECT Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Plek_Reservering PR, Plek P, Reservering R WHERE Pe.ID = R.Persoon_ID AND PR.Reservering_ID = R.ID AND PR.Plek_ID = P.ID AND P.ID = " + id.ToString());
+                while (dr.Read())
+                {
+                    Booker b = new Booker();
+                    b.Firstname = dr.IsDBNull(0) != true ? dr.GetString(0) : null;
+                    b.Inlas = dr.IsDBNull(1) != true ? dr.GetString(1) : null;
+                    b.Surname = dr.IsDBNull(2) != true ? dr.GetString(2) : null;
+
+                    campsite.CampsiteBooker = b;
                 }
             }
             catch (Exception ex)
