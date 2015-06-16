@@ -1,0 +1,26 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="MateriaalBeheerSysteem.Layout" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="style/stylesheet.css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="header">
+            <h1>Event Beheer Systeem</h1>
+            <ul id="headerMenu">
+                <a href="Index.aspx" runat="server"><li>Events</li></a>
+                <a id="ItemOverviewRef" runat="server"><li>Materiaal</li></a>
+                <a id="CheckOutRef" runat="server"><li>Uitchecken</li></a>
+                <a id="CheckInRef" runat="server"><li>Inchecken</li></a>
+            </ul>
+        </div>
+        <asp:ContentPlaceHolder ID="contentPH" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>
