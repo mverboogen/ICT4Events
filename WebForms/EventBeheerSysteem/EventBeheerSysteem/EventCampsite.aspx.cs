@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,10 +15,10 @@ namespace EventBeheerSysteem
         DataChecker checker = DataChecker.GetInstance();
 
         private Event selEvent;
-        private Campsite selItem;
+        private Campsite selCampsite;
         private List<Campsite> itemList;
 
-        private int selID;
+        private int selectedIndex;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,17 +37,10 @@ namespace EventBeheerSysteem
                 }
                 else
                 {
-                    if(campsiteLb.SelectedIndex != -1)
+                    selectedIndex = campsiteLb.SelectedIndex;
+                    if(selectedIndex != -1)
                     {
-                        selID = Convert.ToInt32(campsiteLb.Items[campsiteLb.SelectedIndex].Value);
-
-                        selItem = dbHandler.GetCampsite(selID);
-
-                        if (selItem != null)
-                        {
-                            ClearData();
-                            FillDetails();
-                        }
+                        selCampsite = dbHandler.GetCampsite(Convert.ToInt32(campsiteLb.SelectedValue));
                     }
                 }
             }
@@ -78,7 +72,6 @@ namespace EventBeheerSysteem
             campsiteNumberTb.Text = "";
             campsiteCapacityTb.Text = "";
             campsiteSizeTb.Text = "";
-            campsitePriceTb.Text = "";
             campsiteComfortCb.Checked = false;
             campsiteCraneCb.Checked = false;
             campsiteHandicapCb.Checked = false;
@@ -89,12 +82,11 @@ namespace EventBeheerSysteem
 
         private void FillDetails()
         {
-            Campsite c = selItem;
+            Campsite c = selCampsite;
 
             campsiteNumberTb.Text = c.Number.ToString();
             campsiteCapacityTb.Text = c.Capacity.ToString();
-            campsiteSizeTb.Text = c.Capacity.ToString();
-            campsitePriceTb.Text = c.Price.ToString();
+            campsiteSizeTb.Text = c.Size.ToString();
             campsiteComfortCb.Checked = c.Comfort;
             campsiteCraneCb.Checked = c.Crane;
             campsiteHandicapCb.Checked = c.Handicap;
@@ -108,7 +100,11 @@ namespace EventBeheerSysteem
 
         protected void campsiteLb_IndexChanged(object sender, EventArgs e)
         {
-            campsiteNumberTb.Text = campsiteLb.SelectedValue.ToString();
+            if (selCampsite != null)
+            {
+                ClearData();
+                FillDetails();
+            }
         }
 
         protected void addCampsite_OnClick(object sender, EventArgs e)
@@ -118,7 +114,41 @@ namespace EventBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
+            Campsite newC = new Campsite();
+            try
+            {
+                newC.ID = selCampsite.ID;
+                newC.Capacity = Convert.ToInt32(campsiteCapacityTb.Text);
+                newC.Size = Convert.ToInt32(campsiteSizeTb.Text);
+                newC.Comfort = campsiteComfortCb.Checked;
+                newC.Crane = campsiteCraneCb.Checked;
+                newC.Handicap = campsiteHandicapCb.Checked;
+                newC.XCor = Convert.ToInt32(campsiteXCorTb.Text);
+                newC.YCor = Convert.ToInt32(campsiteYCorTb.Text);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            if(checker.CampsiteChanged(selCampsite, newC))
+            {
+                if(dbHandler.UpdateCampsite(newC))
+                {
+                    Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
+                }
+            }
+        }
 
+        protected void removeBtn_OnClick(object sender, EventArgs e)
+        {
+            if(campsiteLb.SelectedIndex != -1)
+            {
+                string confirmValue = Request.Form["confirm_value"];
+                if (confirmValue == "Yes")
+                {
+                    Response.Redirect("Index.aspx");
+                }
+            }
         }
     }
 }

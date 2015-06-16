@@ -31,6 +31,7 @@ namespace EventBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
+
             if(campsiteCapacityTb.Text != "" && campsiteSizeTb.Text != "" && campsiteXCorTb.Text != "" && campsiteYCorTb.Text != "")
             {
                 try

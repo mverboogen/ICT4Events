@@ -5,7 +5,7 @@
     </div>
     <div id="container" runat="server">
         <div id="item" runat="server">
-            <asp:ListBox ID="materialsLb" runat="server" AutoPostBack="true" CssClass="listBox"></asp:ListBox>
+            <asp:ListBox ID="materialsLb" runat="server" AutoPostBack="true" CssClass="listBox" OnSelectedIndexChanged="materialsLb_SelectedIndexChanged"></asp:ListBox>
             <p><asp:Button ID="addButton" runat="server" Text="Toevoegen" OnClick="addMaterial_OnClick" CssClass="Button" /></p>
             <p><asp:Button ID="removeButton" runat="server" Text="Verwijderen" CssClass="Button" /></p>
         </div>
@@ -22,7 +22,7 @@
             <div id="detailInput" runat="server">
                 <p><asp:TextBox ID="materialBrandTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:TextBox ID="materialSerieTb" runat="server" style="width: 80%;"></asp:TextBox></p>
-                <p><asp:TextBox ID="materialTypeNumberTb" runat="server" style="width: 80%;"></asp:TextBox></p>
+                <p><asp:TextBox ID="materialTypeNumberTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
                 <p><asp:TextBox ID="materialPriceTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:Button ID="saveBtn" runat="server" Text="Save" OnClick="saveBtn_OnClick" style="margin-left: 55%; width: 100px;"/></p>
                 <p><asp:TextBox ID="materialItemCountTb" runat="server" style="width: 80%;"></asp:TextBox></p>

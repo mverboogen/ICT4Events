@@ -840,6 +840,212 @@ namespace EventBeheerSysteem
             return campsite;
         }
 
+        public bool UpdateEventDetails(Event e)
+        {
+            Connect();
+
+            int updatedRows = 0;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Event SET Naam = :NewName, DatumStart = :NewStartDate, DatumEinde = :NewEndDate, MaxBezoekers = :VisitorLimit WHERE ID = :EventID";
+                cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = e.Name;
+                cmd.Parameters.Add("NewStartDate", OracleDbType.Date).Value = e.StartDate;
+                cmd.Parameters.Add("NewEndDate", OracleDbType.Date).Value = e.EndDate;
+                cmd.Parameters.Add("VisitorLimit", OracleDbType.Int32).Value = e.MaxVisitors;
+                cmd.Parameters.Add("EventID", OracleDbType.Int32).Value = e.ID;
+
+                updatedRows += cmd.ExecuteNonQuery();
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Locatie SET Naam = :NewName, Straat = :NewStreet, NR = :NewNumber, Postcode = :NewZipCode, Plaats = :NewCity WHERE ID = :LocationID";
+                cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = e.LocationName;
+                cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = e.LocationStreet;
+                cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = e.LocationNumber;
+                cmd.Parameters.Add("NewZipCode", OracleDbType.Varchar2).Value = e.LocationZipCode;
+                cmd.Parameters.Add("NewCity", OracleDbType.Varchar2).Value = e.LocationCity;
+                cmd.Parameters.Add("LocationID", OracleDbType.Int32).Value = e.LocationID;
+
+                updatedRows += cmd.ExecuteNonQuery();
+
+                if(updatedRows == 2)
+                {
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateReservation(Reservation r)
+        {
+            Connect();
+
+            int updatedRows = 0;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET DatumStart = :NewDateStart, DatumEinde = :NewDateEnd, Betaald = :NewPayed WHERE ID = :ReservationID";
+                cmd.Parameters.Add("NewDateStart", OracleDbType.Date).Value = r.StartDate;
+                cmd.Parameters.Add("NewDateEnd", OracleDbType.Date).Value = r.EndDate;
+                cmd.Parameters.Add("NewPayed", OracleDbType.Int32).Value = r.Payed == true ? 1 : 0;
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = r.ID;
+
+                updatedRows += cmd.ExecuteNonQuery();
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Persoon SET Straat = :NewStreet, HuisNr = :NewNumber, Woonplaats = :NewCity WHERE ID = :PersoonID";
+                cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = r.ReservationBooker.Street;
+                cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = r.ReservationBooker.Number;
+                cmd.Parameters.Add("NewCity", OracleDbType.Varchar2).Value = r.ReservationBooker.City;
+                cmd.Parameters.Add("PersoonID", OracleDbType.Int32).Value = r.BookerID;
+
+                updatedRows += cmd.ExecuteNonQuery();
+
+                if (updatedRows == 2)
+                {
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateItem(Item i)
+        {
+            Connect();
+
+            int updatedRows = 0;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Product SET Merk = :NewBrand, Serie = :NewSerie, Prijs = :NewPrice WHERE ID = :ItemID";
+                cmd.Parameters.Add("NewBrand", OracleDbType.Varchar2).Value = i.Brand;
+                cmd.Parameters.Add("NewSerie", OracleDbType.Varchar2).Value = i.Serie;
+                cmd.Parameters.Add("NewPrice", OracleDbType.Decimal).Value = i.Price;
+                cmd.Parameters.Add("ItemID", OracleDbType.Int32).Value = i.ID;
+
+                updatedRows += cmd.ExecuteNonQuery();
+
+                if (updatedRows == 1)
+                {
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateCampsite(Campsite c)
+        {
+            Connect();
+
+            int updatedRows = 0;
+            int nextSpecificationID = 1;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Plek SET Capaciteit = :NewCapacity WHERE ID = :CampsiteID";
+                cmd.Parameters.Add("NewCapacity", OracleDbType.Varchar2).Value = c.Capacity;
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Varchar2).Value = c.ID;
+
+                cmd.ExecuteNonQuery();
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Plek_Specificatie WHERE Plek_ID = :CampsiteID";
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = c.ID;
+
+                cmd.ExecuteNonQuery();
+
+                nextSpecificationID = GetNextID("Plek_Specificatie");
+
+                for (int i = 0; i < 6; i++)
+                {
+
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
+                    cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextSpecificationID + i;
+                    cmd.Parameters.Add("SpecificationID", OracleDbType.Int32).Value = i + 2;
+                    cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = c.ID;
+
+                    switch (i)
+                    {
+                        case 0:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort == true ? "JA" : "NEE";
+                            break;
+                        case 1:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap == true ? "JA" : "NEE";
+                            break;
+                        case 2:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.Size);
+                            break;
+                        case 3:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane == true ? "JA" : "NEE";
+                            break;
+                        case 4:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.XCor);
+                            break;
+                        case 5:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.YCor);
+                            break;
+                    }
+
+                    updatedRows += cmd.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
         private Booker SetBookerData(Booker b)
         {
             b.Firstname = dr.IsDBNull(5) == false ? dr.GetString(5) : null;

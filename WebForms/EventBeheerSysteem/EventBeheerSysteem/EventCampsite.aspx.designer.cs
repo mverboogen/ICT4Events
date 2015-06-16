@@ -121,15 +121,6 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.Label campsiteSizeLbl;
         
         /// <summary>
-        /// campsitePriceLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label campsitePriceLbl;
-        
-        /// <summary>
         /// campsiteComfortLbl control.
         /// </summary>
         /// <remarks>
@@ -220,15 +211,6 @@ namespace EventBeheerSysteem {
         protected global::System.Web.UI.WebControls.TextBox campsiteSizeTb;
         
         /// <summary>
-        /// campsitePriceTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox campsitePriceTb;
-        
-        /// <summary>
         /// campsiteComfortCb control.
         /// </summary>
         /// <remarks>
@@ -281,6 +263,15 @@ namespace EventBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox campsiteRenterTb;
+        
+        /// <summary>
+        /// changeRenterBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button changeRenterBtn;
         
         /// <summary>
         /// saveBtn control.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,24 +28,20 @@ namespace EventBeheerSysteem
             {
                 itemList = dbHandler.GetAllItems(selEvent.ID);
 
-                if (!IsPostBack && itemList != null)
+                if (!IsPostBack)
                 {
-                    FillData();
+                    if(itemList != null)
+                    {
+                        FillData();
+                    }
+
                 }
                 else
                 {
-                    if(IsPostBack)
+                    selectedIndex = materialsLb.SelectedIndex;
+                    if(selectedIndex != -1)
                     {
-                        selectedIndex = materialsLb.SelectedIndex;
-                        if(selectedIndex != -1)
-                        {
-                            selItem = itemList[selectedIndex];
-
-                            if (selItem != null)
-                            {
-                                FillDetails();
-                            }
-                        }
+                        selItem = itemList[selectedIndex];
                     }
                 }
             }
@@ -89,7 +86,37 @@ namespace EventBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
+            Item newI = new Item();
+            try
+            {
+                newI.ID = selItem.ID;
+                newI.Brand = materialBrandTb.Text;
+                newI.Serie = materialSerieTb.Text;
+                newI.Price = Convert.ToDecimal(materialPriceTb.Text.Replace('.', ','));
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            if(checker.ItemChanged(selItem, newI))
+            {
+                if(dbHandler.UpdateItem(newI))
+                {
+                    Response.Redirect("EventMaterial.aspx?EventID=" + selEvent.ID);
+                }
+            }
+        }
 
+        protected void materialsLb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedIndex = materialsLb.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                selItem = itemList[selectedIndex];
+            }
+
+            FillDetails();
         }
     }
 }

@@ -66,5 +66,87 @@ namespace EventBeheerSysteem
 
             return false;
         }
+
+        public bool ReservationChanged(Reservation oldR, Reservation newR)
+        {
+            if(oldR.StartDate != newR.StartDate)
+            {
+                return true;
+            }
+            if (oldR.EndDate != newR.EndDate)
+            {
+                return true;
+            }
+            if (oldR.Payed != newR.Payed)
+            {
+                return true;
+            }
+            if (oldR.ReservationBooker.Street != newR.ReservationBooker.Street)
+            {
+                return true;
+            }
+            if (oldR.ReservationBooker.Number != newR.ReservationBooker.Number)
+            {
+                return true;
+            }
+            if (oldR.ReservationBooker.City != newR.ReservationBooker.City)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool ItemChanged(Item oldI, Item newI)
+        {
+            if (oldI.Brand != newI.Brand)
+            {
+                return true;
+            }
+            if (oldI.Serie != newI.Serie)
+            {
+                return true;
+            }
+            if (oldI.Price != newI.Price)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CampsiteChanged(Campsite oldC, Campsite newC)
+        {
+            if(oldC.Capacity != newC.Capacity)
+            {
+                return true;
+            }
+            if(oldC.Size != newC.Size)
+            {
+                return true;
+            }
+            if(oldC.Comfort != newC.Comfort)
+            {
+                return true;
+            }
+            if(oldC.Crane != newC.Crane)
+            {
+                return true;
+            }
+            if(oldC.Handicap != newC.Handicap)
+            {
+                return true;
+            }
+            if(oldC.XCor != newC.XCor)
+            {
+                return true;
+            }
+            if(oldC.YCor != newC.YCor)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

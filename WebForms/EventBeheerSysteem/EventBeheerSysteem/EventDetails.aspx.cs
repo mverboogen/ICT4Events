@@ -41,6 +41,8 @@ namespace EventBeheerSysteem
             Event newEvent = new Event();
             try
             {
+                newEvent.ID = selEvent.ID;
+                newEvent.LocationID = selEvent.LocationID;
                 newEvent.Name = eventNameTb.Text;
                 newEvent.StartDate = DateTime.Parse(eventStartDateTb.Text);
                 newEvent.EndDate = DateTime.Parse(eventEndDateTb.Text);
@@ -58,7 +60,10 @@ namespace EventBeheerSysteem
             
             if(checker.EventChanged(selEvent, newEvent))
             {
-                //Add save logic
+                if(dbHandler.UpdateEventDetails(newEvent))
+                {
+                    Response.Redirect("EventDetails.aspx?EventID=" + newEvent.ID);
+                }
             }
         }
 

@@ -30,12 +30,10 @@ namespace EventBeheerSysteem
                 }
                 else
                 {
-                    selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
-                    selReservation = dbHandler.GetReservation(selReservationID);
-
-                    if(selReservationID != -1 && selReservation != null)
+                    if (reservationLb.SelectedValue != "")
                     {
-                        FillDetails();
+                        selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
+                        selReservation = dbHandler.GetReservation(selReservationID);
                     }
                 }
             }
@@ -93,7 +91,38 @@ namespace EventBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
+            Reservation newR = new Reservation();
+            Booker newB = new Booker();
+            try
+            {
+                newR.ReservationBooker = newB;
+                newR.ID = selReservation.ID;
+                newR.BookerID = selReservation.BookerID;
+                newB.ID = selReservation.BookerID;
+                newR.StartDate = Convert.ToDateTime(reservationStartDateTb.Text);
+                newR.EndDate = Convert.ToDateTime(reservationEndDateTb.Text);
+                newR.Payed = reservationPayedCb.Checked;
+                newB.Street = reservationStreetTb.Text;
+                newB.Number = Convert.ToInt32(reservationNumberTb.Text);
+                newB.City = reservationCityTb.Text;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
+            if (checker.ReservationChanged(selReservation, newR))
+            {
+                dbHandler.UpdateReservation(newR);
+            }
+        }
+
+        protected void reservationLb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
+            selReservation = dbHandler.GetReservation(selReservationID);
+
+            FillDetails();
         }
     }
 }
