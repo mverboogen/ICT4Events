@@ -10,6 +10,7 @@ namespace EventBeheerSysteem
 
         private int id;
         private string name;
+        private int locationID;
         private string locationName;
         private string locationStreet;
         private int locationNumber;
@@ -29,6 +30,12 @@ namespace EventBeheerSysteem
         {
             get { return name; }
             set { name = value; }
+        }
+
+        public int LocationID
+        {
+            get { return locationID; }
+            set { locationID = value; }
         }
 
         public string LocationName

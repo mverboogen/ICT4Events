@@ -6,7 +6,7 @@
     <div id="container" runat="server">
         <div id="item" runat="server">
             <asp:ListBox ID="campsiteLb" runat="server" AutoPostBack="true" OnSelectedIndexChanged="campsiteLb_IndexChanged" CssClass="listBox"></asp:ListBox>
-            <p><asp:Button ID="addButton" runat="server" Text="Toevoegen" CssClass="Button" /></p>
+            <p><asp:Button ID="addButton" runat="server" Text="Toevoegen" CssClass="Button" OnClick="addCampsite_OnClick" /></p>
             <p><asp:Button ID="removeButton" runat="server" Text="Verwijderen" CssClass="Button" /></p>
         </div>
         <div id="detail" runat="server">

@@ -82,7 +82,7 @@ namespace EventBeheerSysteem
 
         protected void addCategorie_OnClick(object sender, EventArgs e)
         {
-            Response.Redirect("AddCategorie.aspx");
+            Response.Redirect("AddCategorie.aspx?EventID=" + selEvent.ID);
         }
     }
 }

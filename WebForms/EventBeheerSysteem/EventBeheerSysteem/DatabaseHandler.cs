@@ -214,7 +214,6 @@ namespace EventBeheerSysteem
         {
             int updatedRows = 0;
             int nextNumber = 1;
-            int barcodeBase = 0;
             int nextID;
 
             ReadData("SELECT MAX(Volgnummer) + 1 FROM ProductExemplaar WHERE Product_ID = " + itemID);
@@ -242,6 +241,90 @@ namespace EventBeheerSysteem
 
                 updatedRows = cmd.ExecuteNonQuery();
             }
+        }
+
+        public bool AddCampsite(Campsite c)
+        {
+            int updatedRows = 0;
+            int nextNumber = 1;
+            int nextCampsiteID = 1;
+            int nextSpecificationID = 1;
+
+            Connect();
+
+            try
+            {
+                nextCampsiteID = GetNextID("Plek");
+                nextSpecificationID = GetNextID("Plek_Specificatie");
+                
+                ReadData("SELECT MAX(Nummer) + 1 FROM Plek");
+
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        nextNumber = Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Plek (ID, Locatie_ID, Nummer, Capaciteit) VALUES (:NewID, :LocationID, :NewNumber, :NewCapacity)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextCampsiteID;
+                cmd.Parameters.Add("LocationID", OracleDbType.Int32).Value = c.LocationID;
+                cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextNumber;
+                cmd.Parameters.Add("NewCapacity", OracleDbType.Int32).Value = c.Capacity;
+
+                updatedRows += cmd.ExecuteNonQuery();
+
+                for (int i = 0; i < 6; i++)
+                {
+
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
+                    cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextSpecificationID + i;
+                    cmd.Parameters.Add("SpecificationID", OracleDbType.Int32).Value = i + 2;
+                    cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = nextCampsiteID;
+
+                    switch (i)
+                    {
+                        case 0:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort == true ? "JA" : "NEE";
+                            break;
+                        case 1:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap == true ? "JA" : "NEE";
+                            break;
+                        case 2:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.Size);
+                            break;
+                        case 3:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane == true ? "JA" : "NEE";
+                            break;
+                        case 4:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.XCor);
+                            break;
+                        case 5:
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.YCor);
+                            break;
+                    }
+
+                    updatedRows += cmd.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+
         }
 
         public List<Event> GetAllEvents()
@@ -317,7 +400,7 @@ namespace EventBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " + id.ToString());
+            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers, L.ID FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " + id.ToString());
 
             Event selEvent = new Event();
 
@@ -359,6 +442,10 @@ namespace EventBeheerSysteem
                         if (!dr.IsDBNull(9))
                         {
                             selEvent.MaxVisitors = Convert.ToInt32(dr.GetValue(9));
+                        }
+                        if(!dr.IsDBNull(10))
+                        {
+                            selEvent.LocationID = Convert.ToInt32(dr.GetValue(10));
                         }
                     }
                     return selEvent;

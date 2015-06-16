@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.aspx" />
+    <Content Include="AddCampsite.aspx" />
     <Content Include="AddCategorie.aspx" />
     <Content Include="AddMaterial.aspx" />
     <Content Include="EventCampsite.aspx" />
@@ -87,6 +88,13 @@
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
     <Compile Include="Account.cs" />
+    <Compile Include="AddCampsite.aspx.cs">
+      <DependentUpon>AddCampsite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddCampsite.aspx.designer.cs">
+      <DependentUpon>AddCampsite.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddCategorie.aspx.cs">
       <DependentUpon>AddCategorie.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

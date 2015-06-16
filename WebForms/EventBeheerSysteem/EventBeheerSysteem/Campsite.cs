@@ -18,6 +18,7 @@ namespace EventBeheerSysteem
         private int yCor;
         private bool crane;
         private bool handicap;
+        private int locationID;
         private Booker campsiteBooker;
 
         public int ID
@@ -80,6 +81,12 @@ namespace EventBeheerSysteem
             set { handicap = value; }
         }
 
+        public int LocationID
+        {
+            get { return locationID; }
+            set { locationID = value; }
+        }
+
         public Booker CampsiteBooker
         {
             get { return campsiteBooker; }
@@ -102,6 +109,17 @@ namespace EventBeheerSysteem
             Number = number;
             Capacity = capacity;
             Price = price;
+        }
+
+        public Campsite(int capacity, bool comfort, bool handicap, int size, bool crane, int xCor, int yCor)
+        {
+            Capacity = capacity;
+            Comfort = comfort;
+            Handicap = handicap;
+            Size = size;
+            Crane = crane;
+            XCor = xCor;
+            YCor = yCor;
         }
     }
 }

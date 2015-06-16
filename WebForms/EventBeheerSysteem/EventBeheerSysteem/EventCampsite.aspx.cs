@@ -111,6 +111,11 @@ namespace EventBeheerSysteem
             campsiteNumberTb.Text = campsiteLb.SelectedValue.ToString();
         }
 
+        protected void addCampsite_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("AddCampsite.aspx?EventID=" + selEvent.ID);
+        }
+
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
 
