@@ -86,23 +86,27 @@ namespace EventBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            Item newI = new Item();
-            try
+            if(materialsLb.SelectedIndex != -1)
             {
-                newI.ID = selItem.ID;
-                newI.Brand = materialBrandTb.Text;
-                newI.Serie = materialSerieTb.Text;
-                newI.Price = Convert.ToDecimal(materialPriceTb.Text.Replace('.', ','));
-            }
-            catch(Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            if(checker.ItemChanged(selItem, newI))
-            {
-                if(dbHandler.UpdateItem(newI))
+                Item newI = new Item();
+                try
                 {
-                    Response.Redirect("EventMaterial.aspx?EventID=" + selEvent.ID);
+                    newI.ID = selItem.ID;
+                    newI.Brand = materialBrandTb.Text;
+                    newI.Serie = materialSerieTb.Text;
+                    newI.Price = Convert.ToDecimal(materialPriceTb.Text.Replace('.', ','));
+
+                    if (checker.ItemChanged(selItem, newI))
+                    {
+                        if (dbHandler.UpdateItem(newI))
+                        {
+                            Response.Redirect("EventMaterial.aspx?EventID=" + selEvent.ID);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
                 }
             }
         }
@@ -117,6 +121,17 @@ namespace EventBeheerSysteem
             }
 
             FillDetails();
+        }
+
+        protected void addRenter_Click(object sender, EventArgs e)
+        {
+            if(materialsLb.SelectedIndex != -1)
+            {
+                if (selItem.Available > 0)
+                {
+                    Response.Redirect("AddRenterToItem.aspx?EventID=" + selEvent.ID + "&ItemID=" + selItem.ID);
+                }
+            }
         }
     }
 }

@@ -114,27 +114,31 @@ namespace EventBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            Campsite newC = new Campsite();
-            try
+            if(campsiteLb.SelectedIndex != -1)
             {
-                newC.ID = selCampsite.ID;
-                newC.Capacity = Convert.ToInt32(campsiteCapacityTb.Text);
-                newC.Size = Convert.ToInt32(campsiteSizeTb.Text);
-                newC.Comfort = campsiteComfortCb.Checked;
-                newC.Crane = campsiteCraneCb.Checked;
-                newC.Handicap = campsiteHandicapCb.Checked;
-                newC.XCor = Convert.ToInt32(campsiteXCorTb.Text);
-                newC.YCor = Convert.ToInt32(campsiteYCorTb.Text);
-            }
-            catch(Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            if(checker.CampsiteChanged(selCampsite, newC))
-            {
-                if(dbHandler.UpdateCampsite(newC))
+                Campsite newC = new Campsite();
+                try
                 {
-                    Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
+                    newC.ID = selCampsite.ID;
+                    newC.Capacity = Convert.ToInt32(campsiteCapacityTb.Text);
+                    newC.Size = Convert.ToInt32(campsiteSizeTb.Text);
+                    newC.Comfort = campsiteComfortCb.Checked;
+                    newC.Crane = campsiteCraneCb.Checked;
+                    newC.Handicap = campsiteHandicapCb.Checked;
+                    newC.XCor = Convert.ToInt32(campsiteXCorTb.Text);
+                    newC.YCor = Convert.ToInt32(campsiteYCorTb.Text);
+
+                    if (checker.CampsiteChanged(selCampsite, newC))
+                    {
+                        if (dbHandler.UpdateCampsite(newC))
+                        {
+                            Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
                 }
             }
         }
@@ -148,6 +152,14 @@ namespace EventBeheerSysteem
                 {
                     Response.Redirect("Index.aspx");
                 }
+            }
+        }
+
+        protected void changeRenterBtn_Click(object sender, EventArgs e)
+        {
+            if(campsiteLb.SelectedIndex != -1)
+            {
+                Response.Redirect("AddRenterToCampsite.aspx?EventID=" + selEvent.ID + "&CampsiteID=" + selCampsite.ID);
             }
         }
     }

@@ -26,7 +26,7 @@
                 <p><asp:TextBox ID="materialPriceTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:Button ID="saveBtn" runat="server" Text="Save" OnClick="saveBtn_OnClick" style="margin-left: 55%; width: 100px;"/></p>
                 <p><asp:TextBox ID="materialItemCountTb" runat="server" style="width: 80%;"></asp:TextBox></p>
-                <p><asp:ListBox ID="materialRenterLb" runat="server" style="width: 80%; height: 180px;"></asp:ListBox></p>
+                <p><asp:ListBox ID="materialRenterLb" runat="server" style="width: 80%; height: 180px;"></asp:ListBox><asp:Button ID="addRenters" runat="server" Text="Huurder Toevoegen" OnClick="addRenter_Click" /></p>
             </div>
         </div>
     </div>

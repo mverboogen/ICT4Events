@@ -30,7 +30,7 @@
                 <p><asp:CheckBox ID="campsiteHandicapCb" runat="server" /></p>
                 <p><asp:TextBox ID="campsiteXCorTb" runat="server" style="width: 80%;"></asp:TextBox></p>
                 <p><asp:TextBox ID="campsiteYCorTb" runat="server" style="width: 80%;"></asp:TextBox></p>
-                <p><asp:TextBox ID="campsiteRenterTb" runat="server" style="width: 186px;" Enabled="false"></asp:TextBox><asp:Button ID="changeRenterBtn" runat="server" Text="Selecteer Huurder" style="width: 128px;"/></p>
+                <p><asp:TextBox ID="campsiteRenterTb" runat="server" style="width: 186px;" Enabled="false"></asp:TextBox><asp:Button ID="changeRenterBtn" runat="server" Text="Selecteer Huurder" OnClick="changeRenterBtn_Click" style="width: 128px;"/></p>
                 <p><asp:Button ID="saveBtn" runat="server" Text="Save" OnClick="saveBtn_OnClick" style="margin-left: 55%; width: 100px;"/></p>
             </div>
         </div>

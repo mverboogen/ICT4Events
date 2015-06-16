@@ -327,6 +327,150 @@ namespace EventBeheerSysteem
 
         }
 
+        public bool AddCampsiteToReservation(int campsiteID, int reservationID)
+        {
+            Connect();
+
+            try
+            {
+                int results = 0;
+                int nextID = GetNextID("Plek_Reservering");
+
+                ReadData("SELECT COUNT(ID) FROM Plek_Reservering WHERE Plek_ID = " + campsiteID + " AND Reservering_ID = " + reservationID);
+
+                while(dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        results = Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+                if(results == 1)
+                {
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID AND Reservering_ID = :ReservationID";
+                    cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+                    cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Plek_Reservering (ID, Plek_ID, Reservering_ID) VALUES (:NewID, :CampsiteID, :ReservationID)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool AddItemToBraclet(int itemID, int bracletID)
+        {
+            Connect();
+
+            int nextID = 0;
+            int itemExemplaarID = 0;
+            int ResLinkID = 0;
+
+            try
+            {
+                ReadData("SELECT PE.ID FROM ProductExemplaar PE, Product P WHERE P.ID = PE.Product_ID AND PE.ID NOT IN (SELECT PE.ID FROM ProductExemplaar Pe, Verhuur V WHERE PE.ID = V.ProductExemplaar_ID) AND P.ID = " + itemID);
+
+                while(dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        itemExemplaarID = Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+                ReadData("SELECT RP.ID FROM Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND P.ID = " + bracletID);
+
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        ResLinkID = Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+                nextID = GetNextID("Verhuur");
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Verhuur (ID, ProductExemplaar_ID, Res_Pb_ID) VALUES (:NewID, :ProductID, :BracletID)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
+                cmd.Parameters.Add("ProductID", OracleDbType.Int32).Value = itemExemplaarID;
+                cmd.Parameters.Add("BracletID", OracleDbType.Int32).Value = ResLinkID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool AddItemToReservation(int itemID, int reservationID)
+        {
+            Connect();
+
+            int bracletID = 0;
+
+            
+            try
+            {
+                ReadData("SELECT MIN(P.ID) FROM Polsbandje P, Reservering_Polsbandje RP, Reservering R WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND R.ID = " + reservationID);
+
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        bracletID = Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+                if(AddItemToBraclet(itemID, bracletID))
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
         public List<Event> GetAllEvents()
         {
             Connect();

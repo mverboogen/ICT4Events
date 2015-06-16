@@ -52,18 +52,18 @@ namespace EventBeheerSysteem
                 newEvent.LocationStreet = eventStreetTb.Text;
                 newEvent.LocationNumber = Convert.ToInt32(eventNumberTb.Text);
                 newEvent.LocationZipCode = eventZipcodeTb.Text;
+
+                if (checker.EventChanged(selEvent, newEvent))
+                {
+                    if (dbHandler.UpdateEventDetails(newEvent))
+                    {
+                        Response.Redirect("EventDetails.aspx?EventID=" + newEvent.ID);
+                    }
+                }
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
-            
-            if(checker.EventChanged(selEvent, newEvent))
-            {
-                if(dbHandler.UpdateEventDetails(newEvent))
-                {
-                    Response.Redirect("EventDetails.aspx?EventID=" + newEvent.ID);
-                }
             }
         }
 
