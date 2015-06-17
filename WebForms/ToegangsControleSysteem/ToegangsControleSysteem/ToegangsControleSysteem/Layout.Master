@@ -14,6 +14,7 @@
             <ul id="headerMenu">
                 <a href="Index.aspx" runat="server"><li>Events</li></a>
                 <a id="ItemOverviewRef" runat="server"><li>Reserveringen</li></a>
+                <a id="CheckInRef" runat="server"><li>In Checken</li></a>
             </ul>
         </div>
         <asp:ContentPlaceHolder ID="contentPH" runat="server">

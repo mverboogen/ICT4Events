@@ -18,6 +18,7 @@ namespace ToegangsControleSysteem
             {
                 eventID = Convert.ToInt32(Request.QueryString["EventID"]);
                 ItemOverviewRef.HRef = "EventReservations.aspx?EventID=" + eventID.ToString();
+                CheckInRef.HRef = "CheckIn.aspx?EventID=" + eventID.ToString();
             }
         }
     }

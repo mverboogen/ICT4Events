@@ -471,6 +471,67 @@ namespace ToegangsControleSysteem
             return false;
         }
 
+        public int GetReservationByBarcode(string barcode)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT R.ID FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND P.Barcode = :BarCode";
+                cmd.Parameters.Add("BarCode", OracleDbType.Varchar2).Value = barcode;
+
+                dr = cmd.ExecuteReader();
+
+                while(dr.Read())
+                {
+                    if(!dr.IsDBNull(0))
+                    {
+                        return Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return 0;
+        }
+
+        public bool PayReservation(int reservationID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET Betaald = 1 WHERE ID = :ReservationID";
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
         public List<Event> GetAllEvents()
         {
             Connect();

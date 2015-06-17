@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ToegangsControleSysteem {
+namespace MediaSharingSystem {
     
     
-    public partial class Layout {
+    public partial class Login {
         
         /// <summary>
         /// form1 control.
@@ -22,30 +22,48 @@ namespace ToegangsControleSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ItemOverviewRef control.
+        /// UsernameTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor ItemOverviewRef;
+        protected global::System.Web.UI.WebControls.TextBox UsernameTb;
         
         /// <summary>
-        /// CheckInRef control.
+        /// PasswordTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor CheckInRef;
+        protected global::System.Web.UI.WebControls.TextBox PasswordTb;
         
         /// <summary>
-        /// contentPH control.
+        /// LoginButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder contentPH;
+        protected global::System.Web.UI.WebControls.Button LoginButton;
+        
+        /// <summary>
+        /// RememberMeCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox RememberMeCheckBox;
+        
+        /// <summary>
+        /// InvalidCredentialsLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label InvalidCredentialsLabel;
     }
 }

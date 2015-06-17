@@ -1,11 +1,11 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="EventReservations.aspx.cs" Inherits="ToegangsControleSysteem.EventReservations" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="CheckIn.aspx.cs" Inherits="ToegangsControleSysteem.CheckIn" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPH" runat="server">
     <div id="titleContainer" runat="server">
         <h1 id="title" runat="server"></h1>
     </div>
     <div id="container" runat="server">
         <div id="item" runat="server">
-            <asp:ListBox ID="reservationLb" runat="server" AutoPostBack="true" CssClass="listBox" OnSelectedIndexChanged="reservationLb_SelectedIndexChanged"></asp:ListBox>
+            <p><asp:TextBox ID="barcodeTb" runat="server"></asp:TextBox><asp:Button ID="barcodeConfirmBtn" runat="server" Text="Check In" OnClick="barcodeConfirmBtn_Click" /></p>
         </div>
         <div id="detail" runat="server">
             <div id="detailLabel" runat="server">
@@ -24,7 +24,7 @@
             <div id="detailInput" runat="server">
                 <p><asp:TextBox ID="reservationStartDateTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
                 <p><asp:TextBox ID="reservationEndDateTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
-                <p><asp:CheckBox ID="reservationPayedCb" runat="server"  Enabled="false" /></p>
+                <p><asp:CheckBox ID="reservationPayedCb" runat="server" Enabled="false" /></p>
                 <p><asp:TextBox ID="reservationNameTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
                 <p><asp:TextBox ID="reservationStreetTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
                 <p><asp:TextBox ID="reservationNumberTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
@@ -36,4 +36,17 @@
             </div>
         </div>
     </div>
+        <script type = "text/javascript">
+            function PayReservation() {
+                var confirm_value = document.createElement("INPUT");
+                confirm_value.type = "hidden";
+                confirm_value.name = "confirm_value";
+                if (confirm("De Reservering is nog niet betaald. Wilt u nu betalen")) {
+                    confirm_value.value = "Yes";
+                } else {
+                    confirm_value.value = "No";
+                }
+                document.forms[0].appendChild(confirm_value);
+            }
+        </script>
 </asp:Content>

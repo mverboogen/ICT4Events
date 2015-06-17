@@ -10,6 +10,18 @@ namespace EventBeheerSysteem
     public partial class Layout : System.Web.UI.MasterPage
     {
 
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            if (Session["User"] == null)
+            {
+                string name = HttpContext.Current.User.Identity.Name;
+                User user = new User();
+
+                Session["User"] = user;
+
+            }
+        }
+
         int eventID;
 
         protected void Page_Load(object sender, EventArgs e)

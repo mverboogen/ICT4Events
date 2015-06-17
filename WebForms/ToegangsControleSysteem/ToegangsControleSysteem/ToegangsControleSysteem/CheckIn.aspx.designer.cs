@@ -10,7 +10,7 @@
 namespace ToegangsControleSysteem {
     
     
-    public partial class EventReservations {
+    public partial class CheckIn {
         
         /// <summary>
         /// titleContainer control.
@@ -49,13 +49,22 @@ namespace ToegangsControleSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl item;
         
         /// <summary>
-        /// reservationLb control.
+        /// barcodeTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox reservationLb;
+        protected global::System.Web.UI.WebControls.TextBox barcodeTb;
+        
+        /// <summary>
+        /// barcodeConfirmBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button barcodeConfirmBtn;
         
         /// <summary>
         /// detail control.
