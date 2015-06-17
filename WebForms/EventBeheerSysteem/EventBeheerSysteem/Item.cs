@@ -9,6 +9,7 @@ namespace EventBeheerSysteem
     {
         private int id;
         private List<string> categorie;
+        private int instanceNumber;
         private int mainCatID;
         private string brand;
         private string serie;
@@ -17,6 +18,9 @@ namespace EventBeheerSysteem
         private string barcode;
         private int amount;
         private int available;
+        private bool payed;
+        private DateTime dateOut;
+        private DateTime dateIn;
         private List<Booker> renterList = new List<Booker>();
 
         public int ID
@@ -89,6 +93,30 @@ namespace EventBeheerSysteem
         {
             get { return available; }
             set { available = value; }
+        }
+
+        public bool Payed
+        {
+            get { return payed; }
+            set { payed = value; }
+        }
+
+        public int InstanceNumber
+        {
+            get { return instanceNumber; }
+            set { instanceNumber = value; }
+        }
+
+        public DateTime DateIn
+        {
+            get { return dateIn; }
+            set { dateIn = value; }
+        }
+
+        public DateTime DateOut
+        {
+            get { return dateOut; }
+            set { dateOut = value; }
         }
 
         public List<Booker> RenterList

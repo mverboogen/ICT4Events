@@ -85,6 +85,60 @@ namespace MateriaalBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailLabel;
         
         /// <summary>
+        /// itemInstanceNameLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label itemInstanceNameLbl;
+        
+        /// <summary>
+        /// itemInstanceTypeNumberLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label itemInstanceTypeNumberLbl;
+        
+        /// <summary>
+        /// itemInstanceBarcodeLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label itemInstanceBarcodeLbl;
+        
+        /// <summary>
+        /// itemInstancePayedLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label itemInstancePayedLbl;
+        
+        /// <summary>
+        /// itemInstanceDateOutLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label itemInstanceDateOutLbl;
+        
+        /// <summary>
+        /// itemInstanceDateInLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label itemInstanceDateInLbl;
+        
+        /// <summary>
         /// detailInput control.
         /// </summary>
         /// <remarks>
@@ -94,6 +148,60 @@ namespace MateriaalBeheerSysteem {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailInput;
         
         /// <summary>
+        /// itemInstanceNameTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox itemInstanceNameTb;
+        
+        /// <summary>
+        /// iteminstanceTypeNumberTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox iteminstanceTypeNumberTb;
+        
+        /// <summary>
+        /// itemInstanceBarcodeTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox itemInstanceBarcodeTb;
+        
+        /// <summary>
+        /// itemInstancePayedCb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox itemInstancePayedCb;
+        
+        /// <summary>
+        /// itemInstanceDateOutTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox itemInstanceDateOutTb;
+        
+        /// <summary>
+        /// itemInstanceDateInTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox itemInstanceDateInTb;
+        
+        /// <summary>
         /// checkOutBtn control.
         /// </summary>
         /// <remarks>
@@ -101,6 +209,15 @@ namespace MateriaalBeheerSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button checkOutBtn;
+        
+        /// <summary>
+        /// PayBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PayBtn;
         
         /// <summary>
         /// materialLb control.

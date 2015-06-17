@@ -22,7 +22,7 @@ namespace MateriaalBeheerSysteem
         {
             FillTable();
 
-            title.InnerText = "Events";
+            title.InnerText = "Event - Materiaal Beheer";
         }
 
         private void FillTable()

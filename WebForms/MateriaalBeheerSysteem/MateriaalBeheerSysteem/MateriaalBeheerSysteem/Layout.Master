@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
         <div id="header">
-            <h1>Event Beheer Systeem</h1>
+            <h1>Materiaal Beheer Systeem</h1>
             <ul id="headerMenu">
                 <a href="Index.aspx" runat="server"><li>Events</li></a>
                 <a id="ItemOverviewRef" runat="server"><li>Materiaal</li></a>

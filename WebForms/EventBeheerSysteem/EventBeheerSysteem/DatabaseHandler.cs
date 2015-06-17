@@ -45,7 +45,7 @@ namespace EventBeheerSysteem
 
         public static DatabaseHandler GetInstance()
         {
-            if(self == null)
+            if (self == null)
             {
                 self = new DatabaseHandler();
             }
@@ -90,7 +90,7 @@ namespace EventBeheerSysteem
                 Console.WriteLine(ex.Message);
             }
         }
-        
+
         private int GetNextID(string table)
         {
             int id = 1;
@@ -98,9 +98,9 @@ namespace EventBeheerSysteem
             try
             {
                 ReadData("SELECT MAX(ID) + 1 FROM " + table);
-                while(dr.Read())
+                while (dr.Read())
                 {
-                    if(!dr.IsDBNull(0))
+                    if (!dr.IsDBNull(0))
                     {
                         id = Convert.ToInt32(dr.GetValue(0));
                     }
@@ -132,7 +132,7 @@ namespace EventBeheerSysteem
 
                 updatedRows = cmd.ExecuteNonQuery();
 
-                if(c.SubID != null && c.SubID != 0)
+                if (c.SubID != null && c.SubID != 0)
                 {
                     cmd = new OracleCommand();
                     cmd.Connection = con;
@@ -143,7 +143,7 @@ namespace EventBeheerSysteem
                     updatedRows += cmd.ExecuteNonQuery();
                 }
 
-                
+
 
                 if (updatedRows > 0)
                 {
@@ -173,12 +173,12 @@ namespace EventBeheerSysteem
             try
             {
                 ReadData("SELECT MAX(TypeNummer) FROM PRODUCT");
-                while(dr.Read())
+                while (dr.Read())
                 {
-                    if(!dr.IsDBNull(0))
+                    if (!dr.IsDBNull(0))
                     {
                         nextTypeNumber = dr.GetString(0);
-                        nextTypeNumber = Convert.ToString((Convert.ToInt32(nextTypeNumber) + 1)); 
+                        nextTypeNumber = Convert.ToString((Convert.ToInt32(nextTypeNumber) + 1));
                     }
                 }
 
@@ -217,9 +217,9 @@ namespace EventBeheerSysteem
             int nextID;
 
             ReadData("SELECT MAX(Volgnummer) + 1 FROM ProductExemplaar WHERE Product_ID = " + itemID);
-            while(dr.Read())
+            while (dr.Read())
             {
-                if(!dr.IsDBNull(0))
+                if (!dr.IsDBNull(0))
                 {
                     nextNumber = Convert.ToInt32(dr.GetValue(0));
                 }
@@ -256,7 +256,7 @@ namespace EventBeheerSysteem
             {
                 nextCampsiteID = GetNextID("Plek");
                 nextSpecificationID = GetNextID("Plek_Specificatie");
-                
+
                 ReadData("SELECT MAX(Nummer) + 1 FROM Plek");
 
                 while (dr.Read())
@@ -314,7 +314,7 @@ namespace EventBeheerSysteem
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -338,15 +338,15 @@ namespace EventBeheerSysteem
 
                 ReadData("SELECT COUNT(ID) FROM Plek_Reservering WHERE Plek_ID = " + campsiteID + " AND Reservering_ID = " + reservationID);
 
-                while(dr.Read())
+                while (dr.Read())
                 {
-                    if(!dr.IsDBNull(0))
+                    if (!dr.IsDBNull(0))
                     {
                         results = Convert.ToInt32(dr.GetValue(0));
                     }
                 }
 
-                if(results == 1)
+                if (results == 1)
                 {
                     cmd = new OracleCommand();
                     cmd.Connection = con;
@@ -392,9 +392,9 @@ namespace EventBeheerSysteem
             {
                 ReadData("SELECT PE.ID FROM ProductExemplaar PE, Product P WHERE P.ID = PE.Product_ID AND PE.ID NOT IN (SELECT PE.ID FROM ProductExemplaar Pe, Verhuur V WHERE PE.ID = V.ProductExemplaar_ID) AND P.ID = " + itemID);
 
-                while(dr.Read())
+                while (dr.Read())
                 {
-                    if(!dr.IsDBNull(0))
+                    if (!dr.IsDBNull(0))
                     {
                         itemExemplaarID = Convert.ToInt32(dr.GetValue(0));
                     }
@@ -441,7 +441,7 @@ namespace EventBeheerSysteem
 
             int bracletID = 0;
 
-            
+
             try
             {
                 ReadData("SELECT MIN(P.ID) FROM Polsbandje P, Reservering_Polsbandje RP, Reservering R WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND R.ID = " + reservationID);
@@ -454,10 +454,71 @@ namespace EventBeheerSysteem
                     }
                 }
 
-                if(AddItemToBraclet(itemID, bracletID))
+                if (AddItemToBraclet(itemID, bracletID))
                 {
                     return true;
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public int GetReservationByBarcode(string barcode)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT R.ID FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND P.Barcode = :BarCode";
+                cmd.Parameters.Add("BarCode", OracleDbType.Varchar2).Value = barcode;
+
+                dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    if (!dr.IsDBNull(0))
+                    {
+                        return Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return 0;
+        }
+
+        public bool PayReservation(int reservationID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Reservering SET Betaald = 1 WHERE ID = :ReservationID";
+                cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -483,16 +544,16 @@ namespace EventBeheerSysteem
 
             try
             {
-                while(dr.Read())
+                while (dr.Read())
                 {
-                    if(!dr.IsDBNull(0) && !dr.IsDBNull(1))
+                    if (!dr.IsDBNull(0) && !dr.IsDBNull(1))
                     {
                         Event newEvent = new Event();
 
                         newEvent.ID = Convert.ToInt32(dr.GetValue(0));
                         newEvent.Name = dr.GetString(1);
                         newEvent.LocationName = dr.GetString(2);
-                        if(!dr.IsDBNull(3))
+                        if (!dr.IsDBNull(3))
                         {
                             newEvent.LocationStreet = dr.GetString(3);
                         }
@@ -504,7 +565,7 @@ namespace EventBeheerSysteem
                         {
                             newEvent.LocationZipCode = dr.GetString(5);
                         }
-                        if(!dr.IsDBNull(6))
+                        if (!dr.IsDBNull(6))
                         {
                             newEvent.LocationCity = dr.GetString(6);
                         }
@@ -525,7 +586,7 @@ namespace EventBeheerSysteem
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.Source);
@@ -554,7 +615,7 @@ namespace EventBeheerSysteem
                 {
                     if (!dr.IsDBNull(0) && !dr.IsDBNull(1))
                     {
-                        
+
 
                         selEvent.ID = Convert.ToInt32(dr.GetValue(0));
                         selEvent.Name = dr.GetString(1);
@@ -587,7 +648,7 @@ namespace EventBeheerSysteem
                         {
                             selEvent.MaxVisitors = Convert.ToInt32(dr.GetValue(9));
                         }
-                        if(!dr.IsDBNull(10))
+                        if (!dr.IsDBNull(10))
                         {
                             selEvent.LocationID = Convert.ToInt32(dr.GetValue(10));
                         }
@@ -618,7 +679,7 @@ namespace EventBeheerSysteem
             {
                 ReadData("SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND E.ID = " + id.ToString());
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     Reservation r = new Reservation();
                     Booker b = new Booker();
@@ -626,7 +687,7 @@ namespace EventBeheerSysteem
                     //Reservation
                     r.ID = dr.IsDBNull(0) == false ? Convert.ToInt32(dr.GetValue(0)) : 0;
                     r.BookerID = dr.IsDBNull(1) == false ? Convert.ToInt32(dr.GetValue(1)) : 0;
-                    if(!dr.IsDBNull(2))
+                    if (!dr.IsDBNull(2))
                     {
                         r.StartDate = dr.GetDateTime(2);
                     }
@@ -639,11 +700,11 @@ namespace EventBeheerSysteem
                     b = SetBookerData(b);
 
                     r.ReservationBooker = b;
-                    
+
                     reservationList.Add(r);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -653,6 +714,63 @@ namespace EventBeheerSysteem
             }
 
             return reservationList;
+        }
+
+        public List<Item> GetReservedItems(int reservationID)
+        {
+            Connect();
+
+            List<Item> reservedItemList = new List<Item>();
+
+            try
+            {
+                ReadData("SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie, P.TypeNummer FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " + reservationID);
+
+                while (dr.Read())
+                {
+                    Item item = new Item();
+                    item.InstanceNumber = Convert.ToInt32(dr.GetValue(0));
+                    item.Barcode = dr.GetString(1);
+                    item.Brand = dr.GetString(2);
+                    item.Serie = dr.GetString(3);
+                    item.TypeNumber = Convert.ToInt32(dr.GetValue(4));
+
+                    reservedItemList.Add(item);
+                }
+
+                foreach(Item item in reservedItemList)
+                {
+                    ReadData("SELECT V.Betaald, V.DatumUit, V.DatumIn FROM Verhuur V, ProductExemplaar Pex WHERE Pex.ID = V.ProductExemplaar_ID AND Pex.Barcode = " + item.Barcode);
+                    while(dr.Read())
+                    {
+                        if(!dr.IsDBNull(0))
+                        {
+                            item.Payed = Convert.ToInt32(dr.GetValue(0)) == 1 ? true : false;
+                            if(!dr.IsDBNull(1))
+                            {
+                                item.DateOut = dr.GetDateTime(1);
+                            }
+                            if (!dr.IsDBNull(2))
+                            {
+                                item.DateIn = dr.GetDateTime(2);
+                            }
+                        }
+                        
+                    }
+                }
+
+                return reservedItemList;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return null;
         }
 
         public List<Item> GetAllItems(int id)
@@ -665,7 +783,7 @@ namespace EventBeheerSysteem
             {
                 ReadData("SELECT P.ID, P.ProductCat_ID, P.Merk, P.Serie, P.TypeNummer, P.Prijs FROM Product P");
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     Item item = new Item();
                     item.ID = Convert.ToInt32(dr.GetValue(0));
@@ -678,7 +796,7 @@ namespace EventBeheerSysteem
                     itemList.Add(item);
                 }
 
-                foreach(Item item in itemList)
+                foreach (Item item in itemList)
                 {
                     bool end = false;
                     int catID = item.MainCatID;
@@ -692,7 +810,7 @@ namespace EventBeheerSysteem
                         {
                             string name = dr.GetString(0);
                             item.Categorie.Add(name);
-                            if(!dr.IsDBNull(1))
+                            if (!dr.IsDBNull(1))
                             {
                                 catID = Convert.ToInt32(dr.GetValue(1));
                             }
@@ -708,7 +826,7 @@ namespace EventBeheerSysteem
 
                     List<Booker> renterList = new List<Booker>();
 
-                    while(dr.Read())
+                    while (dr.Read())
                     {
                         Booker b = new Booker();
                         b.ID = Convert.ToInt32(dr.GetValue(0));
@@ -721,14 +839,14 @@ namespace EventBeheerSysteem
 
                     ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " + item.ID.ToString());
 
-                    while(dr.Read())
+                    while (dr.Read())
                     {
                         item.Amount = Convert.ToInt32(dr.GetValue(0));
                     }
 
                     ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " + item.ID.ToString());
 
-                    while(dr.Read())
+                    while (dr.Read())
                     {
                         item.Available = item.Amount - Convert.ToInt32(dr.GetValue(0));
                     }
@@ -737,7 +855,7 @@ namespace EventBeheerSysteem
 
                 return itemList;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -758,7 +876,7 @@ namespace EventBeheerSysteem
             try
             {
                 ReadData("SELECT P.ID, P.NUMMER FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND E.ID = " + id.ToString());
-                while(dr.Read())
+                while (dr.Read())
                 {
                     Campsite campsite = new Campsite();
                     campsite.ID = dr.IsDBNull(0) != true ? Convert.ToInt32(dr.GetValue(0)) : 0;
@@ -789,12 +907,12 @@ namespace EventBeheerSysteem
             {
                 ReadData("SELECT ID, Naam, ProductCat_ID FROM ProductCat");
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     Categorie cat = new Categorie();
                     cat.ID = Convert.ToInt32(dr.GetValue(0));
                     cat.Name = dr.GetString(1);
-                    if(!dr.IsDBNull(2))
+                    if (!dr.IsDBNull(2))
                     {
                         cat.SubID = Convert.ToInt32(dr.GetValue(0));
                     }
@@ -802,13 +920,13 @@ namespace EventBeheerSysteem
                     categorieList.Add(cat);
                 }
 
-                foreach(Categorie c in categorieList)
+                foreach (Categorie c in categorieList)
                 {
-                    if(c.SubID != null)
+                    if (c.SubID != null)
                     {
-                        foreach(Categorie subC in categorieList)
+                        foreach (Categorie subC in categorieList)
                         {
-                            if(subC.ID == c.SubID)
+                            if (subC.ID == c.SubID)
                             {
                                 c.SubCategorie = subC;
                             }
@@ -843,7 +961,7 @@ namespace EventBeheerSysteem
                 r = new Reservation();
                 Booker b = new Booker();
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     //Reservation
                     r.ID = dr.IsDBNull(0) == false ? Convert.ToInt32(dr.GetValue(0)) : 0;
@@ -867,7 +985,7 @@ namespace EventBeheerSysteem
 
                 List<Account> accountList = new List<Account>();
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     Account a = new Account();
                     a.ID = Convert.ToInt32(dr.GetValue(0));
@@ -885,7 +1003,7 @@ namespace EventBeheerSysteem
 
                 List<int> campsiteNumberList = new List<int>();
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     campsiteNumberList.Add(Convert.ToInt32(dr.GetValue(0)));
                 }
@@ -893,9 +1011,9 @@ namespace EventBeheerSysteem
                 r.CampsiteNumberList = campsiteNumberList;
 
                 return r;
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -918,7 +1036,7 @@ namespace EventBeheerSysteem
             {
                 ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P WHERE P.ID = " + id.ToString());
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     campsite.ID = Convert.ToInt32(dr.GetValue(0));
                     campsite.Number = Convert.ToInt32(dr.GetValue(1));
@@ -932,7 +1050,7 @@ namespace EventBeheerSysteem
 
                 ReadData("SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " + id.ToString());
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     int specID = Convert.ToInt32(dr.GetValue(0));
 
@@ -1015,7 +1133,7 @@ namespace EventBeheerSysteem
 
                 updatedRows += cmd.ExecuteNonQuery();
 
-                if(updatedRows == 2)
+                if (updatedRows == 2)
                 {
                     return true;
                 }
@@ -1190,6 +1308,90 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        public bool UpdateItemPayed(int itemInstanceID, int payed)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Verhuur SET Betaald = :Payed WHERE ProductExemplaar_ID = :ItemInstanceID";
+                cmd.Parameters.Add("Payed", OracleDbType.Int32).Value = payed;
+                cmd.Parameters.Add("ItemInstanceID", OracleDbType.Int32).Value = itemInstanceID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateItemCheckOut(int itemInstanceID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Verhuur SET DatumUit = :Now WHERE ProductExemplaar_ID = :ItemInstanceID";
+                cmd.Parameters.Add("Now", OracleDbType.Date).Value = DateTime.Now;
+                cmd.Parameters.Add("ItemInstanceID", OracleDbType.Int32).Value = itemInstanceID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateItemCheckIn(int itemInstanceID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Verhuur SET DatumIn = :Now WHERE ProductExemplaar_ID = :ItemInstanceID";
+                cmd.Parameters.Add("Now", OracleDbType.Date).Value = DateTime.Now;
+                cmd.Parameters.Add("ItemInstanceID", OracleDbType.Int32).Value = itemInstanceID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
         private Booker SetBookerData(Booker b)
         {
             b.Firstname = dr.IsDBNull(5) == false ? dr.GetString(5) : null;
@@ -1202,5 +1404,5 @@ namespace EventBeheerSysteem
 
             return b;
         }
-    }
+    }   
 }

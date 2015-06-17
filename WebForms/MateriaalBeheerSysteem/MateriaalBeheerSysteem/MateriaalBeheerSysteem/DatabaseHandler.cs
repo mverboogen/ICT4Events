@@ -724,7 +724,7 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " + reservationID);
+                ReadData("SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie, P.TypeNummer FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " + reservationID);
 
                 while (dr.Read())
                 {
@@ -733,8 +733,30 @@ namespace MateriaalBeheerSysteem
                     item.Barcode = dr.GetString(1);
                     item.Brand = dr.GetString(2);
                     item.Serie = dr.GetString(3);
+                    item.TypeNumber = Convert.ToInt32(dr.GetValue(4));
 
                     reservedItemList.Add(item);
+                }
+
+                foreach(Item item in reservedItemList)
+                {
+                    ReadData("SELECT V.Betaald, V.DatumUit, V.DatumIn FROM Verhuur V, ProductExemplaar Pex WHERE Pex.ID = V.ProductExemplaar_ID AND Pex.Barcode = " + item.Barcode);
+                    while(dr.Read())
+                    {
+                        if(!dr.IsDBNull(0))
+                        {
+                            item.Payed = Convert.ToInt32(dr.GetValue(0)) == 1 ? true : false;
+                            if(!dr.IsDBNull(1))
+                            {
+                                item.DateOut = dr.GetDateTime(1);
+                            }
+                            if (!dr.IsDBNull(2))
+                            {
+                                item.DateIn = dr.GetDateTime(2);
+                            }
+                        }
+                        
+                    }
                 }
 
                 return reservedItemList;
@@ -1271,6 +1293,90 @@ namespace MateriaalBeheerSysteem
 
                     updatedRows += cmd.ExecuteNonQuery();
                 }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateItemPayed(int itemInstanceID, int payed)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Verhuur SET Betaald = :Payed WHERE ProductExemplaar_ID = :ItemInstanceID";
+                cmd.Parameters.Add("Payed", OracleDbType.Int32).Value = payed;
+                cmd.Parameters.Add("ItemInstanceID", OracleDbType.Int32).Value = itemInstanceID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateItemCheckOut(int itemInstanceID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Verhuur SET DatumUit = :Now WHERE ProductExemplaar_ID = :ItemInstanceID";
+                cmd.Parameters.Add("Now", OracleDbType.Date).Value = DateTime.Now;
+                cmd.Parameters.Add("ItemInstanceID", OracleDbType.Int32).Value = itemInstanceID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
+        public bool UpdateItemCheckIn(int itemInstanceID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE Verhuur SET DatumIn = :Now WHERE ProductExemplaar_ID = :ItemInstanceID";
+                cmd.Parameters.Add("Now", OracleDbType.Date).Value = DateTime.Now;
+                cmd.Parameters.Add("ItemInstanceID", OracleDbType.Int32).Value = itemInstanceID;
+
+                cmd.ExecuteNonQuery();
 
                 return true;
             }
