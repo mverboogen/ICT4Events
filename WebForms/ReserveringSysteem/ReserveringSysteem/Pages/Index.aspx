@@ -56,7 +56,7 @@
         <br />
         <asp:ListBox ID="lbResCampsites" runat="server" Width="93px"></asp:ListBox>
         <br />
-        <asp:Label ID="lblCampsiteConfirm" runat="server" Text=""></asp:Label>
+        <asp:Label ID="lblCampsiteConfirm" runat="server" CssClass="lblCampsiteConfirm" Text=""></asp:Label>
         <br />
     </div>
     <div id="Item">Hier de materialen<br />
@@ -68,7 +68,7 @@
         <br />
         <asp:ListBox ID="lbResItems" runat="server" Width="88px"></asp:ListBox>
         <br />
-        <asp:Label ID="lblItemConfirm" runat="server" Text=""></asp:Label>
+        <asp:Label ID="lblItemConfirm" runat="server" CssClass="lblItemConfirm" Text=""></asp:Label>
     </div>
     <div id="Details">Hier het overzicht<br />
         <br />

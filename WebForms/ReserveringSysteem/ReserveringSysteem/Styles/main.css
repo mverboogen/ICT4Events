@@ -44,3 +44,11 @@
 #Details {
     border: double;
 }
+
+.lblCampsiteConfirm {
+    color: red;
+}
+
+.lblItemConfirm {
+    color: red;
+}

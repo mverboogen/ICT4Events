@@ -10,6 +10,8 @@ namespace ReserveringSysteem
 {
     public partial class Index : System.Web.UI.Page
     {
+        int n;
+
         private List<Account> accounts
         {
             get
@@ -91,43 +93,43 @@ namespace ReserveringSysteem
 
         public void SomeTestData()
         {
-            /*
-            Account account1 = new Account("UTest1", "Etest1", "PTest1");
-            Account account2 = new Account("UTest2", "Etest2", "PTest2");
-            Account account3 = new Account("UTest3", "Etest3", "PTest3");
-            Account account4 = new Account("UTest4", "Etest4", "PTest4");
-            Account account5 = new Account("UTest5", "Etest5", "PTest5");
+                /*
+                Account account1 = new Account("UTest1", "Etest1", "PTest1");
+                Account account2 = new Account("UTest2", "Etest2", "PTest2");
+                Account account3 = new Account("UTest3", "Etest3", "PTest3");
+                Account account4 = new Account("UTest4", "Etest4", "PTest4");
+                Account account5 = new Account("UTest5", "Etest5", "PTest5");
 
-            accounts.Add(account1);
-            accounts.Add(account2);
-            accounts.Add(account3);
-            accounts.Add(account4);
-            accounts.Add(account5);
-            */
+                accounts.Add(account1);
+                accounts.Add(account2);
+                accounts.Add(account3);
+                accounts.Add(account4);
+                accounts.Add(account5);
+                */
 
-            Campsite campsite1 = new Campsite(1, 1, 2, 100);
-            Campsite campsite2 = new Campsite(2, 2, 2, 100);
-            Campsite campsite3 = new Campsite(3, 3, 4, 200);
-            Campsite campsite4 = new Campsite(4, 4, 4, 200);
-            Campsite campsite5 = new Campsite(5, 5, 10, 500);
+                Campsite campsite1 = new Campsite(1, 1, 2, 100);
+                Campsite campsite2 = new Campsite(2, 2, 2, 100);
+                Campsite campsite3 = new Campsite(3, 3, 4, 200);
+                Campsite campsite4 = new Campsite(4, 4, 4, 200);
+                Campsite campsite5 = new Campsite(5, 5, 10, 500);
 
-            handler.CampsiteList.Add(campsite1);
-            handler.CampsiteList.Add(campsite2);
-            handler.CampsiteList.Add(campsite3);
-            handler.CampsiteList.Add(campsite4);
-            handler.CampsiteList.Add(campsite5);
+                handler.CampsiteList.Add(campsite1);
+                handler.CampsiteList.Add(campsite2);
+                handler.CampsiteList.Add(campsite3);
+                handler.CampsiteList.Add(campsite4);
+                handler.CampsiteList.Add(campsite5);
 
-            Item item1 = new Item(1, "Brand1", "Serie1", 1, 10);
-            Item item2 = new Item(2, "Brand2", "Serie2", 2, 20);
-            Item item3 = new Item(3, "Brand3", "Serie3", 3, 30);
-            Item item4 = new Item(4, "Brand4", "Serie4", 4, 40);
-            Item item5 = new Item(5, "Brand5", "Serie5", 5, 50);
+                Item item1 = new Item(1, "Brand1", "Serie1", 1, 10);
+                Item item2 = new Item(2, "Brand2", "Serie2", 2, 20);
+                Item item3 = new Item(3, "Brand3", "Serie3", 3, 30);
+                Item item4 = new Item(4, "Brand4", "Serie4", 4, 40);
+                Item item5 = new Item(5, "Brand5", "Serie5", 5, 50);
 
-            handler.ItemList.Add(item1);
-            handler.ItemList.Add(item2);
-            handler.ItemList.Add(item3);
-            handler.ItemList.Add(item4);
-            handler.ItemList.Add(item5);
+                handler.ItemList.Add(item1);
+                handler.ItemList.Add(item2);
+                handler.ItemList.Add(item3);
+                handler.ItemList.Add(item4);
+                handler.ItemList.Add(item5);
         }
 
         public void RefreshListbox()
@@ -177,8 +179,6 @@ namespace ReserveringSysteem
             ReserveerItems.Add(i);
 
             lbResItems.Items.Add(itemID.ToString());
-
-
         }
 
         protected void btRemoveItem_Click(object sender, EventArgs e)
@@ -188,9 +188,8 @@ namespace ReserveringSysteem
 
         protected void btRemoveCampsite_Click(object sender, EventArgs e)
         {
-            //Campsite removeCS = FindCampsite(Convert.ToInt32(tbCampsiteID.Text));
-            //RemoveCampsite(removeCS);
-            lblCampsiteConfirm.Text = "Campsite Verwijderd";
+            Campsite removeCS = FindCampsite(Convert.ToInt32(tbCampsiteID.Text));
+            RemoveCampsite(removeCS);
         }
 
         public Campsite AddCampsite(int CampsiteID)
@@ -225,19 +224,23 @@ namespace ReserveringSysteem
             return null;
         }
 
-        public void RemoveCampsite(int csId)
+        public Campsite FindCampsite(int CampID)
         {
-            foreach (Campsite c in ReserveerCampsites)
+            foreach(Campsite campsite in ReserveerCampsites)
             {
-              if(c.Id == csId)
-              {
-                  Campsite cs = new Campsite(csId);
-                  ReserveerCampsites.Remove(cs);
-                  lblCampsiteConfirm.Text = "Campsite Verwijderd";
-              }
+                if(campsite.Id == CampID)
+                {
+                    return campsite;
+                }
             }
-
             lblCampsiteConfirm.Text = "Dit nummer bestaat niet";
-          } 
+            return null;
+        }
+
+        public void RemoveCampsite(Campsite c)
+        {    
+            ReserveerCampsites.Remove(c);
+            lblCampsiteConfirm.Text = "Campsite verwijderd";
+        }
     }
 }
