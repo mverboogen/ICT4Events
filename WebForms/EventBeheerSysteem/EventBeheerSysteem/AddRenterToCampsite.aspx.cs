@@ -98,5 +98,14 @@ namespace EventBeheerSysteem
                 Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
             }
         }
+
+        protected void noneBtn_Click(object sender, EventArgs e)
+        {
+            
+            if (dbHandler.ClearCampsiteReservation(selCampsiteID))
+            {
+                Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
+            }
+        }
     }
 }

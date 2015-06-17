@@ -61,6 +61,7 @@
     <Content Include="404.aspx" />
     <Content Include="AddCampsite.aspx" />
     <Content Include="AddCategorie.aspx" />
+    <Content Include="AddEvent.aspx" />
     <Content Include="AddMaterial.aspx" />
     <Content Include="AddRenterToCampsite.aspx" />
     <Content Include="AddRenterToItem.aspx" />
@@ -104,6 +105,13 @@
     </Compile>
     <Compile Include="AddCategorie.aspx.designer.cs">
       <DependentUpon>AddCategorie.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddEvent.aspx.cs">
+      <DependentUpon>AddEvent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddEvent.aspx.designer.cs">
+      <DependentUpon>AddEvent.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddMaterial.aspx.cs">
       <DependentUpon>AddMaterial.aspx</DependentUpon>

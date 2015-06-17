@@ -26,7 +26,7 @@
                 <p><asp:TextBox ID="reservationNumberTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
                 <p><asp:TextBox ID="reservationCityTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
                 <p><asp:TextBox ID="reservationBankTb" runat="server" style="width: 80%;" Enabled="false"></asp:TextBox></p>
-                <p><asp:Button ID="selectBtn" runat="server" Text="Selecteer" OnClick="selectBtn_Click" /></p>
+                <p><asp:Button ID="selectBtn" runat="server" Text="Selecteer" OnClick="selectBtn_Click" /><asp:Button ID="noneBtn" runat="server" Text="Geen" OnClick="noneBtn_Click" /></p>
             </div>
         </div>
     </div>

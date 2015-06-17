@@ -243,6 +243,54 @@ namespace EventBeheerSysteem
             }
         }
 
+        public bool AddEvent(Event newEvent)
+        {
+            Connect();
+
+            try
+            {
+                int nextLocationID = GetNextID("Locatie");
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Locatie (ID, Naam, Straat, Nr, Postcode, Plaats) VALUES (:NewID, :NewLocationName, :NewStreet, :NewNumber, :NewZipCode, :NewCity)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextLocationID;
+                cmd.Parameters.Add("NewLocationName", OracleDbType.Varchar2).Value = newEvent.LocationName;
+                cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = newEvent.LocationStreet;
+                cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = newEvent.LocationNumber;
+                cmd.Parameters.Add("NewZipCode", OracleDbType.Varchar2).Value = newEvent.LocationZipCode;
+                cmd.Parameters.Add("NewCity", OracleDbType.Varchar2).Value = newEvent.LocationCity;
+
+                cmd.ExecuteNonQuery();
+
+                int nextEventID = GetNextID("Event");
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "INSERT INTO Event (ID, Locatie_ID, Naam, DatumStart, DatumEinde, MaxBezoekers) VALUES (:NewID, :NewLocationID, :NewName, :NewStartDate, :NewEndDate, :NewMaxVisitors)";
+                cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextEventID;
+                cmd.Parameters.Add("NewLocationID", OracleDbType.Int32).Value = nextLocationID;
+                cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = newEvent.Name;
+                cmd.Parameters.Add("NewStartDate", OracleDbType.Date).Value = newEvent.StartDate;
+                cmd.Parameters.Add("NewEndDate", OracleDbType.Date).Value = newEvent.EndDate;
+                cmd.Parameters.Add("NewMaxVisitors", OracleDbType.Int32).Value = newEvent.MaxVisitors;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+        }
+
         public bool AddCampsite(Campsite c)
         {
             int updatedRows = 0;
@@ -503,6 +551,33 @@ namespace EventBeheerSysteem
             }
 
             return 0;
+        }
+
+        public bool ClearCampsiteReservation(int campsiteID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID";
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
         }
 
         public bool PayReservation(int reservationID)
@@ -1100,6 +1175,100 @@ namespace EventBeheerSysteem
             }
 
             return campsite;
+        }
+
+        public bool RemoveCampsite(int campsiteID)
+        {
+            Connect();
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Plek_Specificatie WHERE Plek_ID = :CampsiteID";
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+
+                cmd.ExecuteNonQuery();
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID";
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+
+                cmd.ExecuteNonQuery();
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Plek WHERE ID = :CampsiteID";
+                cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
+
+        }
+
+        public bool RemoveItem(int itemID)
+        {
+            Connect();
+
+            List<int> productInstanceIDList = new List<int>();
+
+            try
+            {
+                ReadData("SELECT Pex.ID FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " + itemID);
+                while(dr.Read())
+                {
+                    productInstanceIDList.Add(Convert.ToInt32(dr.GetValue(0)));
+                }
+
+                foreach(int number in productInstanceIDList)
+                {
+                    cmd = new OracleCommand();
+                    cmd.Connection = con;
+                    cmd.CommandText = "DELETE FROM Verhuur WHERE ProductExemplaar_ID = :InstanceNumber";
+                    cmd.Parameters.Add("InstanceNumber", OracleDbType.Int32).Value = number;
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM ProductExemplaar WHERE Product_ID = :ItemID";
+                cmd.Parameters.Add("ItemID", OracleDbType.Int32).Value = itemID;
+
+                cmd.ExecuteNonQuery();
+
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "DELETE FROM Product WHERE ID = :ItemID";
+                cmd.Parameters.Add("ItemID", OracleDbType.Int32).Value = itemID;
+
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return false;
         }
 
         public bool UpdateEventDetails(Event e)

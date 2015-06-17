@@ -150,7 +150,10 @@ namespace EventBeheerSysteem
                 string confirmValue = Request.Form["confirm_value"];
                 if (confirmValue == "Yes")
                 {
-                    Response.Redirect("Index.aspx");
+                    if (dbHandler.RemoveCampsite(Convert.ToInt32(campsiteLb.SelectedValue)))
+                    {
+                        Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
+                    }
                 }
             }
         }

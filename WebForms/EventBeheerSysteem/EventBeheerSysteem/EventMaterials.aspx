@@ -7,7 +7,7 @@
         <div id="item" runat="server">
             <asp:ListBox ID="materialsLb" runat="server" AutoPostBack="true" CssClass="listBox" OnSelectedIndexChanged="materialsLb_SelectedIndexChanged"></asp:ListBox>
             <p><asp:Button ID="addButton" runat="server" Text="Toevoegen" OnClick="addMaterial_OnClick" CssClass="Button" /></p>
-            <p><asp:Button ID="removeButton" runat="server" Text="Verwijderen" CssClass="Button" /></p>
+            <p><asp:Button ID="removeButton" runat="server" Text="Verwijderen" CssClass="Button" OnClientClick="Confirm()" OnClick="removeBtn_OnClick" /></p>
         </div>
         <div id="detail" runat="server">
             <div id="detailLabel" runat="server">
@@ -30,4 +30,22 @@
             </div>
         </div>
     </div>
+<script type = "text/javascript">
+    function Confirm() {
+        var confirm_value = document.createElement("INPUT");
+        confirm_value.type = "hidden";
+        confirm_value.name = "confirm_value";
+        if (document.getElementById('<%=materialRenterLb.ClientID%>').options.length > 0) {
+                if (confirm("Het geselecteerde materiaal heeft huurders. Weet u zeker dat u het wil verwijderen")) {
+                    confirm_value.value = "Yes";
+                } else {
+                    confirm_value.value = "No";
+                }
+            }
+            else {
+                confirm_value.value = "Yes";
+            }
+            document.forms[0].appendChild(confirm_value);
+        }
+    </script>
 </asp:Content>

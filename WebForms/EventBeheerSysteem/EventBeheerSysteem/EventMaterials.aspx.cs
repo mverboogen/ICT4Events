@@ -55,9 +55,13 @@ namespace EventBeheerSysteem
         {
             title.InnerText = selEvent.Name + " - Materialen";
 
+            int i = 0;
+
             foreach(Item item in itemList)
             {
                 materialsLb.Items.Add(item.Name);
+                materialsLb.Items[i].Value = Convert.ToString(item.ID);
+                i++;
             }
         }
 
@@ -107,6 +111,21 @@ namespace EventBeheerSysteem
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        protected void removeBtn_OnClick(object sender, EventArgs e)
+        {
+            if (materialsLb.SelectedIndex != -1)
+            {
+                string confirmValue = Request.Form["confirm_value"];
+                if (confirmValue == "Yes")
+                {
+                    if (dbHandler.RemoveItem(Convert.ToInt32(materialsLb.SelectedValue)))
+                    {
+                        Response.Redirect("EventMaterials.aspx?EventID=" + selEvent.ID);
+                    }
                 }
             }
         }

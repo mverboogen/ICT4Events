@@ -127,3 +127,50 @@
     padding-left: 32px;
     padding-right: 32px;
 }
+
+container
+{
+    width: 100%;
+}
+
+#item
+{
+    width: 40%;
+    height: 500px;
+    background-color: grey;
+    float:left;
+}
+
+#detail
+{
+    width: 60%;
+    height: 500px;
+    background-color: lightgrey;
+    float: right;
+}
+
+#detailLabel
+{
+    width: 30%;
+    height: 100%;
+    float:left;
+}
+
+#detailLabel p
+{
+    padding-left: 10px;
+    height: 10px;
+}
+
+#detailInput p
+{
+    padding-left: 10px;
+    height: 10px;
+}
+
+#detailInput
+{
+    width: 70%;
+    height: 100%;
+    float: right;
+}

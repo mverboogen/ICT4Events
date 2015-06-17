@@ -65,5 +65,10 @@ namespace EventBeheerSysteem
             eventGridView.Columns[3].ItemStyle.Width = 90;
             eventGridView.Columns[3].ItemStyle.HorizontalAlign = HorizontalAlign.Center;
         }
+
+        protected void addEvent_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AddEvent.aspx");
+        }
     }
 }
