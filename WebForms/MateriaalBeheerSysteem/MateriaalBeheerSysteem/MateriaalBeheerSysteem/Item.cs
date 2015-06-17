@@ -9,6 +9,7 @@ namespace MateriaalBeheerSysteem
     {
         private int id;
         private List<string> categorie;
+        private int instanceNumber;
         private int mainCatID;
         private string brand;
         private string serie;
@@ -89,6 +90,12 @@ namespace MateriaalBeheerSysteem
         {
             get { return available; }
             set { available = value; }
+        }
+
+        public int InstanceNumber
+        {
+            get { return instanceNumber; }
+            set { instanceNumber = value; }
         }
 
         public List<Booker> RenterList
