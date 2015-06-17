@@ -1,27 +1,46 @@
-﻿body
-{
+﻿body {
+        font-size: 100%;
+		font-family: 'Arimo', sans-serif;
+		text-align: left;
+        margin-left: 15%;
+        margin-right: 15%;
+        background-color: #E6E6E6;
+}
+
+#wrapper{
     width: 960px;
     margin: auto;
-
+    padding-bottom: 25px;
+    background-color: white;
+    border-radius: 10px;
 }
 
-.Header
-{
- 
+#banner{
+    border: solid;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-li
-{
-    display: inline;
+#Booker {
+    border: double;
+    margin-bottom: 20px;
 }
 
-a
-{   
-    text-decoration: none;
-    color: red;
+#Visitor {
+    border: double;
+    margin-bottom: 20px;
 }
 
-.Content
-{
+#Campsite {
+    border: double;
+    margin-bottom: 20px;
+}
 
+#Item {
+    border: double;
+    margin-bottom: 20px;
+}
+
+#Details {
+    border: double;
 }
