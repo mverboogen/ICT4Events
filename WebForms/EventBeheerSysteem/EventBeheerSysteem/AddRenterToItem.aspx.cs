@@ -43,6 +43,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the listbox with all reservations
+        /// </summary>
         private void FillData()
         {
             title.InnerText = selEvent.Name + " - Reserveringen";
@@ -60,6 +63,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the details div with all information about the selected reservation
+        /// </summary>
         private void FillDetails()
         {
             Reservation r = selReservation;
@@ -81,6 +87,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Retrieves data about the selected reservation when the index of reservationLb is changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void reservationLb_SelectedIndexChanged(object sender, EventArgs e)
         {
             selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
@@ -89,6 +100,11 @@ namespace EventBeheerSysteem
             FillDetails();
         }
 
+        /// <summary>
+        /// Saves the item to the selected reservation with a database handler methode when the selectBtn is pressed
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void selectBtn_Click(object sender, EventArgs e)
         {
             selReservationID = Convert.ToInt32(reservationLb.SelectedValue);

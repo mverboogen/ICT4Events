@@ -18,6 +18,10 @@ namespace EventBeheerSysteem
             FillData();
         }
 
+        /// <summary>
+        /// Sets the name in the header
+        /// </summary>
+
         private void FillData()
         {
             FillTable();
@@ -25,6 +29,9 @@ namespace EventBeheerSysteem
             title.InnerText = "Events";
         }
 
+        /// <summary>
+        /// Creates a datatable and fills it with all the events
+        /// </summary>
         private void FillTable()
         {
             DataTable dt = new DataTable();
@@ -66,6 +73,11 @@ namespace EventBeheerSysteem
             eventGridView.Columns[3].ItemStyle.HorizontalAlign = HorizontalAlign.Center;
         }
 
+        /// <summary>
+        /// Redirects to the AddEvent page when addEvent is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void addEvent_Click(object sender, EventArgs e)
         {
             Response.Redirect("AddEvent.aspx");

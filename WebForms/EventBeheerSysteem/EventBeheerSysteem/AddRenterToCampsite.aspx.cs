@@ -43,8 +43,13 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the listbox with all reservations
+        /// </summary>
         private void FillData()
         {
+            reservationLb.Items.Clear();
+
             title.InnerText = selEvent.Name + " - Reserveringen";
 
             reservationList = dbHandler.GetAllReservations(selEvent.ID);
@@ -60,6 +65,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the detail div with all the information about the reservation
+        /// </summary>
         private void FillDetails()
         {
             Reservation r = selReservation;
@@ -89,6 +97,11 @@ namespace EventBeheerSysteem
             FillDetails();
         }
 
+        /// <summary>
+        /// Creates a link between the selected reservation and object when selectBtn is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void selectBtn_Click(object sender, EventArgs e)
         {
             selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
@@ -99,6 +112,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Removes all the links between a campsite and reservations when noneBtn is pressed
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void noneBtn_Click(object sender, EventArgs e)
         {
             

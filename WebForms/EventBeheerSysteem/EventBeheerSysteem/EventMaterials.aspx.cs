@@ -51,9 +51,14 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the listbox with all items in the database
+        /// </summary>
         private void FillData()
         {
             title.InnerText = selEvent.Name + " - Materialen";
+
+            materialsLb.Items.Clear();
 
             int i = 0;
 
@@ -65,6 +70,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the details div with all the data of the selected item
+        /// </summary>
         private void FillDetails()
         {
             materialRenterLb.Items.Clear();
@@ -83,11 +91,21 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Redirects the the AddMaterial page when addMaterial is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void addMaterial_OnClick(object sender, EventArgs e)
         {
             Response.Redirect("addMaterial.aspx?EventID=" + selEvent.ID);
         }
 
+        /// <summary>
+        /// Saves the new data to the database with a database handler when saveBtn has been pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
             if(materialsLb.SelectedIndex != -1)
@@ -115,6 +133,12 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// If the selected item has a renter(s) show a dialog to confirm
+        /// If there is no renter or it has been confirmed removes the item from the database with a database handler methode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void removeBtn_OnClick(object sender, EventArgs e)
         {
             if (materialsLb.SelectedIndex != -1)
@@ -130,6 +154,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Retrieves the data from the database of the selected object in the listbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void materialsLb_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedIndex = materialsLb.SelectedIndex;
@@ -142,6 +171,11 @@ namespace EventBeheerSysteem
             FillDetails();
         }
 
+        /// <summary>
+        /// Redirects to the  AddRenterToItem page when addRenter is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void addRenter_Click(object sender, EventArgs e)
         {
             if(materialsLb.SelectedIndex != -1)

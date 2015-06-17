@@ -50,6 +50,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the listbox with all campsites beloning to the selected event
+        /// </summary>
         private void FillData()
         {
             title.InnerText = selEvent.Name + " - Kampeerplaatsen";
@@ -67,6 +70,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Clears all the datafields in the details div
+        /// </summary>
         private void ClearData()
         {
             campsiteNumberTb.Text = "";
@@ -80,6 +86,9 @@ namespace EventBeheerSysteem
             campsiteRenterTb.Text = "";
         }
 
+        /// <summary>
+        /// Fills all the datafields in the details div  with the selected campsite
+        /// </summary>
         private void FillDetails()
         {
             Campsite c = selCampsite;
@@ -98,6 +107,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Clears and fills the details div when the selected index of campsiteLb has changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void campsiteLb_IndexChanged(object sender, EventArgs e)
         {
             if (selCampsite != null)
@@ -107,11 +121,21 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Redirects to the AddCampsite page when addCampsite is pressed
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void addCampsite_OnClick(object sender, EventArgs e)
         {
             Response.Redirect("AddCampsite.aspx?EventID=" + selEvent.ID);
         }
 
+        /// <summary>
+        /// Saves all the new data with a database handler methode when saveBtn is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
             if(campsiteLb.SelectedIndex != -1)
@@ -143,6 +167,12 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Checks if the selected campsite has an renter, if so shows a dialog  to confirm
+        /// IF there is no renter or it has been confirmed, removes the selected campsite with a database handler methode
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void removeBtn_OnClick(object sender, EventArgs e)
         {
             if(campsiteLb.SelectedIndex != -1)
@@ -158,6 +188,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Redirects to the AddRenterToCampsite page when changeRenter has been pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void changeRenterBtn_Click(object sender, EventArgs e)
         {
             if(campsiteLb.SelectedIndex != -1)

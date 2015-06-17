@@ -17,6 +17,11 @@ namespace EventBeheerSysteem
 
         }
 
+        /// <summary>
+        /// Saves the new event with a database handler methode
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void saveBtn_Click(object sender, EventArgs e)
         {
             try

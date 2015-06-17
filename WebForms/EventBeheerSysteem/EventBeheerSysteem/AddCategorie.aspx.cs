@@ -39,6 +39,9 @@ namespace EventBeheerSysteem
             
         }
         
+        /// <summary>
+        /// Fills the DropDownList with all the options
+        /// </summary>
         private void FillData()
         {
             categorieSubCategorieDDL.Items.Clear();
@@ -57,6 +60,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Saves the new Categorie with a database handler methode
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
             Categorie cat = new Categorie();

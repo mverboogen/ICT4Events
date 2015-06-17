@@ -29,6 +29,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Calls the add campsite database function when the save button is pressed
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
 

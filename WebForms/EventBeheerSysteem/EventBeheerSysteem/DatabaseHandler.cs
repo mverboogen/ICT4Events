@@ -53,6 +53,9 @@ namespace EventBeheerSysteem
             return self;
         }
 
+        /// <summary>
+        /// Connect to the database
+        /// </summary>
         private void Connect()
         {
             try
@@ -69,12 +72,19 @@ namespace EventBeheerSysteem
 
         }
 
+        /// <summary>
+        /// Disconnect from the database
+        /// </summary>
         public void Disconnect()
         {
             con.Close();
             con.Dispose();
         }
 
+        /// <summary>
+        /// Runs a provided sql statement
+        /// </summary>
+        /// <param name="sql">String, the sql statement to run</param>
         private void ReadData(string sql)
         {
             try
@@ -91,6 +101,10 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Gets the max ID + 1 from the provided table
+        /// </summary>
+        /// <param name="sql">Integer, max table ID</param>
         private int GetNextID(string table)
         {
             int id = 1;
@@ -114,6 +128,11 @@ namespace EventBeheerSysteem
             return id;
         }
 
+        /// <summary>
+        /// Add a new categorie to the database
+        /// </summary>
+        /// <param name="c">The categorie that has to be added</param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddCategorie(Categorie c)
         {
             Connect();
@@ -162,6 +181,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Adds a new item to the database and instance equal to the amount provided
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="amount"></param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddMaterial(Item item, int amount)
         {
             Connect();
@@ -210,6 +235,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Adds the provided amount of items to the ProductExemplaar table
+        /// </summary>
+        /// <param name="itemID"></param>
+        /// <param name="typeNumber"></param>
+        /// <param name="amount"></param>
         public void AddItemAmount(int itemID, int typeNumber, int amount)
         {
             int updatedRows = 0;
@@ -243,6 +274,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a new event to the database including a location
+        /// </summary>
+        /// <param name="newEvent">The event that has to be added</param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddEvent(Event newEvent)
         {
             Connect();
@@ -291,6 +327,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Adds a new campsite to the database
+        /// </summary>
+        /// <param name="c">The campsite that has to be added</param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddCampsite(Campsite c)
         {
             int updatedRows = 0;
@@ -375,6 +416,12 @@ namespace EventBeheerSysteem
 
         }
 
+        /// <summary>
+        /// Adds a link between the provided campsite and reservation
+        /// </summary>
+        /// <param name="campsiteID">The campsite ID that has to be linked</param>
+        /// <param name="reservationID">The reservation ID that has to be linked</param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddCampsiteToReservation(int campsiteID, int reservationID)
         {
             Connect();
@@ -428,6 +475,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Adds a link between an item and a braclet
+        /// </summary>
+        /// <param name="itemID">The item ID that has to be linked</param>
+        /// <param name="bracletID">The item ID that has to be linked</param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddItemToBraclet(int itemID, int bracletID)
         {
             Connect();
@@ -483,6 +536,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Adds a link between a braclet (that belongs to the provided reservationID) and an item
+        /// </summary>
+        /// <param name="itemID">The item ID that has to be linked</param>
+        /// <param name="reservationID">The reservationID that has to be linked</param>
+        /// <returns>Boolean if the add was a succes</returns>
         public bool AddItemToReservation(int itemID, int reservationID)
         {
             Connect();
@@ -519,6 +578,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Gets the reservation ID connected to the barcode
+        /// </summary>
+        /// <param name="barcode">The provided barcode of wich you want a reservation ID</param>
+        /// <returns>The reservation ID beloning to the barcode</returns>
         public int GetReservationByBarcode(string barcode)
         {
             Connect();
@@ -553,6 +617,11 @@ namespace EventBeheerSysteem
             return 0;
         }
 
+        /// <summary>
+        /// Removes any link between a campsite and reservations
+        /// </summary>
+        /// <param name="campsiteID">The campsite ID you want to remove links from</param>
+        /// <returns>Boolean if the remove was a succes</returns>
         public bool ClearCampsiteReservation(int campsiteID)
         {
             Connect();
@@ -580,6 +649,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Sets the 'Betaald' column of the provided reservation to true
+        /// </summary>
+        /// <param name="reservationID">The reservation ID you want to change</param>
+        /// <returns>Boolean if the update was a succes</returns>
         public bool PayReservation(int reservationID)
         {
             Connect();
@@ -607,6 +681,10 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Returns all events in the database
+        /// </summary>
+        /// <returns>A list of events</returns>
         public List<Event> GetAllEvents()
         {
             Connect();
@@ -674,6 +752,11 @@ namespace EventBeheerSysteem
             return eventList;
         }
 
+        /// <summary>
+        /// Gets an event that belongs to the provided ID
+        /// </summary>
+        /// <param name="id">The event ID you need to retrieve</param>
+        /// <returns>An event that belongs to the provided event ID</returns>
         public Event GetEventByID(int id)
         {
             Connect();
@@ -744,6 +827,11 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Get all the reservations that belong the the provided event ID
+        /// </summary>
+        /// <param name="id">The event ID you want all the reservations from</param>
+        /// <returns>A list of reservations belonging to the provided event ID</returns>
         public List<Reservation> GetAllReservations(int id)
         {
             List<Reservation> reservationList = new List<Reservation>();
@@ -791,6 +879,11 @@ namespace EventBeheerSysteem
             return reservationList;
         }
 
+        /// <summary>
+        /// Get all the items belonging to the reservation
+        /// </summary>
+        /// <param name="reservationID">The reservation ID from wich you want items</param>
+        /// <returns>A list of items beloning to the provided reservation ID</returns>
         public List<Item> GetReservedItems(int reservationID)
         {
             Connect();
@@ -848,6 +941,11 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Get all the items beloning to the event (not possible in current database)
+        /// </summary>
+        /// <param name="id">The event ID from wich you want all items</param>
+        /// <returns></returns>
         public List<Item> GetAllItems(int id)
         {
             List<Item> itemList = new List<Item>();
@@ -942,6 +1040,11 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Get all the campsites beloning to the provided event ID
+        /// </summary>
+        /// <param name="id">The event ID from wich you want all campsites</param>
+        /// <returns></returns>
         public List<Campsite> GetAllCampsites(int id)
         {
             Connect();
@@ -971,7 +1074,11 @@ namespace EventBeheerSysteem
 
             return campsiteList;
         }
-
+        
+        /// <summary>
+        /// Get all the categories in the database
+        /// </summary>
+        /// <returns>A list of all categories and sub categories</returns>
         public List<Categorie> GetAllCategories()
         {
             Connect();
@@ -1023,6 +1130,11 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Get the reservation beloning to the reservation ID
+        /// </summary>
+        /// <param name="id">The reservation ID you want to retrieve</param>
+        /// <returns>A reservation object with all the information</returns>
         public Reservation GetReservation(int id)
         {
             Reservation r;
@@ -1100,6 +1212,11 @@ namespace EventBeheerSysteem
             return null;
         }
 
+        /// <summary>
+        /// Get the campsite beloning to the campsite ID
+        /// </summary>
+        /// <param name="id">The campsite ID you want to retrieve</param>
+        /// <returns>A campsite object with all the information</returns>
         public Campsite GetCampsite(int id)
         {
             Connect();
@@ -1177,6 +1294,11 @@ namespace EventBeheerSysteem
             return campsite;
         }
 
+        /// <summary>
+        /// Remove the campsite beloning to the campsite ID from the database
+        /// </summary>
+        /// <param name="campsiteID">The campsite ID you want to remove</param>
+        /// <returns>Boolean, if the remove was a succes</returns>
         public bool RemoveCampsite(int campsiteID)
         {
             Connect();
@@ -1219,6 +1341,11 @@ namespace EventBeheerSysteem
 
         }
 
+        /// <summary>
+        /// Remove the item beloning to the item ID from the database
+        /// </summary>
+        /// <param name="itemID">The item ID you want to remove</param>
+        /// <returns>Boolean, if the remove was a succes</returns>
         public bool RemoveItem(int itemID)
         {
             Connect();
@@ -1271,6 +1398,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the event details of the provided event object
+        /// </summary>
+        /// <param name="e">Event with all the new data</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateEventDetails(Event e)
         {
             Connect();
@@ -1320,6 +1452,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the reservation details of the provided reservation object
+        /// </summary>
+        /// <param name="r">Reservation with all the new data</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateReservation(Reservation r)
         {
             Connect();
@@ -1366,6 +1503,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the item details of the provided item object
+        /// </summary>
+        /// <param name="i">Item with all the new data</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateItem(Item i)
         {
             Connect();
@@ -1402,6 +1544,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the campsite details of the provided campsite object
+        /// </summary>
+        /// <param name="c">Campsite with all the new data</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateCampsite(Campsite c)
         {
             Connect();
@@ -1477,6 +1624,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the payed status of an instance item
+        /// </summary>
+        /// <param name="itemInstanceID">The instance item you want to update</param>
+        /// <param name="payed">To wich state the payed column has to be changed</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateItemPayed(int itemInstanceID, int payed)
         {
             Connect();
@@ -1505,6 +1658,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the check out of an instance item
+        /// </summary>
+        /// <param name="itemInstanceID">The instance ID you want to update</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateItemCheckOut(int itemInstanceID)
         {
             Connect();
@@ -1533,6 +1691,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Updates the check in of an instance item
+        /// </summary>
+        /// <param name="itemInstanceID">The instance ID you want to update</param>
+        /// <returns>Boolean, if the updated was a succes</returns>
         public bool UpdateItemCheckIn(int itemInstanceID)
         {
             Connect();
@@ -1561,6 +1724,11 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Checks the data provided to build a booker object
+        /// </summary>
+        /// <param name="b">The booker object you want to fill</param>
+        /// <returns>The filled booker object</returns>
         private Booker SetBookerData(Booker b)
         {
             b.Firstname = dr.IsDBNull(5) == false ? dr.GetString(5) : null;

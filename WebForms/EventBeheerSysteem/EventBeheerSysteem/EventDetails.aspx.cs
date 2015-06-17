@@ -36,6 +36,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Saves the new data to the database with a database handler methode when saveBtn is pressed
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
             Event newEvent = new Event();
@@ -67,6 +72,9 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the details div with data
+        /// </summary>
         private void FillData()
         {
             title.InnerText = selEvent.Name + " - Details";

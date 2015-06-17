@@ -25,6 +25,12 @@ namespace EventBeheerSysteem
             return self;
         }
         
+        /// <summary>
+        /// Checks if there are differences between two event objects
+        /// </summary>
+        /// <param name="oldEvent">The old object to check</param>
+        /// <param name="newEvent">The new object to check against</param>
+        /// <returns>Boolean, if the object has changed</returns>
         public bool EventChanged(Event oldEvent, Event newEvent)
         {
             if (oldEvent.Name != newEvent.Name)
@@ -67,6 +73,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Checks if there are differences between two reservation objects
+        /// </summary>
+        /// <param name="oldR">The old object to check</param>
+        /// <param name="newR">The new object to check against</param>
+        /// <returns>Boolean, if the object has changed</returns>
         public bool ReservationChanged(Reservation oldR, Reservation newR)
         {
             if(oldR.StartDate != newR.StartDate)
@@ -97,6 +109,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Checks if there are differences between two item objects
+        /// </summary>
+        /// <param name="oldI">The old object to check</param>
+        /// <param name="newI">The new object to check against</param>
+        /// <returns>Boolean, if the object has changed</returns>
         public bool ItemChanged(Item oldI, Item newI)
         {
             if (oldI.Brand != newI.Brand)
@@ -115,6 +133,12 @@ namespace EventBeheerSysteem
             return false;
         }
 
+        /// <summary>
+        /// Checks if there are differences between two campsite objects
+        /// </summary>
+        /// <param name="oldC">The old object to check</param>
+        /// <param name="newC">The new object to check against</param>
+        /// <returns></returns>
         public bool CampsiteChanged(Campsite oldC, Campsite newC)
         {
             if(oldC.Capacity != newC.Capacity)

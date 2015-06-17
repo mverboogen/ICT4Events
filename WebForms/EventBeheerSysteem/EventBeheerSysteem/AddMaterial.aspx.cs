@@ -40,8 +40,12 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Fills the DropDownList with all the categories
+        /// </summary>
         private void FillTable()
         {
+            materiaalCategorieDDL.Items.Clear();
             int i = 0;
 
             foreach(Categorie cat in categorieList)
@@ -53,6 +57,11 @@ namespace EventBeheerSysteem
             }
         }
 
+        /// <summary>
+        /// Saves the new item with a database handler methode
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event Arguments</param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
             if(materialBrandTb.Text != "" && materialSerieTb.Text != "" && materialPriceTb.Text != "")
