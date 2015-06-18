@@ -13,7 +13,7 @@ namespace ReserveringSysteem
         private string street;
         private string adress;
         private string city;
-        private int bank;
+        private string bank;
 
         public string Firstname
         {
@@ -51,13 +51,13 @@ namespace ReserveringSysteem
             set { city = value; }
         }
 
-        public int Bank
+        public string Bank
         {
             get { return bank; }
             set { bank = value; }
         }
 
-        public Person(string firstname, string insertion, string lastname, string street, string adress, string city, int bank)
+        public Person(string firstname, string insertion, string lastname, string street, string adress, string city, string bank)
         {
             this.firstname = firstname;
             this.insertion = insertion;

@@ -11,6 +11,12 @@ namespace ReserveringSysteem
         private int number;
         private int capacity;
         private decimal price;
+        private int size;
+        private bool comfort;
+        private int xCor;
+        private int yCor;
+        private bool crane;
+        private bool handicap;
 
         public int Id
         {
@@ -36,6 +42,47 @@ namespace ReserveringSysteem
             set { price = value; }
         }
 
+        public int Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
+
+        public bool Comfort
+        {
+            get { return comfort; }
+            set { comfort = value; }
+        }
+
+        public int XCor
+        {
+            get { return xCor; }
+            set { xCor = value; }
+        }
+
+        public int YCor
+        {
+            get { return yCor; }
+            set { yCor = value; }
+        }
+
+        public bool Crane
+        {
+            get { return crane; }
+            set { crane = value; }
+        }
+
+        public bool Handicap
+        {
+            get { return handicap; }
+            set { handicap = value; }
+        }
+
+        public Campsite()
+        {
+        
+        }
+
         public Campsite(int id)
         {
             this.id = id;
@@ -51,7 +98,7 @@ namespace ReserveringSysteem
 
         public override string ToString()
         {
-            return "ID: " + id.ToString() + "  -  Nummer: " + number.ToString() + "  -  Aantal personen: " + capacity.ToString() + "  -  Prijs: " + price.ToString();
+            return "ID: " + id.ToString() + "  -  Nummer: " + number.ToString() + "  -  Aantal personen: " + capacity.ToString() + "  -  Grootte: " + size.ToString() + "  -  Comfort: " + comfort.ToString() + "  - Heeft kraan: " + crane.ToString() + "  -  Handicap: " + handicap.ToString();
         }
     }
 }

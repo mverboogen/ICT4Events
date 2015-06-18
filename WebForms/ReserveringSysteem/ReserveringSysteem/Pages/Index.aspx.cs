@@ -10,8 +10,6 @@ namespace ReserveringSysteem
 {
     public partial class Index : System.Web.UI.Page
     {
-        int n;
-
         private List<Account> accounts
         {
             get
@@ -62,7 +60,11 @@ namespace ReserveringSysteem
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            SomeTestData();
+            //SomeTestData();
+            RefreshListbox();
+
+            handler.GetAllCampsites();
+
             RefreshListbox();
         }
 
@@ -74,16 +76,38 @@ namespace ReserveringSysteem
             string straat = tbStraat.Text;
             string huisNr = tbHuisNr.Text;
             string woonplaats = tbWoonplaats.Text;
-            int bankNr = Convert.ToInt32(tbBankNr.Text);
+            string bankNr =tbBankNr.Text;
+
+            handler.AddPerson(voornaam, tussenvoegsel, achternaam, straat, huisNr, woonplaats, bankNr);
+   
+            handler.AddReservering();
+            
+           foreach(Account a in accounts)
+           {
+               handler.AddPolsbandje();
+               handler.AddAccount(a.Username, a.Email);
+               handler.AddReserveringPolsbandje();
+           }
+
+           foreach(Campsite c in ReserveerCampsites)
+           {
+               handler.AddPlekReservering(c.Id);
+           }
+                      
+           /*
+           foreach(Item i in ReserveerItems)
+           {
+               handler.AddVerhuur(i.Id);
+           }
+            */
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
             string gebruikersnaam = tbGebruikersnaam.Text;
-            string wachtwoord = tbWachtwoord.Text;
             string email = tbEmail.Text;
 
-            Account account = new Account(gebruikersnaam, email, wachtwoord);
+            Account account = new Account(gebruikersnaam, email);
 
             accounts.Add(account);
 
@@ -168,6 +192,8 @@ namespace ReserveringSysteem
             int campId = Convert.ToInt32(tbCampsiteID.Text);
 
             Campsite id = AddCampsite(campId);
+
+            RefreshListbox();
   		}
 
         protected void btAddItems_Click(object sender, EventArgs e)
@@ -183,7 +209,6 @@ namespace ReserveringSysteem
 
         protected void btRemoveItem_Click(object sender, EventArgs e)
         {
-
         }
 
         protected void btRemoveCampsite_Click(object sender, EventArgs e)
@@ -201,9 +226,7 @@ namespace ReserveringSysteem
                     Campsite cs = new Campsite(CampsiteID);
 
                     ReserveerCampsites.Add(cs);
-
-                    lbResCampsites.Items.Add(CampsiteID.ToString());
-
+               
                     lblCampsiteConfirm.Text = "Campsite toegevoegd";
                     return c;
                 }

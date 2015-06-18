@@ -35,9 +35,6 @@
         <asp:Label ID="Label8" runat="server" Text="Gebruikersnaam"></asp:Label>
         <asp:TextBox ID="tbGebruikersnaam" runat="server"></asp:TextBox>
         <br />
-        <asp:Label ID="Label9" runat="server" Text="Wachtwoord"></asp:Label>
-        <asp:TextBox ID="tbWachtwoord" runat="server"></asp:TextBox>
-        <br />
         <asp:Label ID="Label10" runat="server" Text="Email"></asp:Label>
         <asp:TextBox ID="tbEmail" runat="server"></asp:TextBox>
         <br />

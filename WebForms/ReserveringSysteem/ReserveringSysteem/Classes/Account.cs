@@ -10,8 +10,6 @@ namespace ReserveringSysteem
     {
         private string username;
         private string email;
-        private string hash;
-        private string password;
 
         public string Username
         {
@@ -25,23 +23,10 @@ namespace ReserveringSysteem
             set { email = value; }
         }
 
-        public string Hash
-        {
-            get { return hash; }
-            set { hash = value; }
-        }
-
-        public string Password
-        {
-            get { return password; }
-            set { password = value; }
-        }
-
-        public Account(string username, string email, string password)
+        public Account(string username, string email)
         {
             this.username = username;
             this.email = email;
-            this.password = password;
         }
     }
 }
