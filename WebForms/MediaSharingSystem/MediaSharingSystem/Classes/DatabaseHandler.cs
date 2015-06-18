@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Oracle.DataAccess;
-using Oracle.DataAccess.Client;
 using System.Data;
 using System.Diagnostics;
+using Oracle.DataAccess.Client;
 
 namespace MediaSharingSystem
 {
     class DatabaseHandler
     {
-
-        private static DatabaseHandler self;
-
-        private OracleConnection con;
         private OracleCommand cmd;
+        private OracleConnection con;
         private OracleDataReader dr;
+        private static DatabaseHandler self;
 
         private DatabaseHandler()
         {
@@ -26,7 +21,7 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Gets the instance of this class.
+        ///     Gets the instance of this class.
         /// </summary>
         /// <returns>A Singleton instance of this class</returns>
         public static DatabaseHandler GetInstance()
@@ -35,14 +30,11 @@ namespace MediaSharingSystem
             {
                 return new DatabaseHandler();
             }
-            else
-            {
-                return self;
-            }
+            return self;
         }
 
         /// <summary>
-        /// Creates a connection with the Oracle database
+        ///     Creates a connection with the Oracle database
         /// </summary>
         public void Connect()
         {
@@ -50,11 +42,10 @@ namespace MediaSharingSystem
             con.ConnectionString = "User Id=Mediasharing; Password=Drowssap;Data Source=localhost/xe";
             con.Open();
             Debug.WriteLine("CONNECTION SUCCESFULL");
-
         }
 
         /// <summary>
-        /// Disconnects the connection with the Oracle database.
+        ///     Disconnects the connection with the Oracle database.
         /// </summary>
         public void Disconnect()
         {
@@ -63,7 +54,7 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Creates a new OracleCommand object to execute a e.g. SELECT(read) query.
+        ///     Creates a new OracleCommand object to execute a e.g. SELECT(read) query.
         /// </summary>
         /// <param name="sql">The SQL query.</param>
         private void ReadData(string sql)
@@ -83,7 +74,7 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Creates a new OracleCommand object to execute a e.g. UPDATE/DELETE(write) query.
+        ///     Creates a new OracleCommand object to execute a e.g. UPDATE/DELETE(write) query.
         /// </summary>
         /// <param name="sql">The SQL query.</param>
         private void WriteData(string sql)
@@ -102,7 +93,7 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Downloads the media by identifier.
+        ///     Downloads the media by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A new Media object selected by the given identifier</returns>
@@ -119,38 +110,36 @@ namespace MediaSharingSystem
             {
                 while (dr.Read())
                 {
-                    int accountid = dr.GetInt32(1);
+                    int accountID = dr.GetInt32(1);
                     DateTime date = dr.GetDateTime(2);
                     string soort = dr.GetString(3);
 
-                    bijdrage = new Bijdrage(id, accountid, date, soort);
+                    bijdrage = new Bijdrage(id, accountID, date, soort);
                 }
-                
+
                 User user = DownloadUserByID(bijdrage.UserID);
                 // Check if it's a mediafile or a textfile.
                 if (bijdrage.Soort.Equals("bestand"))
                 {
-
                     ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = " + bijdrage.ID);
 
                     try
                     {
                         while (dr.Read())
                         {
-                            int bijdrageid = dr.GetInt32(0);
-                            int categorieid = dr.GetInt32(1);
+                            int bijdrageID = dr.GetInt32(0);
+                            int categorieID = dr.GetInt32(1);
                             string title = dr.GetString(2);
-                            string filepath = "Resources/Uploads/" + title;
-                            int filesize = dr.GetInt32(3);
+                            string filePath = "Resources/Uploads/" + title;
+                            int fileSize = dr.GetInt32(3);
 
-                            media = new MediaFile(bijdrageid, categorieid, user, title, filepath);
+                            media = new MediaFile(bijdrageID, categorieID, user, title, filePath);
                         }
                     }
                     catch (Exception e)
                     {
                         Debug.WriteLine(e.ToString());
                     }
-
                 }
                 else if (bijdrage.Soort.Equals("bericht"))
                 {
@@ -160,11 +149,11 @@ namespace MediaSharingSystem
                     {
                         while (dr.Read())
                         {
-                            int bijdrageid = dr.GetInt32(0);
+                            int bijdrageID = dr.GetInt32(0);
                             string title = dr.GetString(1);
                             string content = dr.GetString(2);
 
-                            media = new TextMessage(bijdrageid, user, title, content);
+                            media = new TextMessage(bijdrageID, user, title, content);
                         }
                     }
                     catch (Exception e)
@@ -188,15 +177,14 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Downloads the media.
+        ///     Downloads the media.
         /// </summary>
         /// <param name="amount">The amount of media items to download. (0=infinite)</param>
         /// <returns>List with media objects</returns>
         public List<Media> DownloadMedia(int amount = 10)
         {
-
-            List<Bijdrage> bijdragelist = new List<Bijdrage>();
-            List<Media> medialist = new List<Media>();
+            List<Bijdrage> bijdrageList = new List<Bijdrage>();
+            List<Media> mediaList = new List<Media>();
 
             // If there is no amountparameter given, SELECT all records matching the conditions.
             if (amount == 0)
@@ -205,7 +193,7 @@ namespace MediaSharingSystem
             }
             else
             {
-                ReadData("SELECT * FROM BIJDRAGE WHERE ROWNUM <= "+amount+" SOORT = 'bestand' OR SOORT = 'bericht'");
+                ReadData("SELECT * FROM BIJDRAGE WHERE ROWNUM <= " + amount + " SOORT = 'bestand' OR SOORT = 'bericht'");
             }
 
             try
@@ -213,42 +201,40 @@ namespace MediaSharingSystem
                 while (dr.Read())
                 {
                     int id = dr.GetInt32(0);
-                    int accountid = dr.GetInt32(1);
+                    int accountID = dr.GetInt32(1);
                     DateTime date = dr.GetDateTime(2);
                     string soort = dr.GetString(3);
 
-                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                    bijdrageList.Add(new Bijdrage(id, accountID, date, soort));
                 }
 
-                foreach (Bijdrage bijdrage in bijdragelist)
+                foreach (Bijdrage bijdrage in bijdrageList)
                 {
                     User user = DownloadUserByID(bijdrage.UserID);
 
                     if (bijdrage.Soort.Equals("bestand"))
                     {
-                        
-                        ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = "+bijdrage.ID);
-                            
+                        ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = " + bijdrage.ID);
+
                         try
                         {
-                            while(dr.Read())
+                            while (dr.Read())
                             {
-                                int bijdrageid = dr.GetInt32(0);
-                                int categorieid = dr.GetInt32(1);
+                                int bijdrageID = dr.GetInt32(0);
+                                int categorieID = dr.GetInt32(1);
                                 string title = dr.GetString(2);
-                                string filepath = "Resources/Uploads/"+title;
-                                int filesize = dr.GetInt32(3);
+                                string filePath = "Resources/Uploads/" + title;
+                                int fileSize = dr.GetInt32(3);
 
-                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, title, filepath));
+                                mediaList.Add(new MediaFile(bijdrageID, categorieID, user, title, filePath));
                             }
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             Debug.WriteLine(e.ToString());
                         }
-
                     }
-                    else if(bijdrage.Soort.Equals("bericht"))
+                    else if (bijdrage.Soort.Equals("bericht"))
                     {
                         ReadData("SELECT * FROM BERICHT WHERE TITEL IS NOT NULL AND BIJDRAGE_ID = " + bijdrage.ID);
 
@@ -256,11 +242,11 @@ namespace MediaSharingSystem
                         {
                             while (dr.Read())
                             {
-                                int bijdrageid = dr.GetInt32(0);
+                                int bijdrageID = dr.GetInt32(0);
                                 string title = dr.GetString(1);
                                 string content = dr.GetString(2);
 
-                                medialist.Add(new TextMessage(bijdrageid, user, title, content));
+                                mediaList.Add(new TextMessage(bijdrageID, user, title, content));
                             }
                         }
                         catch (Exception e)
@@ -271,9 +257,9 @@ namespace MediaSharingSystem
                 }
                 Disconnect();
                 Connect();
-                return medialist;
+                return mediaList;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.ToString());
             }
@@ -283,15 +269,14 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Download photo type media.
+        ///     Download photo type media.
         /// </summary>
         /// <param name="amount">The amount of photo items to download. (0=infinite) </param>
         /// <returns>List with photo objects</returns>
         public List<Media> DownloadPhotos(int amount = 10)
         {
-
-            List<Bijdrage> bijdragelist = new List<Bijdrage>();
-            List<Media> medialist = new List<Media>();
+            List<Bijdrage> bijdrageList = new List<Bijdrage>();
+            List<Media> mediaList = new List<Media>();
 
             if (amount == 0)
             {
@@ -307,14 +292,14 @@ namespace MediaSharingSystem
                 while (dr.Read())
                 {
                     int id = dr.GetInt32(0);
-                    int accountid = dr.GetInt32(1);
+                    int accountID = dr.GetInt32(1);
                     DateTime date = dr.GetDateTime(2);
                     string soort = dr.GetString(3);
 
-                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                    bijdrageList.Add(new Bijdrage(id, accountID, date, soort));
                 }
 
-                foreach (Bijdrage bijdrage in bijdragelist)
+                foreach (Bijdrage bijdrage in bijdrageList)
                 {
                     User user = DownloadUserByID(bijdrage.UserID);
                     ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = " + bijdrage.ID);
@@ -323,18 +308,19 @@ namespace MediaSharingSystem
                     {
                         while (dr.Read())
                         {
-                            int bijdrageid = dr.GetInt32(0);
-                            int categorieid = dr.GetInt32(1);
+                            int bijdrageID = dr.GetInt32(0);
+                            int categorieID = dr.GetInt32(1);
                             string title = dr.GetString(2);
-                            string filepath = "Resources/Uploads/" + title;
-                            int filesize = dr.GetInt32(3);
+                            string filePath = "Resources/Uploads/" + title;
+                            int fileSize = dr.GetInt32(3);
 
-                            string extension = title.Substring(title.LastIndexOf('.'), title.Length - title.LastIndexOf('.'));
+                            string extension = title.Substring(title.LastIndexOf('.'),
+                                title.Length - title.LastIndexOf('.'));
                             // Filter only the image extensions
-                            if(extension == ".jpg" || extension == ".png"){
-                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, title, filepath));
+                            if (extension == ".jpg" || extension == ".png")
+                            {
+                                mediaList.Add(new MediaFile(bijdrageID, categorieID, user, title, filePath));
                             }
-
                         }
                     }
                     catch (Exception e)
@@ -344,7 +330,7 @@ namespace MediaSharingSystem
                 }
                 Disconnect();
                 Connect();
-                return medialist;
+                return mediaList;
             }
             catch (Exception e)
             {
@@ -356,15 +342,14 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Download video type media.
+        ///     Download video type media.
         /// </summary>
         /// <param name="amount">The amount of video items to download. (0=infinite)</param>
         /// <returns>List with video objects</returns>
         public List<Media> DownloadVideos(int amount = 10)
         {
-
-            List<Bijdrage> bijdragelist = new List<Bijdrage>();
-            List<Media> medialist = new List<Media>();
+            List<Bijdrage> bijdrageList = new List<Bijdrage>();
+            List<Media> mediaList = new List<Media>();
 
             if (amount == 0)
             {
@@ -380,14 +365,14 @@ namespace MediaSharingSystem
                 while (dr.Read())
                 {
                     int id = dr.GetInt32(0);
-                    int accountid = dr.GetInt32(1);
+                    int accountID = dr.GetInt32(1);
                     DateTime date = dr.GetDateTime(2);
                     string soort = dr.GetString(3);
 
-                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                    bijdrageList.Add(new Bijdrage(id, accountID, date, soort));
                 }
 
-                foreach (Bijdrage bijdrage in bijdragelist)
+                foreach (Bijdrage bijdrage in bijdrageList)
                 {
                     User user = DownloadUserByID(bijdrage.UserID);
                     ReadData("SELECT * FROM BESTAND WHERE BIJDRAGE_ID = " + bijdrage.ID);
@@ -396,19 +381,19 @@ namespace MediaSharingSystem
                     {
                         while (dr.Read())
                         {
-                            int bijdrageid = dr.GetInt32(0);
-                            int categorieid = dr.GetInt32(1);
+                            int bijdrageID = dr.GetInt32(0);
+                            int categorieID = dr.GetInt32(1);
                             string title = dr.GetString(2);
-                            string filepath = "Resources/Uploads/" + title;
-                            int filesize = dr.GetInt32(3);
+                            string filePath = "Resources/Uploads/" + title;
+                            int fileSize = dr.GetInt32(3);
 
-                            string extension = title.Substring(title.LastIndexOf('.'), title.Length - title.LastIndexOf('.'));
+                            string extension = title.Substring(title.LastIndexOf('.'),
+                                title.Length - title.LastIndexOf('.'));
                             // Filter only the image extensions
                             if (extension == ".mp4" || extension == ".ogg")
                             {
-                                medialist.Add(new MediaFile(bijdrageid, categorieid, user, title, filepath));
+                                mediaList.Add(new MediaFile(bijdrageID, categorieID, user, title, filePath));
                             }
-
                         }
                     }
                     catch (Exception e)
@@ -418,7 +403,7 @@ namespace MediaSharingSystem
                 }
                 Disconnect();
                 Connect();
-                return medialist;
+                return mediaList;
             }
             catch (Exception e)
             {
@@ -430,14 +415,14 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Download message type media.
+        ///     Download message type media.
         /// </summary>
         /// <param name="amount">The amount of message items to download. (0=infinite)</param>
         /// <returns>List with message objects</returns>
         public List<Media> DownloadMessages(int amount = 10)
         {
-            List<Bijdrage> bijdragelist = new List<Bijdrage>();
-            List<Media> medialist = new List<Media>();
+            List<Bijdrage> bijdrageList = new List<Bijdrage>();
+            List<Media> mediaList = new List<Media>();
 
             if (amount == 0)
             {
@@ -453,14 +438,14 @@ namespace MediaSharingSystem
                 while (dr.Read())
                 {
                     int id = dr.GetInt32(0);
-                    int accountid = dr.GetInt32(1);
+                    int accountID = dr.GetInt32(1);
                     DateTime date = dr.GetDateTime(2);
                     string soort = dr.GetString(3);
 
-                    bijdragelist.Add(new Bijdrage(id, accountid, date, soort));
+                    bijdrageList.Add(new Bijdrage(id, accountID, date, soort));
                 }
 
-                foreach (Bijdrage bijdrage in bijdragelist)
+                foreach (Bijdrage bijdrage in bijdrageList)
                 {
                     User user = DownloadUserByID(bijdrage.UserID);
                     ReadData("SELECT * FROM BERICHT WHERE TITEL IS NOT NULL AND BIJDRAGE_ID = " + bijdrage.ID);
@@ -469,12 +454,11 @@ namespace MediaSharingSystem
                     {
                         while (dr.Read())
                         {
-                            int bijdrageid = dr.GetInt32(0);
+                            int bijdrageID = dr.GetInt32(0);
                             string title = dr.GetString(1);
                             string content = dr.GetString(2);
-                            
-                            medialist.Add(new TextMessage(bijdrageid, user, title, content));
 
+                            mediaList.Add(new TextMessage(bijdrageID, user, title, content));
                         }
                     }
                     catch (Exception e)
@@ -484,7 +468,7 @@ namespace MediaSharingSystem
                 }
                 Disconnect();
                 Connect();
-                return medialist;
+                return mediaList;
             }
             catch (Exception e)
             {
@@ -496,7 +480,7 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Downloads the user by identifier.
+        ///     Downloads the user by identifier.
         /// </summary>
         /// <param name="userid">The userid.</param>
         /// <returns>The user object selected by identifier</returns>
@@ -521,8 +505,9 @@ namespace MediaSharingSystem
             }
             return null;
         }
+
         /// <summary>
-        /// Downloads the user by username.
+        ///     Downloads the user by username.
         /// </summary>
         /// <param name="name">The username.</param>
         /// <returns>The user object selected by username</returns>
@@ -547,14 +532,15 @@ namespace MediaSharingSystem
             }
             return null;
         }
+
         /// <summary>
-        /// Downloads the likes.
+        ///     Downloads the likes.
         /// </summary>
         /// <param name="mediaid">The mediaid.</param>
         /// <returns>The amount of likes. -1 if an error occured</returns>
         public int DownloadLikes(int mediaid)
         {
-            ReadData("SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE \"LIKE\" = 1 AND BIJDRAGE_ID = " + mediaid.ToString());
+            ReadData("SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE \"LIKE\" = 1 AND BIJDRAGE_ID = " + mediaid);
 
             try
             {
@@ -570,14 +556,15 @@ namespace MediaSharingSystem
             }
             return 0;
         }
+
         /// <summary>
-        /// Downloads the reports.
+        ///     Downloads the reports.
         /// </summary>
         /// <param name="mediaid">The mediaid.</param>
         /// <returns>The amount of reports. -1 if an error occured</returns>
         public int DownloadReports(int mediaid)
         {
-            ReadData("SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE ONGEWENST = 1 AND BIJDRAGE_ID = " + mediaid.ToString());
+            ReadData("SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE ONGEWENST = 1 AND BIJDRAGE_ID = " + mediaid);
 
             try
             {
@@ -593,16 +580,19 @@ namespace MediaSharingSystem
             }
             return 0;
         }
+
         /// <summary>
-        /// Downloads the comments for the given media.
+        ///     Downloads the comments for the given media.
         /// </summary>
         /// <param name="mediaid">The mediaid.</param>
         /// <returns>The corresponding Comment objects for this Media object</returns>
         public List<Comment> DownloadCommentsForMedia(int mediaid)
         {
-
             List<Comment> commentlist = new List<Comment>();
-            ReadData(String.Format("SELECT * FROM BERICHT WHERE TITEL IS NULL AND BIJDRAGE_ID IN (SELECT BERICHT_ID FROM BIJDRAGE_BERICHT WHERE BIJDRAGE_ID = {0})", mediaid));
+            ReadData(
+                string.Format(
+                    "SELECT * FROM BERICHT WHERE TITEL IS NULL AND BIJDRAGE_ID IN (SELECT BERICHT_ID FROM BIJDRAGE_BERICHT WHERE BIJDRAGE_ID = {0})",
+                    mediaid));
             try
             {
                 while (dr.Read())
@@ -619,22 +609,26 @@ namespace MediaSharingSystem
             }
             return commentlist;
         }
+
         /// <summary>
-        /// Checks if the given media is liked by the given user.
+        ///     Checks if the given media is liked by the given user.
         /// </summary>
         /// <param name="userid">The userid.</param>
         /// <param name="mediaid">The mediaid.</param>
         /// <returns>True if the given user has liked the given media</returns>
         public bool LikedBy(int userid, int mediaid)
         {
-            ReadData(String.Format("SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE \"LIKE\" = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}", userid, mediaid));
+            ReadData(
+                string.Format(
+                    "SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE \"LIKE\" = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}",
+                    userid, mediaid));
 
             try
             {
                 while (dr.Read())
                 {
-                    bool likedby = dr.GetInt32(0) > 0 ? true : false;
-                    return likedby;
+                    bool likedBy = dr.GetInt32(0) > 0 ? true : false;
+                    return likedBy;
                 }
             }
             catch (Exception ex)
@@ -643,22 +637,26 @@ namespace MediaSharingSystem
             }
             return false;
         }
+
         /// <summary>
-        /// Checks if the given media is reported by the given user.
+        ///     Checks if the given media is reported by the given user.
         /// </summary>
         /// <param name="userid">The userid.</param>
         /// <param name="mediaid">The mediaid.</param>
         /// <returns>True if the given user has reported the given media</returns>
-       public bool ReportedBy(int userid, int mediaid)
+        public bool ReportedBy(int userid, int mediaid)
         {
-            ReadData(String.Format("SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE ONGEWENST = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}", userid, mediaid));
+            ReadData(
+                string.Format(
+                    "SELECT COUNT(*) FROM ACCOUNT_BIJDRAGE WHERE ONGEWENST = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}",
+                    userid, mediaid));
 
             try
             {
                 while (dr.Read())
                 {
-                    bool reportedby = dr.GetInt32(0) > 0 ? true : false;
-                    return reportedby;
+                    bool reportedBy = dr.GetInt32(0) > 0 ? true : false;
+                    return reportedBy;
                 }
             }
             catch (Exception ex)
@@ -668,25 +666,28 @@ namespace MediaSharingSystem
             return false;
         }
 
-
-       /// <summary>
-       /// Like the given post
-       /// </summary>
-       /// <param name="user">The user that likes the selected media.</param>
-       /// <param name="id">The identifier of the selected media.</param>
+        /// <summary>
+        ///     Like the given post
+        /// </summary>
+        /// <param name="user">The user that likes the selected media.</param>
+        /// <param name="id">The identifier of the selected media.</param>
         public void LikePost(User user, int id)
         {
             try
             {
-                WriteData(String.Format("INSERT INTO ACCOUNT_BIJDRAGE (ID, ACCOUNT_ID, BIJDRAGE_ID, \"LIKE\", ONGEWENST) VALUES (ACCOUNT_BIJDRAGE_FCSEQ.NEXTVAL,{0},{1},{2},{3})",user.ID, id, 1, 0));
+                WriteData(
+                    string.Format(
+                        "INSERT INTO ACCOUNT_BIJDRAGE (ID, ACCOUNT_ID, BIJDRAGE_ID, \"LIKE\", ONGEWENST) VALUES (ACCOUNT_BIJDRAGE_FCSEQ.NEXTVAL,{0},{1},{2},{3})",
+                        user.ID, id, 1, 0));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
         }
+
         /// <summary>
-        /// Undo a given like.
+        ///     Undo a given like.
         /// </summary>
         /// <param name="user">The user that dislikes the selected media.</param>
         /// <param name="id">The identifier of the selected media.</param>
@@ -694,15 +695,19 @@ namespace MediaSharingSystem
         {
             try
             {
-                WriteData(String.Format("DELETE FROM ACCOUNT_BIJDRAGE WHERE \"LIKE\" = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}", user.ID, id));
+                WriteData(
+                    string.Format(
+                        "DELETE FROM ACCOUNT_BIJDRAGE WHERE \"LIKE\" = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}",
+                        user.ID, id));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
         }
+
         /// <summary>
-        /// Reports the post.
+        ///     Reports the post.
         /// </summary>
         /// <param name="user">The user that reports the selected media.</param>
         /// <param name="id">The identifier of the selected media.</param>
@@ -710,15 +715,19 @@ namespace MediaSharingSystem
         {
             try
             {
-                WriteData(String.Format("INSERT INTO ACCOUNT_BIJDRAGE (ID, ACCOUNT_ID, BIJDRAGE_ID, \"LIKE\", ONGEWENST) VALUES (ACCOUNT_BIJDRAGE_FCSEQ.NEXTVAL,{0},{1},{2},{3})", user.ID, id, 0, 1));
+                WriteData(
+                    string.Format(
+                        "INSERT INTO ACCOUNT_BIJDRAGE (ID, ACCOUNT_ID, BIJDRAGE_ID, \"LIKE\", ONGEWENST) VALUES (ACCOUNT_BIJDRAGE_FCSEQ.NEXTVAL,{0},{1},{2},{3})",
+                        user.ID, id, 0, 1));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
         }
+
         /// <summary>
-        /// Undo a given report.
+        ///     Undo a given report.
         /// </summary>
         /// <param name="user">The user that undoes the report.</param>
         /// <param name="id">The identifier of the selected media.</param>
@@ -726,15 +735,19 @@ namespace MediaSharingSystem
         {
             try
             {
-                WriteData(String.Format("DELETE FROM ACCOUNT_BIJDRAGE WHERE ONGEWENST = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}", user.ID, id));
+                WriteData(
+                    string.Format(
+                        "DELETE FROM ACCOUNT_BIJDRAGE WHERE ONGEWENST = 1 AND ACCOUNT_ID = {0} AND BIJDRAGE_ID = {1}",
+                        user.ID, id));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
         }
+
         /// <summary>
-        /// Uploads a comment.
+        ///     Uploads a comment.
         /// </summary>
         /// <param name="mediaid">The mediaid of the selected media.</param>
         /// <param name="user">The user that commits a comment.</param>
@@ -743,73 +756,88 @@ namespace MediaSharingSystem
         {
             Disconnect();
             Connect();
-            int newid = 0;
+            int newID = 0;
             try
             {
                 // Select the next id.
                 ReadData("SELECT BIJDRAGE_FCSEQ.NEXTVAL FROM DUAL");
                 while (dr.Read())
                 {
-                    newid = dr.GetInt32(0);
+                    newID = dr.GetInt32(0);
                 }
                 // Insert the data in the right tables.
-                WriteData(String.Format("INSERT INTO BIJDRAGE (ID, ACCOUNT_ID, DATUM, SOORT) VALUES ({0}, {1}, to_date('{2}', 'dd-mm-yy HH24:MI:SS'), 'bericht')", newid, user.ID, DateTime.Now));
-                WriteData(String.Format("INSERT INTO BERICHT (BIJDRAGE_ID, TITEL, INHOUD) VALUES ({0}, NULL, '{1}')", newid, comment));
-                WriteData(String.Format("INSERT INTO BIJDRAGE_BERICHT (BIJDRAGE_ID, BERICHT_ID) VALUES ({0}, {1})", mediaid, newid));
-
+                WriteData(
+                    string.Format(
+                        "INSERT INTO BIJDRAGE (ID, ACCOUNT_ID, DATUM, SOORT) VALUES ({0}, {1}, to_date('{2}', 'dd-mm-yy HH24:MI:SS'), 'bericht')",
+                        newID, user.ID, DateTime.Now));
+                WriteData(string.Format("INSERT INTO BERICHT (BIJDRAGE_ID, TITEL, INHOUD) VALUES ({0}, NULL, '{1}')",
+                    newID, comment));
+                WriteData(string.Format("INSERT INTO BIJDRAGE_BERICHT (BIJDRAGE_ID, BERICHT_ID) VALUES ({0}, {1})",
+                    mediaid, newID));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
-
         }
+
         /// <summary>
-        /// Uploads a file.
+        ///     Uploads a file.
         /// </summary>
         /// <param name="filename">The filename(title) of the file.</param>
         /// <param name="user">The user that uploads the file.</param>
         public void UploadFile(string filename, User user)
         {
-            int newid = 0;
+            int newID = 0;
             ReadData("SELECT BIJDRAGE_FCSEQ.NEXTVAL FROM DUAL");
-                while (dr.Read())
-                {
-                    newid = dr.GetInt32(0);
-                }
+            while (dr.Read())
+            {
+                newID = dr.GetInt32(0);
+            }
 
             try
             {
-                WriteData(String.Format("INSERT INTO BIJDRAGE (ID, ACCOUNT_ID, DATUM, SOORT) VALUES ({0}, {1}, to_date('{2}', 'dd-mm-yy HH24:MI:SS'), 'bestand')", newid, user.ID, DateTime.Now));
-                WriteData(String.Format("INSERT INTO CATEGORIE (BIJDRAGE_ID, CATEGORIE_ID, NAAM) VALUES ({0}, {1}, '{2}')", newid, 4, filename));
-                WriteData(String.Format("INSERT INTO BESTAND (BIJDRAGE_ID, CATEGORIE_ID, BESTANDSLOCATIE, GROOTTE) VALUES ({0}, {1}, '{2}', 0)", newid, 4, filename));
-
+                WriteData(
+                    string.Format(
+                        "INSERT INTO BIJDRAGE (ID, ACCOUNT_ID, DATUM, SOORT) VALUES ({0}, {1}, to_date('{2}', 'dd-mm-yy HH24:MI:SS'), 'bestand')",
+                        newID, user.ID, DateTime.Now));
+                WriteData(
+                    string.Format("INSERT INTO CATEGORIE (BIJDRAGE_ID, CATEGORIE_ID, NAAM) VALUES ({0}, {1}, '{2}')",
+                        newID, 4, filename));
+                WriteData(
+                    string.Format(
+                        "INSERT INTO BESTAND (BIJDRAGE_ID, CATEGORIE_ID, BESTANDSLOCATIE, GROOTTE) VALUES ({0}, {1}, '{2}', 0)",
+                        newID, 4, filename));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
             }
         }
+
         /// <summary>
-        /// Uploads a message.
+        ///     Uploads a message.
         /// </summary>
         /// <param name="title">The title of the message.</param>
         /// <param name="message">The message content.</param>
         /// <param name="user">The user that uploads the file.</param>
         public void UploadMessage(string title, string message, User user)
         {
-            int newid = 0;
+            int newID = 0;
             ReadData("SELECT BIJDRAGE_FCSEQ.NEXTVAL FROM DUAL");
             while (dr.Read())
             {
-                newid = dr.GetInt32(0);
+                newID = dr.GetInt32(0);
             }
 
             try
             {
-                WriteData(String.Format("INSERT INTO BIJDRAGE (ID, ACCOUNT_ID, DATUM, SOORT) VALUES ({0}, {1}, to_date('{2}', 'dd-mm-yy HH24:MI:SS'), 'bericht')", newid, user.ID, DateTime.Now));
-                WriteData(String.Format("INSERT INTO BERICHT (BIJDRAGE_ID, TITEL, INHOUD) VALUES ({0}, '{1}', '{2}')", newid, title, message));
-
+                WriteData(
+                    string.Format(
+                        "INSERT INTO BIJDRAGE (ID, ACCOUNT_ID, DATUM, SOORT) VALUES ({0}, {1}, to_date('{2}', 'dd-mm-yy HH24:MI:SS'), 'bericht')",
+                        newID, user.ID, DateTime.Now));
+                WriteData(string.Format("INSERT INTO BERICHT (BIJDRAGE_ID, TITEL, INHOUD) VALUES ({0}, '{1}', '{2}')",
+                    newID, title, message));
             }
             catch (Exception ex)
             {

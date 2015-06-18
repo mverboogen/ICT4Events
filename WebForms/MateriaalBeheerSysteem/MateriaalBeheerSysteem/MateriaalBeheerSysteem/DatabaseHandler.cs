@@ -1,41 +1,16 @@
 ﻿using System;
-using System.Web;
-using System.Linq;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Collections.Generic;
-using Oracle;
-using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
-using Oracle.DataAccess.Types;
-
-
-/*
-Connect();
-
-try
-{
-
-}
-catch(Exception ex)
-{
-    Debug.WriteLine(ex.Message);
-}
-finally
-{
-    Disconnect();
-}
- */
 
 namespace MateriaalBeheerSysteem
 {
     public class DatabaseHandler
     {
-
-        private OracleConnection con;
         private OracleCommand cmd;
+        private OracleConnection con;
         private OracleDataReader dr;
-
         private static DatabaseHandler self;
 
         private DatabaseHandler()
@@ -66,7 +41,6 @@ namespace MateriaalBeheerSysteem
             {
                 Console.WriteLine(ex.Message);
             }
-
         }
 
         public void Disconnect()
@@ -144,7 +118,6 @@ namespace MateriaalBeheerSysteem
                 }
 
 
-
                 if (updatedRows > 0)
                 {
                     return true;
@@ -184,7 +157,8 @@ namespace MateriaalBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Product (ID, ProductCat_ID, Merk, Serie, TypeNummer, Prijs) VALUES (:NewID, :NewProductCat, :NewBrand, :NewSerie, :NewNumber, :NewPrice)";
+                cmd.CommandText =
+                    "INSERT INTO Product (ID, ProductCat_ID, Merk, Serie, TypeNummer, Prijs) VALUES (:NewID, :NewProductCat, :NewBrand, :NewSerie, :NewNumber, :NewPrice)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
                 cmd.Parameters.Add("NewProductCat", OracleDbType.Int32).Value = item.MainCatID;
                 cmd.Parameters.Add("NewBrand", OracleDbType.Varchar2).Value = item.Brand;
@@ -233,7 +207,8 @@ namespace MateriaalBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO ProductExemplaar (ID, Product_ID, Volgnummer, Barcode) VALUES (:NewID, :NewProductID, :NewNumber, :NewBarcode)";
+                cmd.CommandText =
+                    "INSERT INTO ProductExemplaar (ID, Product_ID, Volgnummer, Barcode) VALUES (:NewID, :NewProductID, :NewNumber, :NewBarcode)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID + i;
                 cmd.Parameters.Add("NewProductID", OracleDbType.Int32).Value = itemID;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextNumber + i;
@@ -269,7 +244,8 @@ namespace MateriaalBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Plek (ID, Locatie_ID, Nummer, Capaciteit) VALUES (:NewID, :LocationID, :NewNumber, :NewCapacity)";
+                cmd.CommandText =
+                    "INSERT INTO Plek (ID, Locatie_ID, Nummer, Capaciteit) VALUES (:NewID, :LocationID, :NewNumber, :NewCapacity)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextCampsiteID;
                 cmd.Parameters.Add("LocationID", OracleDbType.Int32).Value = c.LocationID;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextNumber;
@@ -279,10 +255,10 @@ namespace MateriaalBeheerSysteem
 
                 for (int i = 0; i < 6; i++)
                 {
-
                     cmd = new OracleCommand();
                     cmd.Connection = con;
-                    cmd.CommandText = "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
+                    cmd.CommandText =
+                        "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
                     cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextSpecificationID + i;
                     cmd.Parameters.Add("SpecificationID", OracleDbType.Int32).Value = i + 2;
                     cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = nextCampsiteID;
@@ -290,16 +266,16 @@ namespace MateriaalBeheerSysteem
                     switch (i)
                     {
                         case 0:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort ? "JA" : "NEE";
                             break;
                         case 1:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap ? "JA" : "NEE";
                             break;
                         case 2:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.Size);
                             break;
                         case 3:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane ? "JA" : "NEE";
                             break;
                         case 4:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.XCor);
@@ -324,7 +300,6 @@ namespace MateriaalBeheerSysteem
             }
 
             return false;
-
         }
 
         public bool AddCampsiteToReservation(int campsiteID, int reservationID)
@@ -336,7 +311,8 @@ namespace MateriaalBeheerSysteem
                 int results = 0;
                 int nextID = GetNextID("Plek_Reservering");
 
-                ReadData("SELECT COUNT(ID) FROM Plek_Reservering WHERE Plek_ID = " + campsiteID + " AND Reservering_ID = " + reservationID);
+                ReadData("SELECT COUNT(ID) FROM Plek_Reservering WHERE Plek_ID = " + campsiteID +
+                         " AND Reservering_ID = " + reservationID);
 
                 while (dr.Read())
                 {
@@ -350,7 +326,8 @@ namespace MateriaalBeheerSysteem
                 {
                     cmd = new OracleCommand();
                     cmd.Connection = con;
-                    cmd.CommandText = "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID AND Reservering_ID = :ReservationID";
+                    cmd.CommandText =
+                        "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID AND Reservering_ID = :ReservationID";
                     cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
                     cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
 
@@ -359,7 +336,8 @@ namespace MateriaalBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Plek_Reservering (ID, Plek_ID, Reservering_ID) VALUES (:NewID, :CampsiteID, :ReservationID)";
+                cmd.CommandText =
+                    "INSERT INTO Plek_Reservering (ID, Plek_ID, Reservering_ID) VALUES (:NewID, :CampsiteID, :ReservationID)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
                 cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
                 cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
@@ -390,7 +368,9 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT PE.ID FROM ProductExemplaar PE, Product P WHERE P.ID = PE.Product_ID AND PE.ID NOT IN (SELECT PE.ID FROM ProductExemplaar Pe, Verhuur V WHERE PE.ID = V.ProductExemplaar_ID) AND P.ID = " + itemID);
+                ReadData(
+                    "SELECT PE.ID FROM ProductExemplaar PE, Product P WHERE P.ID = PE.Product_ID AND PE.ID NOT IN (SELECT PE.ID FROM ProductExemplaar Pe, Verhuur V WHERE PE.ID = V.ProductExemplaar_ID) AND P.ID = " +
+                    itemID);
 
                 while (dr.Read())
                 {
@@ -400,7 +380,9 @@ namespace MateriaalBeheerSysteem
                     }
                 }
 
-                ReadData("SELECT RP.ID FROM Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND P.ID = " + bracletID);
+                ReadData(
+                    "SELECT RP.ID FROM Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND P.ID = " +
+                    bracletID);
 
                 while (dr.Read())
                 {
@@ -414,7 +396,8 @@ namespace MateriaalBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Verhuur (ID, ProductExemplaar_ID, Res_Pb_ID) VALUES (:NewID, :ProductID, :BracletID)";
+                cmd.CommandText =
+                    "INSERT INTO Verhuur (ID, ProductExemplaar_ID, Res_Pb_ID) VALUES (:NewID, :ProductID, :BracletID)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
                 cmd.Parameters.Add("ProductID", OracleDbType.Int32).Value = itemExemplaarID;
                 cmd.Parameters.Add("BracletID", OracleDbType.Int32).Value = ResLinkID;
@@ -444,7 +427,9 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT MIN(P.ID) FROM Polsbandje P, Reservering_Polsbandje RP, Reservering R WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND R.ID = " + reservationID);
+                ReadData(
+                    "SELECT MIN(P.ID) FROM Polsbandje P, Reservering_Polsbandje RP, Reservering R WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND R.ID = " +
+                    reservationID);
 
                 while (dr.Read())
                 {
@@ -479,7 +464,8 @@ namespace MateriaalBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "SELECT R.ID FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND P.Barcode = :BarCode";
+                cmd.CommandText =
+                    "SELECT R.ID FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND P.Barcode = :BarCode";
                 cmd.Parameters.Add("BarCode", OracleDbType.Varchar2).Value = barcode;
 
                 dr = cmd.ExecuteReader();
@@ -491,7 +477,6 @@ namespace MateriaalBeheerSysteem
                         return Convert.ToInt32(dr.GetValue(0));
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -538,7 +523,8 @@ namespace MateriaalBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id");
+            ReadData(
+                @"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id");
 
             List<Event> eventList = new List<Event>();
 
@@ -605,7 +591,9 @@ namespace MateriaalBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers, L.ID FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " + id.ToString());
+            ReadData(
+                @"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers, L.ID FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " +
+                id);
 
             Event selEvent = new Event();
 
@@ -615,8 +603,6 @@ namespace MateriaalBeheerSysteem
                 {
                     if (!dr.IsDBNull(0) && !dr.IsDBNull(1))
                     {
-
-
                         selEvent.ID = Convert.ToInt32(dr.GetValue(0));
                         selEvent.Name = dr.GetString(1);
                         selEvent.LocationName = dr.GetString(2);
@@ -677,7 +663,9 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND E.ID = " + id.ToString());
+                ReadData(
+                    "SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND E.ID = " +
+                    id);
 
                 while (dr.Read())
                 {
@@ -724,7 +712,9 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie, P.TypeNummer FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " + reservationID);
+                ReadData(
+                    "SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie, P.TypeNummer FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " +
+                    reservationID);
 
                 while (dr.Read())
                 {
@@ -738,15 +728,17 @@ namespace MateriaalBeheerSysteem
                     reservedItemList.Add(item);
                 }
 
-                foreach(Item item in reservedItemList)
+                foreach (Item item in reservedItemList)
                 {
-                    ReadData("SELECT V.Betaald, V.DatumUit, V.DatumIn FROM Verhuur V, ProductExemplaar Pex WHERE Pex.ID = V.ProductExemplaar_ID AND Pex.Barcode = " + item.Barcode);
-                    while(dr.Read())
+                    ReadData(
+                        "SELECT V.Betaald, V.DatumUit, V.DatumIn FROM Verhuur V, ProductExemplaar Pex WHERE Pex.ID = V.ProductExemplaar_ID AND Pex.Barcode = " +
+                        item.Barcode);
+                    while (dr.Read())
                     {
-                        if(!dr.IsDBNull(0))
+                        if (!dr.IsDBNull(0))
                         {
                             item.Payed = Convert.ToInt32(dr.GetValue(0)) == 1 ? true : false;
-                            if(!dr.IsDBNull(1))
+                            if (!dr.IsDBNull(1))
                             {
                                 item.DateOut = dr.GetDateTime(1);
                             }
@@ -755,7 +747,6 @@ namespace MateriaalBeheerSysteem
                                 item.DateIn = dr.GetDateTime(2);
                             }
                         }
-                        
                     }
                 }
 
@@ -802,7 +793,7 @@ namespace MateriaalBeheerSysteem
                     int catID = item.MainCatID;
                     while (!end)
                     {
-                        ReadData("SELECT Naam, ProductCat_ID FROM ProductCat WHERE ID = " + catID.ToString());
+                        ReadData("SELECT Naam, ProductCat_ID FROM ProductCat WHERE ID = " + catID);
 
                         int oldID = catID;
 
@@ -822,7 +813,9 @@ namespace MateriaalBeheerSysteem
                         }
                     }
 
-                    ReadData("SELECT Pe.ID, Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Reservering_Polsbandje RP, Verhuur V, ProductExemplaar Pex, Product P, Reservering R WHERE P.ID = Pex.Product_ID AND Pex.ID = V.ProductExemplaar_ID AND RP.ID = V.Res_Pb_ID AND RP.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND P.ID = " + item.ID.ToString());
+                    ReadData(
+                        "SELECT Pe.ID, Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Reservering_Polsbandje RP, Verhuur V, ProductExemplaar Pex, Product P, Reservering R WHERE P.ID = Pex.Product_ID AND Pex.ID = V.ProductExemplaar_ID AND RP.ID = V.Res_Pb_ID AND RP.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND P.ID = " +
+                        item.ID);
 
                     List<Booker> renterList = new List<Booker>();
 
@@ -837,14 +830,18 @@ namespace MateriaalBeheerSysteem
                         renterList.Add(b);
                     }
 
-                    ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " + item.ID.ToString());
+                    ReadData(
+                        "SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " +
+                        item.ID);
 
                     while (dr.Read())
                     {
                         item.Amount = Convert.ToInt32(dr.GetValue(0));
                     }
 
-                    ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " + item.ID.ToString());
+                    ReadData(
+                        "SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " +
+                        item.ID);
 
                     while (dr.Read())
                     {
@@ -875,7 +872,9 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT P.ID, P.NUMMER FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND E.ID = " + id.ToString());
+                ReadData(
+                    "SELECT P.ID, P.NUMMER FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND E.ID = " +
+                    id);
                 while (dr.Read())
                 {
                     Campsite campsite = new Campsite();
@@ -956,7 +955,9 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND R.ID = " + id.ToString());
+                ReadData(
+                    "SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND R.ID = " +
+                    id);
 
                 r = new Reservation();
                 Booker b = new Booker();
@@ -981,7 +982,9 @@ namespace MateriaalBeheerSysteem
                     r.ReservationBooker = b;
                 }
 
-                ReadData("SELECT A.ID, A.Gebruikersnaam, A.Email, P.ID, P.Barcode FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P, Account A WHERE R.ID = RP.Reservering_ID AND P.ID = RP.Polsbandje_ID AND A.ID = RP.Account_ID AND R.ID = " + id.ToString());
+                ReadData(
+                    "SELECT A.ID, A.Gebruikersnaam, A.Email, P.ID, P.Barcode FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P, Account A WHERE R.ID = RP.Reservering_ID AND P.ID = RP.Polsbandje_ID AND A.ID = RP.Account_ID AND R.ID = " +
+                    id);
 
                 List<Account> accountList = new List<Account>();
 
@@ -999,7 +1002,9 @@ namespace MateriaalBeheerSysteem
 
                 r.AccountList = accountList;
 
-                ReadData("SELECT P.Nummer FROM Plek P, Plek_Reservering PK, Reservering R WHERE P.ID = PK.Plek_ID AND PK.Reservering_ID = R.ID AND R.ID = " + r.ID);
+                ReadData(
+                    "SELECT P.Nummer FROM Plek P, Plek_Reservering PK, Reservering R WHERE P.ID = PK.Plek_ID AND PK.Reservering_ID = R.ID AND R.ID = " +
+                    r.ID);
 
                 List<int> campsiteNumberList = new List<int>();
 
@@ -1011,7 +1016,6 @@ namespace MateriaalBeheerSysteem
                 r.CampsiteNumberList = campsiteNumberList;
 
                 return r;
-
             }
             catch (Exception ex)
             {
@@ -1034,7 +1038,7 @@ namespace MateriaalBeheerSysteem
 
             try
             {
-                ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P WHERE P.ID = " + id.ToString());
+                ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P WHERE P.ID = " + id);
 
                 while (dr.Read())
                 {
@@ -1048,7 +1052,9 @@ namespace MateriaalBeheerSysteem
                     */
                 }
 
-                ReadData("SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " + id.ToString());
+                ReadData(
+                    "SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " +
+                    id);
 
                 while (dr.Read())
                 {
@@ -1079,7 +1085,9 @@ namespace MateriaalBeheerSysteem
                     specID++;
                 }
 
-                ReadData("SELECT Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Plek_Reservering PR, Plek P, Reservering R WHERE Pe.ID = R.Persoon_ID AND PR.Reservering_ID = R.ID AND PR.Plek_ID = P.ID AND P.ID = " + id.ToString());
+                ReadData(
+                    "SELECT Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Plek_Reservering PR, Plek P, Reservering R WHERE Pe.ID = R.Persoon_ID AND PR.Reservering_ID = R.ID AND PR.Plek_ID = P.ID AND P.ID = " +
+                    id);
                 while (dr.Read())
                 {
                     Booker b = new Booker();
@@ -1112,7 +1120,8 @@ namespace MateriaalBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Event SET Naam = :NewName, DatumStart = :NewStartDate, DatumEinde = :NewEndDate, MaxBezoekers = :VisitorLimit WHERE ID = :EventID";
+                cmd.CommandText =
+                    "UPDATE Event SET Naam = :NewName, DatumStart = :NewStartDate, DatumEinde = :NewEndDate, MaxBezoekers = :VisitorLimit WHERE ID = :EventID";
                 cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = e.Name;
                 cmd.Parameters.Add("NewStartDate", OracleDbType.Date).Value = e.StartDate;
                 cmd.Parameters.Add("NewEndDate", OracleDbType.Date).Value = e.EndDate;
@@ -1123,7 +1132,8 @@ namespace MateriaalBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Locatie SET Naam = :NewName, Straat = :NewStreet, NR = :NewNumber, Postcode = :NewZipCode, Plaats = :NewCity WHERE ID = :LocationID";
+                cmd.CommandText =
+                    "UPDATE Locatie SET Naam = :NewName, Straat = :NewStreet, NR = :NewNumber, Postcode = :NewZipCode, Plaats = :NewCity WHERE ID = :LocationID";
                 cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = e.LocationName;
                 cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = e.LocationStreet;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = e.LocationNumber;
@@ -1137,7 +1147,6 @@ namespace MateriaalBeheerSysteem
                 {
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1161,17 +1170,19 @@ namespace MateriaalBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Reservering SET DatumStart = :NewDateStart, DatumEinde = :NewDateEnd, Betaald = :NewPayed WHERE ID = :ReservationID";
+                cmd.CommandText =
+                    "UPDATE Reservering SET DatumStart = :NewDateStart, DatumEinde = :NewDateEnd, Betaald = :NewPayed WHERE ID = :ReservationID";
                 cmd.Parameters.Add("NewDateStart", OracleDbType.Date).Value = r.StartDate;
                 cmd.Parameters.Add("NewDateEnd", OracleDbType.Date).Value = r.EndDate;
-                cmd.Parameters.Add("NewPayed", OracleDbType.Int32).Value = r.Payed == true ? 1 : 0;
+                cmd.Parameters.Add("NewPayed", OracleDbType.Int32).Value = r.Payed ? 1 : 0;
                 cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = r.ID;
 
                 updatedRows += cmd.ExecuteNonQuery();
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Persoon SET Straat = :NewStreet, HuisNr = :NewNumber, Woonplaats = :NewCity WHERE ID = :PersoonID";
+                cmd.CommandText =
+                    "UPDATE Persoon SET Straat = :NewStreet, HuisNr = :NewNumber, Woonplaats = :NewCity WHERE ID = :PersoonID";
                 cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = r.ReservationBooker.Street;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = r.ReservationBooker.Number;
                 cmd.Parameters.Add("NewCity", OracleDbType.Varchar2).Value = r.ReservationBooker.City;
@@ -1183,7 +1194,6 @@ namespace MateriaalBeheerSysteem
                 {
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1207,7 +1217,8 @@ namespace MateriaalBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Product SET Merk = :NewBrand, Serie = :NewSerie, Prijs = :NewPrice WHERE ID = :ItemID";
+                cmd.CommandText =
+                    "UPDATE Product SET Merk = :NewBrand, Serie = :NewSerie, Prijs = :NewPrice WHERE ID = :ItemID";
                 cmd.Parameters.Add("NewBrand", OracleDbType.Varchar2).Value = i.Brand;
                 cmd.Parameters.Add("NewSerie", OracleDbType.Varchar2).Value = i.Serie;
                 cmd.Parameters.Add("NewPrice", OracleDbType.Decimal).Value = i.Price;
@@ -1219,7 +1230,6 @@ namespace MateriaalBeheerSysteem
                 {
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1261,10 +1271,10 @@ namespace MateriaalBeheerSysteem
 
                 for (int i = 0; i < 6; i++)
                 {
-
                     cmd = new OracleCommand();
                     cmd.Connection = con;
-                    cmd.CommandText = "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
+                    cmd.CommandText =
+                        "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
                     cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextSpecificationID + i;
                     cmd.Parameters.Add("SpecificationID", OracleDbType.Int32).Value = i + 2;
                     cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = c.ID;
@@ -1272,16 +1282,16 @@ namespace MateriaalBeheerSysteem
                     switch (i)
                     {
                         case 0:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort ? "JA" : "NEE";
                             break;
                         case 1:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap ? "JA" : "NEE";
                             break;
                         case 2:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.Size);
                             break;
                         case 3:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane ? "JA" : "NEE";
                             break;
                         case 4:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.XCor);
@@ -1404,5 +1414,5 @@ namespace MateriaalBeheerSysteem
 
             return b;
         }
-    }   
+    }
 }

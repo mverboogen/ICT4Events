@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class AddCampsite : System.Web.UI.Page
+    public partial class AddCampsite : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private Event selEvent;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -21,7 +15,6 @@ namespace EventBeheerSysteem
 
             if (selEvent != null)
             {
-                
             }
             else
             {
@@ -30,14 +23,14 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Calls the add campsite database function when the save button is pressed
+        ///     Calls the add campsite database function when the save button is pressed
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-
-            if(campsiteCapacityTb.Text != "" && campsiteSizeTb.Text != "" && campsiteXCorTb.Text != "" && campsiteYCorTb.Text != "")
+            if (campsiteCapacityTb.Text != "" && campsiteSizeTb.Text != "" && campsiteXCorTb.Text != "" &&
+                campsiteYCorTb.Text != "")
             {
                 try
                 {
@@ -58,13 +51,11 @@ namespace EventBeheerSysteem
                         Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
                 }
-                
             }
-            
         }
     }
 }

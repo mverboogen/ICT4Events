@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Diagnostics;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class EventMaterials : System.Web.UI.Page
+    public partial class EventMaterials : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
+        private DataChecker checker = DataChecker.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private List<Item> itemList;
+        private int selectedIndex;
         private Event selEvent;
         private Item selItem;
-        private List<Item> itemList;
-
-        private int selectedIndex;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,16 +24,15 @@ namespace EventBeheerSysteem
 
                 if (!IsPostBack)
                 {
-                    if(itemList != null)
+                    if (itemList != null)
                     {
                         FillData();
                     }
-
                 }
                 else
                 {
                     selectedIndex = materialsLb.SelectedIndex;
-                    if(selectedIndex != -1)
+                    if (selectedIndex != -1)
                     {
                         selItem = itemList[selectedIndex];
                     }
@@ -52,7 +45,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the listbox with all items in the database
+        ///     Fills the listbox with all items in the database
         /// </summary>
         private void FillData()
         {
@@ -62,7 +55,7 @@ namespace EventBeheerSysteem
 
             int i = 0;
 
-            foreach(Item item in itemList)
+            foreach (Item item in itemList)
             {
                 materialsLb.Items.Add(item.Name);
                 materialsLb.Items[i].Value = Convert.ToString(item.ID);
@@ -71,7 +64,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the details div with all the data of the selected item
+        ///     Fills the details div with all the data of the selected item
         /// </summary>
         private void FillDetails()
         {
@@ -85,14 +78,14 @@ namespace EventBeheerSysteem
             materialPriceTb.Text = i.Price.ToString();
             materialItemCountTb.Text = i.Available + " / " + i.Amount;
 
-            foreach(Booker b in i.RenterList)
+            foreach (Booker b in i.RenterList)
             {
                 materialRenterLb.Items.Add(b.Name);
             }
         }
 
         /// <summary>
-        /// Redirects the the AddMaterial page when addMaterial is pressed
+        ///     Redirects the the AddMaterial page when addMaterial is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -102,13 +95,13 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Saves the new data to the database with a database handler when saveBtn has been pressed
+        ///     Saves the new data to the database with a database handler when saveBtn has been pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            if(materialsLb.SelectedIndex != -1)
+            if (materialsLb.SelectedIndex != -1)
             {
                 Item newI = new Item();
                 try
@@ -134,8 +127,8 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// If the selected item has a renter(s) show a dialog to confirm
-        /// If there is no renter or it has been confirmed removes the item from the database with a database handler methode
+        ///     If the selected item has a renter(s) show a dialog to confirm
+        ///     If there is no renter or it has been confirmed removes the item from the database with a database handler methode
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -155,7 +148,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Retrieves the data from the database of the selected object in the listbox
+        ///     Retrieves the data from the database of the selected object in the listbox
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -172,13 +165,13 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Redirects to the  AddRenterToItem page when addRenter is pressed
+        ///     Redirects to the  AddRenterToItem page when addRenter is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void addRenter_Click(object sender, EventArgs e)
         {
-            if(materialsLb.SelectedIndex != -1)
+            if (materialsLb.SelectedIndex != -1)
             {
                 if (selItem.Available > 0)
                 {

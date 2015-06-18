@@ -1,48 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ToegangsControleSysteem
 {
     public class Event
     {
-
-        private int id;
-        private string name;
-        private int locationID;
-        private string locationName;
-        private string locationStreet;
-        private int locationNumber;
-        private string locationZipCode;
         private string locationCity;
-        private DateTime startDate;
-        private DateTime endDate;
-        private int maxVisistors;
-
-        public int ID
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public int LocationID
-        {
-            get { return locationID; }
-            set { locationID = value; }
-        }
-
-        public string LocationName
-        {
-            get { return locationName; }
-            set { locationName = value; }
-        }
+        private string locationStreet;
+        private string locationZipCode;
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int LocationID { get; set; }
+        public string LocationName { get; set; }
 
         public string LocationStreet
         {
@@ -52,19 +20,12 @@ namespace ToegangsControleSysteem
                 {
                     return "";
                 }
-                else
-                {
-                    return locationStreet;
-                }
+                return locationStreet;
             }
             set { locationStreet = value; }
         }
 
-        public int LocationNumber
-        {
-            get { return locationNumber; }
-            set { locationNumber = value; }
-        }
+        public int LocationNumber { get; set; }
 
         public string LocationZipCode
         {
@@ -74,10 +35,7 @@ namespace ToegangsControleSysteem
                 {
                     return "";
                 }
-                else
-                {
-                    return locationZipCode;
-                }
+                return locationZipCode;
             }
             set { locationZipCode = value; }
         }
@@ -90,30 +48,13 @@ namespace ToegangsControleSysteem
                 {
                     return "";
                 }
-                else
-                {
-                    return locationCity;
-                }
+                return locationCity;
             }
             set { locationCity = value; }
         }
 
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set { startDate = value; }
-        }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set { endDate = value; }
-        }
-
-        public int MaxVisitors
-        {
-            get { return maxVisistors; }
-            set { maxVisistors = value; }
-        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int MaxVisitors { get; set; }
     }
 }

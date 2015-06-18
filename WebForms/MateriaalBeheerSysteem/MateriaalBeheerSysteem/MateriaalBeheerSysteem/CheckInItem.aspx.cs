@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace MateriaalBeheerSysteem
 {
-    public partial class CheckInItem : System.Web.UI.Page
+    public partial class CheckInItem : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
-        List<Item> itemList = new List<Item>();
-        Item selItem = new Item();
-
-        int selectedInstanceItemID;
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private List<Item> itemList = new List<Item>();
+        private int selectedInstanceItemID;
+        private Item selItem = new Item();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,7 +52,8 @@ namespace MateriaalBeheerSysteem
                 itemInstancePayedCb.Checked = selItem.Payed;
                 if (selItem.DateOut != DateTime.MinValue)
                 {
-                    itemInstanceDateOutTb.Text = selItem.DateOut.ToShortDateString() + " - " + selItem.DateOut.ToShortTimeString();
+                    itemInstanceDateOutTb.Text = selItem.DateOut.ToShortDateString() + " - " +
+                                                 selItem.DateOut.ToShortTimeString();
                 }
                 else
                 {
@@ -65,7 +61,8 @@ namespace MateriaalBeheerSysteem
                 }
                 if (selItem.DateIn != DateTime.MinValue)
                 {
-                    itemInstanceDateInTb.Text = selItem.DateIn.ToShortDateString() + " - " + selItem.DateIn.ToShortTimeString();
+                    itemInstanceDateInTb.Text = selItem.DateIn.ToShortDateString() + " - " +
+                                                selItem.DateIn.ToShortTimeString();
                 }
                 else
                 {
@@ -76,15 +73,15 @@ namespace MateriaalBeheerSysteem
 
         protected void checkInBtn_Click(object sender, EventArgs e)
         {
-            if(itemInstanceDateOutTb.Text != "")
+            if (itemInstanceDateOutTb.Text != "")
             {
                 if (dbHandler.UpdateItemCheckIn(selectedInstanceItemID))
                 {
-                    itemInstanceDateInTb.Text = DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToShortTimeString();
+                    itemInstanceDateInTb.Text = DateTime.Now.ToShortDateString() + " - " +
+                                                DateTime.Now.ToShortTimeString();
                     selItem.DateIn = DateTime.Now;
                 }
             }
-            
         }
 
         protected void PayBtn_Click(object sender, EventArgs e)
@@ -122,7 +119,6 @@ namespace MateriaalBeheerSysteem
 
                     i++;
                 }
-
             }
         }
     }

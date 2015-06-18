@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.IO;
+using System.Linq;
+using System.Web.UI;
 
 namespace MediaSharingSystem
 {
-    public partial class upload : System.Web.UI.Page
+    public partial class upload : Page
     {
-
+        private string[] ImageTypes = {"image/jpeg", "image/png"};
+        private string[] VideoTypes = {"video/mp4", "video/ogg"};
         private string queryString;
-
-        private string[] ImageTypes = { "image/jpeg", "image/png" };
-        private string[] VideoTypes = { "video/mp4", "video/ogg" };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,7 +36,6 @@ namespace MediaSharingSystem
                     UploadMessage.Attributes["class"] += " visible";
                     break;
             }
-
         }
 
         protected void UploadButton_Click(object sender, EventArgs e)
@@ -68,7 +62,7 @@ namespace MediaSharingSystem
                                     string filename = Path.GetFileName(FileUploadControl.FileName);
                                     FileUploadControl.SaveAs(Server.MapPath("Resources/Uploads/") + filename);
 
-                                    User user = ((User)Session["User"]);
+                                    User user = ((User) Session["User"]);
                                     DatabaseHandler.GetInstance().UploadFile(filename, user);
                                     uploading = true;
                                     StatusLabel.Text = "Upload status: File uploaded!";
@@ -92,7 +86,7 @@ namespace MediaSharingSystem
                                 {
                                     string filename = Path.GetFileName(FileUploadControl.FileName);
                                     FileUploadControl.SaveAs(Server.MapPath("Resources/Uploads/") + filename);
-                                    User user = ((User)Session["User"]);
+                                    User user = ((User) Session["User"]);
                                     DatabaseHandler.GetInstance().UploadFile(filename, user);
                                     uploading = true;
                                     StatusLabel.Text = "Upload status: File uploaded!";
@@ -108,7 +102,8 @@ namespace MediaSharingSystem
                     }
                     catch (Exception ex)
                     {
-                        StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                        StatusLabel.Text =
+                            "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
                     }
                 }
             }
@@ -117,7 +112,7 @@ namespace MediaSharingSystem
             {
                 string title = TitleTextBox.Text;
                 string content = ContentTextBox.Text;
-                User user = ((User)Session["User"]);
+                User user = ((User) Session["User"]);
                 DatabaseHandler.GetInstance().UploadMessage(title, content, user);
             }
         }

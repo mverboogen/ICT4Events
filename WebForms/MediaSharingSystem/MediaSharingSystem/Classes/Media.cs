@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace MediaSharingSystem
 {
@@ -13,17 +11,12 @@ namespace MediaSharingSystem
 
         public int LikeCount
         {
-            get
-            {
-                return DatabaseHandler.GetInstance().DownloadLikes(ID);
-            }
+            get { return DatabaseHandler.GetInstance().DownloadLikes(ID); }
         }
+
         public int ReportCount
         {
-            get
-            {
-                return DatabaseHandler.GetInstance().DownloadReports(ID);
-            }
+            get { return DatabaseHandler.GetInstance().DownloadReports(ID); }
         }
 
         public string Title { get; set; }
@@ -41,7 +34,7 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
-        /// Checks if this post has been liked by the given user.
+        ///     Checks if this post has been liked by the given user.
         /// </summary>
         /// <param name="userid">The userid.</param>
         /// <returns>True if the given user has liked this post.</returns>
@@ -49,8 +42,9 @@ namespace MediaSharingSystem
         {
             return DatabaseHandler.GetInstance().LikedBy(userid, ID);
         }
+
         /// <summary>
-        /// Checks if this post has been reported by the given user.
+        ///     Checks if this post has been reported by the given user.
         /// </summary>
         /// <param name="userid">The userid.</param>
         /// <returns>True if the given user has reported this post.</returns>
@@ -58,6 +52,5 @@ namespace MediaSharingSystem
         {
             return DatabaseHandler.GetInstance().ReportedBy(userid, ID);
         }
-
     }
 }

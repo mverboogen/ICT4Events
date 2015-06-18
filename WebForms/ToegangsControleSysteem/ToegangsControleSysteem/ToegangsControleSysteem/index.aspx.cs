@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace ToegangsControleSysteem
 {
-    public partial class Index1 : System.Web.UI.Page
+    public partial class Index1 : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private readonly DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         public int EventID = 1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,11 +28,11 @@ namespace ToegangsControleSysteem
             DataTable dt = new DataTable();
             DataRow dr = null;
 
-            dt.Columns.Add(new DataColumn("RowNumber", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventName", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventStartDate", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventEndDate", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventOpen", typeof(string)));
+            dt.Columns.Add(new DataColumn("RowNumber", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventName", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventStartDate", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventEndDate", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventOpen", typeof (string)));
 
             List<Event> eventList = dbHandler.GetAllEvents();
 

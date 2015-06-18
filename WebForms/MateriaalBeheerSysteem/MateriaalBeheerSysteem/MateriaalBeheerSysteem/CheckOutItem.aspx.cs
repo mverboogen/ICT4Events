@@ -1,31 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace MateriaalBeheerSysteem
 {
-    public partial class CheckOutItem : System.Web.UI.Page
+    public partial class CheckOutItem : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
-        List<Item> itemList = new List<Item>();
-        Item selItem = new Item();
-
-        int selectedInstanceItemID;
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private List<Item> itemList = new List<Item>();
+        private int selectedInstanceItemID;
+        private Item selItem = new Item();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(barcodeTb.Text != "")
+            if (barcodeTb.Text != "")
             {
                 int reservationID = dbHandler.GetReservationByBarcode(barcodeTb.Text);
                 if (reservationID != 0)
                 {
                     itemList = dbHandler.GetReservedItems(reservationID);
 
-                    if(itemList != null)
+                    if (itemList != null)
                     {
                         FillTable();
                     }
@@ -40,7 +35,7 @@ namespace MateriaalBeheerSysteem
                 }
             }
 
-            if(materialLb.SelectedIndex != -1)
+            if (materialLb.SelectedIndex != -1)
             {
                 selectedInstanceItemID = Convert.ToInt32(materialLb.SelectedValue);
             }
@@ -48,24 +43,26 @@ namespace MateriaalBeheerSysteem
 
         protected void materialLb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(materialLb.SelectedIndex != -1)
+            if (materialLb.SelectedIndex != -1)
             {
                 selItem = itemList[materialLb.SelectedIndex];
                 itemInstanceNameTb.Text = selItem.Name;
                 iteminstanceTypeNumberTb.Text = selItem.TypeNumber.ToString();
                 itemInstanceBarcodeTb.Text = selItem.Barcode;
                 itemInstancePayedCb.Checked = selItem.Payed;
-                if(selItem.DateOut != DateTime.MinValue)
+                if (selItem.DateOut != DateTime.MinValue)
                 {
-                    itemInstanceDateOutTb.Text = selItem.DateOut.ToShortDateString() + " - " + selItem.DateOut.ToShortTimeString();
+                    itemInstanceDateOutTb.Text = selItem.DateOut.ToShortDateString() + " - " +
+                                                 selItem.DateOut.ToShortTimeString();
                 }
                 else
                 {
                     itemInstanceDateOutTb.Text = "";
                 }
-                if(selItem.DateIn != DateTime.MinValue)
+                if (selItem.DateIn != DateTime.MinValue)
                 {
-                    itemInstanceDateInTb.Text = selItem.DateIn.ToShortDateString() + " - " + selItem.DateIn.ToShortTimeString();
+                    itemInstanceDateInTb.Text = selItem.DateIn.ToShortDateString() + " - " +
+                                                selItem.DateIn.ToShortTimeString();
                 }
                 else
                 {
@@ -76,11 +73,12 @@ namespace MateriaalBeheerSysteem
 
         protected void checkOutBtn_Click(object sender, EventArgs e)
         {
-            if(itemInstancePayedCb.Checked)
+            if (itemInstancePayedCb.Checked)
             {
                 if (dbHandler.UpdateItemCheckOut(selectedInstanceItemID))
                 {
-                    itemInstanceDateOutTb.Text = DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToShortTimeString();
+                    itemInstanceDateOutTb.Text = DateTime.Now.ToShortDateString() + " - " +
+                                                 DateTime.Now.ToShortTimeString();
                     selItem.DateOut = DateTime.Now;
                 }
             }
@@ -88,7 +86,7 @@ namespace MateriaalBeheerSysteem
 
         protected void PayBtn_Click(object sender, EventArgs e)
         {
-            if(selectedInstanceItemID != 0)
+            if (selectedInstanceItemID != 0)
             {
                 if (dbHandler.UpdateItemPayed(selectedInstanceItemID, 1))
                 {
@@ -111,7 +109,7 @@ namespace MateriaalBeheerSysteem
 
         private void FillTable()
         {
-            if(materialLb.SelectedIndex == -1)
+            if (materialLb.SelectedIndex == -1)
             {
                 materialLb.Items.Clear();
 
@@ -124,7 +122,6 @@ namespace MateriaalBeheerSysteem
 
                     i++;
                 }
-
             }
         }
     }

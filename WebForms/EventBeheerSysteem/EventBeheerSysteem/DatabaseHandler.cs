@@ -1,41 +1,16 @@
 ﻿using System;
-using System.Web;
-using System.Linq;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Collections.Generic;
-using Oracle;
-using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
-using Oracle.DataAccess.Types;
-
-
-/*
-Connect();
-
-try
-{
-
-}
-catch(Exception ex)
-{
-    Debug.WriteLine(ex.Message);
-}
-finally
-{
-    Disconnect();
-}
- */
 
 namespace EventBeheerSysteem
 {
     public class DatabaseHandler
     {
-
-        private OracleConnection con;
         private OracleCommand cmd;
+        private OracleConnection con;
         private OracleDataReader dr;
-
         private static DatabaseHandler self;
 
         private DatabaseHandler()
@@ -54,14 +29,14 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Connect to the database
+        ///     Connect to the database
         /// </summary>
         private void Connect()
         {
             try
             {
                 con = new OracleConnection();
-                con.ConnectionString = "User Id=smeAdmin;Password=password;Data Source=localhost";
+                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=fhictora01.fhict.local/fhictora";
                 con.Open();
                 Console.WriteLine("Connection Succesfull");
             }
@@ -69,11 +44,10 @@ namespace EventBeheerSysteem
             {
                 Console.WriteLine(ex.Message);
             }
-
         }
 
         /// <summary>
-        /// Disconnect from the database
+        ///     Disconnect from the database
         /// </summary>
         public void Disconnect()
         {
@@ -82,7 +56,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Runs a provided sql statement
+        ///     Runs a provided sql statement
         /// </summary>
         /// <param name="sql">String, the sql statement to run</param>
         private void ReadData(string sql)
@@ -102,7 +76,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Gets the max ID + 1 from the provided table
+        ///     Gets the max ID + 1 from the provided table
         /// </summary>
         /// <param name="sql">Integer, max table ID</param>
         private int GetNextID(string table)
@@ -129,7 +103,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Add a new categorie to the database
+        ///     Add a new categorie to the database
         /// </summary>
         /// <param name="c">The categorie that has to be added</param>
         /// <returns>Boolean if the add was a succes</returns>
@@ -163,7 +137,6 @@ namespace EventBeheerSysteem
                 }
 
 
-
                 if (updatedRows > 0)
                 {
                     return true;
@@ -182,7 +155,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Adds a new item to the database and instance equal to the amount provided
+        ///     Adds a new item to the database and instance equal to the amount provided
         /// </summary>
         /// <param name="item"></param>
         /// <param name="amount"></param>
@@ -209,7 +182,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Product (ID, ProductCat_ID, Merk, Serie, TypeNummer, Prijs) VALUES (:NewID, :NewProductCat, :NewBrand, :NewSerie, :NewNumber, :NewPrice)";
+                cmd.CommandText =
+                    "INSERT INTO Product (ID, ProductCat_ID, Merk, Serie, TypeNummer, Prijs) VALUES (:NewID, :NewProductCat, :NewBrand, :NewSerie, :NewNumber, :NewPrice)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
                 cmd.Parameters.Add("NewProductCat", OracleDbType.Int32).Value = item.MainCatID;
                 cmd.Parameters.Add("NewBrand", OracleDbType.Varchar2).Value = item.Brand;
@@ -236,7 +210,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Adds the provided amount of items to the ProductExemplaar table
+        ///     Adds the provided amount of items to the ProductExemplaar table
         /// </summary>
         /// <param name="itemID"></param>
         /// <param name="typeNumber"></param>
@@ -264,7 +238,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO ProductExemplaar (ID, Product_ID, Volgnummer, Barcode) VALUES (:NewID, :NewProductID, :NewNumber, :NewBarcode)";
+                cmd.CommandText =
+                    "INSERT INTO ProductExemplaar (ID, Product_ID, Volgnummer, Barcode) VALUES (:NewID, :NewProductID, :NewNumber, :NewBarcode)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID + i;
                 cmd.Parameters.Add("NewProductID", OracleDbType.Int32).Value = itemID;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextNumber + i;
@@ -275,7 +250,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Adds a new event to the database including a location
+        ///     Adds a new event to the database including a location
         /// </summary>
         /// <param name="newEvent">The event that has to be added</param>
         /// <returns>Boolean if the add was a succes</returns>
@@ -289,7 +264,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Locatie (ID, Naam, Straat, Nr, Postcode, Plaats) VALUES (:NewID, :NewLocationName, :NewStreet, :NewNumber, :NewZipCode, :NewCity)";
+                cmd.CommandText =
+                    "INSERT INTO Locatie (ID, Naam, Straat, Nr, Postcode, Plaats) VALUES (:NewID, :NewLocationName, :NewStreet, :NewNumber, :NewZipCode, :NewCity)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextLocationID;
                 cmd.Parameters.Add("NewLocationName", OracleDbType.Varchar2).Value = newEvent.LocationName;
                 cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = newEvent.LocationStreet;
@@ -303,7 +279,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Event (ID, Locatie_ID, Naam, DatumStart, DatumEinde, MaxBezoekers) VALUES (:NewID, :NewLocationID, :NewName, :NewStartDate, :NewEndDate, :NewMaxVisitors)";
+                cmd.CommandText =
+                    "INSERT INTO Event (ID, Locatie_ID, Naam, DatumStart, DatumEinde, MaxBezoekers) VALUES (:NewID, :NewLocationID, :NewName, :NewStartDate, :NewEndDate, :NewMaxVisitors)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextEventID;
                 cmd.Parameters.Add("NewLocationID", OracleDbType.Int32).Value = nextLocationID;
                 cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = newEvent.Name;
@@ -328,7 +305,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Adds a new campsite to the database
+        ///     Adds a new campsite to the database
         /// </summary>
         /// <param name="c">The campsite that has to be added</param>
         /// <returns>Boolean if the add was a succes</returns>
@@ -358,7 +335,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Plek (ID, Locatie_ID, Nummer, Capaciteit) VALUES (:NewID, :LocationID, :NewNumber, :NewCapacity)";
+                cmd.CommandText =
+                    "INSERT INTO Plek (ID, Locatie_ID, Nummer, Capaciteit) VALUES (:NewID, :LocationID, :NewNumber, :NewCapacity)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextCampsiteID;
                 cmd.Parameters.Add("LocationID", OracleDbType.Int32).Value = c.LocationID;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = nextNumber;
@@ -368,10 +346,10 @@ namespace EventBeheerSysteem
 
                 for (int i = 0; i < 6; i++)
                 {
-
                     cmd = new OracleCommand();
                     cmd.Connection = con;
-                    cmd.CommandText = "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
+                    cmd.CommandText =
+                        "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
                     cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextSpecificationID + i;
                     cmd.Parameters.Add("SpecificationID", OracleDbType.Int32).Value = i + 2;
                     cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = nextCampsiteID;
@@ -379,16 +357,16 @@ namespace EventBeheerSysteem
                     switch (i)
                     {
                         case 0:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort ? "JA" : "NEE";
                             break;
                         case 1:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap ? "JA" : "NEE";
                             break;
                         case 2:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.Size);
                             break;
                         case 3:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane ? "JA" : "NEE";
                             break;
                         case 4:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.XCor);
@@ -413,11 +391,10 @@ namespace EventBeheerSysteem
             }
 
             return false;
-
         }
 
         /// <summary>
-        /// Adds a link between the provided campsite and reservation
+        ///     Adds a link between the provided campsite and reservation
         /// </summary>
         /// <param name="campsiteID">The campsite ID that has to be linked</param>
         /// <param name="reservationID">The reservation ID that has to be linked</param>
@@ -431,7 +408,8 @@ namespace EventBeheerSysteem
                 int results = 0;
                 int nextID = GetNextID("Plek_Reservering");
 
-                ReadData("SELECT COUNT(ID) FROM Plek_Reservering WHERE Plek_ID = " + campsiteID + " AND Reservering_ID = " + reservationID);
+                ReadData("SELECT COUNT(ID) FROM Plek_Reservering WHERE Plek_ID = " + campsiteID +
+                         " AND Reservering_ID = " + reservationID);
 
                 while (dr.Read())
                 {
@@ -445,7 +423,8 @@ namespace EventBeheerSysteem
                 {
                     cmd = new OracleCommand();
                     cmd.Connection = con;
-                    cmd.CommandText = "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID AND Reservering_ID = :ReservationID";
+                    cmd.CommandText =
+                        "DELETE FROM Plek_Reservering WHERE Plek_ID = :CampsiteID AND Reservering_ID = :ReservationID";
                     cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
                     cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
 
@@ -454,7 +433,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Plek_Reservering (ID, Plek_ID, Reservering_ID) VALUES (:NewID, :CampsiteID, :ReservationID)";
+                cmd.CommandText =
+                    "INSERT INTO Plek_Reservering (ID, Plek_ID, Reservering_ID) VALUES (:NewID, :CampsiteID, :ReservationID)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
                 cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = campsiteID;
                 cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = reservationID;
@@ -476,7 +456,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Adds a link between an item and a braclet
+        ///     Adds a link between an item and a braclet
         /// </summary>
         /// <param name="itemID">The item ID that has to be linked</param>
         /// <param name="bracletID">The item ID that has to be linked</param>
@@ -491,7 +471,9 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT PE.ID FROM ProductExemplaar PE, Product P WHERE P.ID = PE.Product_ID AND PE.ID NOT IN (SELECT PE.ID FROM ProductExemplaar Pe, Verhuur V WHERE PE.ID = V.ProductExemplaar_ID) AND P.ID = " + itemID);
+                ReadData(
+                    "SELECT PE.ID FROM ProductExemplaar PE, Product P WHERE P.ID = PE.Product_ID AND PE.ID NOT IN (SELECT PE.ID FROM ProductExemplaar Pe, Verhuur V WHERE PE.ID = V.ProductExemplaar_ID) AND P.ID = " +
+                    itemID);
 
                 while (dr.Read())
                 {
@@ -501,7 +483,9 @@ namespace EventBeheerSysteem
                     }
                 }
 
-                ReadData("SELECT RP.ID FROM Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND P.ID = " + bracletID);
+                ReadData(
+                    "SELECT RP.ID FROM Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND P.ID = " +
+                    bracletID);
 
                 while (dr.Read())
                 {
@@ -515,7 +499,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "INSERT INTO Verhuur (ID, ProductExemplaar_ID, Res_Pb_ID) VALUES (:NewID, :ProductID, :BracletID)";
+                cmd.CommandText =
+                    "INSERT INTO Verhuur (ID, ProductExemplaar_ID, Res_Pb_ID) VALUES (:NewID, :ProductID, :BracletID)";
                 cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextID;
                 cmd.Parameters.Add("ProductID", OracleDbType.Int32).Value = itemExemplaarID;
                 cmd.Parameters.Add("BracletID", OracleDbType.Int32).Value = ResLinkID;
@@ -537,7 +522,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Adds a link between a braclet (that belongs to the provided reservationID) and an item
+        ///     Adds a link between a braclet (that belongs to the provided reservationID) and an item
         /// </summary>
         /// <param name="itemID">The item ID that has to be linked</param>
         /// <param name="reservationID">The reservationID that has to be linked</param>
@@ -551,7 +536,9 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT MIN(P.ID) FROM Polsbandje P, Reservering_Polsbandje RP, Reservering R WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND R.ID = " + reservationID);
+                ReadData(
+                    "SELECT MIN(P.ID) FROM Polsbandje P, Reservering_Polsbandje RP, Reservering R WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND R.ID = " +
+                    reservationID);
 
                 while (dr.Read())
                 {
@@ -579,7 +566,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Gets the reservation ID connected to the barcode
+        ///     Gets the reservation ID connected to the barcode
         /// </summary>
         /// <param name="barcode">The provided barcode of wich you want a reservation ID</param>
         /// <returns>The reservation ID beloning to the barcode</returns>
@@ -591,7 +578,8 @@ namespace EventBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "SELECT R.ID FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND P.Barcode = :BarCode";
+                cmd.CommandText =
+                    "SELECT R.ID FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P WHERE P.ID = RP.Polsbandje_ID AND RP.Reservering_ID = R.ID AND P.Barcode = :BarCode";
                 cmd.Parameters.Add("BarCode", OracleDbType.Varchar2).Value = barcode;
 
                 dr = cmd.ExecuteReader();
@@ -603,7 +591,6 @@ namespace EventBeheerSysteem
                         return Convert.ToInt32(dr.GetValue(0));
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -618,7 +605,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Removes any link between a campsite and reservations
+        ///     Removes any link between a campsite and reservations
         /// </summary>
         /// <param name="campsiteID">The campsite ID you want to remove links from</param>
         /// <returns>Boolean if the remove was a succes</returns>
@@ -637,7 +624,7 @@ namespace EventBeheerSysteem
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -650,7 +637,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Sets the 'Betaald' column of the provided reservation to true
+        ///     Sets the 'Betaald' column of the provided reservation to true
         /// </summary>
         /// <param name="reservationID">The reservation ID you want to change</param>
         /// <returns>Boolean if the update was a succes</returns>
@@ -682,7 +669,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Returns all events in the database
+        ///     Returns all events in the database
         /// </summary>
         /// <returns>A list of events</returns>
         public List<Event> GetAllEvents()
@@ -691,7 +678,8 @@ namespace EventBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id");
+            ReadData(
+                @"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers FROM event E, locatie L WHERE E.Locatie_id = L.id");
 
             List<Event> eventList = new List<Event>();
 
@@ -753,7 +741,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Gets an event that belongs to the provided ID
+        ///     Gets an event that belongs to the provided ID
         /// </summary>
         /// <param name="id">The event ID you need to retrieve</param>
         /// <returns>An event that belongs to the provided event ID</returns>
@@ -763,7 +751,9 @@ namespace EventBeheerSysteem
 
             int amount = 0;
 
-            ReadData(@"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers, L.ID FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " + id.ToString());
+            ReadData(
+                @"SELECT E.id, E.naam, L.naam, L.straat, L.nr, L.postcode, L.plaats, E.datumStart, E.datumEinde, E.maxBezoekers, L.ID FROM event E, locatie L WHERE E.Locatie_id = L.id AND E.ID = " +
+                id);
 
             Event selEvent = new Event();
 
@@ -773,8 +763,6 @@ namespace EventBeheerSysteem
                 {
                     if (!dr.IsDBNull(0) && !dr.IsDBNull(1))
                     {
-
-
                         selEvent.ID = Convert.ToInt32(dr.GetValue(0));
                         selEvent.Name = dr.GetString(1);
                         selEvent.LocationName = dr.GetString(2);
@@ -828,7 +816,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Get all the reservations that belong the the provided event ID
+        ///     Get all the reservations that belong the the provided event ID
         /// </summary>
         /// <param name="id">The event ID you want all the reservations from</param>
         /// <returns>A list of reservations belonging to the provided event ID</returns>
@@ -840,7 +828,9 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND E.ID = " + id.ToString());
+                ReadData(
+                    "SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND E.ID = " +
+                    id);
 
                 while (dr.Read())
                 {
@@ -880,7 +870,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Get all the items belonging to the reservation
+        ///     Get all the items belonging to the reservation
         /// </summary>
         /// <param name="reservationID">The reservation ID from wich you want items</param>
         /// <returns>A list of items beloning to the provided reservation ID</returns>
@@ -892,7 +882,9 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie, P.TypeNummer FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " + reservationID);
+                ReadData(
+                    "SELECT Pex.ID, Pex.Barcode, P.Merk, P.Serie, P.TypeNummer FROM Verhuur V, Reservering R, Reservering_Polsbandje RP, ProductExemplaar Pex, Product P WHERE R.ID = RP.Reservering_ID AND V.Res_Pb_ID = RP.ID AND V.ProductExemplaar_ID = Pex.ID AND P.ID = Pex.Product_ID AND R.ID = " +
+                    reservationID);
 
                 while (dr.Read())
                 {
@@ -906,15 +898,17 @@ namespace EventBeheerSysteem
                     reservedItemList.Add(item);
                 }
 
-                foreach(Item item in reservedItemList)
+                foreach (Item item in reservedItemList)
                 {
-                    ReadData("SELECT V.Betaald, V.DatumUit, V.DatumIn FROM Verhuur V, ProductExemplaar Pex WHERE Pex.ID = V.ProductExemplaar_ID AND Pex.Barcode = " + item.Barcode);
-                    while(dr.Read())
+                    ReadData(
+                        "SELECT V.Betaald, V.DatumUit, V.DatumIn FROM Verhuur V, ProductExemplaar Pex WHERE Pex.ID = V.ProductExemplaar_ID AND Pex.Barcode = " +
+                        item.Barcode);
+                    while (dr.Read())
                     {
-                        if(!dr.IsDBNull(0))
+                        if (!dr.IsDBNull(0))
                         {
                             item.Payed = Convert.ToInt32(dr.GetValue(0)) == 1 ? true : false;
-                            if(!dr.IsDBNull(1))
+                            if (!dr.IsDBNull(1))
                             {
                                 item.DateOut = dr.GetDateTime(1);
                             }
@@ -923,7 +917,6 @@ namespace EventBeheerSysteem
                                 item.DateIn = dr.GetDateTime(2);
                             }
                         }
-                        
                     }
                 }
 
@@ -942,7 +935,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Get all the items beloning to the event (not possible in current database)
+        ///     Get all the items beloning to the event (not possible in current database)
         /// </summary>
         /// <param name="id">The event ID from wich you want all items</param>
         /// <returns></returns>
@@ -975,7 +968,7 @@ namespace EventBeheerSysteem
                     int catID = item.MainCatID;
                     while (!end)
                     {
-                        ReadData("SELECT Naam, ProductCat_ID FROM ProductCat WHERE ID = " + catID.ToString());
+                        ReadData("SELECT Naam, ProductCat_ID FROM ProductCat WHERE ID = " + catID);
 
                         int oldID = catID;
 
@@ -995,7 +988,9 @@ namespace EventBeheerSysteem
                         }
                     }
 
-                    ReadData("SELECT Pe.ID, Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Reservering_Polsbandje RP, Verhuur V, ProductExemplaar Pex, Product P, Reservering R WHERE P.ID = Pex.Product_ID AND Pex.ID = V.ProductExemplaar_ID AND RP.ID = V.Res_Pb_ID AND RP.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND P.ID = " + item.ID.ToString());
+                    ReadData(
+                        "SELECT Pe.ID, Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Reservering_Polsbandje RP, Verhuur V, ProductExemplaar Pex, Product P, Reservering R WHERE P.ID = Pex.Product_ID AND Pex.ID = V.ProductExemplaar_ID AND RP.ID = V.Res_Pb_ID AND RP.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND P.ID = " +
+                        item.ID);
 
                     List<Booker> renterList = new List<Booker>();
 
@@ -1010,14 +1005,18 @@ namespace EventBeheerSysteem
                         renterList.Add(b);
                     }
 
-                    ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " + item.ID.ToString());
+                    ReadData(
+                        "SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " +
+                        item.ID);
 
                     while (dr.Read())
                     {
                         item.Amount = Convert.ToInt32(dr.GetValue(0));
                     }
 
-                    ReadData("SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " + item.ID.ToString());
+                    ReadData(
+                        "SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " +
+                        item.ID);
 
                     while (dr.Read())
                     {
@@ -1041,7 +1040,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Get all the campsites beloning to the provided event ID
+        ///     Get all the campsites beloning to the provided event ID
         /// </summary>
         /// <param name="id">The event ID from wich you want all campsites</param>
         /// <returns></returns>
@@ -1053,7 +1052,9 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT P.ID, P.NUMMER FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND E.ID = " + id.ToString());
+                ReadData(
+                    "SELECT P.ID, P.NUMMER FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND E.ID = " +
+                    id);
                 while (dr.Read())
                 {
                     Campsite campsite = new Campsite();
@@ -1074,9 +1075,9 @@ namespace EventBeheerSysteem
 
             return campsiteList;
         }
-        
+
         /// <summary>
-        /// Get all the categories in the database
+        ///     Get all the categories in the database
         /// </summary>
         /// <returns>A list of all categories and sub categories</returns>
         public List<Categorie> GetAllCategories()
@@ -1131,7 +1132,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Get the reservation beloning to the reservation ID
+        ///     Get the reservation beloning to the reservation ID
         /// </summary>
         /// <param name="id">The reservation ID you want to retrieve</param>
         /// <returns>A reservation object with all the information</returns>
@@ -1143,7 +1144,9 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND R.ID = " + id.ToString());
+                ReadData(
+                    "SELECT DISTINCT(R.ID), R.Persoon_ID, R.DatumStart, R.DatumEinde, R.Betaald, Pe.Voornaam, Pe.TussenVoegsel, Pe.Achternaam, Pe.Straat, Pe.Huisnr, Pe.Woonplaats, Pe.Banknr FROM Reservering R, Event E, Locatie L, Plek P, Plek_Reservering PK, Persoon Pe WHERE E.Locatie_ID = L.ID AND P.Locatie_ID = L.ID AND PK.Plek_ID = P.ID AND PK.Reservering_ID = R.ID AND R.Persoon_ID = Pe.ID AND R.ID = " +
+                    id);
 
                 r = new Reservation();
                 Booker b = new Booker();
@@ -1168,7 +1171,9 @@ namespace EventBeheerSysteem
                     r.ReservationBooker = b;
                 }
 
-                ReadData("SELECT A.ID, A.Gebruikersnaam, A.Email, P.ID, P.Barcode FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P, Account A WHERE R.ID = RP.Reservering_ID AND P.ID = RP.Polsbandje_ID AND A.ID = RP.Account_ID AND R.ID = " + id.ToString());
+                ReadData(
+                    "SELECT A.ID, A.Gebruikersnaam, A.Email, P.ID, P.Barcode FROM Reservering R, Reservering_Polsbandje RP, Polsbandje P, Account A WHERE R.ID = RP.Reservering_ID AND P.ID = RP.Polsbandje_ID AND A.ID = RP.Account_ID AND R.ID = " +
+                    id);
 
                 List<Account> accountList = new List<Account>();
 
@@ -1186,7 +1191,9 @@ namespace EventBeheerSysteem
 
                 r.AccountList = accountList;
 
-                ReadData("SELECT P.Nummer FROM Plek P, Plek_Reservering PK, Reservering R WHERE P.ID = PK.Plek_ID AND PK.Reservering_ID = R.ID AND R.ID = " + r.ID);
+                ReadData(
+                    "SELECT P.Nummer FROM Plek P, Plek_Reservering PK, Reservering R WHERE P.ID = PK.Plek_ID AND PK.Reservering_ID = R.ID AND R.ID = " +
+                    r.ID);
 
                 List<int> campsiteNumberList = new List<int>();
 
@@ -1198,7 +1205,6 @@ namespace EventBeheerSysteem
                 r.CampsiteNumberList = campsiteNumberList;
 
                 return r;
-
             }
             catch (Exception ex)
             {
@@ -1213,7 +1219,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Get the campsite beloning to the campsite ID
+        ///     Get the campsite beloning to the campsite ID
         /// </summary>
         /// <param name="id">The campsite ID you want to retrieve</param>
         /// <returns>A campsite object with all the information</returns>
@@ -1226,7 +1232,7 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P WHERE P.ID = " + id.ToString());
+                ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P WHERE P.ID = " + id);
 
                 while (dr.Read())
                 {
@@ -1240,7 +1246,9 @@ namespace EventBeheerSysteem
                     */
                 }
 
-                ReadData("SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " + id.ToString());
+                ReadData(
+                    "SELECT S.ID, PS.Waarde FROM Plek P, Locatie L, Event E, Plek_Specificatie PS, Specificatie S WHERE E.LOCATIE_ID = L.ID AND L.ID = P.LOCATIE_ID AND P.ID = PS.PLEK_ID AND S.ID = PS.SPECIFICATIE_ID AND P.ID = " +
+                    id);
 
                 while (dr.Read())
                 {
@@ -1271,7 +1279,9 @@ namespace EventBeheerSysteem
                     specID++;
                 }
 
-                ReadData("SELECT Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Plek_Reservering PR, Plek P, Reservering R WHERE Pe.ID = R.Persoon_ID AND PR.Reservering_ID = R.ID AND PR.Plek_ID = P.ID AND P.ID = " + id.ToString());
+                ReadData(
+                    "SELECT Pe.Voornaam, Pe.Tussenvoegsel, Pe.Achternaam FROM Persoon Pe, Plek_Reservering PR, Plek P, Reservering R WHERE Pe.ID = R.Persoon_ID AND PR.Reservering_ID = R.ID AND PR.Plek_ID = P.ID AND P.ID = " +
+                    id);
                 while (dr.Read())
                 {
                     Booker b = new Booker();
@@ -1295,7 +1305,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Remove the campsite beloning to the campsite ID from the database
+        ///     Remove the campsite beloning to the campsite ID from the database
         /// </summary>
         /// <param name="campsiteID">The campsite ID you want to remove</param>
         /// <returns>Boolean, if the remove was a succes</returns>
@@ -1338,11 +1348,10 @@ namespace EventBeheerSysteem
             }
 
             return false;
-
         }
 
         /// <summary>
-        /// Remove the item beloning to the item ID from the database
+        ///     Remove the item beloning to the item ID from the database
         /// </summary>
         /// <param name="itemID">The item ID you want to remove</param>
         /// <returns>Boolean, if the remove was a succes</returns>
@@ -1354,13 +1363,14 @@ namespace EventBeheerSysteem
 
             try
             {
-                ReadData("SELECT Pex.ID FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " + itemID);
-                while(dr.Read())
+                ReadData("SELECT Pex.ID FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " +
+                         itemID);
+                while (dr.Read())
                 {
                     productInstanceIDList.Add(Convert.ToInt32(dr.GetValue(0)));
                 }
 
-                foreach(int number in productInstanceIDList)
+                foreach (int number in productInstanceIDList)
                 {
                     cmd = new OracleCommand();
                     cmd.Connection = con;
@@ -1399,7 +1409,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the event details of the provided event object
+        ///     Updates the event details of the provided event object
         /// </summary>
         /// <param name="e">Event with all the new data</param>
         /// <returns>Boolean, if the updated was a succes</returns>
@@ -1413,7 +1423,8 @@ namespace EventBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Event SET Naam = :NewName, DatumStart = :NewStartDate, DatumEinde = :NewEndDate, MaxBezoekers = :VisitorLimit WHERE ID = :EventID";
+                cmd.CommandText =
+                    "UPDATE Event SET Naam = :NewName, DatumStart = :NewStartDate, DatumEinde = :NewEndDate, MaxBezoekers = :VisitorLimit WHERE ID = :EventID";
                 cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = e.Name;
                 cmd.Parameters.Add("NewStartDate", OracleDbType.Date).Value = e.StartDate;
                 cmd.Parameters.Add("NewEndDate", OracleDbType.Date).Value = e.EndDate;
@@ -1424,7 +1435,8 @@ namespace EventBeheerSysteem
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Locatie SET Naam = :NewName, Straat = :NewStreet, NR = :NewNumber, Postcode = :NewZipCode, Plaats = :NewCity WHERE ID = :LocationID";
+                cmd.CommandText =
+                    "UPDATE Locatie SET Naam = :NewName, Straat = :NewStreet, NR = :NewNumber, Postcode = :NewZipCode, Plaats = :NewCity WHERE ID = :LocationID";
                 cmd.Parameters.Add("NewName", OracleDbType.Varchar2).Value = e.LocationName;
                 cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = e.LocationStreet;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = e.LocationNumber;
@@ -1438,7 +1450,6 @@ namespace EventBeheerSysteem
                 {
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1453,7 +1464,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the reservation details of the provided reservation object
+        ///     Updates the reservation details of the provided reservation object
         /// </summary>
         /// <param name="r">Reservation with all the new data</param>
         /// <returns>Boolean, if the updated was a succes</returns>
@@ -1467,17 +1478,19 @@ namespace EventBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Reservering SET DatumStart = :NewDateStart, DatumEinde = :NewDateEnd, Betaald = :NewPayed WHERE ID = :ReservationID";
+                cmd.CommandText =
+                    "UPDATE Reservering SET DatumStart = :NewDateStart, DatumEinde = :NewDateEnd, Betaald = :NewPayed WHERE ID = :ReservationID";
                 cmd.Parameters.Add("NewDateStart", OracleDbType.Date).Value = r.StartDate;
                 cmd.Parameters.Add("NewDateEnd", OracleDbType.Date).Value = r.EndDate;
-                cmd.Parameters.Add("NewPayed", OracleDbType.Int32).Value = r.Payed == true ? 1 : 0;
+                cmd.Parameters.Add("NewPayed", OracleDbType.Int32).Value = r.Payed ? 1 : 0;
                 cmd.Parameters.Add("ReservationID", OracleDbType.Int32).Value = r.ID;
 
                 updatedRows += cmd.ExecuteNonQuery();
 
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Persoon SET Straat = :NewStreet, HuisNr = :NewNumber, Woonplaats = :NewCity WHERE ID = :PersoonID";
+                cmd.CommandText =
+                    "UPDATE Persoon SET Straat = :NewStreet, HuisNr = :NewNumber, Woonplaats = :NewCity WHERE ID = :PersoonID";
                 cmd.Parameters.Add("NewStreet", OracleDbType.Varchar2).Value = r.ReservationBooker.Street;
                 cmd.Parameters.Add("NewNumber", OracleDbType.Int32).Value = r.ReservationBooker.Number;
                 cmd.Parameters.Add("NewCity", OracleDbType.Varchar2).Value = r.ReservationBooker.City;
@@ -1489,7 +1502,6 @@ namespace EventBeheerSysteem
                 {
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1504,7 +1516,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the item details of the provided item object
+        ///     Updates the item details of the provided item object
         /// </summary>
         /// <param name="i">Item with all the new data</param>
         /// <returns>Boolean, if the updated was a succes</returns>
@@ -1518,7 +1530,8 @@ namespace EventBeheerSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE Product SET Merk = :NewBrand, Serie = :NewSerie, Prijs = :NewPrice WHERE ID = :ItemID";
+                cmd.CommandText =
+                    "UPDATE Product SET Merk = :NewBrand, Serie = :NewSerie, Prijs = :NewPrice WHERE ID = :ItemID";
                 cmd.Parameters.Add("NewBrand", OracleDbType.Varchar2).Value = i.Brand;
                 cmd.Parameters.Add("NewSerie", OracleDbType.Varchar2).Value = i.Serie;
                 cmd.Parameters.Add("NewPrice", OracleDbType.Decimal).Value = i.Price;
@@ -1530,7 +1543,6 @@ namespace EventBeheerSysteem
                 {
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
@@ -1545,7 +1557,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the campsite details of the provided campsite object
+        ///     Updates the campsite details of the provided campsite object
         /// </summary>
         /// <param name="c">Campsite with all the new data</param>
         /// <returns>Boolean, if the updated was a succes</returns>
@@ -1577,10 +1589,10 @@ namespace EventBeheerSysteem
 
                 for (int i = 0; i < 6; i++)
                 {
-
                     cmd = new OracleCommand();
                     cmd.Connection = con;
-                    cmd.CommandText = "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
+                    cmd.CommandText =
+                        "INSERT INTO Plek_Specificatie (ID, Specificatie_ID, Plek_ID, Waarde) VALUES (:NewID, :SpecificationID, :CampsiteID, :Value)";
                     cmd.Parameters.Add("NewID", OracleDbType.Int32).Value = nextSpecificationID + i;
                     cmd.Parameters.Add("SpecificationID", OracleDbType.Int32).Value = i + 2;
                     cmd.Parameters.Add("CampsiteID", OracleDbType.Int32).Value = c.ID;
@@ -1588,16 +1600,16 @@ namespace EventBeheerSysteem
                     switch (i)
                     {
                         case 0:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Comfort ? "JA" : "NEE";
                             break;
                         case 1:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Handicap ? "JA" : "NEE";
                             break;
                         case 2:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.Size);
                             break;
                         case 3:
-                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane == true ? "JA" : "NEE";
+                            cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = c.Crane ? "JA" : "NEE";
                             break;
                         case 4:
                             cmd.Parameters.Add("Value", OracleDbType.Varchar2).Value = Convert.ToString(c.XCor);
@@ -1625,7 +1637,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the payed status of an instance item
+        ///     Updates the payed status of an instance item
         /// </summary>
         /// <param name="itemInstanceID">The instance item you want to update</param>
         /// <param name="payed">To wich state the payed column has to be changed</param>
@@ -1659,7 +1671,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the check out of an instance item
+        ///     Updates the check out of an instance item
         /// </summary>
         /// <param name="itemInstanceID">The instance ID you want to update</param>
         /// <returns>Boolean, if the updated was a succes</returns>
@@ -1692,7 +1704,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Updates the check in of an instance item
+        ///     Updates the check in of an instance item
         /// </summary>
         /// <param name="itemInstanceID">The instance ID you want to update</param>
         /// <returns>Boolean, if the updated was a succes</returns>
@@ -1725,7 +1737,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Checks the data provided to build a booker object
+        ///     Checks the data provided to build a booker object
         /// </summary>
         /// <param name="b">The booker object you want to fill</param>
         /// <returns>The filled booker object</returns>
@@ -1741,5 +1753,5 @@ namespace EventBeheerSysteem
 
             return b;
         }
-    }   
+    }
 }

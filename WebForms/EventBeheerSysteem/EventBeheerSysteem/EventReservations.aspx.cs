@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class EventReservations : System.Web.UI.Page
+    public partial class EventReservations : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
-        private Event selEvent;
+        private DataChecker checker = DataChecker.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private List<Reservation> reservationList;
+        private Event selEvent;
         private Reservation selReservation;
         private int selReservationID;
 
@@ -40,7 +35,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the listbox with all reservation from the database of the provided event
+        ///     Fills the listbox with all reservation from the database of the provided event
         /// </summary>
         private void FillData()
         {
@@ -49,7 +44,7 @@ namespace EventBeheerSysteem
             reservationList = dbHandler.GetAllReservations(selEvent.ID);
 
             //FILLER DATA
-            for (int i = 0; i < reservationList.Count; i++ )
+            for (int i = 0; i < reservationList.Count; i++)
             {
                 Reservation r = reservationList[i];
                 Booker b = r.ReservationBooker;
@@ -60,7 +55,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the details div with all the data of the selected reservation
+        ///     Fills the details div with all the data of the selected reservation
         /// </summary>
         private void FillDetails()
         {
@@ -74,7 +69,7 @@ namespace EventBeheerSysteem
             reservationEndDateTb.Text = r.EndDate != null ? r.EndDate.ToShortDateString() : "NO DATE";
             reservationPayedCb.Checked = r.Payed;
 
-            if(b != null)
+            if (b != null)
             {
                 //Booker Data
                 reservationNameTb.Text = b.Name;
@@ -84,25 +79,27 @@ namespace EventBeheerSysteem
                 reservationBankTb.Text = b.BankAccount;
             }
 
-            foreach(Account a in r.AccountList)
+            foreach (Account a in r.AccountList)
             {
                 reservationMembersLb.Items.Add(a.Gebruikersnaam + " - " + a.Barcode);
             }
 
-            foreach(int number in r.CampsiteNumberList)
+            foreach (int number in r.CampsiteNumberList)
             {
-                reservationCampsiteTb.Text = reservationCampsiteTb.Text == "" ? number.ToString() : reservationCampsiteTb.Text + " - " + number.ToString(); 
+                reservationCampsiteTb.Text = reservationCampsiteTb.Text == ""
+                    ? number.ToString()
+                    : reservationCampsiteTb.Text + " - " + number;
             }
         }
 
         /// <summary>
-        /// Saves all new data to the database with a database handler methode
+        ///     Saves all new data to the database with a database handler methode
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            if(reservationLb.SelectedIndex != -1)
+            if (reservationLb.SelectedIndex != -1)
             {
                 Reservation newR = new Reservation();
                 Booker newB = new Booker();
@@ -132,7 +129,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Retrieves data of the selected reservation in the listbox
+        ///     Retrieves data of the selected reservation in the listbox
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

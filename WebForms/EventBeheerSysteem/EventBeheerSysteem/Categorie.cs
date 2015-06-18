@@ -1,44 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EventBeheerSysteem
+﻿namespace EventBeheerSysteem
 {
     public class Categorie
     {
-        private int id;
-        private string name;
-        private int subID;
-        private Categorie subCategorie;
-
-        public int ID
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public int SubID
-        {
-            get { return subID; }
-            set { subID = value; }
-        }
-
-        public Categorie SubCategorie
-        {
-            get { return subCategorie; }
-            set { subCategorie = value; }
-        }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int SubID { get; set; }
+        public Categorie SubCategorie { get; set; }
 
         public Categorie()
         {
-
         }
 
         public Categorie(int id, string name)

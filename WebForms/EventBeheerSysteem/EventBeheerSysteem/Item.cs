@@ -1,44 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace EventBeheerSysteem
 {
     public class Item
     {
-        private int id;
         private List<string> categorie;
-        private int instanceNumber;
-        private int mainCatID;
-        private string brand;
-        private string serie;
-        private int typeNumber;
-        private decimal price;
-        private string barcode;
-        private int amount;
-        private int available;
-        private bool payed;
-        private DateTime dateOut;
-        private DateTime dateIn;
         private List<Booker> renterList = new List<Booker>();
-
-        public int ID
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        public int ID { get; set; }
 
         public string Name
         {
-            get { return brand + " " + serie; }
+            get { return Brand + " " + Serie; }
         }
 
-        public int MainCatID
-        {
-            get { return mainCatID; }
-            set { mainCatID = value; }
-        }
+        public int MainCatID { get; set; }
 
         public List<string> Categorie
         {
@@ -53,78 +29,24 @@ namespace EventBeheerSysteem
             set { categorie = value; }
         }
 
-        public string Brand
-        {
-            get { return brand; }
-            set { brand = value; }
-        }
-
-        public string Serie
-        {
-            get { return serie; }
-            set { serie = value; }
-        }
-
-        public int TypeNumber
-        {
-            get { return typeNumber; }
-            set { typeNumber = value; }
-        }
-
-        public decimal Price
-        {
-            get { return price; }
-            set { price = value; }
-        }
-
-        public string Barcode
-        {
-            get { return barcode; }
-            set { barcode = value; }
-        }
-
-        public int Amount
-        {
-            get { return amount; }
-            set { amount = value; }
-        }
-        
-        public int Available
-        {
-            get { return available; }
-            set { available = value; }
-        }
-
-        public bool Payed
-        {
-            get { return payed; }
-            set { payed = value; }
-        }
-
-        public int InstanceNumber
-        {
-            get { return instanceNumber; }
-            set { instanceNumber = value; }
-        }
-
-        public DateTime DateIn
-        {
-            get { return dateIn; }
-            set { dateIn = value; }
-        }
-
-        public DateTime DateOut
-        {
-            get { return dateOut; }
-            set { dateOut = value; }
-        }
+        public string Brand { get; set; }
+        public string Serie { get; set; }
+        public int TypeNumber { get; set; }
+        public decimal Price { get; set; }
+        public string Barcode { get; set; }
+        public int Amount { get; set; }
+        public int Available { get; set; }
+        public bool Payed { get; set; }
+        public int InstanceNumber { get; set; }
+        public DateTime DateIn { get; set; }
+        public DateTime DateOut { get; set; }
 
         public List<Booker> RenterList
         {
             get { return renterList; }
             set
             {
-                if(renterList == null && value == null)
+                if (renterList == null && value == null)
                 {
                     renterList = new List<Booker>();
                 }
@@ -134,7 +56,6 @@ namespace EventBeheerSysteem
 
         public Item()
         {
-
         }
 
         public Item(string brand, string serie, decimal price, int catID)
@@ -142,7 +63,7 @@ namespace EventBeheerSysteem
             Brand = brand;
             Serie = serie;
             Price = price;
-            mainCatID = catID;
+            MainCatID = catID;
         }
     }
 }

@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Diagnostics;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace MateriaalBeheerSysteem
 {
-    public partial class EventMaterials : System.Web.UI.Page
+    public partial class EventMaterials : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
+        private DataChecker checker = DataChecker.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private List<Item> itemList;
+        private int selectedIndex;
         private Event selEvent;
         private Item selItem;
-        private List<Item> itemList;
-
-        private int selectedIndex;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,16 +24,15 @@ namespace MateriaalBeheerSysteem
 
                 if (!IsPostBack)
                 {
-                    if(itemList != null)
+                    if (itemList != null)
                     {
                         FillData();
                     }
-
                 }
                 else
                 {
                     selectedIndex = materialsLb.SelectedIndex;
-                    if(selectedIndex != -1)
+                    if (selectedIndex != -1)
                     {
                         selItem = itemList[selectedIndex];
                     }
@@ -55,7 +48,7 @@ namespace MateriaalBeheerSysteem
         {
             title.InnerText = selEvent.Name + " - Materialen";
 
-            foreach(Item item in itemList)
+            foreach (Item item in itemList)
             {
                 materialsLb.Items.Add(item.Name);
             }
@@ -73,7 +66,7 @@ namespace MateriaalBeheerSysteem
             materialPriceTb.Text = i.Price.ToString();
             materialItemCountTb.Text = i.Available + " / " + i.Amount;
 
-            foreach(Booker b in i.RenterList)
+            foreach (Booker b in i.RenterList)
             {
                 materialRenterLb.Items.Add(b.Name);
             }
@@ -86,7 +79,7 @@ namespace MateriaalBeheerSysteem
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            if(materialsLb.SelectedIndex != -1)
+            if (materialsLb.SelectedIndex != -1)
             {
                 Item newI = new Item();
                 try
@@ -125,7 +118,7 @@ namespace MateriaalBeheerSysteem
 
         protected void addRenter_Click(object sender, EventArgs e)
         {
-            if(materialsLb.SelectedIndex != -1)
+            if (materialsLb.SelectedIndex != -1)
             {
                 if (selItem.Available > 0)
                 {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -9,9 +7,7 @@ namespace MediaSharingSystem
 {
     public class GuiHandler
     {
-
         private static GuiHandler self;
-
         private static User user;
         private static HttpContext context;
 
@@ -19,26 +15,25 @@ namespace MediaSharingSystem
         {
             self = this;
         }
+
         /// <summary>
-        /// Gets the instance of this class.
+        ///     Gets the instance of this class.
         /// </summary>
         /// <returns>A Singleton instance of this class</returns>
         public static GuiHandler GetInstance()
         {
-            user = (User)HttpContext.Current.Session["User"];
+            user = (User) HttpContext.Current.Session["User"];
             context = HttpContext.Current;
 
             if (self == null)
             {
                 return new GuiHandler();
             }
-            else
-            {
-                return self;
-            }
+            return self;
         }
+
         /// <summary>
-        /// Draws a Media post item.
+        ///     Draws a Media post item.
         /// </summary>
         /// <param name="media">The media object to show.</param>
         /// <returns>A HtmlGenericControl containing the html to show.</returns>
@@ -47,151 +42,146 @@ namespace MediaSharingSystem
             // Container <div> for the whole post.
             HtmlGenericControl containerDiv = new HtmlGenericControl("div");
             containerDiv.Attributes["class"] = "post-item-wrapper";
-                // Wrapper for the title objects.
-                HtmlGenericControl titlewrapper = new HtmlGenericControl("div");
-                titlewrapper.Attributes["class"] = "post-title-wrapper";
-                    HtmlGenericControl title = new HtmlGenericControl("h3");
-                    title.Attributes["class"] = "post-title";
-                    if (media.Title != null)
-                    {
-                        title.InnerText = media.Title;
-                    }
-                // Add the controls to the parent wrapper.
-                titlewrapper.Controls.Add(title);
-                containerDiv.Controls.Add(titlewrapper);
-            
-                MediaFile mediafile = media as MediaFile;
+            // Wrapper for the title objects.
+            HtmlGenericControl titleWrapper = new HtmlGenericControl("div");
+            titleWrapper.Attributes["class"] = "post-title-wrapper";
+            HtmlGenericControl title = new HtmlGenericControl("h3");
+            title.Attributes["class"] = "post-title";
+            if (media.Title != null)
+            {
+                title.InnerText = media.Title;
+            }
+            // Add the controls to the parent wrapper.
+            titleWrapper.Controls.Add(title);
+            containerDiv.Controls.Add(titleWrapper);
 
-                // Check if the media to draw is a mediafile.
-                if(mediafile != null)
+            MediaFile mediaFile = media as MediaFile;
+
+            // Check if the media to draw is a mediafile.
+            if (mediaFile != null)
+            {
+                string filePath = mediaFile.FilePath;
+                string extension = filePath.Substring(filePath.LastIndexOf('.'),
+                    filePath.Length - filePath.LastIndexOf('.'));
+
+                // Wrapper for the content(images/videos/audio).
+                HtmlGenericControl contentWrapper = new HtmlGenericControl("div");
+                contentWrapper.Attributes["class"] = "post-content-wrapper";
+                switch (extension)
                 {
+                    case ".mp3":
 
-                    string filepath = mediafile.FilePath;
-                    string extension = filepath.Substring(filepath.LastIndexOf('.'), filepath.Length - filepath.LastIndexOf('.'));
+                        containerDiv.Attributes["class"] += " small";
 
-                    // Wrapper for the content(images/videos/audio).
-                    HtmlGenericControl contentwrapper = new HtmlGenericControl("div");
-                    contentwrapper.Attributes["class"] = "post-content-wrapper";
-                    switch (extension)
-                    {
-                        case ".mp3":
+                        HtmlGenericControl musicPlayer = new HtmlGenericControl("audio controls");
+                        musicPlayer.Attributes["class"] = "post-content";
+                        musicPlayer.Attributes.Add("src", mediaFile.FilePath);
+                        musicPlayer.Attributes.Add("preload", "auto");
+                        contentWrapper.Controls.Add(musicPlayer);
 
-                            containerDiv.Attributes["class"] += " small";
+                        break;
+                    case ".jpg":
+                        HtmlGenericControl image = new HtmlGenericControl("img");
+                        image.Attributes["class"] = "post-content";
+                        image.Attributes.Add("src", mediaFile.FilePath);
 
-                            HtmlGenericControl musicplayer = new HtmlGenericControl("audio controls");
-                            musicplayer.Attributes["class"] = "post-content";
-                            musicplayer.Attributes.Add("src", mediafile.FilePath);
-                            musicplayer.Attributes.Add("preload", "auto");
-                            contentwrapper.Controls.Add(musicplayer);
-                        
-                            break;
-                        case ".jpg":
-                            HtmlGenericControl image = new HtmlGenericControl("img");
-                            image.Attributes["class"] = "post-content";
-                            image.Attributes.Add("src", mediafile.FilePath);
+                        contentWrapper.Controls.Add(image);
 
-                            contentwrapper.Controls.Add(image);
+                        break;
+                    case ".mp4":
+                        HtmlGenericControl videoPlayer = new HtmlGenericControl("video controls");
+                        videoPlayer.Attributes["class"] = "post-content";
+                        // mp4 file
+                        videoPlayer.InnerHtml += "<source src=" + mediaFile.FilePath + " type=\"video/mp4\">";
+                        // ogg file
+                        videoPlayer.InnerHtml += "<source src=" + mediaFile.FilePath + " type=\"video/ogg\">";
 
-                            break;
-                        case ".mp4":
-                            HtmlGenericControl videoplayer = new HtmlGenericControl("video controls");
-                            videoplayer.Attributes["class"] = "post-content";
-                            // mp4 file
-                            videoplayer.InnerHtml += "<source src=" + mediafile.FilePath + " type=\"video/mp4\">";
-                            // ogg file
-                            videoplayer.InnerHtml += "<source src=" + mediafile.FilePath + " type=\"video/ogg\">";
-
-                            contentwrapper.Controls.Add(videoplayer);
-                            break;
-                    }
-                    containerDiv.Controls.Add(contentwrapper);
-
+                        contentWrapper.Controls.Add(videoPlayer);
+                        break;
                 }
-            
-                TextMessage message = media as TextMessage;
-                // Check if the media to draw is a text message.
-                if(message != null)
-                {
-                    // Wrapper for the content of the message.
-                    HtmlGenericControl contentwrapper = new HtmlGenericControl("div");
-                    contentwrapper.Attributes["class"] = "post-content-wrapper";
-                        HtmlGenericControl content = new HtmlGenericControl("p");
-                        content.Attributes["class"] = "post-content";
-                        content.InnerText = message.Content;
-                    contentwrapper.Controls.Add(content);
+                containerDiv.Controls.Add(contentWrapper);
+            }
 
-                containerDiv.Controls.Add(contentwrapper);
-                }
-                
-                // Wrapper for the controls(Buttons, etc.).
-                HtmlGenericControl controlswrapper = new HtmlGenericControl("div");
-                controlswrapper.Attributes["class"] = "post-controls-wrapper";
-                    // Create the like controls
-                    HtmlGenericControl likeamount = new HtmlGenericControl("span");
-                    likeamount.Attributes["class"] = "post-likeamount";
-                    likeamount.InnerText = "Likes: " + media.LikeCount;
+            TextMessage message = media as TextMessage;
+            // Check if the media to draw is a text message.
+            if (message != null)
+            {
+                // Wrapper for the content of the message.
+                HtmlGenericControl contentWrapper = new HtmlGenericControl("div");
+                contentWrapper.Attributes["class"] = "post-content-wrapper";
+                HtmlGenericControl content = new HtmlGenericControl("p");
+                content.Attributes["class"] = "post-content";
+                content.InnerText = message.Content;
+                contentWrapper.Controls.Add(content);
 
-                    Button likebutton = new Button();
-                    likebutton.CssClass = "post-like-button";
-                    likebutton.CommandName = media.ID.ToString();
-                    if (!media.LikedBy(user.ID))
-                    {
-                        likebutton.Text = "Like";
-                        likebutton.Command += new CommandEventHandler(LikeButton_Clicked);
+                containerDiv.Controls.Add(contentWrapper);
+            }
 
-                    }
-                    else
-                    {
-                        likebutton.Text = "Dislike";
-                        likebutton.Command += new CommandEventHandler(DislikeButton_Clicked);
-                    }
+            // Wrapper for the controls(Buttons, etc.).
+            HtmlGenericControl controlsWrapper = new HtmlGenericControl("div");
+            controlsWrapper.Attributes["class"] = "post-controls-wrapper";
+            // Create the like controls
+            HtmlGenericControl likeAmount = new HtmlGenericControl("span");
+            likeAmount.Attributes["class"] = "post-likeamount";
+            likeAmount.InnerText = "Likes: " + media.LikeCount;
 
-                    // Create the report controls
-                    HtmlGenericControl reportamount = new HtmlGenericControl("span");
-                    reportamount.Attributes["class"] = "post-reportamount";
-                    reportamount.InnerText = "Reports: " + media.ReportCount;
+            Button likeButton = new Button();
+            likeButton.CssClass = "post-like-button";
+            likeButton.CommandName = media.ID.ToString();
+            if (!media.LikedBy(user.ID))
+            {
+                likeButton.Text = "Like";
+                likeButton.Command += LikeButton_Clicked;
+            }
+            else
+            {
+                likeButton.Text = "Dislike";
+                likeButton.Command += DislikeButton_Clicked;
+            }
 
-                    Button reportbutton = new Button();
-                    reportbutton.CssClass = "post-report-button";
-                    reportbutton.CommandName = media.ID.ToString();
-                    if (!media.ReportedBy(user.ID))
-                    {
-                        reportbutton.Text = "Report";
-                        reportbutton.Command += new CommandEventHandler(ReportButton_Clicked);
+            // Create the report controls
+            HtmlGenericControl reportAmount = new HtmlGenericControl("span");
+            reportAmount.Attributes["class"] = "post-reportamount";
+            reportAmount.InnerText = "Reports: " + media.ReportCount;
 
-                    }
-                    else
-                    {
-                        reportbutton.Text = "Unreport";
-                        reportbutton.Command += new CommandEventHandler(UnreportButton_Clicked);
-                    }
+            Button reportButton = new Button();
+            reportButton.CssClass = "post-report-button";
+            reportButton.CommandName = media.ID.ToString();
+            if (!media.ReportedBy(user.ID))
+            {
+                reportButton.Text = "Report";
+                reportButton.Command += ReportButton_Clicked;
+            }
+            else
+            {
+                reportButton.Text = "Unreport";
+                reportButton.Command += UnreportButton_Clicked;
+            }
 
-                    // Create the commentbutton
-                    Button commentbutton = new Button();
-                    commentbutton.Text = "Comment";
-                    commentbutton.CommandName = media.ID.ToString();
-                    commentbutton.Command += new CommandEventHandler(CommentButton_Clicked);
-                    
+            // Create the commentbutton
+            Button commentButton = new Button();
+            commentButton.Text = "Comment";
+            commentButton.CommandName = media.ID.ToString();
+            commentButton.Command += CommentButton_Clicked;
 
-                    
 
-                // Add the controls to the parent wrapper.
-                controlswrapper.Controls.Add(likeamount);
-                controlswrapper.Controls.Add(likebutton);
-                controlswrapper.Controls.Add(reportamount);
-                controlswrapper.Controls.Add(reportbutton);
-                controlswrapper.Controls.Add(commentbutton);
-        
-            containerDiv.Controls.Add(controlswrapper);
+            // Add the controls to the parent wrapper.
+            controlsWrapper.Controls.Add(likeAmount);
+            controlsWrapper.Controls.Add(likeButton);
+            controlsWrapper.Controls.Add(reportAmount);
+            controlsWrapper.Controls.Add(reportButton);
+            controlsWrapper.Controls.Add(commentButton);
+
+            containerDiv.Controls.Add(controlsWrapper);
             return containerDiv;
         }
 
         protected void LikeButton_Clicked(object sender, CommandEventArgs args)
         {
             int id = Convert.ToInt32(args.CommandName);
-            
+
             DatabaseHandler.GetInstance().LikePost(user, id);
-            
+
             context.Response.Redirect(context.Request.RawUrl);
         }
 
@@ -228,6 +218,5 @@ namespace MediaSharingSystem
 
             context.Response.Redirect("comment.aspx?id=" + id);
         }
-
     }
 }

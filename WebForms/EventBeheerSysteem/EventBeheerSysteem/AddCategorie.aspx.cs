@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class AddCategorie : System.Web.UI.Page
+    public partial class AddCategorie : Page
     {
-        List<Categorie> categorieList = new List<Categorie>();
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private List<Categorie> categorieList = new List<Categorie>();
         private Event selEvent;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             if (Request.QueryString["EventID"] != null)
             {
                 selEvent = dbHandler.GetEventByID(Convert.ToInt32(Request.QueryString["EventID"]));
@@ -36,11 +30,10 @@ namespace EventBeheerSysteem
             {
                 Response.Redirect("404.aspx");
             }
-            
         }
-        
+
         /// <summary>
-        /// Fills the DropDownList with all the options
+        ///     Fills the DropDownList with all the options
         /// </summary>
         private void FillData()
         {
@@ -51,7 +44,7 @@ namespace EventBeheerSysteem
             categorieSubCategorieDDL.Items.Add("Geen");
             categorieSubCategorieDDL.Items[0].Value = "0";
 
-            foreach(Categorie c in categorieList)
+            foreach (Categorie c in categorieList)
             {
                 categorieSubCategorieDDL.Items.Add(c.Name);
                 categorieSubCategorieDDL.Items[i].Value = c.ID.ToString();
@@ -61,7 +54,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Saves the new Categorie with a database handler methode
+        ///     Saves the new Categorie with a database handler methode
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
@@ -69,12 +62,12 @@ namespace EventBeheerSysteem
         {
             Categorie cat = new Categorie();
             cat.Name = categorieNameTb.Text;
-            if(categorieSubCategorieDDL.SelectedIndex != -1 && categorieSubCategorieDDL.SelectedIndex != 0)
+            if (categorieSubCategorieDDL.SelectedIndex != -1 && categorieSubCategorieDDL.SelectedIndex != 0)
             {
                 cat.SubID = Convert.ToInt32(categorieSubCategorieDDL.Items[categorieSubCategorieDDL.SelectedIndex].Value);
             }
 
-            if(dbHandler.AddCategorie(cat))
+            if (dbHandler.AddCategorie(cat))
             {
                 Response.Redirect("AddMaterial.aspx");
             }

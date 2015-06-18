@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace MateriaalBeheerSysteem
 {
-    public partial class AddRenterToItem : System.Web.UI.Page
+    public partial class AddRenterToItem : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
-        private Event selEvent;
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private List<Reservation> reservationList;
+        private Event selEvent;
+        private int selItemID;
         private Reservation selReservation;
         private int selReservationID;
-        private int selItemID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -93,7 +89,7 @@ namespace MateriaalBeheerSysteem
         {
             selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
 
-            if(dbHandler.AddItemToReservation(selItemID, selReservationID))
+            if (dbHandler.AddItemToReservation(selItemID, selReservationID))
             {
                 Response.Redirect("EventMaterials.aspx?EventID=" + selEvent.ID);
             }

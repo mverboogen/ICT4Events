@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class AddRenterToCampsite : System.Web.UI.Page
+    public partial class AddRenterToCampsite : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
-        private Event selEvent;
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private List<Reservation> reservationList;
+        private int selCampsiteID;
+        private Event selEvent;
         private Reservation selReservation;
         private int selReservationID;
-        private int selCampsiteID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,7 +40,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the listbox with all reservations
+        ///     Fills the listbox with all reservations
         /// </summary>
         private void FillData()
         {
@@ -66,7 +62,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the detail div with all the information about the reservation
+        ///     Fills the detail div with all the information about the reservation
         /// </summary>
         private void FillDetails()
         {
@@ -98,7 +94,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Creates a link between the selected reservation and object when selectBtn is pressed
+        ///     Creates a link between the selected reservation and object when selectBtn is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -113,13 +109,12 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Removes all the links between a campsite and reservations when noneBtn is pressed
+        ///     Removes all the links between a campsite and reservations when noneBtn is pressed
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
         protected void noneBtn_Click(object sender, EventArgs e)
         {
-            
             if (dbHandler.ClearCampsiteReservation(selCampsiteID))
             {
                 Response.Redirect("EventCampsite.aspx?EventID=" + selEvent.ID);

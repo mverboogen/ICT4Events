@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class Index1 : System.Web.UI.Page
+    public partial class Index1 : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private readonly DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         public int EventID = 1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -19,9 +17,8 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Sets the name in the header
+        ///     Sets the name in the header
         /// </summary>
-
         private void FillData()
         {
             FillTable();
@@ -30,23 +27,25 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Creates a datatable and fills it with all the events
+        ///     Creates a datatable and fills it with all the events
         /// </summary>
         private void FillTable()
         {
             DataTable dt = new DataTable();
-            DataRow dr = null;
 
-            dt.Columns.Add(new DataColumn("RowNumber", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventName", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventStartDate", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventEndDate", typeof(string)));
-            dt.Columns.Add(new DataColumn("EventOpen", typeof(string)));
+
+            dt.Columns.Add(new DataColumn("RowNumber", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventName", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventStartDate", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventEndDate", typeof (string)));
+            dt.Columns.Add(new DataColumn("EventOpen", typeof (string)));
 
             List<Event> eventList = dbHandler.GetAllEvents();
 
             foreach (Event ev in eventList)
             {
+                DataRow dr = null;
+
                 dr = dt.NewRow();
                 dr["RowNumber"] = ev.ID;
                 dr["EventName"] = ev.Name;
@@ -74,7 +73,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Redirects to the AddEvent page when addEvent is pressed
+        ///     Redirects to the AddEvent page when addEvent is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

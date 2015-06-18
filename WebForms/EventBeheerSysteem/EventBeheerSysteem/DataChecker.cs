@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EventBeheerSysteem
+﻿namespace EventBeheerSysteem
 {
     public class DataChecker
     {
-
         private static DataChecker self;
 
         private DataChecker()
@@ -17,16 +11,16 @@ namespace EventBeheerSysteem
 
         public static DataChecker GetInstance()
         {
-            if(self == null)
+            if (self == null)
             {
                 self = new DataChecker();
             }
 
             return self;
         }
-        
+
         /// <summary>
-        /// Checks if there are differences between two event objects
+        ///     Checks if there are differences between two event objects
         /// </summary>
         /// <param name="oldEvent">The old object to check</param>
         /// <param name="newEvent">The new object to check against</param>
@@ -74,14 +68,14 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Checks if there are differences between two reservation objects
+        ///     Checks if there are differences between two reservation objects
         /// </summary>
         /// <param name="oldR">The old object to check</param>
         /// <param name="newR">The new object to check against</param>
         /// <returns>Boolean, if the object has changed</returns>
         public bool ReservationChanged(Reservation oldR, Reservation newR)
         {
-            if(oldR.StartDate != newR.StartDate)
+            if (oldR.StartDate != newR.StartDate)
             {
                 return true;
             }
@@ -110,7 +104,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Checks if there are differences between two item objects
+        ///     Checks if there are differences between two item objects
         /// </summary>
         /// <param name="oldI">The old object to check</param>
         /// <param name="newI">The new object to check against</param>
@@ -134,38 +128,38 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Checks if there are differences between two campsite objects
+        ///     Checks if there are differences between two campsite objects
         /// </summary>
         /// <param name="oldC">The old object to check</param>
         /// <param name="newC">The new object to check against</param>
         /// <returns></returns>
         public bool CampsiteChanged(Campsite oldC, Campsite newC)
         {
-            if(oldC.Capacity != newC.Capacity)
+            if (oldC.Capacity != newC.Capacity)
             {
                 return true;
             }
-            if(oldC.Size != newC.Size)
+            if (oldC.Size != newC.Size)
             {
                 return true;
             }
-            if(oldC.Comfort != newC.Comfort)
+            if (oldC.Comfort != newC.Comfort)
             {
                 return true;
             }
-            if(oldC.Crane != newC.Crane)
+            if (oldC.Crane != newC.Crane)
             {
                 return true;
             }
-            if(oldC.Handicap != newC.Handicap)
+            if (oldC.Handicap != newC.Handicap)
             {
                 return true;
             }
-            if(oldC.XCor != newC.XCor)
+            if (oldC.XCor != newC.XCor)
             {
                 return true;
             }
-            if(oldC.YCor != newC.YCor)
+            if (oldC.YCor != newC.YCor)
             {
                 return true;
             }

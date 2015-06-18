@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Diagnostics;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class EventCampsite : System.Web.UI.Page
+    public partial class EventCampsite : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
-        private Event selEvent;
-        private Campsite selCampsite;
+        private DataChecker checker = DataChecker.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private List<Campsite> itemList;
-
+        private Campsite selCampsite;
         private int selectedIndex;
+        private Event selEvent;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,7 +24,7 @@ namespace EventBeheerSysteem
 
                 if (!IsPostBack)
                 {
-                    if(itemList != null)
+                    if (itemList != null)
                     {
                         FillData();
                     }
@@ -38,7 +32,7 @@ namespace EventBeheerSysteem
                 else
                 {
                     selectedIndex = campsiteLb.SelectedIndex;
-                    if(selectedIndex != -1)
+                    if (selectedIndex != -1)
                     {
                         selCampsite = dbHandler.GetCampsite(Convert.ToInt32(campsiteLb.SelectedValue));
                     }
@@ -51,7 +45,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the listbox with all campsites beloning to the selected event
+        ///     Fills the listbox with all campsites beloning to the selected event
         /// </summary>
         private void FillData()
         {
@@ -61,7 +55,7 @@ namespace EventBeheerSysteem
 
             int i = 0;
 
-            foreach(Campsite campsite in itemList)
+            foreach (Campsite campsite in itemList)
             {
                 campsiteLb.Items.Add(campsite.Number.ToString());
                 campsiteLb.Items[i].Value = campsite.ID.ToString();
@@ -71,7 +65,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Clears all the datafields in the details div
+        ///     Clears all the datafields in the details div
         /// </summary>
         private void ClearData()
         {
@@ -87,7 +81,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills all the datafields in the details div  with the selected campsite
+        ///     Fills all the datafields in the details div  with the selected campsite
         /// </summary>
         private void FillDetails()
         {
@@ -101,14 +95,14 @@ namespace EventBeheerSysteem
             campsiteHandicapCb.Checked = c.Handicap;
             campsiteXCorTb.Text = c.XCor.ToString();
             campsiteYCorTb.Text = c.YCor.ToString();
-            if(c.CampsiteBooker != null)
+            if (c.CampsiteBooker != null)
             {
                 campsiteRenterTb.Text = c.CampsiteBooker.Name;
             }
         }
 
         /// <summary>
-        /// Clears and fills the details div when the selected index of campsiteLb has changed
+        ///     Clears and fills the details div when the selected index of campsiteLb has changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -122,7 +116,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Redirects to the AddCampsite page when addCampsite is pressed
+        ///     Redirects to the AddCampsite page when addCampsite is pressed
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
@@ -132,13 +126,13 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Saves all the new data with a database handler methode when saveBtn is pressed
+        ///     Saves all the new data with a database handler methode when saveBtn is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            if(campsiteLb.SelectedIndex != -1)
+            if (campsiteLb.SelectedIndex != -1)
             {
                 Campsite newC = new Campsite();
                 try
@@ -168,14 +162,14 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Checks if the selected campsite has an renter, if so shows a dialog  to confirm
-        /// IF there is no renter or it has been confirmed, removes the selected campsite with a database handler methode
+        ///     Checks if the selected campsite has an renter, if so shows a dialog  to confirm
+        ///     IF there is no renter or it has been confirmed, removes the selected campsite with a database handler methode
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
         protected void removeBtn_OnClick(object sender, EventArgs e)
         {
-            if(campsiteLb.SelectedIndex != -1)
+            if (campsiteLb.SelectedIndex != -1)
             {
                 string confirmValue = Request.Form["confirm_value"];
                 if (confirmValue == "Yes")
@@ -189,13 +183,13 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Redirects to the AddRenterToCampsite page when changeRenter has been pressed
+        ///     Redirects to the AddRenterToCampsite page when changeRenter has been pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void changeRenterBtn_Click(object sender, EventArgs e)
         {
-            if(campsiteLb.SelectedIndex != -1)
+            if (campsiteLb.SelectedIndex != -1)
             {
                 Response.Redirect("AddRenterToCampsite.aspx?EventID=" + selEvent.ID + "&CampsiteID=" + selCampsite.ID);
             }

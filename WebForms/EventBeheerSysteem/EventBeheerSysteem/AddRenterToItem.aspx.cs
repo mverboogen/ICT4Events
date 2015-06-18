@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class AddRenterToItem : System.Web.UI.Page
+    public partial class AddRenterToItem : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-
-        private Event selEvent;
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private List<Reservation> reservationList;
+        private Event selEvent;
+        private int selItemID;
         private Reservation selReservation;
         private int selReservationID;
-        private int selItemID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,7 +40,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the listbox with all reservations
+        ///     Fills the listbox with all reservations
         /// </summary>
         private void FillData()
         {
@@ -64,7 +60,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Fills the details div with all information about the selected reservation
+        ///     Fills the details div with all information about the selected reservation
         /// </summary>
         private void FillDetails()
         {
@@ -88,7 +84,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Retrieves data about the selected reservation when the index of reservationLb is changed
+        ///     Retrieves data about the selected reservation when the index of reservationLb is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -101,7 +97,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Saves the item to the selected reservation with a database handler methode when the selectBtn is pressed
+        ///     Saves the item to the selected reservation with a database handler methode when the selectBtn is pressed
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
@@ -109,7 +105,7 @@ namespace EventBeheerSysteem
         {
             selReservationID = Convert.ToInt32(reservationLb.SelectedValue);
 
-            if(dbHandler.AddItemToReservation(selItemID, selReservationID))
+            if (dbHandler.AddItemToReservation(selItemID, selReservationID))
             {
                 Response.Redirect("EventMaterials.aspx?EventID=" + selEvent.ID);
             }

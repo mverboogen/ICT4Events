@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MateriaalBeheerSysteem
+﻿namespace MateriaalBeheerSysteem
 {
     public class DataChecker
     {
-
         private static DataChecker self;
 
         private DataChecker()
@@ -17,14 +11,14 @@ namespace MateriaalBeheerSysteem
 
         public static DataChecker GetInstance()
         {
-            if(self == null)
+            if (self == null)
             {
                 self = new DataChecker();
             }
 
             return self;
         }
-        
+
         public bool EventChanged(Event oldEvent, Event newEvent)
         {
             if (oldEvent.Name != newEvent.Name)
@@ -69,7 +63,7 @@ namespace MateriaalBeheerSysteem
 
         public bool ReservationChanged(Reservation oldR, Reservation newR)
         {
-            if(oldR.StartDate != newR.StartDate)
+            if (oldR.StartDate != newR.StartDate)
             {
                 return true;
             }
@@ -117,31 +111,31 @@ namespace MateriaalBeheerSysteem
 
         public bool CampsiteChanged(Campsite oldC, Campsite newC)
         {
-            if(oldC.Capacity != newC.Capacity)
+            if (oldC.Capacity != newC.Capacity)
             {
                 return true;
             }
-            if(oldC.Size != newC.Size)
+            if (oldC.Size != newC.Size)
             {
                 return true;
             }
-            if(oldC.Comfort != newC.Comfort)
+            if (oldC.Comfort != newC.Comfort)
             {
                 return true;
             }
-            if(oldC.Crane != newC.Crane)
+            if (oldC.Crane != newC.Crane)
             {
                 return true;
             }
-            if(oldC.Handicap != newC.Handicap)
+            if (oldC.Handicap != newC.Handicap)
             {
                 return true;
             }
-            if(oldC.XCor != newC.XCor)
+            if (oldC.XCor != newC.XCor)
             {
                 return true;
             }
-            if(oldC.YCor != newC.YCor)
+            if (oldC.YCor != newC.YCor)
             {
                 return true;
             }

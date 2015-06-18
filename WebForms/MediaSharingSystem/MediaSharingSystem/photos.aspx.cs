@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace MediaSharingSystem
 {
-    public partial class photos : System.Web.UI.Page
+    public partial class photos : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
             if (Session["User"] == null)
             {
                 string name = HttpContext.Current.User.Identity.Name;
                 User user = DatabaseHandler.GetInstance().DownloadUserByName(name);
 
                 Session["User"] = user;
-
             }
 
             List<Media> medialist = DatabaseHandler.GetInstance().DownloadPhotos(0);

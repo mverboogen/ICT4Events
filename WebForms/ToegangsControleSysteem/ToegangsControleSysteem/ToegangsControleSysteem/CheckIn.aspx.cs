@@ -1,46 +1,39 @@
 ﻿using System;
-using System.Drawing;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Drawing;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace ToegangsControleSysteem
 {
-    public partial class CheckIn : System.Web.UI.Page
+    public partial class CheckIn : Page
     {
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
-        private Reservation selReservation = new Reservation();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private DataChecker checker = DataChecker.GetInstance();
         private Event selEvent;
+        private Reservation selReservation = new Reservation();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             string result = Request.Form["confirm_value"];
 
-            if(result == "Yes")
+            if (result == "Yes")
             {
                 string barcode = barcodeTb.Text;
                 int reservationID = dbHandler.GetReservationByBarcode(barcode);
-                
-                if(reservationID != 0)
+
+                if (reservationID != 0)
                 {
-                    if(!dbHandler.PayReservation(reservationID))
+                    if (!dbHandler.PayReservation(reservationID))
                     {
                         Response.Redirect(Request.RawUrl);
                     }
                 }
-                
             }
 
             selEvent = dbHandler.GetEventByID(Convert.ToInt32(Request.QueryString["EventID"]));
 
             if (selEvent != null)
             {
-
             }
         }
 
@@ -73,7 +66,9 @@ namespace ToegangsControleSysteem
 
             foreach (int number in r.CampsiteNumberList)
             {
-                reservationCampsiteTb.Text = reservationCampsiteTb.Text == "" ? number.ToString() : reservationCampsiteTb.Text + " - " + number.ToString();
+                reservationCampsiteTb.Text = reservationCampsiteTb.Text == ""
+                    ? number.ToString()
+                    : reservationCampsiteTb.Text + " - " + number;
             }
         }
 
@@ -84,10 +79,10 @@ namespace ToegangsControleSysteem
                 string barcode = barcodeTb.Text;
                 int selReservationID = dbHandler.GetReservationByBarcode(barcode);
 
-                if(selReservationID != 0)
+                if (selReservationID != 0)
                 {
                     selReservation = dbHandler.GetReservation(selReservationID);
-                    if(selReservation != null)
+                    if (selReservation != null)
                     {
                         FillDetails();
 
@@ -98,7 +93,8 @@ namespace ToegangsControleSysteem
                         else
                         {
                             barcodeTb.BackColor = Color.Red;
-                            ScriptManager.RegisterStartupScript(this, GetType(), "PayReservation", "PayReservation();", true);
+                            ScriptManager.RegisterStartupScript(this, GetType(), "PayReservation", "PayReservation();",
+                                true);
                         }
                     }
                     else
@@ -111,7 +107,7 @@ namespace ToegangsControleSysteem
                     barcodeTb.BackColor = Color.Red;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }

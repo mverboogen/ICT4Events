@@ -1,64 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace EventBeheerSysteem
 {
     public class Reservation
     {
-        private int id;
-        private DateTime startDate;
-        private DateTime endDate;
-        private bool payed;
-        private int bookerID;
-        private Booker reservationBooker;
         private List<Account> accountList;
         private List<Campsite> campsiteList;
         private List<int> campsiteNumberList;
-
-        public int ID
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set { startDate = value; }
-        }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set { endDate = value; }
-        }
-
-        public bool Payed
-        {
-            get { return payed; }
-            set { payed = value; }
-        }
-
-        public int BookerID
-        {
-            get { return bookerID; }
-            set { bookerID = value; }
-        }
-
-        public Booker ReservationBooker
-        {
-            get { return reservationBooker; }
-            set { reservationBooker = value; }
-        }
+        public int ID { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public bool Payed { get; set; }
+        public int BookerID { get; set; }
+        public Booker ReservationBooker { get; set; }
 
         public List<Account> AccountList
         {
             get { return accountList; }
-            set 
-            { 
-                if(accountList == null && value == null)
+            set
+            {
+                if (accountList == null && value == null)
                 {
                     accountList = new List<Account>();
                 }
@@ -69,9 +31,9 @@ namespace EventBeheerSysteem
         public List<Campsite> CampsiteList
         {
             get { return campsiteList; }
-            set 
-            { 
-                if(campsiteList == null && value == null)
+            set
+            {
+                if (campsiteList == null && value == null)
                 {
                     campsiteList = new List<Campsite>();
                 }
@@ -83,7 +45,7 @@ namespace EventBeheerSysteem
             get { return campsiteNumberList; }
             set
             {
-                if(campsiteNumberList == null && value == null)
+                if (campsiteNumberList == null && value == null)
                 {
                     campsiteNumberList = new List<int>();
                 }
@@ -93,7 +55,6 @@ namespace EventBeheerSysteem
 
         public Reservation()
         {
-
         }
 
         public Reservation(int id, DateTime startDate, DateTime endDate)

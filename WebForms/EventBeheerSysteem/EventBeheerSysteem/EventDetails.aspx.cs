@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace EventBeheerSysteem
 {
-    public partial class EventDetails : System.Web.UI.Page
+    public partial class EventDetails : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
+        private DataChecker checker = DataChecker.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private Event selEvent;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -27,7 +21,6 @@ namespace EventBeheerSysteem
                     {
                         FillData();
                     }
-
                 }
             }
             else
@@ -37,7 +30,7 @@ namespace EventBeheerSysteem
         }
 
         /// <summary>
-        /// Saves the new data to the database with a database handler methode when saveBtn is pressed
+        ///     Saves the new data to the database with a database handler methode when saveBtn is pressed
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Event Arguments</param>
@@ -66,14 +59,14 @@ namespace EventBeheerSysteem
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
 
         /// <summary>
-        /// Fills the details div with data
+        ///     Fills the details div with data
         /// </summary>
         private void FillData()
         {

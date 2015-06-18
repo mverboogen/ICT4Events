@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace ToegangsControleSysteem
 {
-    public partial class EventReservations : System.Web.UI.Page
+    public partial class EventReservations : Page
     {
-
-        DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
-        DataChecker checker = DataChecker.GetInstance();
-
-        private Event selEvent;
+        private DataChecker checker = DataChecker.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         private List<Reservation> reservationList;
+        private Event selEvent;
         private Reservation selReservation;
         private int selReservationID;
 
@@ -46,7 +41,7 @@ namespace ToegangsControleSysteem
             reservationList = dbHandler.GetAllReservations(selEvent.ID);
 
             //FILLER DATA
-            for (int i = 0; i < reservationList.Count; i++ )
+            for (int i = 0; i < reservationList.Count; i++)
             {
                 Reservation r = reservationList[i];
                 Booker b = r.ReservationBooker;
@@ -68,7 +63,7 @@ namespace ToegangsControleSysteem
             reservationEndDateTb.Text = r.EndDate != null ? r.EndDate.ToShortDateString() : "NO DATE";
             reservationPayedCb.Checked = r.Payed;
 
-            if(b != null)
+            if (b != null)
             {
                 //Booker Data
                 reservationNameTb.Text = b.Name;
@@ -78,20 +73,22 @@ namespace ToegangsControleSysteem
                 reservationBankTb.Text = b.BankAccount;
             }
 
-            foreach(Account a in r.AccountList)
+            foreach (Account a in r.AccountList)
             {
                 reservationMembersLb.Items.Add(a.Gebruikersnaam + " - " + a.Barcode);
             }
 
-            foreach(int number in r.CampsiteNumberList)
+            foreach (int number in r.CampsiteNumberList)
             {
-                reservationCampsiteTb.Text = reservationCampsiteTb.Text == "" ? number.ToString() : reservationCampsiteTb.Text + " - " + number.ToString(); 
+                reservationCampsiteTb.Text = reservationCampsiteTb.Text == ""
+                    ? number.ToString()
+                    : reservationCampsiteTb.Text + " - " + number;
             }
         }
 
         protected void saveBtn_OnClick(object sender, EventArgs e)
         {
-            if(reservationLb.SelectedIndex != -1)
+            if (reservationLb.SelectedIndex != -1)
             {
                 Reservation newR = new Reservation();
                 Booker newB = new Booker();
