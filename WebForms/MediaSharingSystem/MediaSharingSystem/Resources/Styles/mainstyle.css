@@ -26,10 +26,19 @@
     padding: 5px 0;
 }
 
-#nav-search-wrapper{
+#header-search-wrapper{
     height: 100%;
     float: right;
     padding-top: 20px;
+}
+
+.header-searchbar{
+    width: 200px;
+    float: right;
+}
+
+.header-searchbutton{
+    float: right;
 }
 
 .nav-button{
@@ -43,13 +52,22 @@
     margin-right: 0;
 }
 
-.nav-searchbar{
-    width: 200px;
 
+#header-upload-wrapper{
+    width: 300px;
+    height: 100%;
+    float: left;
+    margin-right: 10px;
 }
 
-.nav-searchbutton{
-    float: right;
+.header-upload-button{
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #ff4600;
+    color: #fff;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
 }
 
 #content-container{
@@ -61,3 +79,12 @@
     margin: 0 auto;
     padding-top: 20px;
 }
+
+#nav-upload-wrapper{
+
+}
+
+#header-upload-wrapper .header-upload-button{
+
+}
+

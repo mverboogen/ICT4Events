@@ -1,0 +1,56 @@
+﻿.upload-menu{
+    display: none;
+}
+
+.upload-file{
+    display: none;
+}
+
+.upload-message{
+    display: none;
+}
+
+#preview-wrapper{
+    width: 80%;
+    height: 500px;
+    margin: 0 auto;
+}
+
+#preview-wrapper .upload-preview{
+    width: 100%;
+}
+
+#title-wrapper{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#title-wrapper .title-textbox{
+    width: 300px;
+}
+
+#message-content-wrapper{
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+#message-content-wrapper .content-textbox{
+    width: 100%;
+    height: 100%;
+}
+
+.visible{
+    display: block;
+}
+
+#controls-wrapper{
+    float: left;
+}
+
+.upload-button{
+
+}
+
+
+

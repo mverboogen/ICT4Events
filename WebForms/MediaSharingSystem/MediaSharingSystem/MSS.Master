@@ -23,12 +23,15 @@
                     <a href="videos.aspx"><img src="../Resources/Images/video.png" class="nav-button" /></a>
                     <a href="messages.aspx"><img src="../Resources/Images/message.png" class="nav-button" /></a>
                 </div>
-                <div id="nav-search-wrapper">
-                    <asp:Button class="nav-searchbutton" Text="Search" runat="server" />
-                    <asp:TextBox class="nav-searchbar" runat="server" />
+                <div id="header-upload-wrapper">
+                    <a href="upload.aspx" class="header-upload-button">Upload</a>
                 </div>
+                <div id="header-search-wrapper">
+                    <asp:Button class="header-searchbutton" Text="Search" runat="server" />
+                    <asp:TextBox class="header-searchbar" runat="server" />
+                </div>
+                <asp:ImageButton ImageUrl="" Text="Logout" OnClick="Logout_Click" runat="server" />
             </div>
-
         </div>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server">
 

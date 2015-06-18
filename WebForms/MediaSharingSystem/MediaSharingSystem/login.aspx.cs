@@ -20,10 +20,12 @@ namespace MediaSharingSystem
             // Create a custom FormsAuthenticationTicket containing
             // application specific data for the user.
 
+            AdHandlerAm adhandler = new AdHandlerAm();
             string username = UsernameTb.Text;
             string password = PasswordTb.Text;
             bool isPersistent = false;
 
+            //if(adhandler.AuthenticateUser(username, password))
             if (true)
             {
                 string userData = "ApplicationSpecific data for this user.";
