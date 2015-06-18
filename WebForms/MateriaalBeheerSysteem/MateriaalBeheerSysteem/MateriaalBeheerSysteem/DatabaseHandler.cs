@@ -33,7 +33,7 @@ namespace MateriaalBeheerSysteem
             try
             {
                 con = new OracleConnection();
-                con.ConnectionString = "User Id=smeAdmin;Password=password;Data Source=localhost";
+                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=fhictora01.fhict.local/fhictora";
                 con.Open();
                 Console.WriteLine("Connection Succesfull");
             }
