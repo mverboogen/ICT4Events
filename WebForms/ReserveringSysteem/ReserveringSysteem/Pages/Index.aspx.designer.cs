@@ -13,6 +13,15 @@ namespace ReserveringSysteem {
     public partial class Index {
         
         /// <summary>
+        /// lblReservationConfirm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblReservationConfirm;
+        
+        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -175,6 +184,15 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.TextBox tbEmail;
         
         /// <summary>
+        /// btToevoegen control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btToevoegen;
+        
+        /// <summary>
         /// gvAccounts control.
         /// </summary>
         /// <remarks>
@@ -184,13 +202,13 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.GridView gvAccounts;
         
         /// <summary>
-        /// btToevoegen control.
+        /// lblAccountConfirm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btToevoegen;
+        protected global::System.Web.UI.WebControls.Label lblAccountConfirm;
         
         /// <summary>
         /// lbCampsites control.
@@ -299,6 +317,42 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblItemConfirm;
+        
+        /// <summary>
+        /// Label11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label11;
+        
+        /// <summary>
+        /// cBeginDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Calendar cBeginDate;
+        
+        /// <summary>
+        /// Label12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label12;
+        
+        /// <summary>
+        /// cEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Calendar cEndDate;
         
         /// <summary>
         /// btBevestigen control.

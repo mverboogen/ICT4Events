@@ -45,10 +45,31 @@
     border: double;
 }
 
-.lblCampsiteConfirm {
+.lblConfirm {
     color: red;
 }
 
-.lblItemConfirm {
-    color: red;
+.textbox
+{
+	border:2px solid #456879;
+	border-radius:10px;
+	height: 15px;
+	width: 180px;
+    margin-bottom: 5px;
+}
+
+.button
+{
+    border: 2px solid #456879;
+	border-radius: 10px;
+    height: 25px;
+	outline: none;
+}
+
+.buttonConfirm
+{
+    border: 2px solid #456879;
+    border-radius: 10px;
+    height: 40px;
+    outline: none;
 }

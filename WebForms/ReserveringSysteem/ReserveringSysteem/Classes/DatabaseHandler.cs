@@ -23,6 +23,8 @@ namespace ReserveringSysteem
 
         private static DatabaseHandler self;
 
+        private HashGenerator hashGenerator = new HashGenerator();
+
         public List<Item> ItemList { get { return itemList; } }
         public List<Campsite> CampsiteList { get { return campsiteList; } }
 
@@ -54,7 +56,6 @@ namespace ReserveringSysteem
             {
                 Console.WriteLine(ex.Message);
             }
-
         }
 
         public void Disconnect()
@@ -87,8 +88,7 @@ namespace ReserveringSysteem
 
         public List<Campsite> GetAllCampsites()
         {
-             Connect();
-             List<Campsite> cList = new List<Campsite>();
+            Connect();
 
             try
             {
@@ -183,7 +183,7 @@ namespace ReserveringSysteem
         {
             Connect();
 
-            string hash = "EenTestHash";
+            string hash = hashGenerator.GenerateToken(32);
 
             try
             {
@@ -252,17 +252,11 @@ namespace ReserveringSysteem
             }
         }
 
-        public void AddReservering()
+        public void AddReservering(string startDatum, string eindDatum)
         {
             Connect();
 
             int personID = 0;
-
-            string startDatum = "01-01-15";
-            string eindDatum = "10-01-15";
-
-            startDatum = DateTime.Now.ToString("dd/MM/yy");
-            eindDatum = DateTime.Now.ToString("dd/MM/yy");
 
             try
             {

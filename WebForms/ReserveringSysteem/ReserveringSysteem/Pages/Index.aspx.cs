@@ -57,103 +57,96 @@ namespace ReserveringSysteem
 
         DatabaseHandler handler = DatabaseHandler.GetInstance();
 
-        
         protected void Page_Load(object sender, EventArgs e)
         {
-            //SomeTestData();
-            RefreshListbox();
-
-            handler.GetAllCampsites();
-
-            RefreshListbox();
+            if(!IsPostBack)
+            {
+                handler.GetAllCampsites();
+                RefreshListbox();
+            }
         }
 
         protected void btBevestigen_Click(object sender, EventArgs e)
         {
-            string voornaam = tbVoornaam.Text;
-            string tussenvoegsel = tbTussenvoegsel.Text;
-            string achternaam = tbAchternaam.Text;
-            string straat = tbStraat.Text;
-            string huisNr = tbHuisNr.Text;
-            string woonplaats = tbWoonplaats.Text;
-            string bankNr =tbBankNr.Text;
+             
+            if(string.IsNullOrWhiteSpace(tbVoornaam.Text)
+                ||string.IsNullOrWhiteSpace(tbTussenvoegsel.Text)
+                ||string.IsNullOrWhiteSpace(tbAchternaam.Text)
+                ||string.IsNullOrWhiteSpace(tbStraat.Text)
+                ||string.IsNullOrWhiteSpace(tbHuisNr.Text)
+                ||string.IsNullOrWhiteSpace(tbWoonplaats.Text)
+                ||string.IsNullOrWhiteSpace(tbBankNr.Text))
+            {
+                lblReservationConfirm.Text = "Waarschuwing: Controleer of alle informatie van de reserveerder correct is ingevuld";
+            }
+            else
+            {
+                if (cBeginDate.SelectedDate > cEndDate.SelectedDate)
+                {
+                    lblReservationConfirm.Text = "Waarschuwing: De begin datum is na de eind datum";
+                }
+                else
+                {
+                    string dateIn = cBeginDate.SelectedDate.ToString("dd/MM/yy");
+                    string dateOut = cEndDate.SelectedDate.ToString("dd/MM/yy");
 
-            handler.AddPerson(voornaam, tussenvoegsel, achternaam, straat, huisNr, woonplaats, bankNr);
-   
-            handler.AddReservering();
-            
-           foreach(Account a in accounts)
-           {
-               handler.AddPolsbandje();
-               handler.AddAccount(a.Username, a.Email);
-               handler.AddReserveringPolsbandje();
-           }
+                    string voornaam = tbVoornaam.Text;
+                    string tussenvoegsel = tbTussenvoegsel.Text;
+                    string achternaam = tbAchternaam.Text;
+                    string straat = tbStraat.Text;
+                    string huisNr = tbHuisNr.Text;
+                    string woonplaats = tbWoonplaats.Text;
+                    string bankNr = tbBankNr.Text;
 
-           foreach(Campsite c in ReserveerCampsites)
-           {
-               handler.AddPlekReservering(c.Id);
-           }
-                      
-           /*
-           foreach(Item i in ReserveerItems)
-           {
-               handler.AddVerhuur(i.Id);
-           }
-            */
+                    handler.AddPerson(voornaam, tussenvoegsel, achternaam, straat, huisNr, woonplaats, bankNr);
+
+                    handler.AddReservering(dateIn,dateOut);
+
+                    foreach (Account a in accounts)
+                    {
+                        handler.AddPolsbandje();
+                        handler.AddAccount(a.Username, a.Email);
+                        handler.AddReserveringPolsbandje();
+                    }
+
+                    foreach (Campsite c in ReserveerCampsites)
+                    {
+                        handler.AddPlekReservering(c.Id);
+                    }
+
+                    Response.Redirect("~/Pages/ReservationConfirm.aspx");
+                }
+                /*
+                foreach(Item i in ReserveerItems)
+                {
+                    handler.AddVerhuur(i.Id);
+                }
+              */ 
+            } 
+             
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void btToevoegen_Click(object sender, EventArgs e)
         {
             string gebruikersnaam = tbGebruikersnaam.Text;
             string email = tbEmail.Text;
 
-            Account account = new Account(gebruikersnaam, email);
+            if (string.IsNullOrWhiteSpace(tbGebruikersnaam.Text)
+                || string.IsNullOrWhiteSpace(tbEmail.Text))
+            {
+                lblAccountConfirm.Text = "Niet alle informatie is correct ingevuld";
+            }
+            else
+            {
+                Account account = new Account(gebruikersnaam, email);
 
-            accounts.Add(account);
+                accounts.Add(account);
 
+                lblAccountConfirm.Text = "Account toegevoegd";
+            }
+            
             gvAccounts.DataSource = accounts;
             gvAccounts.DataBind();
-        }
-
-        public void SomeTestData()
-        {
-                /*
-                Account account1 = new Account("UTest1", "Etest1", "PTest1");
-                Account account2 = new Account("UTest2", "Etest2", "PTest2");
-                Account account3 = new Account("UTest3", "Etest3", "PTest3");
-                Account account4 = new Account("UTest4", "Etest4", "PTest4");
-                Account account5 = new Account("UTest5", "Etest5", "PTest5");
-
-                accounts.Add(account1);
-                accounts.Add(account2);
-                accounts.Add(account3);
-                accounts.Add(account4);
-                accounts.Add(account5);
-                */
-
-                Campsite campsite1 = new Campsite(1, 1, 2, 100);
-                Campsite campsite2 = new Campsite(2, 2, 2, 100);
-                Campsite campsite3 = new Campsite(3, 3, 4, 200);
-                Campsite campsite4 = new Campsite(4, 4, 4, 200);
-                Campsite campsite5 = new Campsite(5, 5, 10, 500);
-
-                handler.CampsiteList.Add(campsite1);
-                handler.CampsiteList.Add(campsite2);
-                handler.CampsiteList.Add(campsite3);
-                handler.CampsiteList.Add(campsite4);
-                handler.CampsiteList.Add(campsite5);
-
-                Item item1 = new Item(1, "Brand1", "Serie1", 1, 10);
-                Item item2 = new Item(2, "Brand2", "Serie2", 2, 20);
-                Item item3 = new Item(3, "Brand3", "Serie3", 3, 30);
-                Item item4 = new Item(4, "Brand4", "Serie4", 4, 40);
-                Item item5 = new Item(5, "Brand5", "Serie5", 5, 50);
-
-                handler.ItemList.Add(item1);
-                handler.ItemList.Add(item2);
-                handler.ItemList.Add(item3);
-                handler.ItemList.Add(item4);
-                handler.ItemList.Add(item5);
         }
 
         public void RefreshListbox()
@@ -178,6 +171,7 @@ namespace ReserveringSysteem
             {
                 lbResCampsites.Items.Add(c.Id.ToString());
             }
+
             /*
             foreach(Item i in this.ReserveerItems)
             {
@@ -186,18 +180,32 @@ namespace ReserveringSysteem
             */
         }
 
-
         protected void btAddCampsite_Click(object sender, EventArgs e)
         {
-            int campId = Convert.ToInt32(tbCampsiteID.Text);
+            if (string.IsNullOrWhiteSpace(tbCampsiteID.Text))
+            {
+                lblCampsiteConfirm.Text = "Er is geen campsite ingevuld";
+            }
+            else
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(tbCampsiteID.Text, "[^0-9]"))
+                {
+                    lblCampsiteConfirm.Text = "Vul een getal in";
+                }
+                else
+                {
+                    int campId = Convert.ToInt32(tbCampsiteID.Text);
 
-            Campsite id = AddCampsite(campId);
+                    Campsite id = AddCampsite(campId);
+                }
+            }
 
-            RefreshListbox();
+                RefreshListbox();
   		}
 
         protected void btAddItems_Click(object sender, EventArgs e)
         {
+            /*
             int itemID = Convert.ToInt32(tbItemID.Text);
             
             Item i = new Item(itemID);
@@ -205,6 +213,9 @@ namespace ReserveringSysteem
             ReserveerItems.Add(i);
 
             lbResItems.Items.Add(itemID.ToString());
+             */
+
+
         }
 
         protected void btRemoveItem_Click(object sender, EventArgs e)
@@ -213,26 +224,23 @@ namespace ReserveringSysteem
 
         protected void btRemoveCampsite_Click(object sender, EventArgs e)
         {
-            Campsite removeCS = FindCampsite(Convert.ToInt32(tbCampsiteID.Text));
-            RemoveCampsite(removeCS);
-        }
-
-        public Campsite AddCampsite(int CampsiteID)
-        {
-            foreach (Campsite c in handler.CampsiteList)
+            if (string.IsNullOrWhiteSpace(tbCampsiteID.Text))
             {
-                if(c.Id == CampsiteID)
+                lblCampsiteConfirm.Text = "Er is geen campsite ingevuld";
+            }
+            else
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(tbCampsiteID.Text, "[^0-9]"))
                 {
-                    Campsite cs = new Campsite(CampsiteID);
-
-                    ReserveerCampsites.Add(cs);
-               
-                    lblCampsiteConfirm.Text = "Campsite toegevoegd";
-                    return c;
+                    lblCampsiteConfirm.Text = "Vul een getal in";
+                }
+                else
+                {
+                    Campsite removeCS = FindReservedCampsite(Convert.ToInt32(tbCampsiteID.Text));
+                    RemoveCampsite(removeCS);
                 }
             }
-            lblCampsiteConfirm.Text = "Dit nummer bestaat niet";
-            return null;
+
         }
 
         public Item FindItem(int itemID)
@@ -260,10 +268,83 @@ namespace ReserveringSysteem
             return null;
         }
 
+        public Campsite FindReservedCampsite(int CampID)
+        {
+            foreach(Campsite c in ReserveerCampsites)
+            {
+                if(c.Id == CampID)
+                {
+                    lblCampsiteConfirm.Text = "Campsite verwijderd";
+                    return c;
+                }
+            }
+            lblCampsiteConfirm.Text = "Dit nummer bestaat niet";
+            return null;
+        }
+
+        public Campsite AddCampsite(int CampID)
+        {
+            foreach (Campsite c in handler.CampsiteList)
+            {
+                if (c.Id == CampID)
+                {
+                    Campsite cs = new Campsite(CampID);
+
+                    ReserveerCampsites.Add(cs);
+
+                    lblCampsiteConfirm.Text = "Campsite toegevoegd";
+                    return c;
+                }
+            }
+            lblCampsiteConfirm.Text = "Dit nummer bestaat niet";
+            return null;
+        }
+
         public void RemoveCampsite(Campsite c)
         {    
             ReserveerCampsites.Remove(c);
-            lblCampsiteConfirm.Text = "Campsite verwijderd";
+            RefreshListbox();
+        }
+
+        public void SomeTestData()
+        {
+            /*
+            Account account1 = new Account("UTest1", "Etest1", "PTest1");
+            Account account2 = new Account("UTest2", "Etest2", "PTest2");
+            Account account3 = new Account("UTest3", "Etest3", "PTest3");
+            Account account4 = new Account("UTest4", "Etest4", "PTest4");
+            Account account5 = new Account("UTest5", "Etest5", "PTest5");
+
+            accounts.Add(account1);
+            accounts.Add(account2);
+            accounts.Add(account3);
+            accounts.Add(account4);
+            accounts.Add(account5);
+            */
+
+            Campsite campsite1 = new Campsite(1, 1, 2, 100);
+            Campsite campsite2 = new Campsite(2, 2, 2, 100);
+            Campsite campsite3 = new Campsite(3, 3, 4, 200);
+            Campsite campsite4 = new Campsite(4, 4, 4, 200);
+            Campsite campsite5 = new Campsite(5, 5, 10, 500);
+
+            handler.CampsiteList.Add(campsite1);
+            handler.CampsiteList.Add(campsite2);
+            handler.CampsiteList.Add(campsite3);
+            handler.CampsiteList.Add(campsite4);
+            handler.CampsiteList.Add(campsite5);
+
+            Item item1 = new Item(1, "Brand1", "Serie1", 1, 10);
+            Item item2 = new Item(2, "Brand2", "Serie2", 2, 20);
+            Item item3 = new Item(3, "Brand3", "Serie3", 3, 30);
+            Item item4 = new Item(4, "Brand4", "Serie4", 4, 40);
+            Item item5 = new Item(5, "Brand5", "Serie5", 5, 50);
+
+            handler.ItemList.Add(item1);
+            handler.ItemList.Add(item2);
+            handler.ItemList.Add(item3);
+            handler.ItemList.Add(item4);
+            handler.ItemList.Add(item5);
         }
     }
 }
