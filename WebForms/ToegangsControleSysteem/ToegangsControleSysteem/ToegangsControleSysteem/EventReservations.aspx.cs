@@ -68,7 +68,7 @@ namespace ToegangsControleSysteem
                 //Booker Data
                 reservationNameTb.Text = b.Name;
                 reservationStreetTb.Text = b.Street;
-                reservationNumberTb.Text = b.Number != 0 ? b.Number.ToString() : "";
+                reservationNumberTb.Text = b.Number != "" ? b.Number.ToString() : "";
                 reservationCityTb.Text = b.City;
                 reservationBankTb.Text = b.BankAccount;
             }
@@ -102,7 +102,7 @@ namespace ToegangsControleSysteem
                     newR.EndDate = Convert.ToDateTime(reservationEndDateTb.Text);
                     newR.Payed = reservationPayedCb.Checked;
                     newB.Street = reservationStreetTb.Text;
-                    newB.Number = Convert.ToInt32(reservationNumberTb.Text);
+                    newB.Number = reservationNumberTb.Text;
                     newB.City = reservationCityTb.Text;
 
                     if (checker.ReservationChanged(selReservation, newR))

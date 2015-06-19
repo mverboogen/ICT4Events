@@ -25,7 +25,7 @@ namespace ToegangsControleSysteem
             set { locationStreet = value; }
         }
 
-        public int LocationNumber { get; set; }
+        public string LocationNumber { get; set; }
 
         public string LocationZipCode
         {

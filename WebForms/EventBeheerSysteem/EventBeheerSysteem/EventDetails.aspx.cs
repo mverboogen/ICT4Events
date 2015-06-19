@@ -48,7 +48,7 @@ namespace EventBeheerSysteem
                 newEvent.LocationName = eventLocationTb.Text;
                 newEvent.LocationCity = eventCityTb.Text;
                 newEvent.LocationStreet = eventStreetTb.Text;
-                newEvent.LocationNumber = Convert.ToInt32(eventNumberTb.Text);
+                newEvent.LocationNumber = eventNumberTb.Text;
                 newEvent.LocationZipCode = eventZipcodeTb.Text;
 
                 if (checker.EventChanged(selEvent, newEvent))

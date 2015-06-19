@@ -28,7 +28,7 @@ namespace EventBeheerSysteem
                 newEvent.MaxVisitors = Convert.ToInt32(eventMaxVisitorsTb.Text);
                 newEvent.LocationName = locationNameTb.Text;
                 newEvent.LocationStreet = locationStreetTb.Text;
-                newEvent.LocationNumber = Convert.ToInt32(locationNumberTb.Text);
+                newEvent.LocationNumber = locationNumberTb.Text;
                 newEvent.LocationZipCode = locationZipcodeTb.Text;
                 newEvent.LocationCity = locationCityTb.Text;
 

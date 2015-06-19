@@ -71,7 +71,7 @@ namespace MateriaalBeheerSysteem
                 //Booker Data
                 reservationNameTb.Text = b.Name;
                 reservationStreetTb.Text = b.Street;
-                reservationNumberTb.Text = b.Number != 0 ? b.Number.ToString() : "";
+                reservationNumberTb.Text = b.Number != "" ? b.Number.ToString() : "";
                 reservationCityTb.Text = b.City;
                 reservationBankTb.Text = b.BankAccount;
             }
