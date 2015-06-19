@@ -79,11 +79,9 @@
     <Compile Include="Classes\Account.cs" />
     <Compile Include="Classes\ADHandler.cs" />
     <Compile Include="Classes\Campsite.cs" />
-    <Compile Include="Classes\Handler.cs" />
     <Compile Include="Classes\HashGenerator.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\DatabaseHandler.cs" />
-    <Compile Include="Classes\Reservering.cs" />
     <Compile Include="Pages\Activation.aspx.cs">
       <DependentUpon>Activation.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

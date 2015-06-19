@@ -1,70 +1,66 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Net;
 using System.Net.Mail;
-using System.Net.Mime;
+using System.Text.RegularExpressions;
+using System.Web.UI;
 
 namespace ReserveringSysteem
 {
-    public partial class Index : System.Web.UI.Page
+    public partial class Index : Page
     {
+        private DatabaseHandler handler = DatabaseHandler.GetInstance();
+        private HashGenerator hashGenerator = new HashGenerator();
+        private ADHandler adHandler = new ADHandler();
+
         private List<Account> accounts
         {
             get
             {
-                var obj3 = this.Session["AccountList"];
-                if (obj3 == null) { obj3 = this.Session["AccountList"] = new List<Account>(); }
-                return (List<Account>)obj3;
+                object obj3 = Session["AccountList"];
+                if (obj3 == null)
+                {
+                    obj3 = Session["AccountList"] = new List<Account>();
+                }
+                return (List<Account>) obj3;
             }
 
-            set
-            {
-                this.Session["AccountList"] = value;
-            }
+            set { Session["AccountList"] = value; }
         }
 
         private List<Item> ReserveerItems
         {
             get
             {
-                var obj1 = this.Session["ItemList"];
-                if (obj1 == null) { obj1 = this.Session["ItemList"] = new List<Item>(); }
-                return (List<Item>)obj1;
+                object obj1 = Session["ItemList"];
+                if (obj1 == null)
+                {
+                    obj1 = Session["ItemList"] = new List<Item>();
+                }
+                return (List<Item>) obj1;
             }
 
-            set
-            {
-                this.Session["ItemList"] = value;
-            }
+            set { Session["ItemList"] = value; }
         }
 
         private List<Campsite> ReserveerCampsites
         {
             get
             {
-                var obj2 = this.Session["CampsiteList"];
-                if (obj2 == null) { obj2 = this.Session["CampsiteList"] = new List<Campsite>(); }
-                return (List<Campsite>)obj2;
+                object obj2 = Session["CampsiteList"];
+                if (obj2 == null)
+                {
+                    obj2 = Session["CampsiteList"] = new List<Campsite>();
+                }
+                return (List<Campsite>) obj2;
             }
 
-            set
-            {
-                this.Session["CampsiteList"] = value;
-            }
+            set { Session["CampsiteList"] = value; }
         }
-
-        private DatabaseHandler handler = DatabaseHandler.GetInstance();
-        private HashGenerator hashGenerator = new HashGenerator();
-        private ADHandler adHandler = new ADHandler();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+            if (!IsPostBack)
             {
                 handler.GetAllCampsites();
                 handler.GetAllItems();
@@ -72,9 +68,8 @@ namespace ReserveringSysteem
             }
         }
 
-
         /// <summary>
-        /// Confirms reservation, sends all data to database
+        ///     Confirms reservation, sends all data to database
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -82,11 +77,11 @@ namespace ReserveringSysteem
         {
             string startDate = "01/06/15";
             string endDate = "30/06/15";
-             
-            if(string.IsNullOrWhiteSpace(tbVoornaam.Text)
-                ||string.IsNullOrWhiteSpace(tbAchternaam.Text))
+
+            if (string.IsNullOrWhiteSpace(tbVoornaam.Text) || string.IsNullOrWhiteSpace(tbAchternaam.Text))
             {
-                lblReservationConfirm.Text = "Waarschuwing: Controleer of alle informatie van de reserveerder correct is ingevuld";
+                lblReservationConfirm.Text =
+                    "Waarschuwing: Controleer of alle informatie van de reserveerder correct is ingevuld";
             }
             else
             {
@@ -99,17 +94,13 @@ namespace ReserveringSysteem
                 DateTime startRes = Convert.ToDateTime(dateIn);
                 DateTime endRes = Convert.ToDateTime(dateOut);
 
-                if (cBeginDate.SelectedDate > cEndDate.SelectedDate
-                    || startRes < startEvent
-                    || startRes > endEvent
-                    || endRes < startEvent
-                    || endRes > endEvent
-                    )
+                if (cBeginDate.SelectedDate > cEndDate.SelectedDate || startRes < startEvent || startRes > endEvent ||
+                    endRes < startEvent || endRes > endEvent)
                 {
                     lblReservationConfirm.Text = "Waarschuwing: Controleer de data";
                 }
                 else
-                {                   
+                {
                     string voornaam = tbVoornaam.Text;
                     string tussenvoegsel = tbTussenvoegsel.Text;
                     string achternaam = tbAchternaam.Text;
@@ -120,13 +111,13 @@ namespace ReserveringSysteem
 
                     handler.AddPerson(voornaam, tussenvoegsel, achternaam, straat, huisNr, woonplaats, bankNr);
 
-                    handler.AddReservering(dateIn,dateOut);
+                    handler.AddReservering(dateIn, dateOut);
 
                     foreach (Account a in accounts)
                     {
                         string hash = hashGenerator.GenerateToken(32);
                         handler.AddPolsbandje();
-                        handler.AddAccount(a.Username, a.Email,hash);
+                        handler.AddAccount(a.Username, a.Email, hash);
                         handler.AddReserveringPolsbandje();
 
                         //adHandler.CreateUserAccount(a.Username, "password");
@@ -139,18 +130,18 @@ namespace ReserveringSysteem
                         handler.AddPlekReservering(c.Id);
                     }
 
-                    foreach(Item i in ReserveerItems)
+                    foreach (Item i in ReserveerItems)
                     {
-                        handler.AddVerhuur(i.Id,dateIn,dateOut);
+                        handler.AddVerhuur(i.Id, dateIn, dateOut);
                     }
 
                     Response.Redirect("~/Pages/ReservationConfirm.aspx");
-                }     
-            }           
+                }
+            }
         }
 
         /// <summary>
-        /// Add a account to the visitor list
+        ///     Add a account to the visitor list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -159,8 +150,7 @@ namespace ReserveringSysteem
             string gebruikersnaam = tbGebruikersnaam.Text;
             string email = tbEmail.Text;
 
-            if (string.IsNullOrWhiteSpace(tbGebruikersnaam.Text)
-                || string.IsNullOrWhiteSpace(tbEmail.Text))
+            if (string.IsNullOrWhiteSpace(tbGebruikersnaam.Text) || string.IsNullOrWhiteSpace(tbEmail.Text))
             {
                 lblAccountConfirm.Text = "Niet alle informatie is correct ingevuld";
             }
@@ -172,13 +162,13 @@ namespace ReserveringSysteem
 
                 lblAccountConfirm.Text = "Account toegevoegd";
             }
-            
+
             gvAccounts.DataSource = accounts;
             gvAccounts.DataBind();
         }
 
         /// <summary>
-        /// Fils all listboxes
+        ///     Fils all listboxes
         /// </summary>
         public void RefreshListbox()
         {
@@ -192,24 +182,24 @@ namespace ReserveringSysteem
                 lbCampsites.Items.Add(c.ToString());
             }
 
-            foreach(Item i in handler.ItemList)
+            foreach (Item i in handler.ItemList)
             {
                 lbItems.Items.Add(i.ToString());
             }
 
-            foreach (Campsite c in this.ReserveerCampsites)
+            foreach (Campsite c in ReserveerCampsites)
             {
                 lbResCampsites.Items.Add(c.ToString());
             }
 
-            foreach(Item i in this.ReserveerItems)
+            foreach (Item i in ReserveerItems)
             {
                 lbResItems.Items.Add(i.ToString());
-            }   
+            }
         }
 
         /// <summary>
-        /// Calls method to add a campsite to the list of reserved campsites
+        ///     Calls method to add a campsite to the list of reserved campsites
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -221,7 +211,7 @@ namespace ReserveringSysteem
             }
             else
             {
-                if (System.Text.RegularExpressions.Regex.IsMatch(tbCampsiteID.Text, "[^0-9]"))
+                if (Regex.IsMatch(tbCampsiteID.Text, "[^0-9]"))
                 {
                     lblCampsiteConfirm.Text = "Vul een getal in";
                 }
@@ -232,11 +222,11 @@ namespace ReserveringSysteem
                     Campsite id = AddCampsite(campId);
                 }
             }
-                RefreshListbox();
-  		}
+            RefreshListbox();
+        }
 
         /// <summary>
-        /// Calls method to add a item to the list of reserved items
+        ///     Calls method to add a item to the list of reserved items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -248,7 +238,7 @@ namespace ReserveringSysteem
             }
             else
             {
-                if (System.Text.RegularExpressions.Regex.IsMatch(tbItemID.Text, "[^0-9]"))
+                if (Regex.IsMatch(tbItemID.Text, "[^0-9]"))
                 {
                     lblItemConfirm.Text = "Vul een getal in";
                 }
@@ -263,19 +253,19 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Calls method to add item to the list of reserved items
+        ///     Calls method to add item to the list of reserved items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void btRemoveItem_Click(object sender, EventArgs e)
         {
-            if(string.IsNullOrWhiteSpace(tbItemID.Text))
+            if (string.IsNullOrWhiteSpace(tbItemID.Text))
             {
                 lblItemConfirm.Text = "Er is geen item ingevuld";
             }
             else
             {
-                if (System.Text.RegularExpressions.Regex.IsMatch(tbItemID.Text, "[^0-9]"))
+                if (Regex.IsMatch(tbItemID.Text, "[^0-9]"))
                 {
                     lblItemConfirm.Text = "Vul een getal in";
                 }
@@ -288,7 +278,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Calls method to remove a campsite from the list of reserved campsites
+        ///     Calls method to remove a campsite from the list of reserved campsites
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -300,7 +290,7 @@ namespace ReserveringSysteem
             }
             else
             {
-                if (System.Text.RegularExpressions.Regex.IsMatch(tbCampsiteID.Text, "[^0-9]"))
+                if (Regex.IsMatch(tbCampsiteID.Text, "[^0-9]"))
                 {
                     lblCampsiteConfirm.Text = "Vul een getal in";
                 }
@@ -310,19 +300,18 @@ namespace ReserveringSysteem
                     RemoveCampsite(removeCS);
                 }
             }
-
         }
 
         /// <summary>
-        /// Checks if the campsite exists in the list of available campsites
+        ///     Checks if the campsite exists in the list of available campsites
         /// </summary>
         /// <param name="campID"></param>
         /// <returns></returns>
         private Campsite FindCampsite(int campID)
         {
-            foreach(Campsite campsite in ReserveerCampsites)
+            foreach (Campsite campsite in ReserveerCampsites)
             {
-                if(campsite.Id == campID)
+                if (campsite.Id == campID)
                 {
                     return campsite;
                 }
@@ -332,15 +321,15 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Checks if the campsite exists in the list of reserved campsites
+        ///     Checks if the campsite exists in the list of reserved campsites
         /// </summary>
         /// <param name="campID"></param>
         /// <returns></returns>
         private Campsite FindReservedCampsite(int campID)
         {
-            foreach(Campsite c in ReserveerCampsites)
+            foreach (Campsite c in ReserveerCampsites)
             {
-                if(c.Id == campID)
+                if (c.Id == campID)
                 {
                     lblCampsiteConfirm.Text = "Campsite verwijderd";
                     return c;
@@ -351,7 +340,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a campsite to the list of reserved campsites
+        ///     Adds a campsite to the list of reserved campsites
         /// </summary>
         /// <param name="campID"></param>
         /// <returns></returns>
@@ -374,7 +363,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Removes a campsite from the list of reserved campsites
+        ///     Removes a campsite from the list of reserved campsites
         /// </summary>
         /// <param name="c"></param>
         private void RemoveCampsite(Campsite c)
@@ -384,7 +373,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Checks if the item exists in the list of available campsites
+        ///     Checks if the item exists in the list of available campsites
         /// </summary>
         /// <param name="itemID"></param>
         /// <returns></returns>
@@ -402,13 +391,13 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Add a item to the list of reserved items
+        ///     Add a item to the list of reserved items
         /// </summary>
         /// <param name="itemID"></param>
         /// <returns></returns>
         private Item AddItem(int itemID)
         {
-             foreach (Item i in handler.ItemList)
+            foreach (Item i in handler.ItemList)
             {
                 if (i.Id == itemID)
                 {
@@ -420,12 +409,12 @@ namespace ReserveringSysteem
                     return i;
                 }
             }
-             lblItemConfirm.Text = "Dit nummer bestaat niet";
+            lblItemConfirm.Text = "Dit nummer bestaat niet";
             return null;
         }
 
         /// <summary>
-        /// Checks if the item is in the list of reserved items
+        ///     Checks if the item is in the list of reserved items
         /// </summary>
         /// <param name="itemID"></param>
         /// <returns></returns>
@@ -444,7 +433,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Removes a item from the list of reserved items
+        ///     Removes a item from the list of reserved items
         /// </summary>
         /// <param name="i"></param>
         private void RemoveItem(Item i)
@@ -454,7 +443,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Sends a email with username and hash to activate account to every account in reservation
+        ///     Sends a email with username and hash to activate account to every account in reservation
         /// </summary>
         /// <param name="username"></param>
         /// <param name="email"></param>
@@ -466,10 +455,15 @@ namespace ReserveringSysteem
             Message.From = new MailAddress("SENDER");
 
             Message.To.Add(email);
-            Message.Body = "Hartelijk dank voor het reserveren," + Environment.NewLine + Environment.NewLine + "Uw gebruikersnaam is:" + Environment.NewLine + username + Environment.NewLine + Environment.NewLine + "Uw activatie code is:" + Environment.NewLine + hash + Environment.NewLine + Environment.NewLine + "Om uw account te activeren gaat u naar www.google.com " + Environment.NewLine + Environment.NewLine + "Ict4Events groep D";
+            Message.Body = "Hartelijk dank voor het reserveren," + Environment.NewLine + Environment.NewLine +
+                           "Uw gebruikersnaam is:" + Environment.NewLine + username + Environment.NewLine +
+                           Environment.NewLine + "Uw activatie code is:" + Environment.NewLine + hash +
+                           Environment.NewLine + Environment.NewLine +
+                           "Om uw account te activeren gaat u naar www.google.com " + Environment.NewLine +
+                           Environment.NewLine + "Ict4Events groep D";
             Message.Subject = "Activering account";
-            client.Credentials = new System.Net.NetworkCredential("USERNAME SENDER", "PASSWORD SENDER");
-            client.Port = System.Convert.ToInt32(587);
+            client.Credentials = new NetworkCredential("USERNAME SENDER", "PASSWORD SENDER");
+            client.Port = Convert.ToInt32(587);
             client.EnableSsl = true;
             client.Send(Message);
         }

@@ -1,32 +1,30 @@
 ﻿using System;
-using System.Web;
-using System.Linq;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Collections.Generic;
-using Oracle;
-using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
-using Oracle.DataAccess.Types;
-
 
 namespace ReserveringSysteem
 {
     public class DatabaseHandler
     {
-        private List<Item> itemList = new List<Item>();
-        private List<Campsite> campsiteList = new List<Campsite>();
-
-        private OracleConnection con;
+        private readonly List<Campsite> campsiteList = new List<Campsite>();
+        private readonly List<Item> itemList = new List<Item>();
         private OracleCommand cmd;
+        private OracleConnection con;
         private OracleDataReader dr;
-
+        private HashGenerator hashGenerator = new HashGenerator();
         private static DatabaseHandler self;
 
-        private HashGenerator hashGenerator = new HashGenerator();
+        public List<Item> ItemList
+        {
+            get { return itemList; }
+        }
 
-        public List<Item> ItemList { get { return itemList; } }
-        public List<Campsite> CampsiteList { get { return campsiteList; } }
+        public List<Campsite> CampsiteList
+        {
+            get { return campsiteList; }
+        }
 
         private DatabaseHandler()
         {
@@ -44,14 +42,15 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Connects to database
+        ///     Connects to database
         /// </summary>
         public void Connect()
         {
             try
             {
                 con = new OracleConnection();
-                con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=fhictora01.fhict.local/fhictora";
+                con.ConnectionString =
+                    "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=fhictora01.fhict.local/fhictora";
                 con.Open();
                 Console.WriteLine("Connection Succesfull");
             }
@@ -62,7 +61,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Disconnects form database
+        ///     Disconnects form database
         /// </summary>
         public void Disconnect()
         {
@@ -71,7 +70,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Runs a sql statement
+        ///     Runs a sql statement
         /// </summary>
         /// <param name="sql"></param>
         private void ReadData(string sql)
@@ -91,13 +90,11 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Gets all available items from database
+        ///     Gets all available items from database
         /// </summary>
         /// <returns></returns>
         public List<Item> GetAllItems()
         {
-
-
             Connect();
 
             try
@@ -159,7 +156,7 @@ namespace ReserveringSysteem
 
                     while (dr.Read())
                     {
-                       // item.Available = item.Amount - Convert.ToInt32(dr.GetValue(0));
+                        // item.Available = item.Amount - Convert.ToInt32(dr.GetValue(0));
                     }
                 }
 
@@ -178,7 +175,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Gets all available campsites from database
+        ///     Gets all available campsites from database
         /// </summary>
         /// <returns></returns>
         public List<Campsite> GetAllCampsites()
@@ -187,8 +184,9 @@ namespace ReserveringSysteem
 
             try
             {
-                ReadData("SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND P.ID NOT IN (SELECT Plek_ID FROM Plek_Reservering) AND E.ID = 1");
-                while(dr.Read())
+                ReadData(
+                    "SELECT P.ID, P.Nummer, P.Capaciteit FROM Plek P, Locatie L, Event E WHERE P.Locatie_ID = L.ID AND E.Locatie_ID = L.ID AND P.ID NOT IN (SELECT Plek_ID FROM Plek_Reservering) AND E.ID = 1");
+                while (dr.Read())
                 {
                     Campsite c = new Campsite();
 
@@ -199,40 +197,42 @@ namespace ReserveringSysteem
                     campsiteList.Add(c);
                 }
 
-                foreach(Campsite campsite in campsiteList)
+                foreach (Campsite campsite in campsiteList)
                 {
-                    ReadData("SELECT PS.Specificatie_ID, PS.Waarde FROM Plek_Specificatie PS, Plek P WHERE P.ID = PS.Plek_ID AND P.ID = " + campsite.Id);
-                    while(dr.Read())
+                    ReadData(
+                        "SELECT PS.Specificatie_ID, PS.Waarde FROM Plek_Specificatie PS, Plek P WHERE P.ID = PS.Plek_ID AND P.ID = " +
+                        campsite.Id);
+                    while (dr.Read())
                     {
                         int id = Convert.ToInt32(dr.GetValue(0));
 
-                        switch(id)
+                        switch (id)
                         {
-                         case 2:
-                            campsite.Comfort = dr.GetString(1) == "JA" ? true : false;
-                            break;
-                        case 3:
-                            campsite.Handicap = dr.GetString(1) == "JA" ? true : false;
-                            break;
-                        case 4:
-                            campsite.Size = Convert.ToInt32(dr.GetValue(1));
-                            break;
-                        case 5:
-                            campsite.Crane = dr.GetString(1) == "JA" ? true : false;
-                            break;
-                        case 6:
-                            campsite.XCor = Convert.ToInt32(dr.GetValue(1));
-                            break;
-                        case 7:
-                            campsite.YCor = Convert.ToInt32(dr.GetValue(1));
-                            break;
+                            case 2:
+                                campsite.Comfort = dr.GetString(1) == "JA" ? true : false;
+                                break;
+                            case 3:
+                                campsite.Handicap = dr.GetString(1) == "JA" ? true : false;
+                                break;
+                            case 4:
+                                campsite.Size = Convert.ToInt32(dr.GetValue(1));
+                                break;
+                            case 5:
+                                campsite.Crane = dr.GetString(1) == "JA" ? true : false;
+                                break;
+                            case 6:
+                                campsite.XCor = Convert.ToInt32(dr.GetValue(1));
+                                break;
+                            case 7:
+                                campsite.YCor = Convert.ToInt32(dr.GetValue(1));
+                                break;
                         }
 
                         id++;
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -240,11 +240,11 @@ namespace ReserveringSysteem
             {
                 Disconnect();
             }
-             return campsiteList;
+            return campsiteList;
         }
 
         /// <summary>
-        /// Adds a person to the database using a stored procedure
+        ///     Adds a person to the database using a stored procedure
         /// </summary>
         /// <param name="firstname"></param>
         /// <param name="inlas"></param>
@@ -253,10 +253,11 @@ namespace ReserveringSysteem
         /// <param name="streetnumber"></param>
         /// <param name="city"></param>
         /// <param name="bankAccount"></param>
-        public void AddPerson(string firstname, string inlas, string lastname, string street, string streetnumber, string city, string bankAccount)
+        public void AddPerson(string firstname, string inlas, string lastname, string street, string streetnumber,
+            string city, string bankAccount)
         {
             Connect();
-            
+
             try
             {
                 OracleCommand cmd = new OracleCommand();
@@ -285,7 +286,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a account to the database using a stored procedure
+        ///     Adds a account to the database using a stored procedure
         /// </summary>
         /// <param name="gebruikersnaam"></param>
         /// <param name="email"></param>
@@ -319,7 +320,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a campsite reservation to the database using a stored procedure
+        ///     Adds a campsite reservation to the database using a stored procedure
         /// </summary>
         /// <param name="campsiteID"></param>
         public void AddPlekReservering(int campsiteID)
@@ -336,7 +337,6 @@ namespace ReserveringSysteem
                 {
                     ReserveringID = Convert.ToInt32(dr.GetValue(0));
                 }
-
             }
             catch (Exception ex)
             {
@@ -366,7 +366,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a reservation to the database using a stored procedure
+        ///     Adds a reservation to the database using a stored procedure
         /// </summary>
         /// <param name="startDatum"></param>
         /// <param name="eindDatum"></param>
@@ -384,7 +384,6 @@ namespace ReserveringSysteem
                 {
                     personID = Convert.ToInt32(dr.GetValue(0));
                 }
-
             }
             catch (Exception ex)
             {
@@ -416,7 +415,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a bracelet to the database using a stored procedure
+        ///     Adds a bracelet to the database using a stored procedure
         /// </summary>
         public void AddPolsbandje()
         {
@@ -450,7 +449,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a reserved bracelet to the database using a stored procedure
+        ///     Adds a reserved bracelet to the database using a stored procedure
         /// </summary>
         public void AddReserveringPolsbandje()
         {
@@ -468,7 +467,6 @@ namespace ReserveringSysteem
                 {
                     reserveringID = Convert.ToInt32(dr.GetValue(0));
                 }
-
             }
             catch (Exception ex)
             {
@@ -483,14 +481,13 @@ namespace ReserveringSysteem
                 {
                     polsbandjeID = Convert.ToInt32(dr.GetValue(0));
                 }
-
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-             try
+            try
             {
                 ReadData("SELECT MAX(ID) FROM ACCOUNT");
 
@@ -498,7 +495,6 @@ namespace ReserveringSysteem
                 {
                     accountID = Convert.ToInt32(dr.GetValue(0));
                 }
-
             }
             catch (Exception ex)
             {
@@ -530,7 +526,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Adds a item reservation to the database using a stored procedure
+        ///     Adds a item reservation to the database using a stored procedure
         /// </summary>
         /// <param name="itemID"></param>
         /// <param name="startDate"></param>
@@ -549,7 +545,6 @@ namespace ReserveringSysteem
                 {
                     resPbID = Convert.ToInt32(dr.GetValue(0));
                 }
-
             }
             catch (Exception ex)
             {
@@ -583,7 +578,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Updates the activation status in database
+        ///     Updates the activation status in database
         /// </summary>
         /// <param name="username"></param>
         public void UpdateStatus(string username)
@@ -596,12 +591,11 @@ namespace ReserveringSysteem
             {
                 cmd = new OracleCommand();
                 cmd.Connection = con;
-                cmd.CommandText = ("UPDATE ACCOUNT SET GEACTIVEERD = :geactiveerd WHERE GEBRUIKERSNAAM = :username" );
+                cmd.CommandText = ("UPDATE ACCOUNT SET GEACTIVEERD = :geactiveerd WHERE GEBRUIKERSNAAM = :username");
                 cmd.Parameters.Add("geactiveerd", OracleDbType.Int32).Value = geactiveerd;
                 cmd.Parameters.Add("username", OracleDbType.Varchar2).Value = username;
 
                 cmd.ExecuteNonQuery();
-                
             }
 
             catch (Exception ex)
@@ -616,7 +610,7 @@ namespace ReserveringSysteem
         }
 
         /// <summary>
-        /// Gets the hash from a username from database
+        ///     Gets the hash from a username from database
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
@@ -632,7 +626,7 @@ namespace ReserveringSysteem
                 cmd.Connection = con;
                 cmd.CommandText = ("SELECT ACTIVATIEHASH FROM ACCOUNT WHERE GEBRUIKERSNAAM = :username");
                 cmd.Parameters.Add("username", OracleDbType.Varchar2).Value = username;
-                dr = cmd.ExecuteReader(); 
+                dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
@@ -645,7 +639,7 @@ namespace ReserveringSysteem
             {
                 Debug.WriteLine(ex.Message);
             }
-            
+
             finally
             {
                 Disconnect();

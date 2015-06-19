@@ -1,25 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-
 
 namespace ReserveringSysteem.Pages
 {
-    public partial class Activation : System.Web.UI.Page
+    public partial class Activation : Page
     {
-        private DatabaseHandler handler = DatabaseHandler.GetInstance();
+        private readonly DatabaseHandler handler = DatabaseHandler.GetInstance();
         private ADHandler adHandler = new ADHandler();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         /// <summary>
-        /// Activates account if hash and username matches
+        ///     Activates account if hash and username matches
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -28,7 +22,7 @@ namespace ReserveringSysteem.Pages
             string aUsername = tbAUsername.Text;
             string aHash = tbAHash.Text;
 
-            if(handler.GetHash(aUsername) == aHash)
+            if (handler.GetHash(aUsername) == aHash)
             {
                 handler.UpdateStatus(aUsername);
 
