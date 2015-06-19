@@ -20,15 +20,17 @@
         <div id="content-container">
             <div id="content-wrapper">
                 <div id="UploadMenu" class="upload-menu" runat="server">
-                    <a href="upload.aspx?upload=photo"><div class="upload-type-button">Photo</div></a>
-                    <a href="upload.aspx?upload=video"><div class="upload-type-button">Video</div></a>
-                    <a href="upload.aspx?upload=message"><div class="upload-type-button">Message</div></a>
+                    <ul>
+                        <li><a href="upload.aspx?upload=photo"><div class="upload-type-button">Photo</div></a></li>
+                        <li><a href="upload.aspx?upload=video"><div class="upload-type-button">Video</div></a></li>
+                        <li><a href="upload.aspx?upload=message"><div class="upload-type-button">Message</div></a></li>
+                    </ul>
                 </div>
 
                 <div id="UploadFile" class="upload-file" runat="server">
                     <asp:FileUpload id="FileUploadControl" onchange="ShowImagePreview(this)" runat="server" />
 
-                    <div id="preview-wrapper">
+                    <div id="PreviewWrapper" class="preview-wrapper" runat="server">
                         <img id="UploadPreviewImage" class="upload-preview" src="Resources/Images/preview.png" runat="server" />
                     </div>
                 </div>
@@ -43,7 +45,7 @@
                         <asp:TextBox ID="ContentTextBox" CssClass="content-textbox" TextMode="MultiLine" runat="server" />
                     </div>
                 </div>
-                <div id="controls-wrapper">
+                <div id="ControlsWrapper" class="controls-wrapper" runat="server">
                     <asp:Label ID="StatusLabel" runat="server" />
                     <asp:Button ID="UploadButton" CssClass="upload-button" Text="Upload" onClick="UploadButton_Click" runat="server" />
                 </div>

@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="photos.aspx" />
+    <Content Include="Resources\Images\check.png" />
     <Content Include="Resources\Images\preview.png" />
     <Content Include="Resources\Styles\comments-style.css" />
     <Content Include="Resources\Styles\index-style.css" />

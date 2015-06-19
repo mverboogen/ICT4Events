@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -10,6 +11,10 @@ namespace MediaSharingSystem
         private static GuiHandler self;
         private static User user;
         private static HttpContext context;
+
+        private string[] ImageTypes = { ".jpeg", ".png" };
+        private string[] VideoTypes = { ".mp4", ".ogg" };
+        private string[] AudioTypes = { ".mp3", ".wav" };
 
         private GuiHandler()
         {
@@ -64,12 +69,25 @@ namespace MediaSharingSystem
                 string extension = filePath.Substring(filePath.LastIndexOf('.'),
                     filePath.Length - filePath.LastIndexOf('.'));
 
+                if (ImageTypes.Contains(extension))
+                {
+                    extension = "image";
+                }
+                else if(VideoTypes.Contains(extension))
+                {
+                    extension = "video";
+                }
+                else if (AudioTypes.Contains(extension))
+                {
+                    extension = "audio";
+                }
+
                 // Wrapper for the content(images/videos/audio).
                 HtmlGenericControl contentWrapper = new HtmlGenericControl("div");
                 contentWrapper.Attributes["class"] = "post-content-wrapper";
                 switch (extension)
                 {
-                    case ".mp3":
+                    case "audio":
 
                         containerDiv.Attributes["class"] += " small";
 
@@ -80,7 +98,7 @@ namespace MediaSharingSystem
                         contentWrapper.Controls.Add(musicPlayer);
 
                         break;
-                    case ".jpg":
+                    case "image":
                         HtmlGenericControl image = new HtmlGenericControl("img");
                         image.Attributes["class"] = "post-content";
                         image.Attributes.Add("src", mediaFile.FilePath);
@@ -88,7 +106,7 @@ namespace MediaSharingSystem
                         contentWrapper.Controls.Add(image);
 
                         break;
-                    case ".mp4":
+                    case "video":
                         HtmlGenericControl videoPlayer = new HtmlGenericControl("video controls");
                         videoPlayer.Attributes["class"] = "post-content";
                         // mp4 file

@@ -27,12 +27,16 @@ namespace MediaSharingSystem
             switch (queryString)
             {
                 case "photo":
+                    ControlsWrapper.Attributes["class"] += " visible";
                     UploadFile.Attributes["class"] += " visible";
+                    PreviewWrapper.Attributes["class"] += " visible";
                     break;
                 case "video":
+                    ControlsWrapper.Attributes["class"] += " visible";
                     UploadFile.Attributes["class"] += " visible";
                     break;
                 case "message":
+                    ControlsWrapper.Attributes["class"] += " visible";
                     UploadMessage.Attributes["class"] += " visible";
                     break;
             }
@@ -86,6 +90,7 @@ namespace MediaSharingSystem
                                 {
                                     string filename = Path.GetFileName(FileUploadControl.FileName);
                                     FileUploadControl.SaveAs(Server.MapPath("Resources/Uploads/") + filename);
+                                    
                                     User user = ((User) Session["User"]);
                                     DatabaseHandler.GetInstance().UploadFile(filename, user);
                                     uploading = true;

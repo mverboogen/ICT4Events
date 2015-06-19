@@ -17,6 +17,9 @@
     <div id="main-container">
         <div id="header-container">
             <div id="header-wrapper">
+                <div id="header-logout-wrapper">
+                    <asp:Button Text="Logout" CssClass="header-logout-button" OnClick="Logout_Click" runat="server" />
+                </div>
                 <div id="nav-button-wrapper">
                     <a href="index.aspx"><img src="../Resources/Images/home.png" class="nav-button" /></a>
                     <a href="photos.aspx"><img src="../Resources/Images/photo.png" class="nav-button" /></a>
@@ -24,13 +27,13 @@
                     <a href="messages.aspx"><img src="../Resources/Images/message.png" class="nav-button" /></a>
                 </div>
                 <div id="header-upload-wrapper">
-                    <a href="upload.aspx" class="header-upload-button">Upload</a>
+                    <a href="upload.aspx" class="header-upload-button">UPLOAD</a>
                 </div>
                 <div id="header-search-wrapper">
                     <asp:Button class="header-searchbutton" OnClick="Search_Click" Text="Search" runat="server" />
                     <asp:TextBox ID="searchBar" class="header-searchbar" runat="server" />
                 </div>
-                <asp:Button Text="Logout" OnClick="Logout_Click" runat="server" />
+                
             </div>
         </div>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server">
