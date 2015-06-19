@@ -27,10 +27,10 @@
                     <a href="upload.aspx" class="header-upload-button">Upload</a>
                 </div>
                 <div id="header-search-wrapper">
-                    <asp:Button class="header-searchbutton" Text="Search" runat="server" />
-                    <asp:TextBox class="header-searchbar" runat="server" />
+                    <asp:Button class="header-searchbutton" OnClick="Search_Click" Text="Search" runat="server" />
+                    <asp:TextBox ID="searchBar" class="header-searchbar" runat="server" />
                 </div>
-                <asp:ImageButton ImageUrl="" Text="Logout" OnClick="Logout_Click" runat="server" />
+                <asp:Button Text="Logout" OnClick="Logout_Click" runat="server" />
             </div>
         </div>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server">

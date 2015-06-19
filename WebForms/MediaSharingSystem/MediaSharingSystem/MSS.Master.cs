@@ -2,6 +2,8 @@
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Collections.Generic;
+
 
 namespace MediaSharingSystem
 {
@@ -26,6 +28,14 @@ namespace MediaSharingSystem
         {
             Session.Abandon();
             Response.Redirect("login.aspx");
+        }
+
+        protected void Search_Click(object sender, EventArgs args)
+        {
+            string search = searchBar.Text;
+
+            Response.Redirect("search.aspx?searchquery=" + search);
+
         }
     }
 }

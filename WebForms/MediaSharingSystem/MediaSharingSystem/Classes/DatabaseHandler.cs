@@ -482,6 +482,39 @@ namespace MediaSharingSystem
         }
 
         /// <summary>
+        /// Searches for media containing the given string.
+        /// </summary>
+        /// <param name="search">The searchstring.</param>
+        /// <returns>List corresponding the searchstring.</returns>
+        public List<Media> SearchMedia(string search)
+        {
+            List<int> idlist = new List<int>();
+            List<Media> medialist = new List<Media>();
+            
+            ReadData(String.Format("SELECT BIJDRAGE_ID FROM BESTAND WHERE LOWER(BESTANDSLOCATIE) LIKE LOWER('%{0}%')", search));
+            try
+            {
+                while (dr.Read())
+                {
+                    idlist.Add(dr.GetInt32(0));
+                }
+
+                foreach (int id in idlist)
+                {
+                    medialist.Add(DownloadMediaById(id));
+                }
+
+                return medialist;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+
+            return null;
+        }
+
+        /// <summary>
         ///     Downloads the user by identifier.
         /// </summary>
         /// <param name="userid">The userid.</param>
