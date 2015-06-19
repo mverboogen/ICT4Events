@@ -39,7 +39,8 @@ namespace MediaSharingSystem
         public void Connect()
         {
             con = new OracleConnection();
-            con.ConnectionString = "User Id=Mediasharing; Password=Drowssap;Data Source=localhost/xe";
+
+            //con.ConnectionString = "User Id=Mediasharing; Password=Drowssap;Data Source=localhost/xe";
             con.Open();
             Debug.WriteLine("CONNECTION SUCCESFULL");
         }
