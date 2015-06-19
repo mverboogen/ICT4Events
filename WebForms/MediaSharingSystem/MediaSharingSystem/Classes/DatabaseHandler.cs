@@ -41,6 +41,7 @@ namespace MediaSharingSystem
             con = new OracleConnection();
 
             //con.ConnectionString = "User Id=Mediasharing; Password=Drowssap;Data Source=localhost/xe";
+            con.ConnectionString = "User Id=dbi316166;Password=ULo8qNEWmA;Data Source=fhictora01.fhict.local/fhictora";
             con.Open();
             Debug.WriteLine("CONNECTION SUCCESFULL");
         }
