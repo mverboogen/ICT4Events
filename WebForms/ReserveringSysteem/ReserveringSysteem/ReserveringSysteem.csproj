@@ -74,7 +74,6 @@
     <Content Include="Pages\ReservationConfirm.aspx" />
     <Content Include="Styles\main.css" />
     <Content Include="Web.config" />
-    <Content Include="Pages\WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Account.cs" />
@@ -115,13 +114,6 @@
       <DependentUpon>ReservationConfirm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

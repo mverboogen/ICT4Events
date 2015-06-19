@@ -7,6 +7,11 @@ namespace ReserveringSysteem
 {
     public class HashGenerator
     {
+        /// <summary>
+        /// Generates a random hash used for account activation
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public string GenerateToken(int length)
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

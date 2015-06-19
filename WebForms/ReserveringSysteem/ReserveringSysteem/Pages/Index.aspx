@@ -3,8 +3,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    
     <div id="ErrorMessage">
-        <asp:Label ID="lblReservationConfirm" runat="server" CssClass="lblConfirm" Text=""></asp:Label>
+            <asp:Label ID="lblReservationConfirm" runat="server" CssClass="lblConfirm" Text=""></asp:Label>
         </div>
     <div id="Booker">Vul de gegevens van de reserveerder in. De reservering komt op naam van deze persoon<br />
         <br />
@@ -59,7 +61,7 @@
         <asp:Button ID="btAddCampsite" runat="server" Text="Toevoegen" OnClick="btAddCampsite_Click" CssClass="button"/>
         &nbsp;<asp:Button ID="btRemoveCampsite" runat="server" Text="Verwijderen" OnClick="btRemoveCampsite_Click" CssClass="button" />
         <br />
-        <asp:ListBox ID="lbResCampsites" runat="server" width="80px"></asp:ListBox>
+        <asp:ListBox ID="lbResCampsites" runat="server" width="400px"></asp:ListBox>
         <br />
         <asp:Label ID="lblCampsiteConfirm" runat="server" CssClass="lblConfirm" Text=""></asp:Label>
         <br />
@@ -73,15 +75,18 @@
         <asp:Button ID="btAddItems" runat="server" Text="Toevoegen" OnClick="btAddItems_Click" CssClass="button" />
         &nbsp;<asp:Button ID="btRemoveItem" runat="server" Text="Verwijderen" OnClick="btRemoveItem_Click" CssClass="button" />
         <br />
-        <asp:ListBox ID="lbResItems" runat="server" Width="80px"></asp:ListBox>
+        <asp:ListBox ID="lbResItems" runat="server" Width="400px"></asp:ListBox>
         <br />
         <asp:Label ID="lblItemConfirm" runat="server" CssClass="lblConfirm" Text=""></asp:Label>
     </div>
 
 
     <div id="Details">
-        <asp:Label ID="Label11" runat="server" Text="StartDatum:"></asp:Label>
-        <asp:Calendar ID="cBeginDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="1" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="200px" Width="220px">
+
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+            <asp:Label ID="Label11" runat="server" Text="StartDatum:"></asp:Label>
+            <asp:Calendar ID="cBeginDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="1" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="200px" Width="220px" >
             <DayHeaderStyle BackColor="#99CCCC" ForeColor="#336666" Height="1px" />
             <NextPrevStyle Font-Size="8pt" ForeColor="#CCCCFF" />
             <OtherMonthDayStyle ForeColor="#999999" />
@@ -91,6 +96,8 @@
             <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
             <WeekendDayStyle BackColor="#CCCCFF" />
         </asp:Calendar>
+
+       
         <br />
         <asp:Label ID="Label12" runat="server" Text="EindDatum:"></asp:Label>
         <asp:Calendar ID="cEndDate" runat="server" BackColor="White" BorderColor="#3366CC" BorderWidth="1px" CellPadding="1" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" Height="200px" Width="220px">
@@ -103,8 +110,17 @@
             <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
             <WeekendDayStyle BackColor="#CCCCFF" />
         </asp:Calendar>
+
+        </ContentTemplate>
+        </asp:UpdatePanel>
+
         <br />
         <asp:Button ID="btBevestigen" runat="server" OnClick="btBevestigen_Click" Text="Bevestigen" CssClass="buttonConfirm" />
         <br />
+
+
+
     </div>
+
+        
 </asp:Content>

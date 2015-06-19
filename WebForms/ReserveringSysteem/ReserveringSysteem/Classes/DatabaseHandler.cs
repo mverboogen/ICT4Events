@@ -43,6 +43,9 @@ namespace ReserveringSysteem
             return self;
         }
 
+        /// <summary>
+        /// Connects to database
+        /// </summary>
         public void Connect()
         {
             try
@@ -58,12 +61,19 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Disconnects form database
+        /// </summary>
         public void Disconnect()
         {
             con.Close();
             con.Dispose();
         }
 
+        /// <summary>
+        /// Runs a sql statement
+        /// </summary>
+        /// <param name="sql"></param>
         private void ReadData(string sql)
         {
             try
@@ -80,12 +90,97 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Gets all available items from database
+        /// </summary>
+        /// <returns></returns>
         public List<Item> GetAllItems()
         {
+
+
             Connect();
-            return itemList;
+
+            try
+            {
+                ReadData("SELECT P.ID, P.ProductCat_ID, P.Merk, P.Serie, P.TypeNummer, P.Prijs FROM Product P");
+
+                while (dr.Read())
+                {
+                    Item item = new Item();
+                    item.Id = Convert.ToInt32(dr.GetValue(0));
+                    item.CatId = Convert.ToInt32(dr.GetValue(1));
+                    item.Brand = dr.IsDBNull(2) != true ? dr.GetString(2) : null;
+                    item.Serie = dr.IsDBNull(3) != true ? dr.GetString(3) : null;
+                    item.Number = Convert.ToInt32(dr.GetValue(4));
+                    item.Price = Convert.ToDecimal(dr.GetValue(5));
+
+                    itemList.Add(item);
+                }
+
+                foreach (Item item in itemList)
+                {
+                    bool end = false;
+                    int catID = item.CatId;
+                    while (!end)
+                    {
+                        ReadData("SELECT Naam, ProductCat_ID FROM ProductCat WHERE ID = " + catID);
+
+                        int oldID = catID;
+
+                        while (dr.Read())
+                        {
+                            string name = dr.GetString(0);
+                            item.Categorie.Add(name);
+                            if (!dr.IsDBNull(1))
+                            {
+                                catID = Convert.ToInt32(dr.GetValue(1));
+                            }
+                        }
+
+                        if (catID == oldID)
+                        {
+                            end = true;
+                        }
+                    }
+
+
+                    ReadData(
+                        "SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P WHERE P.ID = Pex.Product_ID AND P.ID = " +
+                        item.Id);
+
+                    while (dr.Read())
+                    {
+                        item.Amount = Convert.ToInt32(dr.GetValue(0));
+                    }
+
+                    ReadData(
+                        "SELECT COUNT(Pex.ID) FROM ProductExemplaar Pex, Product P, Verhuur V WHERE P.ID = Pex.Product_ID AND Pex.ID = V.PRODUCTEXEMPLAAR_ID AND P.ID = " +
+                        item.Id);
+
+                    while (dr.Read())
+                    {
+                       // item.Available = item.Amount - Convert.ToInt32(dr.GetValue(0));
+                    }
+                }
+
+                return itemList;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Disconnect();
+            }
+
+            return null;
         }
 
+        /// <summary>
+        /// Gets all available campsites from database
+        /// </summary>
+        /// <returns></returns>
         public List<Campsite> GetAllCampsites()
         {
             Connect();
@@ -148,6 +243,16 @@ namespace ReserveringSysteem
              return campsiteList;
         }
 
+        /// <summary>
+        /// Adds a person to the database using a stored procedure
+        /// </summary>
+        /// <param name="firstname"></param>
+        /// <param name="inlas"></param>
+        /// <param name="lastname"></param>
+        /// <param name="street"></param>
+        /// <param name="streetnumber"></param>
+        /// <param name="city"></param>
+        /// <param name="bankAccount"></param>
         public void AddPerson(string firstname, string inlas, string lastname, string street, string streetnumber, string city, string bankAccount)
         {
             Connect();
@@ -179,11 +284,15 @@ namespace ReserveringSysteem
             }
         }
 
-        public void AddAccount(string gebruikersnaam, string email)
+        /// <summary>
+        /// Adds a account to the database using a stored procedure
+        /// </summary>
+        /// <param name="gebruikersnaam"></param>
+        /// <param name="email"></param>
+        /// <param name="hash"></param>
+        public void AddAccount(string gebruikersnaam, string email, string hash)
         {
             Connect();
-
-            string hash = hashGenerator.GenerateToken(32);
 
             try
             {
@@ -209,6 +318,10 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a campsite reservation to the database using a stored procedure
+        /// </summary>
+        /// <param name="campsiteID"></param>
         public void AddPlekReservering(int campsiteID)
         {
             Connect();
@@ -252,6 +365,11 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a reservation to the database using a stored procedure
+        /// </summary>
+        /// <param name="startDatum"></param>
+        /// <param name="eindDatum"></param>
         public void AddReservering(string startDatum, string eindDatum)
         {
             Connect();
@@ -297,12 +415,15 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a bracelet to the database using a stored procedure
+        /// </summary>
         public void AddPolsbandje()
         {
             Connect();
 
             Random random = new Random();
-            int randomBarcode = random.Next(0, 100000);
+            int randomBarcode = 0;
             string barcode = randomBarcode.ToString();
 
             try
@@ -328,6 +449,9 @@ namespace ReserveringSysteem
             }
         }
 
+        /// <summary>
+        /// Adds a reserved bracelet to the database using a stored procedure
+        /// </summary>
         public void AddReserveringPolsbandje()
         {
             Connect();
@@ -335,7 +459,6 @@ namespace ReserveringSysteem
             int reserveringID = 0;
             int polsbandjeID = 0;
             int accountID = 0;
-
 
             try
             {
@@ -406,7 +529,13 @@ namespace ReserveringSysteem
             }
         }
 
-        public void AddVerhuur(int itemID)
+        /// <summary>
+        /// Adds a item reservation to the database using a stored procedure
+        /// </summary>
+        /// <param name="itemID"></param>
+        /// <param name="startDate"></param>
+        /// <param name="eindDate"></param>
+        public void AddVerhuur(int itemID, string startDate, string eindDate)
         {
             Connect();
 
@@ -436,8 +565,8 @@ namespace ReserveringSysteem
 
                 cmd.Parameters.Add("ProductInstance", "number").Value = itemID;
                 cmd.Parameters.Add("ResPBId", "number").Value = resPbID;
-                cmd.Parameters.Add("DateIn", "Date").Value = 0;
-                cmd.Parameters.Add("DateOut", "Date").Value = 0;
+                cmd.Parameters.Add("DateIn", "Date").Value = startDate;
+                cmd.Parameters.Add("DateOut", "Date").Value = eindDate;
                 cmd.Parameters.Add("Price", "number").Value = 0;
                 cmd.Parameters.Add("Paid", "number").Value = 0;
 
@@ -451,6 +580,78 @@ namespace ReserveringSysteem
             {
                 Disconnect();
             }
+        }
+
+        /// <summary>
+        /// Updates the activation status in database
+        /// </summary>
+        /// <param name="username"></param>
+        public void UpdateStatus(string username)
+        {
+            Connect();
+
+            int geactiveerd = 1;
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = ("UPDATE ACCOUNT SET GEACTIVEERD = :geactiveerd WHERE GEBRUIKERSNAAM = :username" );
+                cmd.Parameters.Add("geactiveerd", OracleDbType.Int32).Value = geactiveerd;
+                cmd.Parameters.Add("username", OracleDbType.Varchar2).Value = username;
+
+                cmd.ExecuteNonQuery();
+                
+            }
+
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            finally
+            {
+                Disconnect();
+            }
+        }
+
+        /// <summary>
+        /// Gets the hash from a username from database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public string GetHash(string username)
+        {
+            Connect();
+
+            string hash = "";
+
+            try
+            {
+                cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandText = ("SELECT ACTIVATIEHASH FROM ACCOUNT WHERE GEBRUIKERSNAAM = :username");
+                cmd.Parameters.Add("username", OracleDbType.Varchar2).Value = username;
+                dr = cmd.ExecuteReader(); 
+
+                while (dr.Read())
+                {
+                    hash = dr.GetString(0);
+                }
+
+                return hash;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            
+            finally
+            {
+                Disconnect();
+            }
+
+            return null;
         }
     }
 }

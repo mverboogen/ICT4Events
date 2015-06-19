@@ -14,6 +14,10 @@ namespace ReserveringSysteem
         private decimal price;
         private int volgnummer;
         private int barcode;
+        private int amount;
+        private int catId;
+
+        private List<string> categorie;
 
         public int Id
         {
@@ -57,6 +61,36 @@ namespace ReserveringSysteem
             set { barcode = value; }
         }
 
+        public int Amount
+        {
+            get { return amount; }
+            set { amount = value; }
+        }
+
+        public int CatId
+        {
+            get { return catId; }
+            set { catId = value; }
+        }
+
+        public List<string> Categorie
+        {
+            get
+            { 
+                if (categorie == null)
+                    {
+                        categorie = new List<string>();
+                    }
+                return categorie;
+            }
+            set { categorie = value; }
+        }
+
+        public Item()
+        {
+
+        }
+
         public Item(int id)
         {
             this.id = id;
@@ -73,7 +107,7 @@ namespace ReserveringSysteem
 
         public override string ToString()
         {
-            return brand + serie + price.ToString();
+            return "ID: " + id + "  -  Merk: " + brand+  "  -  Serie: " + serie + "  -  Prijs: " + price.ToString();
         }
     }
 }
