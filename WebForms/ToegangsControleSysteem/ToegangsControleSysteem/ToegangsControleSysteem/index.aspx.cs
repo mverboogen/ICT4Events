@@ -8,7 +8,7 @@ namespace ToegangsControleSysteem
 {
     public partial class Index1 : Page
     {
-        private readonly DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
+        private DatabaseHandler dbHandler = DatabaseHandler.GetInstance();
         public int EventID = 1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -20,7 +20,7 @@ namespace ToegangsControleSysteem
         {
             FillTable();
 
-            title.InnerText = "Events";
+            title.InnerText = "Event - Toegangs Controle Systeem";
         }
 
         private void FillTable()
