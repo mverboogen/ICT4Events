@@ -120,12 +120,12 @@ namespace ReserveringSysteem
                     {
                         
                         handler.AddPolsbandje();
-                        handler.AddAccount(a.Username, a.Email, hash);
+                        handler.AddAccount(a.Username, a.Email, a.Hash);
                         handler.AddReserveringPolsbandje();
 
                         handleram.CreateUser(a.Username, "password");
 
-                        SendEmail(a.Username, a.Email, e.hash);     
+                        SendEmail(a.Username, a.Email, a.Hash);     
                     }
 
                     foreach (Campsite c in ReserveerCampsites)
@@ -135,7 +135,7 @@ namespace ReserveringSysteem
 
                     foreach (Item i in ReserveerItems)
                     {
-                        //handler.AddVerhuur(i.Id, startRes, endRes);
+                        handler.AddVerhuur(i.Id, dateIn, dateOut);
                     }
 
                     Response.Redirect("~/Pages/ReservationConfirm.aspx");

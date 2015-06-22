@@ -54,7 +54,7 @@
     </div>
 
 
-    <div id="Campsite">Hier de kampeerplaatsen<br />
+    <div id="Campsite">Vul het id nummer van een kampeerplaats in en druk op toevoegen om deze aan uw lijst met te reserveren kampeerplaatsen<br />
         <asp:ListBox ID="lbCampsites" runat="server"  Width="400px"></asp:ListBox>
         <br />
         <asp:TextBox ID="tbCampsiteID" runat="server" CssClass="textbox"></asp:TextBox>
@@ -68,7 +68,7 @@
     </div>
 
 
-    <div id="Item">Hier de materialen<br />
+    <div id="Item">Vul het id nummer van een materiaal in en druk op toevoegen om deze aan uw lijst met te reserveren materialen<br />
         <asp:ListBox ID="lbItems" runat="server" Width="400px"></asp:ListBox>
         <br />
         <asp:TextBox ID="tbItemID" runat="server" CssClass="textbox"></asp:TextBox>
