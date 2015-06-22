@@ -81,16 +81,13 @@
     <Content Include="Resources\Images\check.png" />
     <Content Include="Resources\Images\preview.png" />
     <Content Include="Resources\Styles\comments-style.css" />
-    <Content Include="Resources\Styles\index-style.css" />
     <Content Include="Resources\Styles\mainstyle.css" />
     <Content Include="Resources\Images\home.png" />
     <Content Include="Resources\Images\message.png" />
     <Content Include="Resources\Images\photo.png" />
     <Content Include="Resources\Images\video.png" />
-    <Content Include="Resources\Styles\messages-style.css" />
-    <Content Include="Resources\Styles\photos-style.css" />
+    <Content Include="Resources\Styles\post-style.css" />
     <Content Include="Resources\Styles\upload-style.css" />
-    <Content Include="Resources\Styles\videos-style.css" />
     <Content Include="Resources\Uploads\example-video.mp4" />
     <Content Include="Resources\Uploads\Jij en ik - 01 - Mooier dan ik dacht.mp3" />
     <Content Include="Resources\Uploads\terrein.jpg" />

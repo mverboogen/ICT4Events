@@ -16,6 +16,12 @@ namespace MediaSharingSystem
         private string[] VideoTypes = { ".mp4", ".ogg" };
         private string[] AudioTypes = { ".mp3", ".wav" };
 
+        private enum MediaType { Audio, Video, Image };
+
+        private string extension;
+        private MediaType mediaType;
+
+
         private GuiHandler()
         {
             self = this;
@@ -66,28 +72,28 @@ namespace MediaSharingSystem
             if (mediaFile != null)
             {
                 string filePath = mediaFile.FilePath;
-                string extension = filePath.Substring(filePath.LastIndexOf('.'),
+                extension = filePath.Substring(filePath.LastIndexOf('.'),
                     filePath.Length - filePath.LastIndexOf('.'));
 
                 if (ImageTypes.Contains(extension))
                 {
-                    extension = "image";
+                    mediaType = MediaType.Image;
                 }
                 else if(VideoTypes.Contains(extension))
                 {
-                    extension = "video";
+                    mediaType = MediaType.Video;
                 }
                 else if (AudioTypes.Contains(extension))
                 {
-                    extension = "audio";
+                    mediaType = MediaType.Audio;
                 }
 
                 // Wrapper for the content(images/videos/audio).
                 HtmlGenericControl contentWrapper = new HtmlGenericControl("div");
                 contentWrapper.Attributes["class"] = "post-content-wrapper";
-                switch (extension)
+                switch (mediaType)
                 {
-                    case "audio":
+                    case MediaType.Audio:
 
                         containerDiv.Attributes["class"] += " small";
 
@@ -98,7 +104,7 @@ namespace MediaSharingSystem
                         contentWrapper.Controls.Add(musicPlayer);
 
                         break;
-                    case "image":
+                    case MediaType.Image:
                         HtmlGenericControl image = new HtmlGenericControl("img");
                         image.Attributes["class"] = "post-content";
                         image.Attributes.Add("src", mediaFile.FilePath);
@@ -106,7 +112,7 @@ namespace MediaSharingSystem
                         contentWrapper.Controls.Add(image);
 
                         break;
-                    case "video":
+                    case MediaType.Video:
                         HtmlGenericControl videoPlayer = new HtmlGenericControl("video controls");
                         videoPlayer.Attributes["class"] = "post-content";
                         // mp4 file
@@ -138,6 +144,7 @@ namespace MediaSharingSystem
             // Wrapper for the controls(Buttons, etc.).
             HtmlGenericControl controlsWrapper = new HtmlGenericControl("div");
             controlsWrapper.Attributes["class"] = "post-controls-wrapper";
+            controlsWrapper.Attributes["class"] += mediaType == MediaType.Audio ? " small" : "";
             // Create the like controls
             HtmlGenericControl likeAmount = new HtmlGenericControl("span");
             likeAmount.Attributes["class"] = "post-likeamount";
@@ -178,6 +185,7 @@ namespace MediaSharingSystem
 
             // Create the commentbutton
             Button commentButton = new Button();
+            commentButton.Attributes["class"] = "post-comment-button";
             commentButton.Text = "Comment";
             commentButton.CommandName = media.ID.ToString();
             commentButton.Command += CommentButton_Clicked;

@@ -9,26 +9,23 @@
     height: 200px;
 }
 
-.post-content-wrapper{
+.post-content-wrapper {
     width: 100%;
     height: 70%;
-    /*padding: 10px;*/
-}
-
-.post-image{
-    width: 550px;
-    height: 100%;
-    display: block;
-    margin: 0 auto;
 }
 
 .post-title-wrapper{
     width: 100%;
     height: 15%;
+    background-color: #090048;
+    color: #fff;
+
 }
 
 .post-title{
-    margin: 0;
+    position: absolute;
+    margin-left: 25px;
+    margin-top: 25px;
 }
 
 .post-content{
@@ -38,16 +35,36 @@
 }
 
 .post-controls-wrapper{
-    width: 100%;
+    width: 910px;
     height: 15%;
+    padding: 25px;
     border-top: 1px solid #808080;
+}
+
+.post-controls-wrapper.small{
+    padding: 0;
 }
 
 .post-like-button{
     float: left;
+    margin-right: 10px;
 }
 
 .post-likeamount{
     float: left;
     margin-right: 10px;
+}
+
+.post-report-button{
+    float: left;
+    margin-right: 10px;
+}
+
+.post-reportamount{
+    float: left;
+    margin-right: 10px;
+}
+
+.post-comment-button{
+    float: right;
 }
