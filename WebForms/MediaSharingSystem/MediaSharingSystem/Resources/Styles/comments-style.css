@@ -9,7 +9,19 @@
 
 #comment-container .controls-wrapper{
     width: 100%;
-    height: 10%;
+    height: 50px;
+    border: 1px solid #808080;
+}
+
+#comment-container .controls-wrapper .comment-textbox{
+    height: 90%;
+    width: 80%;
+}
+
+#comment-container .controls-wrapper .comment-button{
+    width: 10%;
+    height: 100%;
+    float: right;
 }
 
 #comment-container .content-wrapper .comment-wrapper{
@@ -17,4 +29,5 @@
     margin-bottom: 20px;
     padding: 20px;
     border: 1px solid #808080;
+    background-color: #e3e3e3;
 }

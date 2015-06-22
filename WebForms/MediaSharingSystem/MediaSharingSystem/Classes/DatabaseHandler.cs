@@ -225,7 +225,7 @@ namespace MediaSharingSystem
                                 int bijdrageID = dr.GetInt32(0);
                                 int categorieID = dr.GetInt32(1);
                                 string title = dr.GetString(2);
-                                string filePath = "Resources/Uploads/" + title;
+                                string filePath = "Resources/Uploads/" + @title;
                                 int fileSize = dr.GetInt32(3);
 
                                 mediaList.Add(new MediaFile(bijdrageID, categorieID, user, title, filePath));
@@ -494,6 +494,13 @@ namespace MediaSharingSystem
             ReadData(String.Format("SELECT BIJDRAGE_ID FROM BESTAND WHERE LOWER(BESTANDSLOCATIE) LIKE LOWER('%{0}%')", search));
             try
             {
+                while (dr.Read())
+                {
+                    idlist.Add(dr.GetInt32(0));
+                }
+
+                ReadData(String.Format("SELECT BIJDRAGE_ID FROM BERICHT WHERE LOWER(TITEL) LIKE LOWER('%{0}%')", search));
+
                 while (dr.Read())
                 {
                     idlist.Add(dr.GetInt32(0));

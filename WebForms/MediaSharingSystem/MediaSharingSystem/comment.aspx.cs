@@ -46,8 +46,10 @@ namespace MediaSharingSystem
 
                 TextBox commenttb = new TextBox();
                 commenttb.CssClass = "comment-textbox";
+                commenttb.TextMode = TextBoxMode.MultiLine;
 
                 CommentButton commentButton = new CommentButton(commenttb);
+                commentButton.Attributes["class"] = "comment-button";
                 commentButton.Text = "Comment";
                 commentButton.CommentCommit += CommentCommit_Clicked;
 

@@ -12,15 +12,13 @@ namespace MediaSharingSystem
         private static User user;
         private static HttpContext context;
 
-        private string[] ImageTypes = { ".jpeg", ".png" };
+        private string[] ImageTypes = { ".jpg", ".png" };
         private string[] VideoTypes = { ".mp4", ".ogg" };
         private string[] AudioTypes = { ".mp3", ".wav" };
 
-        private enum MediaType { Audio, Video, Image };
+        private enum MediaType { Audio, Video, Image, Message };
 
         private string extension;
-        private MediaType mediaType;
-
 
         private GuiHandler()
         {
@@ -58,6 +56,8 @@ namespace MediaSharingSystem
             titleWrapper.Attributes["class"] = "post-title-wrapper";
             HtmlGenericControl title = new HtmlGenericControl("h3");
             title.Attributes["class"] = "post-title";
+
+            title.Attributes["class"] += GetMediaType(media) == MediaType.Audio ? " small" : "";
             if (media.Title != null)
             {
                 title.InnerText = media.Title;
@@ -71,27 +71,10 @@ namespace MediaSharingSystem
             // Check if the media to draw is a mediafile.
             if (mediaFile != null)
             {
-                string filePath = mediaFile.FilePath;
-                extension = filePath.Substring(filePath.LastIndexOf('.'),
-                    filePath.Length - filePath.LastIndexOf('.'));
-
-                if (ImageTypes.Contains(extension))
-                {
-                    mediaType = MediaType.Image;
-                }
-                else if(VideoTypes.Contains(extension))
-                {
-                    mediaType = MediaType.Video;
-                }
-                else if (AudioTypes.Contains(extension))
-                {
-                    mediaType = MediaType.Audio;
-                }
-
                 // Wrapper for the content(images/videos/audio).
                 HtmlGenericControl contentWrapper = new HtmlGenericControl("div");
                 contentWrapper.Attributes["class"] = "post-content-wrapper";
-                switch (mediaType)
+                switch (GetMediaType(media))
                 {
                     case MediaType.Audio:
 
@@ -144,7 +127,7 @@ namespace MediaSharingSystem
             // Wrapper for the controls(Buttons, etc.).
             HtmlGenericControl controlsWrapper = new HtmlGenericControl("div");
             controlsWrapper.Attributes["class"] = "post-controls-wrapper";
-            controlsWrapper.Attributes["class"] += mediaType == MediaType.Audio ? " small" : "";
+            controlsWrapper.Attributes["class"] += GetMediaType(media) == MediaType.Audio ? " small" : "";
             // Create the like controls
             HtmlGenericControl likeAmount = new HtmlGenericControl("span");
             likeAmount.Attributes["class"] = "post-likeamount";
@@ -200,6 +183,35 @@ namespace MediaSharingSystem
 
             containerDiv.Controls.Add(controlsWrapper);
             return containerDiv;
+        }
+
+        private MediaType GetMediaType(Media media)
+        {
+            MediaFile mediaFile = media as MediaFile;
+            if (mediaFile != null)
+            {
+                string filePath = mediaFile.FilePath;
+                extension = filePath.Substring(filePath.LastIndexOf('.'),
+                    filePath.Length - filePath.LastIndexOf('.'));
+
+                if (ImageTypes.Contains(extension))
+                {
+                    return MediaType.Image;
+                }
+                else if (VideoTypes.Contains(extension))
+                {
+                    return MediaType.Video;
+                }
+                else
+                {
+                    return MediaType.Audio;
+                }
+            }
+            else 
+            {
+                return MediaType.Message;
+            }
+
         }
 
         protected void LikeButton_Clicked(object sender, CommandEventArgs args)
