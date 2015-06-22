@@ -1,170 +1,145 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Web;
 
 namespace AD_playground
 {
-    public class AdHandler
-    {
-        //// Fields
-        private string _domain;
-        private string _ldapuserDn = "INFRA-S86.local/OU=SMEusers,DC=INFRA-S86,DC=local";
-
-        //// Constructor
+	public class AdHandlerAm
+	{
+		private string _domain = "INFRA-S86.local";
+		private string _usersou = "OU=SMEusers,DC=INFRA-S86,DC=local";
+		private string _groupsou = "OU=SMEgroups,DC=INFRA-s86,DC=local";
+		private string _rootou = "DC=INFRA-S86,DC=local";
+    	
+		// Should be replaced with a service account for security reasons!
+		//private string _adminname = @"CN=Administrator,CN=Users,DC=INFRA-S86,DC=local";
+		private string _adminname = @"INFRA-S86\Administrator";
+		private string _adminpw = "ADAdmin2";
+    	
+		/// <summary>
+		/// Creates a new instance of ADHandler
+		/// </summary>
+		public AdHandlerAm()
+		{
+    		
+		}
+    	
+		/// <summary>
+		/// Gets the root principal context from the domain
+		/// </summary>
+		/// <returns>Return the (root) context of the SME server</returns>
+		public PrincipalContext GetContext()
+		{
+			PrincipalContext pContext = new PrincipalContext(ContextType.Domain, _domain, _rootou, ContextOptions.SimpleBind, _adminname, _adminpw);
+			return pContext;
+		}
+    	
+		/// <summary>
+		/// Gets the context for the designated OU
+		/// </summary>
+		/// <param name="OU">The desired OU location, i.e.: OU=SMEusers,DC=bedrijfs86,DC=com</param>
+		/// <returns>Returns requested OU context</returns>
+		public PrincipalContext GetContext(string OU)
+		{
+			PrincipalContext pContext = new PrincipalContext(ContextType.Domain, _domain, OU, ContextOptions.SimpleBind, _adminname, _adminpw);
+			return pContext;
+		}
+    	
+		public bool AuthenticateUser(string username, string password)
+		{
+			bool authOK = false;
+			PrincipalContext pContext = GetContext();
+			authOK = pContext.ValidateCredentials(username, password);
+			return authOK;
+		}
+    	
+		/// <summary>
+		/// Creates a new user in the active directory
+		/// </summary>
+		/// <param name="username">The username for the new user</param>
+		/// <param name="password">The password for the new user</param>
+		/// <param name="mail">The E-mail for the new user</param>
+		public void CreateUser(string username, string password, string mail)
+		{
+			PrincipalContext pContext = GetContext(_usersou);
+			UserPrincipal pUser = new UserPrincipal(pContext, username, password, false);
+			pUser.EmailAddress = mail;
+			pUser.Save();
+		}
+    	
+		/// <summary>
+		/// Enable a user account
+		/// </summary>
+		/// <param name="username">the username of the account you want to enable</param>
+		public void EnableUser(string username)
+		{
+			PrincipalContext pContext = GetContext();
+			UserPrincipal pUser = UserPrincipal.FindByIdentity(pContext, username);
+			pUser.Enabled = true;
+			pUser.Save();
+		}
+    	
         /// <summary>
         /// 
-        /// </summary>
-        /// <param name="domain"></param>
-        public AdHandler(string domain)
-        {
-            _domain = domain;
-        }
-
-        //// Methodes
-        /// <summary>
-        /// Authenticate against Active Directory. Checks against enabled users
-        /// http://www.codeproject.com/Articles/18102/Howto-Almost-Everything-In-Active-Directory-via-C#35
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public bool Authenticate(string userName, string password)
-        {
-            bool authentic = false;
-            try
-            {
-                DirectoryEntry entry = new DirectoryEntry("LDAP://" + _domain,
-                    userName, password);
-                object nativeObject = entry.NativeObject;
-                authentic = true;
-            }
-            catch (DirectoryServicesCOMException) { }
-            return authentic;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userPassword"></param>
-        /// <returns></returns>
-        public string CreateUserAccount(string userName, string userPassword)
-        {
-            string oGUID = string.Empty;
-            try
-            {
-                string connectionPrefix = "LDAP://" + _ldapuserDn;
-                DirectoryEntry dirEntry = new DirectoryEntry(connectionPrefix);
-                DirectoryEntry newUser = dirEntry.Children.Add
-                    ("CN=" + userName, "user");
-                newUser.Properties["samAccountName"].Value = userName;
-
-                newUser.CommitChanges();
-                oGUID = newUser.Guid.ToString();
-                newUser.Invoke("SetPassword", new object[] { userPassword });
-                newUser.CommitChanges();
-                dirEntry.Close();
-                newUser.Close();
-            }
-            catch (System.DirectoryServices.DirectoryServicesCOMException E)
-            {
-            	ShowError(E.Message.ToString());
-            }
-            return oGUID;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userCn">The username as in the SMEusers OU</param>
-        /// <param name="groupCn">Can be either "SMEadmin" or "SMEuser"</param>
-        public bool AddToGroup(string userCn, string groupCn)
-        {
-        	bool ok = false;
-            try
-            {
-                DirectoryEntry dirEntry = new DirectoryEntry("LDAP://INFRA-S86.local/CN=" + groupCn + ",OU=SMEgroups,DC=INFRA-S86,DC=local");
-                dirEntry.Properties["member"].Add("CN=" + userCn + ",OU=SMEusers,DC=INFRA-S86,DC=local");
-                dirEntry.CommitChanges();
-                dirEntry.Close();
-                ok = true;
-            }
-            catch (System.DirectoryServices.DirectoryServicesCOMException E)
-            {
-            	ShowError(E.Message.ToString());
-            }
-            return ok;
-        }
-        
-        public bool RemoveUserFromGroup(string userCn, string groupCn)
-        {
-        	bool ok = false;
-        	try
-        	{
-        		DirectoryEntry dirEntry = new DirectoryEntry("LDAP://INFRA-S86.local/CN=" + groupCn + ",OU=SMEgroups,DC=INFRA-S86,DC=local");
-        		dirEntry.Properties["member"].Remove("CN=" + userCn + ",OU=SMEusers,DC=INFRA-S86,DC=local");
-        		dirEntry.CommitChanges();
-        		dirEntry.Close();
-        		ok = true;
-        	}
-        	catch (System.DirectoryServices.DirectoryServicesCOMException E)
-        	{
-        		ShowError(E.Message.ToString());
-        	}
-        	return ok;
-        }
-        
-        /// <summary>
-        /// http://www.codeproject.com/Articles/18102/Howto-Almost-Everything-In-Active-Directory-via-C#43
         /// </summary>
         /// <param name="username"></param>
-        public bool Enable(string username)
+        /// <param name="groupname"></param>
+        /// <returns></returns>
+		public bool UserInGroup(string username, string groupname)
 		{
-        	bool ok = false;
-		    try
-		    {
-		        DirectoryEntry user = new DirectoryEntry("LDAP://INFRA-S86.local/CN=" + username + ",OU=SMEusers,DC=INFRA-S86,DC=local");
-		        int val = (int)user.Properties["userAccountControl"].Value;
-		        user.Properties["userAccountControl"].Value = val & ~0x2; 
-		            //ADS_UF_NORMAL_ACCOUNT;
-		
-		        user.CommitChanges();
-		        user.Close();
-		        ok = true;
-		    }
-		    catch (System.DirectoryServices.DirectoryServicesCOMException E)
-		    {
-				ShowError(E.Message.ToString());
-		    }
-		    return ok;
+			PrincipalContext pContext = GetContext();
+			UserPrincipal pUser = UserPrincipal.FindByIdentity(pContext, username);
+			pContext = GetContext(_groupsou);
+			GroupPrincipal pGroup = GroupPrincipal.FindByIdentity(pContext, groupname);
+			
+			if (pUser != null || pGroup != null) 
+			{
+				return pGroup.Members.Contains(pUser);
+			}
+			return false;
 		}
-        
-        public bool Disable(string username)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="groupname"></param>
+		public void AddUserToGroup(string username, string groupname)
 		{
-        	bool ok = false;
-		    try
-		    {
-		        DirectoryEntry user = new DirectoryEntry("LDAP://INFRA-S86.local/CN=" + username + ",OU=SMEusers,DC=INFRA-S86,DC=local");
-		        int val = (int)user.Properties["userAccountControl"].Value;
-		        user.Properties["userAccountControl"].Value = val | 0x2; 
-		             //ADS_UF_ACCOUNTDISABLE;
-		
-		        user.CommitChanges();
-		        user.Close();
-		        ok = true;
-		    }
-		    catch (System.DirectoryServices.DirectoryServicesCOMException E)
-		    {
-				ShowError(E.Message.ToString());
-		    }
-		    return ok;
+			PrincipalContext pContext = GetContext();
+			UserPrincipal pUser = UserPrincipal.FindByIdentity(pContext, username);
+			pContext = GetContext(_groupsou);
+			GroupPrincipal pGroup = GroupPrincipal.FindByIdentity(pContext,groupname);
+			if (pUser != null || pGroup != null) 
+			{
+				if (!pGroup.Members.Contains(pUser))
+				{
+					pGroup.Members.Add(pUser);
+					pGroup.Save();
+				}
+			}
 		}
-        
-        private void ShowError(string message)
-        {
-        	System.Windows.Forms.MessageBox.Show(message);
-        }
-    }
+    	
+		/// <summary>
+		/// Disable a user account
+		/// </summary>
+		/// <param name="username">the username of the account you want to disable</param>
+		public void DisableUser(string username)
+		{
+			PrincipalContext pContext = GetContext();
+			UserPrincipal pUser = UserPrincipal.FindByIdentity(pContext, username);
+			pUser.Enabled = false;
+			pUser.Save();
+		}
+		/// <summary>
+		/// DEBUGGING METHOD Shows a simple messagebox. without having to include windows form reference
+		/// </summary>
+		/// <param name="message">Message to display</param>
+		private void ShowError(string message)
+		{
+			System.Windows.Forms.MessageBox.Show(message);
+		}
+	}
 }
