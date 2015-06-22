@@ -6,7 +6,7 @@
 <head runat="server">
     <title>Finstatter</title>
 
-    <link href="../Resources/Styles/mainstyle.css" type="text/css" rel="stylesheet" />
+    <link href="Resources/Styles/mainstyle.css" type="text/css" rel="stylesheet" />
 
     <asp:ContentPlaceHolder ID="HeadPlaceHolder" runat="server">
         <!-- Dynamic content -->
@@ -21,10 +21,10 @@
                     <asp:Button Text="Logout" CssClass="header-logout-button" OnClick="Logout_Click" runat="server" />
                 </div>
                 <div id="nav-button-wrapper">
-                    <a href="index.aspx"><img src="../Resources/Images/home.png" class="nav-button" /></a>
-                    <a href="photos.aspx"><img src="../Resources/Images/photo.png" class="nav-button" /></a>
-                    <a href="videos.aspx"><img src="../Resources/Images/video.png" class="nav-button" /></a>
-                    <a href="messages.aspx"><img src="../Resources/Images/message.png" class="nav-button" /></a>
+                    <a href="index.aspx"><img src="Resources/Images/home.png" class="nav-button" /></a>
+                    <a href="photos.aspx"><img src="Resources/Images/photo.png" class="nav-button" /></a>
+                    <a href="videos.aspx"><img src="Resources/Images/video.png" class="nav-button" /></a>
+                    <a href="messages.aspx"><img src="Resources/Images/message.png" class="nav-button" /></a>
                 </div>
                 <div id="header-upload-wrapper">
                     <a href="upload.aspx" class="header-upload-button">UPLOAD</a>

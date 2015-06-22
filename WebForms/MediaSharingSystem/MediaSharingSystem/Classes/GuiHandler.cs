@@ -188,30 +188,37 @@ namespace MediaSharingSystem
         private MediaType GetMediaType(Media media)
         {
             MediaFile mediaFile = media as MediaFile;
-            if (mediaFile != null)
+            try
             {
-                string filePath = mediaFile.FilePath;
-                extension = filePath.Substring(filePath.LastIndexOf('.'),
-                    filePath.Length - filePath.LastIndexOf('.'));
+                if (mediaFile != null)
+                {
+                    string filePath = mediaFile.FilePath;
+                    extension = filePath.Substring(filePath.LastIndexOf('.'),
+                        filePath.Length - filePath.LastIndexOf('.'));
 
-                if (ImageTypes.Contains(extension))
-                {
-                    return MediaType.Image;
-                }
-                else if (VideoTypes.Contains(extension))
-                {
-                    return MediaType.Video;
+                    if (ImageTypes.Contains(extension))
+                    {
+                        return MediaType.Image;
+                    }
+                    else if (VideoTypes.Contains(extension))
+                    {
+                        return MediaType.Video;
+                    }
+                    else
+                    {
+                        return MediaType.Audio;
+                    }
                 }
                 else
                 {
-                    return MediaType.Audio;
+                    return MediaType.Message;
                 }
             }
-            else 
+            catch (Exception ex)
             {
-                return MediaType.Message;
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
-
+            return MediaType.Message;
         }
 
         protected void LikeButton_Clicked(object sender, CommandEventArgs args)

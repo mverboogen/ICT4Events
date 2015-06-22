@@ -21,8 +21,8 @@ namespace MediaSharingSystem
             string password = PasswordTb.Text;
             bool isPersistent = false;
 
-            //if(adhandler.AuthenticateUser(username, password))
-            if(true)
+            //if(true)
+            if(adhandler.AuthenticateUser(username, password))
             {
                 string userData = "ApplicationSpecific data for this user.";
 
