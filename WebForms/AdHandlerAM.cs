@@ -16,8 +16,8 @@ namespace AD_playground
     	
 		// Should be replaced with a service account for security reasons!
 		//private string _adminname = @"CN=Administrator,CN=Users,DC=INFRA-S86,DC=local";
-		private string _adminname = @"INFRA-S86\Administrator";
-		//private string _adminname = @"INFRA-S86\SMEservice";
+		//private string _adminname = @"INFRA-S86\Administrator";
+		private string _adminname = @"INFRA-S86\SMEservice";
 		private string _adminpw = "password";
     	
 		/// <summary>
