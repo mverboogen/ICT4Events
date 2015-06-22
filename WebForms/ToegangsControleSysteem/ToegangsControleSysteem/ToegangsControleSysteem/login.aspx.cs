@@ -25,9 +25,10 @@ namespace MediaSharingSystem
             bool isPersistent = false;
 
             
-
+            //if(true)
             if(adHandler.AuthenticateUser(username, password))
             {
+                //if(true)
                 if (adHandler.UserInGroup(username, "SMEadmin"))
                 {
                     string userData = "ApplicationSpecific data for this user.";
