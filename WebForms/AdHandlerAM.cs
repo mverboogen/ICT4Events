@@ -15,7 +15,7 @@ namespace AD_playground
 		private string _rootou = "DC=INFRA-S86,DC=local";
     	
 		// Should be replaced with a service account for security reasons!
-		//private string _adminname = @"CN=Administrator,CN=Users,DC=INFRA-S86,DC=local";
+		// private string _adminname = @"CN=Administrator,CN=Users,DC=INFRA-S86,DC=local";
 		private string _adminname = @"INFRA-S86\Administrator";
 		private string _adminpw = "ADAdmin2";
     	
@@ -28,12 +28,12 @@ namespace AD_playground
 		}
     	
 		/// <summary>
-		/// Gets the root principal context from the domain
+		/// Gets the context of the root from the domain
 		/// </summary>
 		/// <returns>Return the (root) context of the SME server</returns>
 		public PrincipalContext GetContext()
 		{
-			PrincipalContext pContext = new PrincipalContext(ContextType.Domain, _domain, _rootou, ContextOptions.SimpleBind, _adminname, _adminpw);
+            PrincipalContext pContext = new PrincipalContext(ContextType.Domain, _domain, _rootou, ContextOptions.SimpleBind, _adminname, _adminpw);
 			return pContext;
 		}
     	
@@ -48,6 +48,12 @@ namespace AD_playground
 			return pContext;
 		}
     	
+        /// <summary>
+        /// Authenticates an user against the active directory
+        /// </summary>
+        /// <param name="username">the username of the user you want to authenticate</param>
+        /// <param name="password">the password of the user you want to authenticate</param>
+        /// <returns>true if authentication good / false if authentication failed</returns>
 		public bool AuthenticateUser(string username, string password)
 		{
 			bool authOK = false;
@@ -71,7 +77,7 @@ namespace AD_playground
 		}
     	
 		/// <summary>
-		/// Enable a user account
+		/// Sets account state to enabled
 		/// </summary>
 		/// <param name="username">the username of the account you want to enable</param>
 		public void EnableUser(string username)
@@ -83,11 +89,11 @@ namespace AD_playground
 		}
     	
         /// <summary>
-        /// 
+        /// Checks wether or not a user is in a group
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="groupname"></param>
-        /// <returns></returns>
+        /// <param name="username">the username of the user</param>
+        /// <param name="groupname">the name of the group</param>
+        /// <returns>true if user is in group, false if user is not in group</returns>
 		public bool UserInGroup(string username, string groupname)
 		{
 			PrincipalContext pContext = GetContext();
@@ -101,12 +107,14 @@ namespace AD_playground
 			}
 			return false;
 		}
+
 		/// <summary>
-		/// 
+		/// Adds an user to a group
 		/// </summary>
-		/// <param name="username"></param>
-		/// <param name="groupname"></param>
-		public void AddUserToGroup(string username, string groupname)
+		/// <param name="username">The username of the user you want to add to a group</param>
+		/// <param name="groupname">The name of the group you want to add the user to</param>
+		/// <returns>true if successful / false if unsuccessful</returns>
+		public bool AddUserToGroup(string username, string groupname)
 		{
 			PrincipalContext pContext = GetContext();
 			UserPrincipal pUser = UserPrincipal.FindByIdentity(pContext, username);
@@ -118,12 +126,14 @@ namespace AD_playground
 				{
 					pGroup.Members.Add(pUser);
 					pGroup.Save();
+				    return true;
 				}
 			}
+		    return false;
 		}
     	
 		/// <summary>
-		/// Disable a user account
+		/// Sets account state to disabled.
 		/// </summary>
 		/// <param name="username">the username of the account you want to disable</param>
 		public void DisableUser(string username)
@@ -133,13 +143,6 @@ namespace AD_playground
 			pUser.Enabled = false;
 			pUser.Save();
 		}
-		/// <summary>
-		/// DEBUGGING METHOD Shows a simple messagebox. without having to include windows form reference
-		/// </summary>
-		/// <param name="message">Message to display</param>
-		private void ShowError(string message)
-		{
-			System.Windows.Forms.MessageBox.Show(message);
-		}
+
 	}
 }
