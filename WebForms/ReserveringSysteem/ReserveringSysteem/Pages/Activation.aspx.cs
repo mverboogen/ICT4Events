@@ -6,7 +6,7 @@ namespace ReserveringSysteem.Pages
     public partial class Activation : Page
     {
         private readonly DatabaseHandler handler = DatabaseHandler.GetInstance();
-        private ADHandler adHandler = new ADHandler();
+        private AdHandlerAm handleram = new AdHandlerAm();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,7 +26,7 @@ namespace ReserveringSysteem.Pages
             {
                 handler.UpdateStatus(aUsername);
 
-                //adHandler.Enable(aUsername);
+                handleram.EnableUser(aUsername);
 
                 lblActivationConfirm.Text = "Account geactiveerd";
             }

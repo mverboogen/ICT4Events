@@ -11,7 +11,7 @@ namespace ReserveringSysteem
     {
         private DatabaseHandler handler = DatabaseHandler.GetInstance();
         private HashGenerator hashGenerator = new HashGenerator();
-        private ADHandler adHandler = new ADHandler();
+        private AdHandlerAm handleram = new AdHandlerAm();
 
         private List<Account> accounts
         {
@@ -120,9 +120,9 @@ namespace ReserveringSysteem
                         handler.AddAccount(a.Username, a.Email, hash);
                         handler.AddReserveringPolsbandje();
 
-                        //adHandler.CreateUserAccount(a.Username, "password");
+                        handleram.CreateUser(a.Username, "password", a.Email);
 
-                        //SendEmail(a.Username, a.Email, hash);     
+                        SendEmail(a.Username, a.Email, hash);     
                     }
 
                     foreach (Campsite c in ReserveerCampsites)
@@ -450,21 +450,21 @@ namespace ReserveringSysteem
         /// <param name="hash"></param>
         private void SendEmail(string username, string email, string hash)
         {
-            SmtpClient client = new SmtpClient("MAIL SERVER");
+            SmtpClient client = new SmtpClient("smtp.bedrijfs86.com");
             MailMessage Message = new MailMessage();
-            Message.From = new MailAddress("SENDER");
+            Message.From = new MailAddress("ticketmaster@bedrijfs86.com");
 
             Message.To.Add(email);
             Message.Body = "Hartelijk dank voor het reserveren," + Environment.NewLine + Environment.NewLine +
                            "Uw gebruikersnaam is:" + Environment.NewLine + username + Environment.NewLine +
                            Environment.NewLine + "Uw activatie code is:" + Environment.NewLine + hash +
                            Environment.NewLine + Environment.NewLine +
-                           "Om uw account te activeren gaat u naar www.google.com " + Environment.NewLine +
+                           "Om uw account te activeren gaat u naar www.bedrijfs86.com/rs/pages/activation.aspx" + Environment.NewLine +
                            Environment.NewLine + "Ict4Events groep D";
             Message.Subject = "Activering account";
-            client.Credentials = new NetworkCredential("USERNAME SENDER", "PASSWORD SENDER");
-            client.Port = Convert.ToInt32(587);
-            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential("ticketmaster@bedfijs86.com", "password");
+            client.Port = Convert.ToInt32(25);
+            client.EnableSsl = false;
             client.Send(Message);
         }
     }
