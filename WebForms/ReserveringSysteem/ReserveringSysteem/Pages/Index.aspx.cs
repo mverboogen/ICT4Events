@@ -123,7 +123,7 @@ namespace ReserveringSysteem
                         handler.AddAccount(a.Username, a.Email, hash);
                         handler.AddReserveringPolsbandje();
 
-                        handleram.CreateUser(a.Username, "password", a.Email);
+                        handleram.CreateUser(a.Username, "password");
 
                         SendEmail(a.Username, a.Email, hash);     
                     }
