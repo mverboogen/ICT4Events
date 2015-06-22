@@ -225,7 +225,7 @@ namespace MediaSharingSystem
                                 int bijdrageID = dr.GetInt32(0);
                                 int categorieID = dr.GetInt32(1);
                                 string title = dr.GetString(2);
-                                string filePath = "Resources/Uploads/" + @title;
+                                string filePath = "Resources/Uploads/" + title;
                                 int fileSize = dr.GetInt32(3);
 
                                 mediaList.Add(new MediaFile(bijdrageID, categorieID, user, title, filePath));
