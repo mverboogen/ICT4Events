@@ -15,9 +15,10 @@ namespace AD_playground
 		private string _rootou = "DC=INFRA-S86,DC=local";
     	
 		// Should be replaced with a service account for security reasons!
-		// private string _adminname = @"CN=Administrator,CN=Users,DC=INFRA-S86,DC=local";
+		//private string _adminname = @"CN=Administrator,CN=Users,DC=INFRA-S86,DC=local";
 		private string _adminname = @"INFRA-S86\Administrator";
-		private string _adminpw = "ADAdmin2";
+		//private string _adminname = @"INFRA-S86\SMEservice";
+		private string _adminpw = "password";
     	
 		/// <summary>
 		/// Creates a new instance of ADHandler
@@ -71,9 +72,14 @@ namespace AD_playground
 		public void CreateUser(string username, string password, string mail)
 		{
 			PrincipalContext pContext = GetContext(_usersou);
+			
+			UserPrincipal fUser = UserPrincipal.FindByIdentity(GetContext(), username);
+			if(fUser == null)
+			{
 			UserPrincipal pUser = new UserPrincipal(pContext, username, password, false);
 			pUser.EmailAddress = mail;
 			pUser.Save();
+			}
 		}
     	
 		/// <summary>
@@ -96,6 +102,8 @@ namespace AD_playground
         /// <returns>true if user is in group, false if user is not in group</returns>
 		public bool UserInGroup(string username, string groupname)
 		{
+			try
+			{
 			PrincipalContext pContext = GetContext();
 			UserPrincipal pUser = UserPrincipal.FindByIdentity(pContext, username);
 			pContext = GetContext(_groupsou);
@@ -104,6 +112,11 @@ namespace AD_playground
 			if (pUser != null || pGroup != null) 
 			{
 				return pGroup.Members.Contains(pUser);
+			}
+			}
+			catch(Exception e)
+			{
+				
 			}
 			return false;
 		}
