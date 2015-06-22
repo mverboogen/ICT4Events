@@ -79,7 +79,10 @@ namespace EventBeheerSysteem
             eventLocationTb.Text = selEvent.LocationName;
             eventCityTb.Text = selEvent.LocationCity;
             eventStreetTb.Text = selEvent.LocationStreet;
-            eventNumberTb.Text = selEvent.LocationNumber.ToString();
+            if (selEvent.LocationNumber != null)
+            {
+                eventNumberTb.Text = selEvent.LocationNumber;
+            }
             eventZipcodeTb.Text = selEvent.LocationZipCode;
         }
     }

@@ -1747,7 +1747,7 @@ namespace EventBeheerSysteem
             b.Inlas = dr.IsDBNull(6) == false ? dr.GetString(6) : null;
             b.Surname = dr.IsDBNull(7) == false ? dr.GetString(7) : null;
             b.Street = dr.IsDBNull(8) == false ? dr.GetString(8) : null;
-            b.Number = dr.IsDBNull(9) == false ? dr.GetString(3) : null;
+            b.Number = dr.IsDBNull(9) == false ? dr.GetString(9) : null;
             b.City = dr.IsDBNull(10) == false ? dr.GetString(10) : null;
             b.BankAccount = dr.IsDBNull(11) == false ? dr.GetString(11) : null;
 

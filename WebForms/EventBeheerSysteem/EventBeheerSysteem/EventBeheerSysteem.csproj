@@ -43,6 +43,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\app\jaspe_000\product\11.2.0\client_1\odp.net\bin\4\Oracle.DataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -139,6 +141,7 @@
     <Compile Include="AddRenterToItem.aspx.designer.cs">
       <DependentUpon>AddRenterToItem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AdHandlerAM.cs" />
     <Compile Include="Booker.cs" />
     <Compile Include="Campsite.cs" />
     <Compile Include="Categorie.cs" />

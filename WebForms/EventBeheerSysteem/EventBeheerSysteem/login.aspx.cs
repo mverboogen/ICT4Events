@@ -1,12 +1,16 @@
 ﻿using System;
+using System.EnterpriseServices;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using AD_playground;
 
 namespace MediaSharingSystem
 {
     public partial class Login : Page
     {
+        private AdHandlerAm adHandler = new AdHandlerAm();
+
         protected void Page_Load(object sender, EventArgs e)
         {
         }
@@ -20,7 +24,9 @@ namespace MediaSharingSystem
             string password = PasswordTb.Text;
             bool isPersistent = false;
 
-            if (true)
+            
+
+            if(adHandler.AuthenticateUser(username, password))
             {
                 string userData = "ApplicationSpecific data for this user.";
 
