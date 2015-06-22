@@ -118,14 +118,14 @@ namespace ReserveringSysteem
 
                     foreach (Account a in accounts)
                     {
-                        string hash = hashGenerator.GenerateToken(32);
+                        
                         handler.AddPolsbandje();
                         handler.AddAccount(a.Username, a.Email, hash);
                         handler.AddReserveringPolsbandje();
 
                         handleram.CreateUser(a.Username, "password");
 
-                        SendEmail(a.Username, a.Email, hash);     
+                        SendEmail(a.Username, a.Email, e.hash);     
                     }
 
                     foreach (Campsite c in ReserveerCampsites)
@@ -159,7 +159,8 @@ namespace ReserveringSysteem
             }
             else
             {
-                Account account = new Account(gebruikersnaam, email);
+                string hash = hashGenerator.GenerateToken(32);
+                Account account = new Account(gebruikersnaam, email, hash);
 
                 accounts.Add(account);
 

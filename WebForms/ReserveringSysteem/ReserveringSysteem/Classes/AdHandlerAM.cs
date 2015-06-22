@@ -69,7 +69,7 @@ namespace ReserveringSysteem
 		/// <param name="username">The username for the new user</param>
 		/// <param name="password">The password for the new user</param>
 		/// <param name="mail">The E-mail for the new user</param>
-		public void CreateUser(string username, string password, string mail)
+		public void CreateUser(string username, string password)
 		{
 			PrincipalContext pContext = GetContext(_usersou);
 			
@@ -77,7 +77,6 @@ namespace ReserveringSysteem
 			if(fUser == null)
 			{
 			UserPrincipal pUser = new UserPrincipal(pContext, username, password, false);
-			pUser.EmailAddress = mail;
 			pUser.Save();
 			}
 		}
