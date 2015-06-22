@@ -28,19 +28,26 @@ namespace MediaSharingSystem
 
             if(adHandler.AuthenticateUser(username, password))
             {
-                string userData = "ApplicationSpecific data for this user.";
+                if (adHandler.UserInGroup(username, "SMEadmin"))
+                {
+                    string userData = "ApplicationSpecific data for this user.";
 
-                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, username, DateTime.Now,
-                    DateTime.Now.AddMinutes(30), isPersistent, userData, FormsAuthentication.FormsCookiePath);
+                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, username, DateTime.Now,
+                        DateTime.Now.AddMinutes(30), isPersistent, userData, FormsAuthentication.FormsCookiePath);
 
-                // Encrypt the ticket.
-                string encTicket = FormsAuthentication.Encrypt(ticket);
+                    // Encrypt the ticket.
+                    string encTicket = FormsAuthentication.Encrypt(ticket);
 
-                // Create the cookie.
-                Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+                    // Create the cookie.
+                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
 
-                // Redirect back to original URL.
-                Response.Redirect(FormsAuthentication.GetRedirectUrl(username, isPersistent));
+                    // Redirect back to original URL.
+                    Response.Redirect(FormsAuthentication.GetRedirectUrl(username, isPersistent));
+                }
+                else
+                {
+                    InvalidCredentialsLabel.Text = "Login failed. Not enough rights.";
+                }
             }
             else
             {
