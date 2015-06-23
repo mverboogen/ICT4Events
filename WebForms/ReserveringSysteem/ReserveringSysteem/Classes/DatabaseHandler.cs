@@ -423,8 +423,7 @@ namespace ReserveringSysteem
 
             Random random = new Random();
             int randomBarcode = 0;
-            randomBarcode = random.Next(1,100);
-
+            randomBarcode = random.Next(10000, 1000000);
             string barcode = randomBarcode.ToString();
 
             try
@@ -436,7 +435,6 @@ namespace ReserveringSysteem
 
                 cmd.Parameters.Add("Barcode", "varchar2").Value = barcode;
                 cmd.Parameters.Add("Active", "number").Value = 0;
-
 
                 cmd.ExecuteNonQuery();
             }

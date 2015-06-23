@@ -10,39 +10,58 @@
 #wrapper{
     width: 960px;
     margin: auto;
-    padding-bottom: 25px;
+    padding-bottom: 10px;
     background-color: white;
     border-radius: 10px;
+    height: 1677px;
 }
 
-#banner{
-    border: solid;
+#banner {
+    border-style: solid;
+    border-color: inherit;
+    border-width: medium;
+    background-color: white;
     border-radius: 10px;
     margin-bottom: 20px;
+    height: 55px;
 }
 
-#Booker {
-    border: double;
+#BookerTextbox {
+    background-color: white;
     margin-bottom: 20px;
 }
 
-#Visitor {
-    border: double;
+#BookerLabel {
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+#VisitorTextbox {
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+#VisitorLabel {
+    background-color: white;
     margin-bottom: 20px;
 }
 
 #Campsite {
-    border: double;
+    background-color: white;
     margin-bottom: 20px;
 }
 
 #Item {
-    border: double;
+    background-color: white;
     margin-bottom: 20px;
 }
 
 #Details {
-    border: double;
+    background-color: white;
+}
+
+#activationLabel {
+    margin-left: 5px;
 }
 
 .lblConfirm {
@@ -55,7 +74,6 @@
 	border-radius:10px;
 	height: 15px;
 	width: 180px;
-    margin-bottom: 5px;
 }
 
 .button
@@ -72,4 +90,10 @@
     border-radius: 10px;
     height: 40px;
     outline: none;
+}
+
+p
+{
+    height: 15px;
+    margin-bottom: 20px;
 }

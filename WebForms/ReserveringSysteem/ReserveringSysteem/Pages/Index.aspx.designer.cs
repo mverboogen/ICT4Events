@@ -40,15 +40,6 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// tbVoornaam control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbVoornaam;
-        
-        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -56,15 +47,6 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
-        
-        /// <summary>
-        /// tbTussenvoegsel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbTussenvoegsel;
         
         /// <summary>
         /// Label3 control.
@@ -76,15 +58,6 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.Label Label3;
         
         /// <summary>
-        /// tbAchternaam control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbAchternaam;
-        
-        /// <summary>
         /// Label4 control.
         /// </summary>
         /// <remarks>
@@ -92,15 +65,6 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label4;
-        
-        /// <summary>
-        /// tbStraat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbStraat;
         
         /// <summary>
         /// Label5 control.
@@ -112,15 +76,6 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.Label Label5;
         
         /// <summary>
-        /// tbHuisNr control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbHuisNr;
-        
-        /// <summary>
         /// Label6 control.
         /// </summary>
         /// <remarks>
@@ -130,15 +85,6 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.Label Label6;
         
         /// <summary>
-        /// tbWoonplaats control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbWoonplaats;
-        
-        /// <summary>
         /// Label7 control.
         /// </summary>
         /// <remarks>
@@ -146,6 +92,60 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label7;
+        
+        /// <summary>
+        /// tbVoornaam control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbVoornaam;
+        
+        /// <summary>
+        /// tbTussenvoegsel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbTussenvoegsel;
+        
+        /// <summary>
+        /// tbAchternaam control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbAchternaam;
+        
+        /// <summary>
+        /// tbStraat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbStraat;
+        
+        /// <summary>
+        /// tbHuisNr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbHuisNr;
+        
+        /// <summary>
+        /// tbWoonplaats control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbWoonplaats;
         
         /// <summary>
         /// tbBankNr control.
@@ -166,15 +166,6 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.WebControls.Label Label8;
         
         /// <summary>
-        /// tbGebruikersnaam control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbGebruikersnaam;
-        
-        /// <summary>
         /// Label10 control.
         /// </summary>
         /// <remarks>
@@ -182,6 +173,24 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label10;
+        
+        /// <summary>
+        /// lblAccountConfirm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAccountConfirm;
+        
+        /// <summary>
+        /// tbGebruikersnaam control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbGebruikersnaam;
         
         /// <summary>
         /// tbEmail control.
@@ -209,15 +218,6 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvAccounts;
-        
-        /// <summary>
-        /// lblAccountConfirm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAccountConfirm;
         
         /// <summary>
         /// lbCampsites control.
@@ -337,15 +337,6 @@ namespace ReserveringSysteem {
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// Label11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label11;
-        
-        /// <summary>
         /// cBeginDate control.
         /// </summary>
         /// <remarks>
@@ -353,15 +344,6 @@ namespace ReserveringSysteem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Calendar cBeginDate;
-        
-        /// <summary>
-        /// Label12 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label12;
         
         /// <summary>
         /// cEndDate control.

@@ -75,7 +75,6 @@ namespace ReserveringSysteem
         /// <param name="e"></param>
         protected void btBevestigen_Click(object sender, EventArgs e)
         {
-
             if (string.IsNullOrWhiteSpace(tbVoornaam.Text) || string.IsNullOrWhiteSpace(tbAchternaam.Text))
             {
                 lblReservationConfirm.Text =
