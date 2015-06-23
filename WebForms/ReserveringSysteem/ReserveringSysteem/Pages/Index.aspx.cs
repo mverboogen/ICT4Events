@@ -75,8 +75,6 @@ namespace ReserveringSysteem
         /// <param name="e"></param>
         protected void btBevestigen_Click(object sender, EventArgs e)
         {
-            //string startDate = "01/06/15";
-            //string endDate = "30/06/15";
 
             if (string.IsNullOrWhiteSpace(tbVoornaam.Text) || string.IsNullOrWhiteSpace(tbAchternaam.Text))
             {
@@ -87,9 +85,6 @@ namespace ReserveringSysteem
             {
                 DateTime startEvent = new DateTime(2015, 06, 01);
                 DateTime endEvent = new DateTime(2015, 06, 30);
-
-                //DateTime startEvent = Convert.ToDateTime(startDate);
-                //DateTime endEvent = Convert.ToDateTime(endDate);
 
                 string dateIn = cBeginDate.SelectedDate.ToString("dd/MM/yy");
                 string dateOut = cEndDate.SelectedDate.ToString("dd/MM/yy");

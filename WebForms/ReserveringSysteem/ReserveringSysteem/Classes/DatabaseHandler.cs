@@ -423,6 +423,8 @@ namespace ReserveringSysteem
 
             Random random = new Random();
             int randomBarcode = 0;
+            randomBarcode = random.Next(1,100);
+
             string barcode = randomBarcode.ToString();
 
             try
